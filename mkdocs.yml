@@ -1,0 +1,76 @@
+site_name: 김민식 포트폴리오
+site_description: Software Engineer 경력과 프로젝트 포트폴리오
+site_url: https://zmrdltl.github.io/portfolio/
+repo_url: https://github.com/zmrdltl/portfolio
+repo_name: zmrdltl/portfolio
+
+theme:
+  name: material
+  language: ko
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: indigo
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: ko
+          name: 한국어
+          build: true
+          default: true
+        - locale: en
+          name: English
+          build: true
+          site_name: Kim Minsik Portfolio
+          site_description: Software Engineer career and project portfolio
+          theme:
+            language: en
+          nav:
+            - Overview: index.md
+            - Experience:
+                - experience/index.md
+                - TmaxCloud: experience/tmaxcloud.md
+            - Open Source:
+                - GlueSQL: opensource/gluesql.md
+            - Projects:
+                - projects/index.md
+                - CSV Batch Pipeline: projects/csv-batch.md
+                - Map-based Sound Upload Site: projects/map-sound.md
+                - Dishnow: projects/dishnow.md
+                - LoL Toxic User Detection: projects/lol-toxic-user.md
+            - Evidence:
+                - Public Links: evidence/public-links.md
+
+nav:
+  - 소개: index.md
+  - 경력:
+      - experience/index.md
+      - 티맥스클라우드: experience/tmaxcloud.md
+  - 오픈소스:
+      - GlueSQL: opensource/gluesql.md
+  - 프로젝트:
+      - projects/index.md
+      - 1GB 이상 CSV 데이터 처리: projects/csv-batch.md
+      - 지도 기반 소리 업로드/조회 사이트: projects/map-sound.md
+      - Dishnow: projects/dishnow.md
+      - LoL 악성 유저 검출: projects/lol-toxic-user.md
+  - 근거 링크:
+      - 공개 링크: evidence/public-links.md

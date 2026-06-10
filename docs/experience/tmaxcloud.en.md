@@ -1,0 +1,46 @@
+# TmaxCloud
+
+- Role: Software Engineer
+- Period: 2021.10 - 2024.11
+
+## Overview
+
+I implemented development flows in a Java/TypeScript-based No-code platform that transformed metadata, entity, and service design information into DDL, SQL, Java service code, and deployment artifacts.
+
+The work was not limited to backend API implementation. It included metadata modeling, SQL generation, Java service code generation, entity synchronization, change history, database feature expansion, UI tooling, test tooling, and Kubernetes/Redis research.
+
+## No-code Platform Development
+
+- Defined service in/out DTOs, context, and node service structures.
+- Implemented Freemarker-template-based Java service code generation for Select, Insert, Update, and Delete services.
+- Improved the SQL Generator into a library used directly by the backend.
+- Implemented JSON-input-based SQL generation for CREATE, ALTER, VIEW, JOIN, conditional expressions, and DML statements, with JUnit tests.
+
+## Data Synchronization and History
+
+- Implemented entity export/import features between applications.
+- Designed topic/subscriber-based data copy and synchronization flows.
+- Implemented change history table generation, snapshot storage before CRUD operations, and SQL for restoring table state at a specific point in time.
+
+## Tibero and Data Features
+
+- Implemented NoSQL-like CRUD features on Tibero RDBMS using JSON types, JSON Path Expression, and JSON Schema validation.
+- Designed metadata-level column encryption settings and DBMS_CRYPTO-based encryption/decryption SQL and CRUD service generation logic.
+
+## Platform UI and Test Tooling
+
+- Implemented React Flow-based entity relationship visualization.
+- Implemented a Material UI-based metadata change history page with filtering, sorting, grouping, and highlighting.
+- Implemented a WebSocket-based service test page.
+- Centralized service ID mapping, message handler mapping, response handling, and log/error handling to reduce duplicated work and debugging cost when adding services.
+
+## Kubernetes and Redis Research
+
+- Verified Terraform remote execution through Kubernetes API Exec and client-go.
+- Built a team development/test Kubernetes cluster with 1 master node and 3 worker nodes.
+- Researched Redis deployment in Kubernetes using Redis Operator and Redis Cluster Proxy.
+- Submitted 4 upstream PRs to Redis Operator, 3 of which were merged.
+
+## Skills
+
+Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, Terraform, Redis Operator, Redis Cluster Proxy

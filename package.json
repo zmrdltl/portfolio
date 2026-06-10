@@ -1,0 +1,11 @@
+{
+  "name": "portfolio",
+  "packageManager": "pnpm@11.5.2",
+  "private": true,
+  "scripts": {
+    "lint:md": "markdownlint-cli2"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "0.22"
+  }
+}
