@@ -2,35 +2,49 @@
 
 ## Purpose
 
-This repository is a public MkDocs portfolio site.
-It contains curated, public-facing career and project documentation only.
+This repository is a public MkDocs technical portfolio site, not application code.
+It contains only curated public-facing career, open-source, project, activity, engineering principles, and evidence documentation.
 
 ## Content Rules
 
-- Do not add private notes, investigation logs, draft reasoning, or internal-only context.
-- Do not include private company links, private issue or PR links, credentials, personal identifiers beyond public contact information, or non-public implementation details.
-- Keep detailed research notes in a private or local workspace, then copy only reviewed public summaries into this repository.
-- Prefer concise career and project summaries with public evidence links.
-- Use Korean as the primary source language for public portfolio pages.
-- Keep English translations in matching `*.en.md` files and update them when the Korean source changes.
-- Do not publish raw source notes from Notion, PDFs, or local draft files.
-- Add the minimum words needed to state scope, role, result, evidence, and skills.
+- Keep research notes private/local; publish only reviewed public summaries.
+- Do not publish private notes, internal context, private links, credentials, personal identifiers beyond public contact information, non-public implementation details, raw source notes, Google Drive folders, certificate bundles, academic records, military records, or other administrative proof documents.
+- Add no claim unless it is supported by public evidence, reviewed source text, or explicit user confirmation.
+- Do not fill blanks, dates, metrics, roles, names, links, outcomes, or rationale by assumption; ask the user when a field would require guessing.
+- Use Korean as the source language; update the matching `*.en.md` file when Korean content changes.
+- Use the minimum words needed to state scope, role, result, evidence, and skills.
 
 ## Writing Rules
 
 - Prefer editing an existing page over adding a new page or section.
 - Separate confirmed facts, interpretation, and suggestions.
-- Do not add a claim unless it is supported by public evidence or the reviewed Korean source text.
+- Do not use conversation-only labels, temporary wording, or private shorthand from user-agent discussion unless the user explicitly approves it for publication.
+- Avoid internal-document expressions and unexplained abbreviations in public pages and commit messages.
 - Keep public pages readable without private context.
-- When changing Korean source pages, update the matching English `*.en.md` page in the same change.
 
 ## Review Rules
 
+- Apply these review rules and all Review Personas to every review request unless the user explicitly limits the scope.
 - Findings come first, ordered by risk.
 - Check public-safety issues: private notes, internal links, raw investigation text, credentials, and unsupported personal identifiers.
 - Check claim quality: role, scope, metric, date, and evidence must not be stronger than the source supports.
 - Check Korean/English parity for changed pages.
 - Check navigation links, `pnpm run lint:md`, and `mkdocs build --strict`.
+
+## Review Personas
+
+Use these personas as review lenses only; they do not override the content rules and must not create new claims.
+
+| Persona | Checks |
+| --- | --- |
+| Hiring reviewer | Role, scope, result, and evidence are easy to scan without private context |
+| Engineering reviewer | Technical ownership, boundaries, testing, review, and documentation standards are concrete but not overstated |
+| Evidence reviewer | Public links support the claim; user-confirmed facts are not strengthened; unverifiable fields are marked as needing confirmation |
+| Public-safety reviewer | Private information, internal context, unsupported identifiers, and credential archives are absent |
+| Maintainer | Section ownership, Korean/English parity, navigation, and commit scope stay consistent |
+
+Evidence review is limited to available public links, reviewed source text, and explicit user confirmation in this work.
+If a date, metric, role, link, or outcome cannot be checked from those sources, do not infer it; flag it as needing user confirmation.
 
 ## Evaluation Criteria
 
@@ -41,10 +55,19 @@ It contains curated, public-facing career and project documentation only.
 
 ## Structure
 
-- `docs/experience/`: company experience pages
-- `docs/projects/`: selected project pages
-- `docs/opensource/`: open-source work
-- `docs/evidence/`: public links and references only
+Use short navigation labels, but keep directory names explicit.
+
+| Path | Ownership |
+| --- | --- |
+| `docs/experience/` | Organization work with role, period, and product responsibility |
+| `docs/engineering-principles.md` | Public engineering principles and AI-assisted development criteria |
+| `docs/opensource/` | Public repository work where code, PRs, review, or technical contribution is the primary signal |
+| `docs/projects/` | Personal products, client delivery, student startup, graduation, technical challenge, or selected artifact-centered projects that are not regular employment history |
+| `docs/activities/` | Education, mentoring, community, awards, and other supporting activities |
+| `docs/evidence/` | Public technical evidence links only, not a credential archive |
+
+If more than one section could apply, choose the section by primary signal: regular employment or organization-owned product responsibility goes to `experience/`, repository contribution to `opensource/`, personal/client/student/artifact-centered work goes to `projects/`, supporting history to `activities/`, and links only to `evidence/`.
+Keep awards and certificates as short text in `activities/`; link only public, privacy-safe official pages when they add real signal.
 
 ## Publishing
 
@@ -53,3 +76,15 @@ It contains curated, public-facing career and project documentation only.
 - Use `pnpm` 11.5.2 for Node-based tooling.
 - Run `pnpm run lint:md` after editing Markdown files.
 - Deploy only reviewed public content.
+
+## Commit Rules
+
+- Stage only related hunks.
+- Use Conventional Commits with `docs(scope): summary`.
+- Prefer these scopes: `agents`, `structure`, `principles`, `experience`, `opensource`, `projects`, `activities`, `evidence`, `i18n`, `build`.
+- Keep the summary concise and specific.
+- Use only `What:` and `Why:` body lines when the change affects structure, classification, public-safety rules, or claim strength.
+- `What:` must describe only the staged document changes.
+- `Why:` must use only confirmed user intent, reviewed source text, or public evidence; do not invent rationale.
+- Do not use conversation-only labels, internal-document expressions, or unexplained abbreviations in commit messages.
+- Omit the body only for trivial typo, formatting, or link-only fixes.
