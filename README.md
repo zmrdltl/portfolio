@@ -1,8 +1,8 @@
 # portfolio
 
-김민식 Software Engineer 포트폴리오 사이트입니다.
+김민식 Software Engineer 기술 포트폴리오 사이트입니다.
 
-검수된 공개 경력, 프로젝트, 오픈소스 문서만 포함합니다.
+검수된 공개 경력, 오픈소스, 프로젝트, 활동, 개발 원칙 문서와 증빙 링크만 포함합니다.
 
 ## Local Development
 

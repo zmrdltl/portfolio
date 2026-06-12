@@ -1,5 +1,5 @@
-site_name: 김민식 포트폴리오
-site_description: Software Engineer 경력과 프로젝트 포트폴리오
+site_name: 김민식 기술 포트폴리오
+site_description: Software Engineer 기술 상세와 공개 증빙 포트폴리오
 site_url: https://zmrdltl.github.io/portfolio/
 repo_url: https://github.com/zmrdltl/portfolio
 repo_name: zmrdltl/portfolio
@@ -39,38 +39,46 @@ plugins:
         - locale: en
           name: English
           build: true
-          site_name: Kim Minsik Portfolio
-          site_description: Software Engineer career and project portfolio
+          site_name: Kim Minsik Technical Portfolio
+          site_description: Software Engineer technical context and public evidence portfolio
           theme:
             language: en
           nav:
             - Overview: index.md
-            - Experience:
+            - Principles: engineering-principles.md
+            - Work:
                 - experience/index.md
+                - ClumL: experience/cluml.md
                 - TmaxCloud: experience/tmaxcloud.md
             - Open Source:
                 - GlueSQL: opensource/gluesql.md
             - Projects:
                 - projects/index.md
+                - Coupler: projects/coupler.md
                 - CSV Batch Pipeline: projects/csv-batch.md
                 - Map-based Sound Upload Site: projects/map-sound.md
                 - Dishnow: projects/dishnow.md
                 - LoL Toxic User Detection: projects/lol-toxic-user.md
+            - Activities: activities/index.md
             - Evidence:
-                - Public Links: evidence/public-links.md
+                - Links: evidence/public-links.md
 
 nav:
   - 소개: index.md
+  - 원칙: engineering-principles.md
   - 경력:
       - experience/index.md
+      - ClumL: experience/cluml.md
       - 티맥스클라우드: experience/tmaxcloud.md
   - 오픈소스:
       - GlueSQL: opensource/gluesql.md
   - 프로젝트:
       - projects/index.md
+      - Coupler: projects/coupler.md
       - 1GB 이상 CSV 데이터 처리: projects/csv-batch.md
       - 지도 기반 소리 업로드/조회 사이트: projects/map-sound.md
       - Dishnow: projects/dishnow.md
       - LoL 악성 유저 검출: projects/lol-toxic-user.md
-  - 근거 링크:
-      - 공개 링크: evidence/public-links.md
+  - 활동: activities/index.md
+  - 증빙:
+      - 링크: evidence/public-links.md
