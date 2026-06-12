@@ -5,18 +5,24 @@
 
 ## Overview
 
-I implemented development flows in a Java/TypeScript-based No-code platform that transformed metadata, entity, and service design information into DDL, SQL, Java service code, and deployment artifacts.
+I implemented backend/platform features in a Java/TypeScript-based No-code platform, connecting metadata, entity, and service design information to DDL, SQL, Java service code, data synchronization, change history, and test tooling.
 
 The work was not limited to backend API implementation. It included metadata modeling, SQL generation, Java service code generation, entity synchronization, change history, database feature expansion, UI tooling, test tooling, and Kubernetes/Redis research.
 
-## No-code Platform Development
+## Metadata-driven Generation Flow
+
+### Problem
+
+The platform needed a consistent metadata model and generation flow so service design information could become DDL, SQL, Java service code, deployment artifacts, and test flows.
+
+### Role
 
 - Defined service in/out DTOs, context, and node service structures.
 - Implemented Freemarker-template-based Java service code generation for Select, Insert, Update, and Delete services.
 - Improved the SQL Generator into a library used directly by the backend.
 - Implemented JSON-input-based SQL generation for CREATE, ALTER, VIEW, JOIN, conditional expressions, and DML statements, with JUnit tests.
 
-## Data Synchronization and History
+## Data Flow and Change History
 
 - Implemented entity export/import features between applications.
 - Designed topic/subscriber-based data copy and synchronization flows.
@@ -27,7 +33,7 @@ The work was not limited to backend API implementation. It included metadata mod
 - Implemented NoSQL-like CRUD features on Tibero RDBMS using JSON types, JSON Path Expression, and JSON Schema validation.
 - Designed metadata-level column encryption settings and DBMS_CRYPTO-based encryption/decryption SQL and CRUD service generation logic.
 
-## Platform UI and Test Tooling
+## Test and Operational Tooling
 
 - Implemented React Flow-based entity relationship visualization.
 - Implemented a Material UI-based metadata change history page with filtering, sorting, grouping, and highlighting.
@@ -38,8 +44,16 @@ The work was not limited to backend API implementation. It included metadata mod
 
 - Verified Terraform remote execution through Kubernetes API Exec and client-go.
 - Built a team development/test Kubernetes cluster with 1 master node and 3 worker nodes.
-- Researched Redis deployment in Kubernetes using Redis Operator and Redis Cluster Proxy.
-- Submitted 4 upstream PRs to Redis Operator, 3 of which were merged.
+- Researched Redis deployment, TLS, monitoring, and external access redirect behavior using Redis Operator and Redis Cluster Proxy.
+- Had 3 related upstream Redis Operator PRs merged during validation.
+
+## Public References
+
+Related upstream PR links merged during Redis Operator validation.
+
+- [Redis Operator merged PR #265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265)
+- [Redis Operator merged PR #308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308)
+- [Redis Operator merged PR #313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313)
 
 ## Skills
 

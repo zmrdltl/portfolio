@@ -6,7 +6,7 @@
 ## Overview
 
 GlueSQL is a Rust-based SQL database engine.
-I contributed to SQL engine features, AST Builder improvements, numeric type handling, Parquet storage, test suites, mentoring, and code review.
+My contribution scope includes SQL engine features, parser/AST design, numeric type handling, Parquet storage, test suites, mentoring, and code review.
 
 ## Contributions
 
@@ -17,9 +17,16 @@ I contributed to SQL engine features, AST Builder improvements, numeric type han
 
 ## Public Activity
 
-- Authored 52 PRs in `gluesql/gluesql`.
+- Authored 50+ PRs in `gluesql/gluesql`.
 - Merged `apache/datafusion-sqlparser-rs` logical XOR PR.
 - Merged `akubera/bigdecimal-rs` `get_scale` PR.
+
+## Public Evidence
+
+- [GlueSQL repository](https://github.com/gluesql/gluesql)
+- [GlueSQL PRs authored by `zmrdltl`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
+- [DataFusion SQL Parser logical XOR PR #357](https://github.com/apache/datafusion-sqlparser-rs/pull/357)
+- [BigDecimal `get_scale` PR #116](https://github.com/akubera/bigdecimal-rs/pull/116)
 
 ## Skills
 

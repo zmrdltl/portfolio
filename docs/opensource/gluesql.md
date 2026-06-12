@@ -6,7 +6,7 @@
 ## 개요
 
 GlueSQL은 Rust 기반 SQL database engine입니다.
-SQL engine 기능, AST Builder 개선, numeric type 처리, Parquet storage, test suite, 멘토링, 코드 리뷰에 기여했습니다.
+기여 범위는 SQL engine 기능, parser/AST, numeric type 처리, Parquet storage, test suite, 멘토링, 코드 리뷰를 포함합니다.
 
 ## 기여
 
@@ -17,9 +17,16 @@ SQL engine 기능, AST Builder 개선, numeric type 처리, Parquet storage, tes
 
 ## 공개 활동
 
-- `gluesql/gluesql`에서 PR 52개를 작성했습니다.
+- `gluesql/gluesql`에서 PR 50개 이상을 작성했습니다.
 - `apache/datafusion-sqlparser-rs` logical XOR PR이 병합되었습니다.
 - `akubera/bigdecimal-rs` `get_scale` PR이 병합되었습니다.
+
+## 공개 증빙
+
+- [GlueSQL repository](https://github.com/gluesql/gluesql)
+- [GlueSQL PRs authored by `zmrdltl`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
+- [DataFusion SQL Parser logical XOR PR #357](https://github.com/apache/datafusion-sqlparser-rs/pull/357)
+- [BigDecimal `get_scale` PR #116](https://github.com/akubera/bigdecimal-rs/pull/116)
 
 ## 기술
 
