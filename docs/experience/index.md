@@ -4,14 +4,14 @@
 
 | 기간 | 조직 | 역할 | 주요 내용 |
 | --- | --- | --- | --- |
-| 2025.03 - Present | ClumL | Software Engineer | 보안 이벤트 분석 제품군, 분석 UI 정합성, Rust 서비스 테스트 안정화, 문제 정의와 PR review |
+| 2025.03 - Present | ClumL | Software Engineer | 보안 이벤트 분석 제품군, 탐지 화면·리포트 데이터 정합성, Rust 서비스 테스트 안정화, issue/spec 작성, PR review |
 | 2021.10 - 2024.11 | 티맥스클라우드 | Software Engineer | Java/TypeScript No-code 플랫폼, SQL/code generation, 데이터 동기화, 이력 관리, Kubernetes/Redis 연구 |
 
 ## 방향
 
 제 핵심 배경은 메타데이터와 스키마 기반 백엔드와 플랫폼 엔지니어링입니다.
 
-ClumL에서는 보안 이벤트 분석 제품군에서 분석 UI 정합성, Rust 서비스 테스트 안정화, 문제 정의와 PR review를 수행하고 있습니다.
+ClumL에서는 보안 이벤트 분석 제품군에서 탐지 화면·리포트의 데이터 정합성, Rust 서비스 테스트 안정화, issue/spec 작성, PR review를 수행하고 있습니다.
 
 티맥스클라우드에서는 No-code 플랫폼에서 애플리케이션 설계 메타데이터를 DDL, SQL, Java 서비스 코드, 데이터 동기화, 변경 이력, 테스트 화면, 운영 기능으로 연결하는 작업을 수행했습니다.
 

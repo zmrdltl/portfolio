@@ -4,9 +4,9 @@ SOFTWARE ENGINEER
 
 ## 요약
 
-설계 메타데이터와 도메인 규칙을 DDL, SQL, Java 서비스 코드, 데이터 동기화, 변경 이력, 테스트 도구로 연결하는 백엔드와 플랫폼 엔지니어링을 중심으로 일해 온 Software Engineer입니다.
+제품 요구사항과 도메인 규칙을 SQL/DDL, 서비스 코드, 테스트·리뷰 기준으로 고정해 기능 구현과 회귀 방지를 함께 만드는 Software Engineer입니다.
 
-티맥스클라우드에서는 Java/TypeScript 기반 No-code 플랫폼의 SQL 생성, Java 서비스 코드 생성, 스키마 기반 애플리케이션 흐름, 데이터 기능, 테스트 도구를 구현했습니다. ClumL에서는 보안 이벤트 분석 제품군의 분석 UI 정합성, Rust 서비스 테스트 안정화, 문제 정의와 PR review를 수행하고 있습니다. 오픈소스 GlueSQL에서는 Rust 기반 SQL engine 기능, parser와 AST, storage, test suite, 멘토링과 코드 리뷰를 이어왔습니다.
+ClumL에서는 보안 이벤트 분석 제품군의 데이터 정합성, Rust 서비스 테스트 안정화, issue/spec 작성, PR review를 수행하고 있습니다. 티맥스클라우드에서는 Java/TypeScript 기반 No-code 플랫폼의 code/DDL generation, 데이터 이식성, 변경 이력 관리 기능을 구현했습니다. GlueSQL에서는 Rust 기반 SQL engine 기능, parser와 AST, storage, test suite, 멘토링과 코드 리뷰를 이어왔고, Coupler에서는 React Native 제품 운영, TypeScript 전환 기준, 회원가입·심사 흐름 정리를 수행했습니다.
 
 이 사이트는 제출용 이력서를 대체하지 않습니다. 이력서에 담기 어려운 기술 맥락, 역할 범위, 결과, 공개 증빙을 정리하는 기술 포트폴리오입니다.
 
@@ -25,7 +25,7 @@ SOFTWARE ENGINEER
 - SQL 생성과 Java 서비스 코드 생성
 - 데이터 동기화, 변경 이력, 테스트 도구
 - SQL engine internals, Rust 오픈소스 기여, 코드 리뷰
-- 보안 이벤트 분석 제품군의 분석 UI 정합성, Rust 서비스 테스트 안정화, 문제 정의와 PR review
+- 보안 이벤트 분석 제품군의 데이터 정합성, Rust 서비스 테스트 안정화, issue/spec 작성, PR review
 - React Native 제품 운영, TypeScript 전환, 회원가입/심사 흐름 정리
 - AI-assisted development를 위한 문서화와 검증 기준
 

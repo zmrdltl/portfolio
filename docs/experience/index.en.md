@@ -4,14 +4,14 @@
 
 | Period | Organization | Role | Main Focus |
 | --- | --- | --- | --- |
-| 2025.03 - Present | ClumL | Software Engineer | Security event analysis product suite, analysis UI correctness, Rust service test stability, problem definition, PR review |
+| 2025.03 - Present | ClumL | Software Engineer | Security event analysis product suite, detection/report data correctness, Rust service test stability, issue/spec writing, PR review |
 | 2021.10 - 2024.11 | TmaxCloud | Software Engineer | Java/TypeScript No-code platform, SQL/code generation, data synchronization, history management, Kubernetes/Redis research |
 
 ## Direction
 
 My core background is metadata/schema-driven backend/platform engineering.
 
-At ClumL, I work on analysis UI correctness, Rust service test stability, problem definition, and PR review in a security event analysis product suite.
+At ClumL, I work on detection/report data correctness, Rust service test stability, issue/spec writing, and PR review in a security event analysis product suite.
 
 At TmaxCloud, I worked on a No-code platform that transformed application design metadata into DDL, SQL, Java service code, data synchronization, change history, test surfaces, and operational features.
 

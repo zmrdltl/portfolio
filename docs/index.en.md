@@ -4,9 +4,9 @@ SOFTWARE ENGINEER
 
 ## Summary
 
-I am a Software Engineer focused on backend/platform engineering, connecting design metadata and domain rules to DDL, SQL, Java service code, data synchronization, change history, and test tooling.
+I am a Software Engineer who turns product requirements and domain rules into SQL/DDL, service code, test criteria, and review criteria so implementation and regression control move together.
 
-At TmaxCloud, I implemented SQL/code generation, schema-driven application flows, data features, and test tooling in a Java/TypeScript-based No-code platform. At ClumL, I work on analysis UI correctness, Rust service test stability, problem definition, and PR review for a security event analysis product suite. In GlueSQL open source, I have worked on Rust-based SQL engine features, parser/AST design, storage, test suites, mentoring, and code review.
+At ClumL, I work on data correctness, Rust service test stability, issue/spec writing, and PR review for a security event analysis product suite. At TmaxCloud, I implemented code/DDL generation, data portability, and change-history management features in a Java/TypeScript-based No-code platform. In GlueSQL, I have worked on Rust-based SQL engine features, parser/AST design, storage, test suites, mentoring, and code review. In Coupler, I have worked on React Native product operation, TypeScript migration criteria, and signup/review flow cleanup.
 
 This site does not replace the submitted resume. It documents technical context, role scope, outcomes, and public evidence that do not fit into the resume.
 
@@ -25,7 +25,7 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - SQL generation and Java service code generation
 - Data synchronization, change history, and test tooling
 - SQL engine internals, Rust open-source contribution, and code review
-- Analysis UI correctness, Rust service test stability, problem definition, and PR review in security event analysis products
+- Data correctness, Rust service test stability, issue/spec writing, and PR review in security event analysis products
 - React Native product operation, TypeScript migration, and signup/review flow cleanup
 - Documentation and verification criteria for AI-assisted development
 
