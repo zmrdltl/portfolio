@@ -9,6 +9,7 @@
 ## 오픈소스
 
 - GlueSQL: [gluesql/gluesql](https://github.com/gluesql/gluesql)
+- `zmrdltl`이 작성한 GlueSQL PR: [GitHub PR search](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
 - DataFusion SQL Parser logical XOR PR: [apache/datafusion-sqlparser-rs#357](https://github.com/apache/datafusion-sqlparser-rs/pull/357)
 - BigDecimal `get_scale` PR: [akubera/bigdecimal-rs#116](https://github.com/akubera/bigdecimal-rs/pull/116)
 
