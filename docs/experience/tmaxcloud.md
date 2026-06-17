@@ -45,6 +45,7 @@ Java/TypeScript 기반 No-code 플랫폼에서 메타데이터, 엔티티, 서�
 - Kubernetes API Exec/client-go 기반 Terraform 원격 실행을 검증했습니다.
 - 팀 개발/테스트용 1 master / 3 worker Kubernetes 클러스터를 구성했습니다.
 - Redis Operator/Redis Cluster Proxy 기반 Redis 배포, TLS, monitoring, 외부 접근 redirect 문제를 연구했습니다.
+- Terraform/k8s provisioning 검증에서 평균 5분 절약, Redis packet 전달 성공률 95% 이상, 장애 탐지 30% 단축을 확인했습니다.
 - Redis Operator 검증 과정에서 관련 upstream PR 3개가 병합되었습니다.
 
 ## 공개 참고 링크

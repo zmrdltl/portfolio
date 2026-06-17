@@ -45,6 +45,7 @@ The platform needed a consistent metadata model and generation flow so service d
 - Verified Terraform remote execution through Kubernetes API Exec and client-go.
 - Built a team development/test Kubernetes cluster with 1 master node and 3 worker nodes.
 - Researched Redis deployment, TLS, monitoring, and external access redirect behavior using Redis Operator and Redis Cluster Proxy.
+- Verified an average 5-minute saving in Terraform/k8s provisioning, a Redis packet delivery success rate above 95%, and a 30% reduction in issue detection time.
 - Had 3 related upstream Redis Operator PRs merged during validation.
 
 ## Public References
