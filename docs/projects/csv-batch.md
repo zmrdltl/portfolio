@@ -6,7 +6,15 @@
 
 Spring Batch, OpenCSV, MySQL, Prometheus/Grafana를 활용해 1GB 이상 CSV 데이터를 MySQL에 적재하는 batch pipeline을 구현했습니다.
 
-## 구현
+## 역할과 범위
+
+1GB 이상 CSV 데이터를 MySQL에 적재하는 batch pipeline 구현을 담당했습니다.
+
+## 문제와 제약
+
+대용량 CSV 데이터를 MySQL에 적재하면서 실패 레코드 처리, 병렬 처리, 테스트, 모니터링 구성이 필요했습니다.
+
+## 설계와 구현
 
 - Reader/Processor/Writer 계층을 구현했습니다.
 - Skip/Retry 처리를 구성했습니다.
@@ -14,7 +22,7 @@ Spring Batch, OpenCSV, MySQL, Prometheus/Grafana를 활용해 1GB 이상 CSV 데
 - H2/MySQL 테스트를 작성했습니다.
 - Prometheus와 Grafana로 모니터링을 구성했습니다.
 
-## 결과
+## 검증과 지표
 
 1GB 데이터 삽입 시간을 평균 25분에서 5분 이내로 단축했습니다.
 

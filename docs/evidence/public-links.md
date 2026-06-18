@@ -25,3 +25,9 @@ Redis Operator 검증 과정에서 병합된 관련 upstream PR 링크입니다.
 
 - Coupler public docs: [coupler-developer/docs](https://github.com/coupler-developer/docs)
 - 지도 기반 소리 업로드/조회 사이트: [Kmong portfolio page](https://kmong.com/portfolio/view/154608)
+- Dishnow: [dishnoww GitHub organization](https://github.com/dishnoww)
+- LoL 악성 유저 검출: [Find-Troll GitHub organization](https://github.com/Find-Troll)
+- LoL 악성 유저 검출 web: [Find-Troll/Trollgg](https://github.com/Find-Troll/Trollgg)
+- LoL 악성 유저 검출 API: [Find-Troll/trollAPI](https://github.com/Find-Troll/trollAPI)
+- LoL 악성 유저 검출 crawling: [Find-Troll/trollCrawling](https://github.com/Find-Troll/trollCrawling)
+- LoL 악성 유저 검출 log: [Find-Troll/trollLog](https://github.com/Find-Troll/trollLog)

@@ -18,6 +18,7 @@ My contribution scope includes SQL engine features, parser/AST design, numeric t
 ## Public Activity
 
 - Authored 50+ PRs in `gluesql/gluesql`.
+- As a maintainer, I can continue maintenance PRs, reviews, and issue triage.
 - Merged `apache/datafusion-sqlparser-rs` logical XOR PR.
 - Merged `akubera/bigdecimal-rs` `get_scale` PR.
 

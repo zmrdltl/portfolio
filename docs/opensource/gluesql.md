@@ -18,6 +18,7 @@ GlueSQL은 Rust 기반 SQL database engine입니다.
 ## 공개 활동
 
 - `gluesql/gluesql`에서 PR 50개 이상을 작성했습니다.
+- maintainer로서 유지보수 PR, 리뷰, 이슈 대응을 계속 수행할 수 있는 상태입니다.
 - `apache/datafusion-sqlparser-rs` logical XOR PR이 병합되었습니다.
 - `akubera/bigdecimal-rs` `get_scale` PR이 병합되었습니다.
 
