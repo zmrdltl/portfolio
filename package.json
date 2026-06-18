@@ -3,7 +3,9 @@
   "packageManager": "pnpm@11.5.2",
   "private": true,
   "scripts": {
-    "lint:md": "markdownlint-cli2"
+    "check:structure": "python3 scripts/check_structure.py",
+    "lint:md": "markdownlint-cli2",
+    "test:structure": "python3 -m unittest scripts/test_check_structure.py"
   },
   "devDependencies": {
     "markdownlint-cli2": "0.22"

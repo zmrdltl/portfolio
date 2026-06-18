@@ -45,6 +45,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Test structure checker
+        run: pnpm run test:structure
+
+      - name: Check portfolio structure
+        run: pnpm run check:structure
+
       - name: Build site
         run: mkdocs build --strict
 

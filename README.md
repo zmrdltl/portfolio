@@ -32,6 +32,21 @@ npx pnpm@11.5.2 install --frozen-lockfile
 npx pnpm@11.5.2 run lint:md
 ```
 
+## Structure Check
+
+한국어와 영어 본문은 각각 검수할 수 있도록 `*.md`, `*.en.md` 파일로 유지합니다.
+사이트 탐색 구조는 `mkdocs.yml`의 단일 `nav`에서 관리하고, 영어 표시는
+`nav_translations`로 변환합니다.
+
+```bash
+source .venv/bin/activate
+pnpm run test:structure
+pnpm run check:structure
+```
+
+구조 검사는 번역 파일 쌍, 한·영 heading outline, `nav` 중복·누락,
+영어 navigation 번역 누락을 확인합니다.
+
 ## Build
 
 ```bash
