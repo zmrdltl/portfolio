@@ -1,6 +1,6 @@
 # 김민식 기술 포트폴리오
 
-SOFTWARE ENGINEER
+PLATFORM SOFTWARE ENGINEER
 
 ## 요약
 

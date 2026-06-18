@@ -1,6 +1,6 @@
 # Kim Minsik Technical Portfolio
 
-SOFTWARE ENGINEER
+PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
