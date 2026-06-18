@@ -38,7 +38,7 @@ Domain knowledge and requirements
 ## Review
 
 - Check whether the change stays within the problem scope.
-- Review responsibility boundaries, extensibility, cohesion, and coupling.
+- Review responsibility boundaries, consistency, extensibility, cohesion, and coupling.
 - Check compatibility with existing APIs, configuration, serialization, and user flows.
 - Confirm whether tests cover real risk paths.
 - Decide whether new complexity is justified by the problem.
