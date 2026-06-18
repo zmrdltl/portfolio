@@ -43,25 +43,21 @@ plugins:
           site_description: Software Engineer technical context and public evidence portfolio
           theme:
             language: en
-          nav:
-            - Overview: index.md
-            - Principles: engineering-principles.md
-            - Work:
-                - Summary: experience/index.md
-                - ClumL: experience/cluml.md
-                - TmaxCloud: experience/tmaxcloud.md
-            - Open Source:
-                - GlueSQL: opensource/gluesql.md
-            - Projects:
-                - List: projects/index.md
-                - Coupler: projects/coupler.md
-                - CSV Batch Pipeline: projects/csv-batch.md
-                - Map-based Sound Upload Site: projects/map-sound.md
-                - Dishnow: projects/dishnow.md
-                - LoL Toxic User Detection: projects/lol-toxic-user.md
-            - Activities: activities/index.md
-            - Evidence:
-                - Links: evidence/public-links.md
+          nav_translations:
+            소개: Overview
+            원칙: Principles
+            경력: Work
+            요약: Summary
+            티맥스클라우드: TmaxCloud
+            오픈소스: Open Source
+            프로젝트: Projects
+            목록: List
+            1GB 이상 CSV 데이터 처리: CSV Batch Pipeline
+            지도 기반 소리 업로드/조회 사이트: Map-based Sound Upload Site
+            LoL 악성 유저 검출: LoL Toxic User Detection
+            활동: Activities
+            증빙: Evidence
+            링크: Links
 
 nav:
   - 소개: index.md
