@@ -20,14 +20,10 @@ I describe this in more detail in [Principles](engineering-principles.md).
 
 ## Focus Areas
 
-- Backend/platform engineering
-- Metadata/schema-driven application development
-- SQL generation and Java service code generation
-- Data synchronization, change history, and test tooling
-- SQL engine internals, Rust open-source contribution, and code review
-- Data correctness, Rust service test stability, issue/spec writing, and PR review in security event analysis products
-- React Native product operation, TypeScript migration, and signup/review flow cleanup
-- Documentation and verification criteria for AI-assisted development
+- Platform: connecting metadata and schema information to SQL/DDL, Java service code, data synchronization, change history, and test tooling
+- Rust/SQL: SQL engine internals, parser/AST, storage, Rust open-source contribution, and code review
+- Product quality: data correctness in security event analysis products, Rust service test stability, React Native product operation, TypeScript migration, and signup/review flow cleanup
+- Review system: issue/spec writing, acceptance criteria, test coverage, regression risk review, and verification criteria for AI-assisted development
 
 ## Skills
 

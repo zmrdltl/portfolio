@@ -20,14 +20,10 @@ ClumL에서는 보안 이벤트 분석 제품군의 데이터 정합성, Rust �
 
 ## 핵심 축
 
-- 백엔드와 플랫폼 엔지니어링
-- 메타데이터와 스키마 기반 애플리케이션 개발
-- SQL 생성과 Java 서비스 코드 생성
-- 데이터 동기화, 변경 이력, 테스트 도구
-- SQL engine internals, Rust 오픈소스 기여, 코드 리뷰
-- 보안 이벤트 분석 제품군의 데이터 정합성, Rust 서비스 테스트 안정화, issue/spec 작성, PR review
-- React Native 제품 운영, TypeScript 전환, 회원가입/심사 흐름 정리
-- AI-assisted development를 위한 문서화와 검증 기준
+- Platform: 메타데이터와 스키마를 SQL/DDL, Java service code, 데이터 동기화, 변경 이력, 테스트 도구로 연결
+- Rust/SQL: SQL engine internals, parser/AST, storage, Rust 오픈소스 기여, 코드 리뷰
+- Product quality: 보안 이벤트 분석 제품군의 데이터 정합성, Rust 서비스 테스트 안정화, React Native 제품 운영, TypeScript 전환, 회원가입/심사 흐름 정리
+- Review system: issue/spec, acceptance criteria, test coverage, regression risk review, AI-assisted development 검증 기준
 
 ## 기술
 
