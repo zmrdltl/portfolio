@@ -7,7 +7,7 @@
 
 Java/TypeScript 기반 No-code 플랫폼에서 메타데이터, 엔티티, 서비스 설계 정보를 DDL, SQL, Java 서비스 코드, 데이터 동기화, 변경 이력, 테스트 도구로 연결하는 backend/platform 기능을 구현했습니다.
 
-작업 범위는 단순 API 구현에 그치지 않았습니다. 메타데이터 모델링, SQL 생성, Java 서비스 코드 생성, 엔티티 동기화, 변경 이력, 데이터베이스 기능 확장, UI 도구, 테스트 도구, Kubernetes/Redis 연구를 포함했습니다.
+작업 범위는 메타데이터 모델링, SQL 생성, Java 서비스 코드 생성, 엔티티 동기화, 변경 이력, UI/테스트 도구, Kubernetes/Redis 연구를 포함했습니다.
 
 ## 메타데이터 기반 생성 흐름
 
@@ -46,15 +46,7 @@ Java/TypeScript 기반 No-code 플랫폼에서 메타데이터, 엔티티, 서�
 - 팀 개발/테스트용 1 master / 3 worker Kubernetes 클러스터를 구성했습니다.
 - Redis Operator/Redis Cluster Proxy 기반 Redis 배포, TLS, monitoring, 외부 접근 redirect 문제를 연구했습니다.
 - Terraform/k8s provisioning 검증에서 평균 5분 절약, Redis packet 전달 성공률 95% 이상, 장애 탐지 30% 단축을 확인했습니다.
-- Redis Operator 검증 과정에서 관련 upstream PR 3개가 병합되었습니다.
-
-## 공개 참고 링크
-
-Redis Operator 검증 과정에서 병합된 관련 upstream PR 링크입니다.
-
-- [Redis Operator merged PR #265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265)
-- [Redis Operator merged PR #308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308)
-- [Redis Operator merged PR #313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313)
+- Redis Operator 검증 과정에서 관련 upstream PR 3개가 병합되었습니다: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
 
 ## 기술
 

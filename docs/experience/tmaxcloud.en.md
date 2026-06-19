@@ -7,7 +7,7 @@
 
 I implemented backend/platform features in a Java/TypeScript-based No-code platform, connecting metadata, entity, and service design information to DDL, SQL, Java service code, data synchronization, change history, and test tooling.
 
-The work was not limited to backend API implementation. It included metadata modeling, SQL generation, Java service code generation, entity synchronization, change history, database feature expansion, UI tooling, test tooling, and Kubernetes/Redis research.
+The scope included metadata modeling, SQL generation, Java service code generation, entity synchronization, change history, UI/test tooling, and Kubernetes/Redis research.
 
 ## Metadata-driven Generation Flow
 
@@ -46,15 +46,7 @@ The platform needed a consistent metadata model and generation flow so service d
 - Built a team development/test Kubernetes cluster with 1 master node and 3 worker nodes.
 - Researched Redis deployment, TLS, monitoring, and external access redirect behavior using Redis Operator and Redis Cluster Proxy.
 - Verified an average 5-minute saving in Terraform/k8s provisioning, a Redis packet delivery success rate above 95%, and a 30% reduction in issue detection time.
-- Had 3 related upstream Redis Operator PRs merged during validation.
-
-## Public References
-
-Related upstream PR links merged during Redis Operator validation.
-
-- [Redis Operator merged PR #265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265)
-- [Redis Operator merged PR #308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308)
-- [Redis Operator merged PR #313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313)
+- Had 3 related upstream Redis Operator PRs merged during validation: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
 
 ## Skills
 
