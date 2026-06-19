@@ -1,6 +1,7 @@
 # 증빙
 
-기술 포트폴리오의 주장과 연결되는 공개 가능한 기술 증빙 링크만 선별합니다.
+기술 포트폴리오의 주장과 연결되는 공개 가능한 기술 증빙 링크를 모아둔 색인입니다.
+공개 링크가 있는 상세 페이지에는 관련 링크를 claim 근처에도 함께 배치합니다.
 
 ## 프로필
 
@@ -23,7 +24,9 @@ Redis Operator 검증 과정에서 병합된 관련 upstream PR 링크입니다.
 
 ## 프로젝트 참고 링크
 
-- Coupler public docs: [coupler-developer/docs](https://github.com/coupler-developer/docs)
+- Coupler 회원가입 응답 계약: [signup-response-contract.md](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md)
+- Coupler 회원 심사 정책: [member-review-policy.md](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)
+- Coupler 코드 리뷰 정책: [code-review-policy.md](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)
 - 지도 기반 소리 업로드/조회 사이트: [Kmong portfolio page](https://kmong.com/portfolio/view/154608)
 - Dishnow: [dishnoww GitHub organization](https://github.com/dishnoww)
 - LoL 악성 유저 검출: [Find-Troll GitHub organization](https://github.com/Find-Troll)

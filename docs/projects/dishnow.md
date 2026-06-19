@@ -35,6 +35,8 @@ React Native, React, Node.js, MySQL, AWS 기반 사용자/사장님용 실시간
 
 ## 공개 참고 링크
 
+아래 링크는 대표 공개 코드 링크이며, 배포와 예약 성공률 지표의 직접 증빙은 아닙니다.
+
 - [Dishnow GitHub organization](https://github.com/dishnoww)
 
 ## 기술

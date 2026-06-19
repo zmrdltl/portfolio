@@ -1,6 +1,7 @@
 # Evidence
 
-Selected public technical evidence links supporting claims in the technical portfolio.
+This page is an index of public technical evidence links supporting claims in the technical portfolio.
+Detail pages with public links also place those links near the claims they support.
 
 ## Profiles
 
@@ -23,7 +24,9 @@ Related upstream PR links merged during Redis Operator validation.
 
 ## Project References
 
-- Coupler public docs: [coupler-developer/docs](https://github.com/coupler-developer/docs)
+- Coupler signup response contract: [signup-response-contract.md](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md)
+- Coupler member review policy: [member-review-policy.md](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)
+- Coupler code review policy: [code-review-policy.md](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)
 - Map-based sound upload site: [Kmong portfolio page](https://kmong.com/portfolio/view/154608)
 - Dishnow: [dishnoww GitHub organization](https://github.com/dishnoww)
 - LoL Toxic User Detection: [Find-Troll GitHub organization](https://github.com/Find-Troll)

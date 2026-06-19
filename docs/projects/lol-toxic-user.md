@@ -19,8 +19,9 @@ Riot Games API에서 수집한 게임 로그를 기반으로 유저별 악성 �
 
 - Python으로 약 1만 명의 유저와 10만 건 이상의 게임 로그를 수집했습니다.
 - MySQL RDS에 수집 데이터를 저장했습니다.
-- 웹페이지에서 게임별 욕설 점수를 실시간으로 표시했습니다.
+- [웹페이지](https://github.com/Find-Troll/Trollgg)에서 게임별 욕설 점수를 실시간으로 표시했습니다.
 - 유저별 게임 데이터를 저장해 악성도 계산에 사용했습니다.
+- 구현은 [web](https://github.com/Find-Troll/Trollgg), [API](https://github.com/Find-Troll/trollAPI), [crawling](https://github.com/Find-Troll/trollCrawling), [log](https://github.com/Find-Troll/trollLog) 저장소로 분리했습니다.
 
 ## 검증과 결과
 
@@ -30,10 +31,6 @@ Riot Games API에서 수집한 게임 로그를 기반으로 유저별 악성 �
 ## 공개 참고 링크
 
 - [Find-Troll GitHub organization](https://github.com/Find-Troll)
-- [Trollgg web](https://github.com/Find-Troll/Trollgg)
-- [Trollgg API](https://github.com/Find-Troll/trollAPI)
-- [Trollgg crawling](https://github.com/Find-Troll/trollCrawling)
-- [Trollgg log](https://github.com/Find-Troll/trollLog)
 
 ## 기술
 

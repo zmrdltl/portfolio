@@ -19,8 +19,9 @@ The service needed to score toxic behavior by user based on game logs collected 
 
 - Collected data for approximately 10,000 users and more than 100,000 game logs using Python.
 - Stored collected data in MySQL RDS.
-- Displayed toxicity scores by game in real time on the web page.
+- Displayed toxicity scores by game in real time on the [web page](https://github.com/Find-Troll/Trollgg).
 - Stored per-user game data for toxicity scoring.
+- Split implementation across [web](https://github.com/Find-Troll/Trollgg), [API](https://github.com/Find-Troll/trollAPI), [crawling](https://github.com/Find-Troll/trollCrawling), and [log](https://github.com/Find-Troll/trollLog) repositories.
 
 ## Validation and Result
 
@@ -30,10 +31,6 @@ The service needed to score toxic behavior by user based on game logs collected 
 ## Public Reference
 
 - [Find-Troll GitHub organization](https://github.com/Find-Troll)
-- [Trollgg web](https://github.com/Find-Troll/Trollgg)
-- [Trollgg API](https://github.com/Find-Troll/trollAPI)
-- [Trollgg crawling](https://github.com/Find-Troll/trollCrawling)
-- [Trollgg log](https://github.com/Find-Troll/trollLog)
 
 ## Skills
 

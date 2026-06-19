@@ -35,6 +35,8 @@ Compared reservation success rate before and after push notification rollout usi
 
 ## Public Reference
 
+The link below is a representative public code reference, not direct evidence for the store release or reservation-success metric.
+
 - [Dishnow GitHub organization](https://github.com/dishnoww)
 
 ## Skills
