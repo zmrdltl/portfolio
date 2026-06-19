@@ -10,24 +10,20 @@ GlueSQL은 Rust 기반 SQL database engine입니다.
 
 ## 기여
 
-- SQL function, logical XOR, aggregate function, AST Builder API, numeric data type, test suite 개선에 기여했습니다.
-- 2023년 Parquet storage 구현에 참여했습니다.
-- 2025년에도 Rust toolchain, clippy, deterministic ordering, `DISTINCT` operation 등 유지보수 PR을 병합했습니다.
-- 오픈소스 멘토링 활동에서 contributor 멘토링과 PR review를 수행했습니다.
+- `gluesql/gluesql`에서 [PR 50개 이상](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)을 작성했습니다.
+- SQL function, aggregate function, AST Builder API, numeric data type, Parquet storage, test suite 개선에 기여했습니다.
+- GlueSQL 사용을 위해 `apache/datafusion-sqlparser-rs`에 [logical XOR PR](https://github.com/apache/datafusion-sqlparser-rs/pull/357)을 병합했습니다.
+- numeric type 판정을 위해 `akubera/bigdecimal-rs`에 [`get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)을 병합했습니다.
+- 2025년에도 Rust toolchain, clippy, deterministic ordering, `DISTINCT` operation 등 유지보수 PR을 이어갔습니다.
 
-## 공개 활동
+## 리뷰와 멘토링
 
-- `gluesql/gluesql`에서 PR 50개 이상을 작성했습니다.
-- maintainer로서 유지보수 PR, 리뷰, 이슈 대응을 계속 수행할 수 있는 상태입니다.
-- `apache/datafusion-sqlparser-rs` logical XOR PR이 병합되었습니다.
-- `akubera/bigdecimal-rs` `get_scale` PR이 병합되었습니다.
+- 오픈소스 멘토링 활동에서 contributor mentoring, PR review, issue 안내를 수행했습니다.
+- 2021년 멘티, 2022년 리드 멘티, 2023년 멘토로 활동했습니다.
 
 ## 공개 증빙
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
-- [GlueSQL PRs authored by `zmrdltl`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
-- [DataFusion SQL Parser logical XOR PR #357](https://github.com/apache/datafusion-sqlparser-rs/pull/357)
-- [BigDecimal `get_scale` PR #116](https://github.com/akubera/bigdecimal-rs/pull/116)
 
 ## 기술
 
