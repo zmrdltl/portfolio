@@ -23,6 +23,7 @@ This site complements a submitted resume. It is not the resume itself; it provid
 - Do not use conversation-only labels, temporary wording, or private shorthand from user-agent discussion unless the user explicitly approves it for publication.
 - Avoid internal-document expressions and unexplained abbreviations in public pages and commit messages.
 - Keep public pages readable without private context.
+- Use concise wording, but keep enough context for each page to stand on its own.
 
 ## Review Rules
 
@@ -77,6 +78,21 @@ Use short navigation labels, but keep directory names explicit.
 
 If more than one section could apply, choose the section by primary signal: regular employment or organization-owned product responsibility goes to `experience/`, repository contribution to `opensource/`, personal/client/student/artifact-centered work goes to `projects/`, supporting history to `activities/`, and links only to `evidence/`.
 Keep awards and certificates as short text in `activities/`; link only public, privacy-safe official pages when they add real signal.
+
+Recommended detail-page shape:
+
+```text
+Overview
+Role and scope
+Problem and constraints
+Design and implementation
+Validation, metrics, or quality criteria
+Result
+Public evidence or representative public reference
+Skills
+```
+
+Use this shape as guidance, not as a required template. Omit sections that would force unsupported claims or expose private details.
 
 ## Publishing
 
