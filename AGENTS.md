@@ -5,6 +5,8 @@
 This repository is a public MkDocs technical portfolio site, not application code.
 It contains only curated public-facing career, open-source, project, activity, engineering principles, and evidence documentation.
 
+This site complements a submitted resume. It is not the resume itself; it provides technical context and public evidence that are too detailed for a resume.
+
 ## Content Rules
 
 - Keep research notes private/local; publish only reviewed public summaries.
@@ -29,7 +31,14 @@ It contains only curated public-facing career, open-source, project, activity, e
 - Check public-safety issues: private notes, internal links, raw investigation text, credentials, and unsupported personal identifiers.
 - Check claim quality: role, scope, metric, date, and evidence must not be stronger than the source supports.
 - Check Korean/English parity for changed pages.
-- Check navigation links, `pnpm run lint:md`, and `mkdocs build --strict`.
+- Check navigation links, `pnpm run lint:md`, and `mkdocs build --strict` when content or navigation changes. For AGENTS-only changes, Markdown lint is enough unless the change affects publishing or validation rules.
+
+Review the portfolio as a technical evidence site:
+
+- Do not apply resume-only rules such as 30-60 second scanability, PDF impact sections, or aggressive compression unless the user asks for resume/PDF copy.
+- For the homepage, check orientation: a reader should understand the portfolio's technical axes and where to go next.
+- For detail pages, check defensibility: claims should be supported by public evidence, reviewed source text, or explicit user confirmation, and private repositories should be represented only through safe public summaries or representative public links.
+- Treat private repository limitations as a constraint, not a defect. A representative public docs link is acceptable when code repositories cannot be public.
 
 ## Review Personas
 
@@ -37,7 +46,7 @@ Use these personas as review lenses only; they do not override the content rules
 
 | Persona | Checks |
 | --- | --- |
-| Hiring reviewer | Role, scope, result, and evidence are easy to scan without private context |
+| Hiring reviewer | Role, scope, result, and evidence are easy to locate and understand without private context |
 | Engineering reviewer | Technical ownership, boundaries, testing, review, and documentation standards are concrete but not overstated |
 | Evidence reviewer | Public links support the claim; user-confirmed facts are not strengthened; unverifiable fields are marked as needing confirmation |
 | Public-safety reviewer | Private information, internal context, unsupported identifiers, and credential archives are absent |
