@@ -4,7 +4,8 @@
 
 ## Overview
 
-Coupler is a personal product development project where I have operated a React Native product from the 1.0.0 initial implementation through the 2.0.0 transition.
+Coupler is a personal product development project spanning a React Native app, API, admin web, and public docs.
+From 1.0.0 operation through the 2.0.0 transition, I clarified TypeScript migration criteria, signup/review flow criteria, and development/review criteria.
 
 ## Role and Scope
 
@@ -29,7 +30,7 @@ While moving the React Native product from its 1.0.0 initial implementation thro
 
 ## Result
 
-I have operated the React Native product from the 1.0.0 initial implementation through the 2.0.0 transition.
+Within the 2.0.0 transition scope, I clarified development criteria across the mobile app, API, and admin web, and captured the signup response contract, member review policy, and code review criteria in public docs.
 
 ## Skills
 
