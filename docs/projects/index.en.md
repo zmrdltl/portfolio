@@ -10,3 +10,4 @@ Personal products, client delivery, student startup, graduation, and technical v
 - [Map-based Sound Upload Site](map-sound.md)
 - [Dishnow](dishnow.md)
 - [LoL Toxic User Detection](lol-toxic-user.md)
+- [Graduation Requirement Notice Site](graduation-credit.md)

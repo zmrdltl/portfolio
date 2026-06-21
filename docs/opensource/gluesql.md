@@ -20,10 +20,14 @@ GlueSQL은 Rust 기반 SQL database engine입니다.
 
 - 오픈소스 멘토링 활동에서 contributor mentoring, PR review, issue 안내를 수행했습니다.
 - 2021년 멘티, 2022년 리드 멘티, 2023년 멘토로 활동했습니다.
+- 오픈소스 컨트리뷰션 아카데미에서 GlueSQL 활동으로 2021년 정보통신산업진흥원장상 최우수상, 2022년 정보통신산업진흥원장상 최우수상, 2023년 정보통신산업진흥원장상 장려상을 수상했습니다.
 
 ## 공개 증빙
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
+- [오픈소스 컨트리뷰션 아카데미 수상 증빙 폴더](https://drive.google.com/drive/folders/1Kp0WQnuLxfCKPfvxvYLO27yjkDyE2Wda)
+- [2022 GlueSQL 발표자료](https://docs.google.com/presentation/d/14jt84NOFgBZlR41AIjbc6N2LNWzkgYNjIRbhk2sGWdc/edit#slide=id.g1421bd87c53_2_22)
+- [2023 GlueSQL 발표자료](https://docs.google.com/presentation/d/1Rx6Vgbxsth6xA_681xyWXOhD_BFjDyM79m921FOr31E/edit)
 
 ## 기술
 

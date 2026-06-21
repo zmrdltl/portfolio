@@ -10,3 +10,4 @@
 - [지도 기반 소리 업로드/조회 사이트](map-sound.md)
 - [Dishnow](dishnow.md)
 - [LoL 악성 유저 검출](lol-toxic-user.md)
+- [졸업요건 공지사항 조회 사이트](graduation-credit.md)

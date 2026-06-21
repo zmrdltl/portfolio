@@ -32,6 +32,7 @@ Compared reservation success rate before and after push notification rollout usi
 
 - Released the apps on Google Play and the App Store.
 - Improved reservation success rate by 35% through push notifications.
+- Received student-startup awards: Campus Town program Excellence Award, Preliminary Startup Package technology category 2nd place, and 4th Youth Startup League Excellence Award.
 
 ## Public Reference
 

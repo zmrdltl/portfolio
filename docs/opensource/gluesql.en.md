@@ -20,10 +20,14 @@ My contribution scope includes SQL engine features, parser/AST design, numeric t
 
 - Performed contributor mentoring, PR review, and issue guidance through open-source mentoring activities.
 - Participated as a mentee in 2021, lead mentee in 2022, and mentor in 2023.
+- Received the NIPA President's Award (Grand Prize) in 2021 and 2022 and the NIPA President's Award (Encouragement Award) in 2023 through GlueSQL work in the Open Source Contribution Academy.
 
 ## Public Evidence
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
+- [Open Source Contribution Academy award evidence folder](https://drive.google.com/drive/folders/1Kp0WQnuLxfCKPfvxvYLO27yjkDyE2Wda)
+- [2022 GlueSQL presentation](https://docs.google.com/presentation/d/14jt84NOFgBZlR41AIjbc6N2LNWzkgYNjIRbhk2sGWdc/edit#slide=id.g1421bd87c53_2_22)
+- [2023 GlueSQL presentation](https://docs.google.com/presentation/d/1Rx6Vgbxsth6xA_681xyWXOhD_BFjDyM79m921FOr31E/edit)
 
 ## Skills
 
