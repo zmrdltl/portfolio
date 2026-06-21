@@ -11,7 +11,7 @@ This page summarizes public education, mentoring, community, and award history t
 ## Education and Community Activities
 
 - Completed vanilla JavaScript missions, code reviews, and a relay project in Naver Connect Boostcamp 5.
-- Practiced problem solving through Baekjoon/SDS algorithm activities, including dynamic programming, graph, combinatorics, number theory, data structure, and complexity topics.
+- Solved 103 Baekjoon problems across nine tracks, including DP1/DP2, Graph1/Graph2, combinatorics, number theory, data structures, complexity, and algorithm fundamentals, during the Samsung SDS 2021 Summer Algorithm Camp from 2021-07-05 to 2021-07-30. The related write-up is available on the [blog](https://codecollector.tistory.com/1099).
 
 ## Awards
 

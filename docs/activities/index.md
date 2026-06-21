@@ -11,7 +11,7 @@
 ## 교육 및 커뮤니티 활동
 
 - 네이버 커넥트 부스트캠프 5기에서 vanilla JavaScript 미션, 코드 리뷰, 릴레이 프로젝트를 수행했습니다.
-- 백준/SDS 알고리즘 활동을 통해 dynamic programming, graph, combinatorics, number theory, data structure, complexity 문제풀이를 수행했습니다.
+- 삼성 SDS 2021 하계 알고리즘 캠프에서 2021.07.05 - 2021.07.30 동안 DP1/DP2, 그래프1/그래프2, 조합론, 정수론, 자료구조, 시간복잡도, 알고리즘기초 등 9개 트랙의 백준 문제 103개를 풀었습니다. 관련 후기는 [블로그](https://codecollector.tistory.com/1099)에 정리했습니다.
 
 ## 수상
 
