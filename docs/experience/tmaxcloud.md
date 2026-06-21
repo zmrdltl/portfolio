@@ -33,6 +33,14 @@ Java/TypeScript 기반 No-code 플랫폼에서 메타데이터, 엔티티, 서�
 - Tibero RDBMS에서 JSON type 기반 NoSQL-like CRUD, JSON Path Expression, JSON Schema validation을 구현했습니다.
 - 메타데이터 단위 컬럼 암호화 설정과 DBMS_CRYPTO 기반 암호화/복호화 SQL 및 CRUD 서비스 생성 로직을 설계했습니다.
 
+## 대표 생성 서비스 구조
+
+내부 class/package명은 공개하지 않고, 생성 서비스 구조는 generic 이름으로만 표현합니다.
+
+- `ClientRequest` -> `ServiceDispatcher` -> `GeneratedService`
+- `GeneratedService` -> `RequestDTO`/`Context` -> validation -> SQL/CRUD execution
+- SQL/CRUD result -> response mapper -> `ClientResponse`
+
 ## 테스트와 운영 보조 도구
 
 - React Flow 기반 엔티티 관계 시각화 화면을 구현했습니다.
@@ -43,10 +51,17 @@ Java/TypeScript 기반 No-code 플랫폼에서 메타데이터, 엔티티, 서�
 ## Kubernetes와 Redis 연구
 
 - Kubernetes API Exec/client-go 기반 Terraform 원격 실행을 검증했습니다.
-- 팀 개발/테스트용 1 master / 3 worker Kubernetes 클러스터를 구성했습니다.
+- 팀 개발/테스트용 1 master / 3 worker Kubernetes 클러스터를 구성하고 CRI-O, MetalLB 기반 네트워크와 로드밸런싱 환경을 세팅했습니다.
 - Redis Operator/Redis Cluster Proxy 기반 Redis 배포, TLS, monitoring, 외부 접근 redirect 문제를 연구했습니다.
-- Terraform/k8s provisioning 검증에서 평균 5분 절약, Redis packet 전달 성공률 95% 이상, 장애 탐지 30% 단축을 확인했습니다.
+- Redis Operator와 proxy 조합으로 packet 전달 성공률 95% 이상을 확인하고, Redis Insight와 Prometheus 기반 monitoring으로 장애 탐지 시간을 30% 단축했습니다.
+- Redis persistence, replication, sharding/failover, Redis Operator CRD/parameter, Redis Cluster Proxy, Redis Insight를 정리해 팀 세미나 자료로 발표했습니다.
 - Redis Operator 검증 과정에서 관련 upstream PR 3개가 병합되었습니다: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
+
+## 공개 참고 링크
+
+- [Redis & Redis Operator 발표자료](https://docs.google.com/presentation/d/1l67gAgutm97YNqp5bSXZAZbI_zCJUSV-/edit)
+- [Redis Proxy 발표자료](https://docs.google.com/presentation/d/12sXamn6Q9la4gSgyEmfi6f00YmS3FHU7/edit)
+- [Redis 연구자료](https://drive.google.com/drive/folders/1YMlcGRGy4Yyar5SSkBVY02XzEnUmnrFD)
 
 ## 기술
 

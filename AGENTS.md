@@ -10,7 +10,7 @@ This site complements a submitted resume. It is not the resume itself; it provid
 ## Content Rules
 
 - Keep research notes private/local; publish only reviewed public summaries.
-- Do not publish private notes, internal context, private links, credentials, personal identifiers beyond public contact information, non-public implementation details, raw source notes, Google Drive folders, certificate bundles, academic records, military records, or other administrative proof documents.
+- Do not publish private notes, internal context, private links, credentials, personal identifiers beyond public contact information, non-public implementation details, raw source notes, unapproved Google Drive folders, certificate bundles, academic records, military records, or other administrative proof documents. User-approved, privacy-safe evidence folders may be linked when they directly support a public claim.
 - Add no claim unless it is supported by public evidence, reviewed source text, or explicit user confirmation.
 - Do not fill blanks, dates, metrics, roles, names, links, outcomes, or rationale by assumption; ask the user when a field would require guessing.
 - Use Korean as the source language; update the matching `*.en.md` file when Korean content changes.
@@ -77,7 +77,7 @@ Use short navigation labels, but keep directory names explicit.
 | `docs/evidence/` | Public technical evidence links only, not a credential archive |
 
 If more than one section could apply, choose the section by primary signal: regular employment or organization-owned product responsibility goes to `experience/`, repository contribution to `opensource/`, personal/client/student/artifact-centered work goes to `projects/`, supporting history to `activities/`, and links only to `evidence/`.
-Keep awards and certificates as short text in `activities/`; link only public, privacy-safe official pages when they add real signal.
+Keep awards and certificates as short text in `activities/`; link only public, privacy-safe official pages or explicitly user-approved evidence folders when they add real signal.
 
 Recommended detail-page shape:
 

@@ -33,6 +33,14 @@ The platform needed a consistent metadata model and generation flow so service d
 - Implemented NoSQL-like CRUD features on Tibero RDBMS using JSON types, JSON Path Expression, and JSON Schema validation.
 - Designed metadata-level column encryption settings and DBMS_CRYPTO-based encryption/decryption SQL and CRUD service generation logic.
 
+## Representative Generated Service Structure
+
+Internal class and package names are not published; the generated service structure is represented with generic names only.
+
+- `ClientRequest` -> `ServiceDispatcher` -> `GeneratedService`
+- `GeneratedService` -> `RequestDTO`/`Context` -> validation -> SQL/CRUD execution
+- SQL/CRUD result -> response mapper -> `ClientResponse`
+
 ## Test and Operational Tooling
 
 - Implemented React Flow-based entity relationship visualization.
@@ -43,10 +51,17 @@ The platform needed a consistent metadata model and generation flow so service d
 ## Kubernetes and Redis Research
 
 - Verified Terraform remote execution through Kubernetes API Exec and client-go.
-- Built a team development/test Kubernetes cluster with 1 master node and 3 worker nodes.
+- Built a team development/test Kubernetes cluster with 1 master node and 3 worker nodes, including CRI-O, MetalLB-based networking, and load-balancing setup.
 - Researched Redis deployment, TLS, monitoring, and external access redirect behavior using Redis Operator and Redis Cluster Proxy.
-- Verified an average 5-minute saving in Terraform/k8s provisioning, a Redis packet delivery success rate above 95%, and a 30% reduction in issue detection time.
+- Verified a Redis packet delivery success rate above 95% through a Redis Operator and proxy combination, and reduced issue detection time by 30% through Redis Insight and Prometheus-based monitoring.
+- Prepared and presented team seminar material covering Redis persistence, replication, sharding/failover, Redis Operator CRDs/parameters, Redis Cluster Proxy, and Redis Insight.
 - Had 3 related upstream Redis Operator PRs merged during validation: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
+
+## Public References
+
+- [Redis & Redis Operator presentation](https://docs.google.com/presentation/d/1l67gAgutm97YNqp5bSXZAZbI_zCJUSV-/edit)
+- [Redis Proxy presentation](https://docs.google.com/presentation/d/12sXamn6Q9la4gSgyEmfi6f00YmS3FHU7/edit)
+- [Redis research materials](https://drive.google.com/drive/folders/1YMlcGRGy4Yyar5SSkBVY02XzEnUmnrFD)
 
 ## Skills
 
