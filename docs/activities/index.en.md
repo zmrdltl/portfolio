@@ -15,7 +15,7 @@ This page summarizes public education, mentoring, community, and award history t
 
 ## Awards
 
-- Received the NIPA President's Award (Grand Prize) in 2021 and 2022 and the NIPA President's Award (Encouragement Award) in 2023 through GlueSQL work in the Open Source Contribution Academy.
+- Received NIPA President Awards through GlueSQL work in the Open Source Contribution Academy: Top Excellence Award in 2021 and 2022, and Encouragement Award in 2023.
 - Received student-startup awards: Campus Town program Excellence Award on 2019-02-26, Preliminary Startup Package technology category 2nd place on 2019-06-01, and 4th Youth Startup League Excellence Award on 2019-06-28.
 - Received an encouragement award for the graduation project, LoL Toxic User Detection.
 - Related details are summarized on the [LoL Toxic User Detection](../projects/lol-toxic-user.md) page.
