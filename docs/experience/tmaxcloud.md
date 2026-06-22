@@ -53,7 +53,7 @@ Java/TypeScript 기반 No-code 플랫폼에서 메타데이터, 엔티티, 서�
 - Kubernetes API Exec/client-go 기반 Terraform 원격 실행을 검증했습니다.
 - 팀 개발/테스트용 1 master / 3 worker Kubernetes 클러스터를 구성하고 CRI-O, MetalLB 기반 네트워크와 로드밸런싱 환경을 세팅했습니다.
 - Redis Operator/Redis Cluster Proxy 기반 Redis 배포, TLS, monitoring, 외부 접근 redirect 문제를 연구했습니다.
-- Redis Operator와 proxy 조합으로 packet 전달 성공률 95% 이상을 확인하고, Redis Insight와 Prometheus 기반 monitoring으로 장애 탐지 시간을 30% 단축했습니다.
+- Redis Operator와 proxy 조합으로 Redis cluster 외부 접근과 redirect 동작을 검증하며 패킷 전달 성공률 95% 이상을 확보했고, Redis Insight와 Prometheus 기반 monitoring으로 장애 탐지 시간을 30% 단축했습니다.
 - Redis persistence, replication, sharding/failover, Redis Operator CRD/parameter, Redis Cluster Proxy, Redis Insight를 정리해 팀 세미나 자료로 발표했습니다.
 - Redis Operator 검증 과정에서 관련 upstream PR 3개가 병합되었습니다: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
 

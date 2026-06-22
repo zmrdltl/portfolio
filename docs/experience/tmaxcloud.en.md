@@ -53,7 +53,7 @@ Internal class and package names are not published; the generated service struct
 - Verified Terraform remote execution through Kubernetes API Exec and client-go.
 - Built a team development/test Kubernetes cluster with 1 master node and 3 worker nodes, including CRI-O, MetalLB-based networking, and load-balancing setup.
 - Researched Redis deployment, TLS, monitoring, and external access redirect behavior using Redis Operator and Redis Cluster Proxy.
-- Verified a Redis packet delivery success rate above 95% through a Redis Operator and proxy combination, and reduced issue detection time by 30% through Redis Insight and Prometheus-based monitoring.
+- Verified Redis cluster external access and redirect behavior through a Redis Operator and proxy combination, achieving a packet delivery success rate above 95%, and reduced issue-detection time by 30% with Redis Insight and Prometheus-based monitoring.
 - Prepared and presented team seminar material covering Redis persistence, replication, sharding/failover, Redis Operator CRDs/parameters, Redis Cluster Proxy, and Redis Insight.
 - Had 3 related upstream Redis Operator PRs merged during validation: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
 
