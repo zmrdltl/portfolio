@@ -9,6 +9,12 @@ GlueSQL is a Rust-based SQL database engine. My contribution scope includes SQL 
 
 I authored [50+ PRs](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl) in `gluesql/gluesql`, and this portfolio uses only the scope that can be supported by public GitHub PRs, reviews, and docs.
 
+## CLI Application
+
+GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspect SQL execution flow during development.
+
+![GlueSQL CLI application](attachments/gluesql-cli.png)
+
 ## 2021: SQL function and parser contribution
 
 In 2021, I joined GlueSQL as an OSSCA mentee and contributed from small SQL functions to parser integration while learning the structure of a Rust-based SQL engine.
@@ -75,9 +81,15 @@ I participated in OSSCA as a mentee in 2021, lead mentee in 2022, and mentor in 
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
 - [GlueSQL PR search authored by `zmrdltl`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
+- [GlueSQL 2023 official docs](https://gluesql.org/docs/0.14/)
 - [DataFusion SQL Parser logical XOR PR](https://github.com/apache/datafusion-sqlparser-rs/pull/357)
 - [BigDecimal `get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)
 - [Parquet Storage PR #1269](https://github.com/gluesql/gluesql/pull/1269)
+
+## Articles
+
+- [Breaking the Boundary between SQL and NoSQL Databases](https://gluesql.org/blog/breaking-the-boundary-between-sql-and-nosql)
+- [Revolutionizing Databases by Unifying Query Interfaces](https://gluesql.org/blog/revolutionizing-databases-by-unifying-query-interfaces)
 
 ## Skills
 

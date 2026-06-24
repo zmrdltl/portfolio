@@ -9,6 +9,12 @@ GlueSQL은 Rust 기반 SQL database engine입니다. 기여 범위는 SQL engine
 
 `gluesql/gluesql`에서 [PR 50개 이상](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)을 작성했고, 이력서와 포트폴리오에서는 public GitHub PR, review, docs로 확인 가능한 범위만 사용합니다.
 
+## CLI Application
+
+GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 CLI로 SQL 실행 흐름을 확인할 수 있습니다.
+
+![GlueSQL CLI application](attachments/gluesql-cli.png)
+
 ## 2021: SQL 함수와 parser 기여
 
 2021년에는 OSSCA 멘티로 GlueSQL에 참여하며 Rust 기반 SQL engine 구조를 학습하고 작은 SQL function부터 parser 연동까지 기여했습니다.
@@ -75,9 +81,15 @@ OSSCA에서는 2021년 멘티, 2022년 리드 멘티, 2023년 멘토로 활동�
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
 - [`zmrdltl`이 작성한 GlueSQL PR 검색](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
+- [GlueSQL 2023년 공식 문서](https://gluesql.org/docs/0.14/)
 - [DataFusion SQL Parser logical XOR PR](https://github.com/apache/datafusion-sqlparser-rs/pull/357)
 - [BigDecimal `get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)
 - [Parquet Storage PR #1269](https://github.com/gluesql/gluesql/pull/1269)
+
+## Articles
+
+- [Breaking the Boundary between SQL and NoSQL Databases](https://gluesql.org/blog/breaking-the-boundary-between-sql-and-nosql)
+- [Revolutionizing Databases by Unifying Query Interfaces](https://gluesql.org/blog/revolutionizing-databases-by-unifying-query-interfaces)
 
 ## 기술
 
