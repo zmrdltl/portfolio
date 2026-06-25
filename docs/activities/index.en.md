@@ -193,4 +193,4 @@ I also received an encouragement award for the graduation project, LoL Toxic Use
 
 ## Public-safety rule
 
-Award names and organizers are summarized from available award records. This portfolio is not a credential archive, so certificates, award images, and Google Drive evidence folders are not linked publicly.
+Award names and organizers are summarized from available award records. This portfolio is not a credential archive, so certificates, award images, and Google Drive material folders are not linked publicly.

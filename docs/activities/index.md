@@ -193,4 +193,4 @@ LoL 악성 유저 검출 프로젝트로 졸업 프로젝트 장려상을 수상
 
 ## 공개 기준
 
-수상명과 주최기관은 보유 수상 기록 기준으로 정리했습니다. 이 portfolio는 credential archive가 아니므로 수료증, 상장 이미지, Google Drive 증빙 폴더는 공개 링크로 싣지 않습니다.
+수상명과 주최기관은 보유 수상 기록 기준으로 정리했습니다. 이 portfolio는 credential archive가 아니므로 수료증, 상장 이미지, Google Drive 자료 폴더는 공개 링크로 싣지 않습니다.
