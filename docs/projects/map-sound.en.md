@@ -61,7 +61,7 @@ The client, server, and database also ran on separate hosting environments, so H
 
 ## Result
 
-I implemented the backend APIs and frontend API integration for the location-based sound upload and lookup flow according to client requirements. The only public delivery evidence linked here is the Kmong portfolio page.
+I implemented the backend APIs and frontend API integration for the location-based sound upload and lookup flow according to client requirements. The only public delivery reference linked here is the Kmong portfolio page.
 
 ## Public reference
 

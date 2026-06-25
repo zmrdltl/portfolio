@@ -37,7 +37,7 @@ I used the reservation DB table as the source for reservation lists and status, 
 
 ## Validation and metrics
 
-The following results come from project records from that period. The public links are representative code/reference links, not direct evidence for store release, download count, or reservation-success metrics.
+The following results come from project records from that period. The public links are representative code/reference links, not direct support for store release, download count, or reservation-success metrics.
 
 - Released the apps on Google Play and the App Store.
 - Recorded 100+ app downloads.

@@ -37,7 +37,7 @@ React Native, React, Node.js, MySQL, AWS 기반으로 사용자/사장님 앱, �
 
 ## 검증과 지표
 
-당시 프로젝트 기록 기준으로 아래 결과를 사용합니다. 공개 링크는 대표 code/reference이며, store 배포·download·예약 성공률 지표의 직접 증빙은 아닙니다.
+당시 프로젝트 기록 기준으로 아래 결과를 사용합니다. 공개 링크는 대표 code/reference이며, store 배포·download·예약 성공률 지표의 직접 근거는 아닙니다.
 
 - Google Play와 App Store에 배포했습니다.
 - App download 100+를 기록했습니다.
