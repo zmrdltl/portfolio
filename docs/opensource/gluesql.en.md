@@ -9,6 +9,10 @@ GlueSQL is a Rust-based SQL database engine. My contribution scope includes SQL 
 
 I authored [Merged 45+ PRs](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) in `gluesql/gluesql`, and this portfolio uses only the scope that can be supported by public GitHub PRs, reviews, and docs.
 
+This page is the publicly verifiable technical-depth case. It complements private company work by showing SQL engine parser, AST, execution path, storage, and test-suite work through public PRs and reviews.
+
+Adding a SQL engine feature does not end at syntax support. The parser must accept the syntax, the AST and plan/execution path must preserve the same meaning, and storage and test suites must lock edge cases. My GlueSQL contribution leaves that flow in publicly reviewable material.
+
 ## CLI Application
 
 GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspect SQL execution flow during development.

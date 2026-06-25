@@ -9,6 +9,10 @@ GlueSQL은 Rust 기반 SQL database engine입니다. 기여 범위는 SQL engine
 
 `gluesql/gluesql`에서 [Merged 45+](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했고, 이력서와 포트폴리오에서는 public GitHub PR, review, docs로 확인 가능한 범위만 사용합니다.
 
+이 페이지는 공개 기술 깊이 사례입니다. 회사 제품의 내부 구현을 공개하지 못하는 제약을 보완하기 위해, SQL engine의 parser, AST, execution path, storage, test suite를 실제 공개 PR과 review로 보여줍니다.
+
+SQL engine 기능은 문법만 추가한다고 끝나지 않습니다. parser가 구문을 받아들이고, AST와 plan/execution path가 같은 의미를 유지하며, storage와 test suite가 edge case를 고정해야 합니다. GlueSQL 기여는 이 흐름을 공개적으로 검증 가능한 자료로 남긴 사례입니다.
+
 ## CLI Application
 
 GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 CLI로 SQL 실행 흐름을 확인할 수 있습니다.

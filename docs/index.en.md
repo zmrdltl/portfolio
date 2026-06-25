@@ -4,11 +4,17 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I am a Software Engineer who turns product requirements and domain rules into SQL/DDL, service code, test criteria, and review criteria so implementation and regression control move together.
+I am a Platform Software Engineer who connects service design information and domain rules to SQL/DDL, service code, test criteria, and review criteria so platform features and regression control move together.
 
-At ClumL, I work on data correctness, Rust service test stability, issue/spec writing, and PR review for a security event analysis product suite. At TmaxCloud, I implemented code/DDL generation, data portability, and change-history management features in a Java/TypeScript-based No-code platform. In GlueSQL, I have worked on Rust-based SQL engine features, parser/AST design, storage, test suites, mentoring, and code review. In Coupler, I have worked on React Native product operation, TypeScript migration criteria, and signup/review flow cleanup.
+At TmaxCloud, I connected design metadata in a Java/TypeScript-based No-code platform to code/DDL generation, data portability, change history, and validation tooling. In GlueSQL, I have worked on Rust-based SQL engine parser/AST work, SQL functions, storage, test suites, mentoring, and code review. At ClumL, I work on detection/report data correctness, Rust service test stability, issue/spec writing, and PR review for a security event analysis product suite.
 
 This site does not replace the submitted resume. It documents technical context, role scope, outcomes, and public links that do not fit into the resume.
+
+## Representative Work
+
+- [Service generation platform from design information](experience/tmaxcloud.md): connected metadata, entities, and service definitions to SQL/DDL, Java service code, request/response contracts, and a generated-service E2E test page.
+- [Rust SQL engine open-source contribution](opensource/gluesql.md): worked on SQL functions, parser/AST, aggregate functions, storage, and test suites through public PRs and reviews.
+- [Data correctness and regression control in a security analysis product](experience/cluml.md): keep detection list/detail views, time ranges, port/packet display, and chart/report behavior aligned around the same event context through fixes, issue/spec criteria, and review checks.
 
 ## Engineering Perspective
 

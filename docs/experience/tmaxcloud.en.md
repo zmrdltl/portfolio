@@ -7,7 +7,21 @@
 
 I implemented backend/platform features in a Java/TypeScript-based No-code platform, connecting metadata and service design information to DDL, SQL, Java service code, data synchronization, change history, and test tooling.
 
-The work falls into four separate tracks: No-code service generation platform, team test Kubernetes environment, Terraform/k8s external provisioning research, and Redis on Kubernetes research. I keep these tracks separate here because the No-code platform work and the Kubernetes/Redis/Terraform research solved different problems.
+The central case on this page is the No-code service generation platform. Team test Kubernetes environment work, Terraform/k8s external provisioning research, and Redis on Kubernetes research were separate validation tracks, so they are kept as supporting cases near the bottom.
+
+## Why This Is the Representative Case
+
+The core problem in the No-code platform was that design information defined through the UI had to stay consistent as it turned into executable code, SQL, data flows, and test request formats.
+
+My scope was broader than implementing one feature. I connected metadata, entities, and service definitions to code generation, SQL/DDL generation, data portability, change history, and request/response tooling.
+
+Representative outcomes:
+
+- Changed the SQL Generator into a backend-importable structure and recorded more than 30% performance optimization in project records from that period.
+- Moved generated-service verification, which previously required a separate deployment platform and container startup, into the design/validation stage through a WebSocket-based E2E test page.
+- Contributed to reducing the design-validation cycle from about four weeks to about two weeks in the work context from that period.
+- Reduced duplicated service mapping registration in the WebSocket request/response flow, reduced service integration time by more than 10%, and moved missing-mapping debugging toward compile-time checks.
+- Organized repeated logging through an invocation handler and error logger, reducing manual log-writing time by more than 30%.
 
 ## No-code service generation platform
 
@@ -29,7 +43,7 @@ Generated Java Code + SQL -> Application Artifact -> Deployment/Test Flow
 - Implemented entity-to-DTO/context mapping, search/delete/update conditions, and node-service-based Java service code generation flows.
 - Implemented Freemarker-template-based Java service generation for Select, Insert, Update, and Delete services.
 - Implemented JSON-input-based SQL Generator logic and JUnit tests.
-- Implemented React/TypeScript UI and WebSocket-based service test/request-response tooling.
+- Implemented React/TypeScript UI, a WebSocket-based generated-service E2E test page, and request/response tooling.
 
 ## Code generation
 
@@ -148,15 +162,19 @@ I redesigned the WebSocket-based request/response flow.
 
 Previously, adding a new service required registering the same information in service ID mappers, handler registries, and feature handlers. If one registration was missed, a response could fail to reach the handler. The redesign reduced duplicated registration, reduced service integration time by more than 10% in project records from that period, and replaced debugging sessions that could take at least 30 minutes with compile-time checks.
 
-### Service test page and logger
+### Generated-service E2E test page and logger
 
-I implemented a WebSocket-based service test page.
+In the No-code platform, users defined app, entity, and service/API fields through the UI, generated a jar artifact, handed that artifact to a separate deployment platform, configured the deployment mode, and started a container before they could verify actual behavior. As the number of services/APIs grew to roughly 200-300, finding an incorrect service definition or request/response mapping often required repeating a build/deploy/verify cycle. One verification cycle took about 20 minutes in the work context from that period.
+
+To reduce that cost, I implemented a WebSocket-based generated-service E2E test page.
 
 - Reduced invalid connection attempts through WebSocket URL regex validation.
 - Fetched service lists after successful connection and displayed them through an Accordion UI.
 - Generated JSON request templates per service.
-- Let users edit JSON requests in Monaco Editor and send them to real services.
-- Supported end-to-end checks of DDL design and generated service behavior through a test deployment mode.
+- Let users edit JSON requests in Monaco Editor and send them to generated services.
+- Checked responses together with actual DB write/read behavior, so service-definition and request/response mapping errors could be found during design and validation instead of after deployment.
+
+This moved issues that previously appeared only after jar generation, separate deployment-platform configuration, and container startup into an earlier validation flow. In the work context from that period, it contributed to reducing the design-validation cycle from about four weeks to about two weeks.
 
 I also organized repeated DAO/service logging through an invocation handler and error logger structure. Project records from that period indicate more than 30% reduction in manual log-writing time, and the error logging flow made SQL error metadata easier to distinguish from ordinary logs.
 

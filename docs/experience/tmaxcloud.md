@@ -7,7 +7,21 @@
 
 Java/TypeScript 기반 No-code 플랫폼에서 메타데이터와 서비스 설계 정보를 DDL, SQL, Java 서비스 코드, 데이터 동기화, 변경 이력, 테스트 도구로 연결하는 backend/platform 기능을 구현했습니다.
 
-작업 범위는 No-code service generation platform, team test Kubernetes 환경, Terraform/k8s 외부 provisioning 검증, Redis on Kubernetes 연구로 나뉩니다. No-code platform 기능 구현과 Kubernetes/Redis/Terraform 연구는 서로 다른 문제였으므로 이 페이지에서도 분리해 설명합니다.
+이 페이지의 중심 사례는 No-code service generation platform입니다. team test Kubernetes 환경, Terraform/k8s 외부 provisioning 검증, Redis on Kubernetes 연구는 별도 검증 작업이므로 하단의 보조 사례로 분리합니다.
+
+## 대표 작업로 보는 이유
+
+No-code platform의 핵심 문제는 사용자가 화면에서 정의한 설계 정보가 실제 실행 코드, SQL, 데이터 흐름, 테스트 요청 형식까지 일관되게 이어져야 한다는 점이었습니다.
+
+제가 맡은 범위는 단일 기능 구현보다 넓었습니다. metadata, entity, service definition을 기준으로 code generation, SQL/DDL generation, 데이터 이식성, 변경 이력, request/response tooling을 연결했습니다.
+
+대표 결과는 아래와 같습니다.
+
+- SQL Generator를 backend에서 직접 사용할 수 있는 구조로 바꾸며 당시 프로젝트 기록 기준 30% 이상의 성능 최적화를 확인했습니다.
+- 별도 배포 플랫폼과 container 기동을 거친 뒤에야 확인되던 generated service 동작을 WebSocket 기반 E2E test page로 설계·검증 단계에서 확인할 수 있게 했습니다.
+- 당시 작업 기준 설계-검증 사이클을 약 4주에서 2주 수준으로 줄이는 데 기여했습니다.
+- WebSocket request/response 흐름에서 service mapping 중복 등록을 줄이고, service 통합 시간을 10% 이상 줄였으며, mapping 누락 debugging 문제를 compile-time 확인으로 완화했습니다.
+- 반복 logging 구조를 invocation handler와 error logger로 정리해 수작업 log 작성 시간을 30% 이상 줄였습니다.
 
 ## No-code 서비스 생성 플랫폼
 
@@ -29,7 +43,7 @@ Generated Java Code + SQL -> Application Artifact -> Deployment/Test Flow
 - Entity 속성과 DTO/context mapping, 검색·삭제·갱신 조건절, node service 유형별 Java service code generation 흐름을 구현했습니다.
 - Freemarker template로 Select/Insert/Update/Delete 서비스 코드를 생성하는 로직을 작성했습니다.
 - JSON input 기반 SQL Generator와 JUnit test를 구현했습니다.
-- React/TypeScript 화면과 WebSocket 기반 service test/request-response tooling을 구현했습니다.
+- React/TypeScript 화면과 WebSocket 기반 generated service E2E test page, request/response tooling을 구현했습니다.
 
 ## 코드 생성
 
@@ -148,15 +162,19 @@ WebSocket 기반 request/response 처리 방식을 개편했습니다.
 
 기존에는 신규 service 추가 시 service ID mapper, handler registry, feature handler에 같은 정보를 여러 번 등록해야 했고, 누락 시 response가 handler까지 도달하지 않는 문제가 있었습니다. 개편 후 신규 service 추가 시 중복 등록을 줄였고, 당시 프로젝트 기록 기준 service 통합 시간을 10% 이상 줄였으며, 누락된 service mapping을 찾는 데 최소 30분 이상 걸리던 debugging 문제를 compile-time 확인으로 완화했습니다.
 
-### 서비스 테스트 페이지와 로거
+### 생성 서비스 E2E 테스트 페이지와 로거
 
-WebSocket 기반 service test page를 구현했습니다.
+No-code platform에서는 사용자가 UI에서 app, entity, service/API field를 정의하면 jar artifact가 생성되고, 이 artifact가 별도 배포 플랫폼으로 넘어가 배포 방식 설정과 container 기동을 거친 뒤에야 실제 동작을 확인할 수 있었습니다. 당시 service/API 수가 200-300개 수준으로 늘면서 잘못된 service definition이나 request/response mapping을 찾기 위해 build/deploy/verify cycle을 반복해야 했고, 한 번의 확인에 작업 기준 약 20분이 걸렸습니다.
+
+이 비용을 줄이기 위해 WebSocket 기반 generated service E2E test page를 구현했습니다.
 
 - WebSocket URL regex validation으로 잘못된 URL 연결 시도를 줄였습니다.
 - Connection 성공 시 service 목록을 가져와 Accordion UI로 제공했습니다.
 - Service별 JSON request template을 자동 생성했습니다.
-- Monaco Editor에서 JSON request를 수정하고 실제 service에 전송할 수 있게 했습니다.
-- 테스트 배포 형식으로 DDL 설계와 generated service 동작을 end-to-end로 확인했습니다.
+- Monaco Editor에서 JSON request를 수정하고 generated service에 전송할 수 있게 했습니다.
+- Response와 실제 DB write/read 반영 여부를 함께 확인해 service definition과 request/response mapping 오류를 배포 이후가 아니라 설계·검증 단계에서 찾을 수 있게 했습니다.
+
+이 흐름은 jar 생성, 별도 배포 플랫폼 설정, container 기동 이후에야 확인되던 문제를 앞단으로 당겼고, 당시 작업 기준 설계-검증 사이클을 약 4주에서 2주 수준으로 줄이는 데 기여했습니다.
 
 DAO/service 계층의 반복 logging도 invocation handler와 error logger 구조로 정리했습니다. 당시 프로젝트 기록 기준 수작업 log 작성 시간을 30% 이상 줄였고, SQL error metadata와 일반 log를 구분해 debugging 흐름을 명확히 했습니다.
 

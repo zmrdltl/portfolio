@@ -5,7 +5,9 @@
 
 ## 선별 프로젝트
 
-- [Coupler](coupler.md)
+이 섹션은 개인 제품 운영, 기술 검증, 학생창업처럼 정규 고용 경력 밖에서 만든 산출물 중심 사례를 정리합니다.
+
+- [Coupler](coupler.md): 개인 제품 운영, TypeScript 전환 기준, 회원가입·심사 흐름 계약 정리
 - [1GB 이상 CSV 데이터 처리](csv-batch.md)
 - [지도 기반 소리 업로드/조회 사이트](map-sound.md)
 - [Dishnow](dishnow.md)
