@@ -59,7 +59,7 @@ In 2023, I participated as an OSSCA mentor and contributed through contributor m
 - Guided implementation directions for `EXPLAIN`, `KEYS`, `SPLICE`, `LEAST`, `TAKE`, and `ADD_MONTH`.
 - Explained storage structure, memory storage transactions, AST builder, alias select nodes, and type-based comparison/scoring.
 
-Representative public evidence:
+Related links:
 
 - [Parquet Storage PR #1269](https://github.com/gluesql/gluesql/pull/1269)
 - [REPLACEMENT function review #1266](https://github.com/gluesql/gluesql/pull/1266)
@@ -77,7 +77,7 @@ I later continued maintenance PRs around Rust toolchain updates, clippy, determi
 
 I participated in OSSCA as a mentee in 2021, lead mentee in 2022, and mentor in 2023. Awards are summarized on the [Activities](../activities/index.md) page, while this page focuses on the technical scope of code contribution, review, and mentoring.
 
-## Public evidence
+## Links
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
 - [GlueSQL PR search authored by `zmrdltl`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)

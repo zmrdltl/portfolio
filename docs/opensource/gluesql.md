@@ -46,7 +46,7 @@ GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 C
 
 기술적으로는 AggregateNode, CountArgExprNode, Expr 변환 구조를 다뤘고, numeric type casting, sqrt, variance, standard deviation 같은 SQL/data function 범위를 넓혔습니다. Aggregate expression 지원 과정에서는 async evaluate, storage I/O, lifetime 문제를 함께 다뤘습니다.
 
-Numeric type 판정을 위해 `bigdecimal-rs`에 [`get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)을 병합한 것도 이 범위의 public evidence입니다.
+Numeric type 판정을 위해 `bigdecimal-rs`에 [`get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)을 병합한 것도 이 범위의 공개 링크로 확인할 수 있는 작업입니다.
 
 ## 2023: 멘토링, 리뷰, Parquet storage
 
@@ -59,7 +59,7 @@ Numeric type 판정을 위해 `bigdecimal-rs`에 [`get_scale` PR](https://github
 - `EXPLAIN`, `KEYS`, `SPLICE`, `LEAST`, `TAKE`, `ADD_MONTH` function 구현 방향을 안내했습니다.
 - Storage 구조, memory storage transaction, AST builder, alias select node, type별 comparison/scoring 구조를 설명했습니다.
 
-대표 public evidence:
+관련 링크:
 
 - [Parquet Storage PR #1269](https://github.com/gluesql/gluesql/pull/1269)
 - [REPLACEMENT function review #1266](https://github.com/gluesql/gluesql/pull/1266)
@@ -77,7 +77,7 @@ Numeric type 판정을 위해 `bigdecimal-rs`에 [`get_scale` PR](https://github
 
 OSSCA에서는 2021년 멘티, 2022년 리드 멘티, 2023년 멘토로 활동했습니다. 수상 내역은 [활동](../activities/index.md) 페이지에 따로 정리하고, 이 페이지에서는 code contribution과 review/mentoring의 기술 범위만 설명합니다.
 
-## 공개 증빙
+## 링크
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
 - [`zmrdltl`이 작성한 GlueSQL PR 검색](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
