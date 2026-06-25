@@ -1,5 +1,5 @@
 site_name: 김민식 기술 포트폴리오
-site_description: Software Engineer 기술 상세와 공개 증빙 포트폴리오
+site_description: Software Engineer 기술 상세와 공개 링크 포트폴리오
 site_url: https://zmrdltl.github.io/portfolio/
 repo_url: https://github.com/zmrdltl/portfolio
 repo_name: zmrdltl/portfolio
@@ -40,7 +40,7 @@ plugins:
           name: English
           build: true
           site_name: Kim Minsik Technical Portfolio
-          site_description: Software Engineer technical context and public evidence portfolio
+          site_description: Software Engineer technical context and public links portfolio
           theme:
             language: en
           nav_translations:
@@ -57,8 +57,6 @@ plugins:
             LoL 악성 유저 검출: LoL Toxic User Detection
             졸업요건 공지사항 조회 사이트: Graduation Requirement Notice Site
             활동: Activities
-            증빙: Evidence
-            링크: Links
 
 nav:
   - 소개: index.md
@@ -78,5 +76,3 @@ nav:
       - LoL 악성 유저 검출: projects/lol-toxic-user.md
       - 졸업요건 공지사항 조회 사이트: projects/graduation-credit.md
   - 활동: activities/index.md
-  - 증빙:
-      - 링크: evidence/public-links.md

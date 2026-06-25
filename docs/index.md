@@ -8,7 +8,7 @@ PLATFORM SOFTWARE ENGINEER
 
 ClumL에서는 보안 이벤트 분석 제품군의 데이터 정합성, Rust 서비스 테스트 안정화, issue/spec 작성, PR review를 수행하고 있습니다. 티맥스클라우드에서는 Java/TypeScript 기반 No-code 플랫폼의 code/DDL generation, 데이터 이식성, 변경 이력 관리 기능을 구현했습니다. GlueSQL에서는 Rust 기반 SQL engine 기능, parser와 AST, storage, test suite, 멘토링과 코드 리뷰를 이어왔고, Coupler에서는 React Native 제품 운영, TypeScript 전환 기준, 회원가입·심사 흐름 정리를 수행했습니다.
 
-이 사이트는 제출용 이력서를 대체하지 않습니다. 이력서에 담기 어려운 기술 맥락, 역할 범위, 결과, 공개 증빙을 정리하는 기술 포트폴리오입니다.
+이 사이트는 제출용 이력서를 대체하지 않습니다. 이력서에 담기 어려운 기술 맥락, 역할 범위, 결과, 공개 링크를 정리하는 기술 포트폴리오입니다.
 
 ## 개발 관점
 
@@ -18,7 +18,7 @@ ClumL에서는 보안 이벤트 분석 제품군의 데이터 정합성, Rust �
 
 자세한 기준은 [원칙](engineering-principles.md)에 정리했습니다.
 
-## 핵심 축
+## 주요 기술 영역
 
 - Platform: 메타데이터와 스키마를 SQL/DDL, Java service code, 데이터 동기화, 변경 이력, 테스트 도구로 연결
 - Rust/SQL: SQL engine internals, parser/AST, storage, Rust 오픈소스 기여, 코드 리뷰
@@ -33,6 +33,10 @@ ClumL에서는 보안 이벤트 분석 제품군의 데이터 정합성, Rust �
 - Frontend: React, React Native, Material UI, React Flow
 - Infra/Tools: Kubernetes, Terraform, Redis Operator, GitHub Actions, Prometheus, Grafana, AWS
 
+## 링크
+
+- [GitHub](https://github.com/zmrdltl)
+
 ## 둘러보기
 
 - [경력](experience/index.md)
@@ -43,4 +47,3 @@ ClumL에서는 보안 이벤트 분석 제품군의 데이터 정합성, Rust �
 - [프로젝트](projects/index.md)
 - [Coupler](projects/coupler.md)
 - [활동](activities/index.md)
-- [증빙](evidence/public-links.md)

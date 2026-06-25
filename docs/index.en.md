@@ -8,7 +8,7 @@ I am a Software Engineer who turns product requirements and domain rules into SQ
 
 At ClumL, I work on data correctness, Rust service test stability, issue/spec writing, and PR review for a security event analysis product suite. At TmaxCloud, I implemented code/DDL generation, data portability, and change-history management features in a Java/TypeScript-based No-code platform. In GlueSQL, I have worked on Rust-based SQL engine features, parser/AST design, storage, test suites, mentoring, and code review. In Coupler, I have worked on React Native product operation, TypeScript migration criteria, and signup/review flow cleanup.
 
-This site does not replace the submitted resume. It documents technical context, role scope, outcomes, and public evidence that do not fit into the resume.
+This site does not replace the submitted resume. It documents technical context, role scope, outcomes, and public links that do not fit into the resume.
 
 ## Engineering Perspective
 
@@ -18,7 +18,7 @@ As some repetitive implementation work becomes less of a bottleneck, I consider 
 
 I describe this in more detail in [Principles](engineering-principles.md).
 
-## Focus Areas
+## Technical Focus Areas
 
 - Platform: connecting metadata and schema information to SQL/DDL, Java service code, data synchronization, change history, and test tooling
 - Rust/SQL: SQL engine internals, parser/AST, storage, Rust open-source contribution, and code review
@@ -33,6 +33,10 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - Frontend: React, React Native, Material UI, React Flow
 - Infra/Tools: Kubernetes, Terraform, Redis Operator, GitHub Actions, Prometheus, Grafana, AWS
 
+## Links
+
+- [GitHub](https://github.com/zmrdltl)
+
 ## Navigation
 
 - [Work](experience/index.md)
@@ -43,4 +47,3 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - [Projects](projects/index.md)
 - [Coupler](projects/coupler.md)
 - [Activities](activities/index.md)
-- [Evidence](evidence/public-links.md)
