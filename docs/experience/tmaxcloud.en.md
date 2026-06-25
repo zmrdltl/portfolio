@@ -195,14 +195,6 @@ I researched how to deploy Redis reliably in Kubernetes and reduce redirect issu
 
 The validation confirmed a Redis packet delivery success rate above 95% with Redis Operator and proxy-module combinations, and a 30% reduction in issue detection time through Redis Insight and Prometheus-based monitoring.
 
-## Public evidence
-
-- [OT-CONTAINER-KIT/redis-operator#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265)
-- [OT-CONTAINER-KIT/redis-operator#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308)
-- [OT-CONTAINER-KIT/redis-operator#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313)
-- [gRPC learning record](https://codecollector.tistory.com/1533)
-- [Terraform/k8s experiment record](https://codecollector.tistory.com/1555)
-
 ## Skills
 
 Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, CRI-O, MetalLB, Terraform, client-go, Redis Operator, Redis Cluster Proxy, Prometheus

@@ -195,14 +195,6 @@ Kubernetes 환경에서 Redis를 안정적으로 배포하고 외부 client가 R
 
 검증 결과 Redis Operator와 proxy module 조합으로 packet 전달 성공률 95% 이상을 확보했고, Redis Insight와 Prometheus 기반 monitoring으로 장애 탐지 시간을 30% 단축했습니다.
 
-## 공개 증빙
-
-- [OT-CONTAINER-KIT/redis-operator#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265)
-- [OT-CONTAINER-KIT/redis-operator#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308)
-- [OT-CONTAINER-KIT/redis-operator#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313)
-- [gRPC 학습 기록](https://codecollector.tistory.com/1533)
-- [Terraform/k8s 실험 기록](https://codecollector.tistory.com/1555)
-
 ## 기술
 
 Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, CRI-O, MetalLB, Terraform, client-go, Redis Operator, Redis Cluster Proxy, Prometheus

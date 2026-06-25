@@ -13,7 +13,7 @@
 - problem, scope, acceptance criteria, test 기준을 포함한 issue로 작업 범위와 검증 기준을 명확화했습니다.
 - PR 변경 범위, API/protocol compatibility, test coverage, lint/clippy, regression risk를 검토했습니다.
 
-## 작업 축
+## 작업 영역
 
 ### 분석 UI와 데이터 정합성
 
