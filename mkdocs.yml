@@ -9,7 +9,6 @@ theme:
   language: ko
   features:
     - navigation.sections
-    - navigation.expand
     - navigation.top
     - search.highlight
     - search.suggest
@@ -52,10 +51,6 @@ plugins:
             오픈소스: Open Source
             프로젝트: Projects
             목록: List
-            1GB 이상 CSV 데이터 처리: CSV Batch Pipeline
-            지도 기반 소리 업로드/조회 사이트: Map-based Sound Upload Site
-            LoL 악성 유저 검출: LoL Toxic User Detection
-            졸업요건 공지사항 조회 사이트: Graduation Requirement Notice Site
             활동: Activities
 
 nav:
@@ -70,9 +65,4 @@ nav:
   - 프로젝트:
       - 목록: projects/index.md
       - Coupler: projects/coupler.md
-      - 1GB 이상 CSV 데이터 처리: projects/csv-batch.md
-      - 지도 기반 소리 업로드/조회 사이트: projects/map-sound.md
-      - Dishnow: projects/dishnow.md
-      - LoL 악성 유저 검출: projects/lol-toxic-user.md
-      - 졸업요건 공지사항 조회 사이트: projects/graduation-credit.md
   - 활동: activities/index.md

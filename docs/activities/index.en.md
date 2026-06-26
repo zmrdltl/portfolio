@@ -21,8 +21,6 @@ This page summarizes public open-source mentoring and award history that support
 | 2019.06 | Preliminary Startup Package | 2nd place, technology category | Ministry of SMEs and Startups |
 | 2019.02 | Campus Town Startup Support Program | Excellence Award | Sungkyunkwan University |
 
-I also received an encouragement award for the graduation project, LoL Toxic User Detection. Related details are summarized on the [LoL Toxic User Detection](../projects/lol-toxic-user.md) page.
-
 ## Public-safety rule
 
 Award names and organizers are summarized from available award records. This portfolio is not a credential archive, so certificates, award images, and Google Drive material folders are not linked publicly.

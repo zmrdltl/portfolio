@@ -1,15 +1,10 @@
 # Projects
 
-Selected artifact-centered project summaries prepared for public viewing.
-Personal products, client delivery, student startup, graduation, and technical validation projects stay here when they are not regular employment history.
+Selected personal product project summary prepared for public viewing.
+This section keeps only the project outside regular employment and open source that supports the current technical direction of this portfolio.
 
 ## Selected Projects
 
-This section summarizes artifact-centered cases outside regular employment, including personal product operation, technical validation projects, student startup work, and related artifacts.
+This section summarizes state contracts, development criteria, and review criteria created while operating a personal product.
 
 - [Coupler](coupler.md): personal product operation, TypeScript migration criteria, and signup/review flow contracts
-- [CSV Batch Pipeline](csv-batch.md)
-- [Map-based Sound Upload Site](map-sound.md)
-- [Dishnow](dishnow.md)
-- [LoL Toxic User Detection](lol-toxic-user.md)
-- [Graduation Requirement Notice Site](graduation-credit.md)
