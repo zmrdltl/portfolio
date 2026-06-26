@@ -33,14 +33,15 @@ I describe this in more detail in [Principles](engineering-principles.md).
 
 ## Skills
 
-- Languages: Rust, Java, TypeScript, JavaScript, SQL, Python
-- Backend: WebSocket, Spring Boot, Spring Batch, JPA, JDBC, Node.js, Freemarker
+- Languages: Rust, Java, TypeScript, SQL, Python
+- Backend: WebSocket, Node.js, Express, Freemarker
 - Database: MySQL, Tibero, schema migration, SQL generation
 - Frontend: React, React Native, Material UI, React Flow
-- Infra/Tools: Kubernetes, Terraform, Redis Operator, GitHub Actions, Prometheus, Grafana, AWS
+- Infra/Tools: Kubernetes, Terraform, Redis Operator, GitHub Actions, Prometheus, AWS
 
 ## Links
 
+- [Email](mailto:meenseek5929@naver.com)
 - [GitHub](https://github.com/zmrdltl)
 
 ## Navigation
