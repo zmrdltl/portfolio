@@ -1,6 +1,6 @@
 # Activities
 
-This page summarizes public education, mentoring, community, and award history that supports the main work and open-source pages.
+This page summarizes public open-source mentoring and award history that supports the main work and open-source pages.
 
 ## Open-source mentoring
 
