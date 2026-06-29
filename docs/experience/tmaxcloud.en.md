@@ -17,7 +17,7 @@ My scope was broader than implementing one feature. I connected metadata, entiti
 
 Representative outcomes:
 
-- Changed the SQL Generator into a backend-importable structure and recorded more than 30% performance optimization in project records from that period.
+- Separated the SQL Generator into a backend-importable library structure, simplified the call path, and separated SQL generation responsibility from the application backend flow.
 - Moved generated-service verification, which previously required a separate deployment platform and container startup, into the design/validation stage through a WebSocket-based E2E test page.
 - Contributed to reducing the design-validation cycle from about four weeks to about two weeks in the work context from that period.
 - Reduced duplicated service mapping registration in the WebSocket request/response flow, reduced service integration time by more than 10%, and moved missing-mapping debugging toward compile-time checks.
@@ -31,10 +31,25 @@ For users to design and deploy applications without writing code directly, metad
 
 The design information needed to flow into table/entity definitions, service in/out DTOs, context, validation, SQL/DDL, Java service code, and test request formats. Missing mappings or duplicated registration points could turn into debugging cost before and after deployment.
 
-```text
-Metadata -> Business Entity -> Service Definition -> Generated Java Service
-Entity/Table Definition -> SQL Generator -> DDL/DML
-Generated Java Code + SQL -> Application Artifact -> Deployment/Test Flow
+```mermaid
+flowchart LR
+  ui["UI design information"]
+  meta["Metadata / Entity"]
+  service["Service Definition"]
+  code["Java Service Code"]
+  sql["SQL / DDL"]
+  artifact["Application Artifact"]
+  verify["WebSocket E2E Test Page"]
+  result["Request / Response + DB verification"]
+
+  ui --> meta
+  meta --> service
+  meta --> sql
+  service --> code
+  code --> artifact
+  sql --> artifact
+  artifact --> verify
+  verify --> result
 ```
 
 ### Role and scope
@@ -61,9 +76,22 @@ This was not simple CRUD implementation. It was a generation flow where design-t
 
 Internal class and package names are not published; the generated service structure is represented with generic names only.
 
-- `ClientRequest` -> `ServiceDispatcher` -> `GeneratedService`
-- `GeneratedService` -> `RequestDTO`/`Context` -> validation -> SQL/CRUD execution
-- SQL/CRUD result -> response mapper -> `ClientResponse`
+```mermaid
+sequenceDiagram
+  participant Client as Client Request
+  participant Dispatcher as Service Dispatcher
+  participant Service as Generated Service
+  participant DTO as RequestDTO / Context
+  participant DB as SQL / CRUD
+  participant Mapper as Response Mapper
+
+  Client->>Dispatcher: service ID + request JSON
+  Dispatcher->>Service: call generated service
+  Service->>DTO: request mapping + validation
+  DTO->>DB: SQL / CRUD execution
+  DB-->>Mapper: result
+  Mapper-->>Client: Client Response
+```
 
 ## SQL Generator
 
@@ -75,7 +103,9 @@ I implemented a SQL Generator that accepted JSON requests based on designed enti
 - Key/sequence: primary key, sequence
 - Test: verified SQL generated from JSON input with JUnit and configured coverage checks.
 
-Previously, SQL generation requests had to pass through multiple layers and were not available as a library directly imported by the backend. I changed the SQL Generator into a backend-importable library structure, reduced duplicated work, and recorded more than 30% performance optimization in project records from that period.
+Previously, SQL generation requests had to pass through multiple layers and were not available as a library directly imported by the backend. I changed the SQL Generator into a backend-importable library structure, reduced unnecessary call paths and duplicated work, and separated SQL generation responsibility from the application backend flow.
+
+The core result was a clearer SQL generation module boundary: simpler call paths, separated responsibility, and more explicit testing and reuse criteria.
 
 ## Entity export/import
 

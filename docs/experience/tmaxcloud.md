@@ -17,7 +17,7 @@ No-code platform의 핵심 문제는 사용자가 화면에서 정의한 설계 
 
 대표 결과는 아래와 같습니다.
 
-- SQL Generator를 backend에서 직접 사용할 수 있는 구조로 바꾸며 당시 프로젝트 기록 기준 30% 이상의 성능 최적화를 확인했습니다.
+- SQL Generator를 backend에서 직접 import해 사용할 수 있는 library 구조로 분리해 호출 경로를 단순화하고, SQL 생성 책임을 application backend 흐름과 분리했습니다.
 - 별도 배포 플랫폼과 container 기동을 거친 뒤에야 확인되던 generated service 동작을 WebSocket 기반 E2E test page로 설계·검증 단계에서 확인할 수 있게 했습니다.
 - 당시 작업 기준 설계-검증 사이클을 약 4주에서 2주 수준으로 줄이는 데 기여했습니다.
 - WebSocket request/response 흐름에서 service mapping 중복 등록을 줄이고, service 통합 시간을 10% 이상 줄였으며, mapping 누락 debugging 문제를 compile-time 확인으로 완화했습니다.
@@ -31,10 +31,25 @@ No-code platform의 핵심 문제는 사용자가 화면에서 정의한 설계 
 
 설계 정보는 table/entity 정의, service in/out DTO, context, validation, SQL/DDL, Java service code, 테스트 요청 형식까지 연결되어야 했고, 누락된 mapping이나 반복 등록은 배포 전후의 디버깅 비용으로 이어질 수 있었습니다.
 
-```text
-Metadata -> Business Entity -> Service Definition -> Generated Java Service
-Entity/Table Definition -> SQL Generator -> DDL/DML
-Generated Java Code + SQL -> Application Artifact -> Deployment/Test Flow
+```mermaid
+flowchart LR
+  ui["UI 설계 정보"]
+  meta["Metadata / Entity"]
+  service["Service Definition"]
+  code["Java Service Code"]
+  sql["SQL / DDL"]
+  artifact["Application Artifact"]
+  verify["WebSocket E2E Test Page"]
+  result["Request / Response + DB 반영 검증"]
+
+  ui --> meta
+  meta --> service
+  meta --> sql
+  service --> code
+  code --> artifact
+  sql --> artifact
+  artifact --> verify
+  verify --> result
 ```
 
 ### 역할과 범위
@@ -61,9 +76,22 @@ Service definition을 Java service code로 변환하기 위해 inDTO, outDTO, co
 
 내부 class/package명은 공개하지 않고, 생성 서비스 구조는 generic 이름으로만 표현합니다.
 
-- `ClientRequest` -> `ServiceDispatcher` -> `GeneratedService`
-- `GeneratedService` -> `RequestDTO`/`Context` -> validation -> SQL/CRUD execution
-- SQL/CRUD result -> response mapper -> `ClientResponse`
+```mermaid
+sequenceDiagram
+  participant Client as Client Request
+  participant Dispatcher as Service Dispatcher
+  participant Service as Generated Service
+  participant DTO as RequestDTO / Context
+  participant DB as SQL / CRUD
+  participant Mapper as Response Mapper
+
+  Client->>Dispatcher: service ID + request JSON
+  Dispatcher->>Service: generated service 호출
+  Service->>DTO: request mapping + validation
+  DTO->>DB: SQL / CRUD 실행
+  DB-->>Mapper: result
+  Mapper-->>Client: Client Response
+```
 
 ## SQL Generator 구현
 
@@ -75,7 +103,9 @@ Service definition을 Java service code로 변환하기 위해 inDTO, outDTO, co
 - Key/sequence: primary key, sequence
 - Test: JSON input에서 생성된 SQL을 JUnit으로 검증하고 coverage 확인이 가능하도록 구성했습니다.
 
-기존에는 SQL generation 요청이 여러 계층을 왕복하는 구조였고, backend에서 바로 사용할 수 있는 library 형태가 아니었습니다. SQL Generator를 backend에 직접 import해 사용할 수 있는 구조로 바꾸면서 중복 작업을 줄이고, 당시 프로젝트 기록 기준 30% 이상의 성능 최적화를 확인했습니다.
+기존에는 SQL generation 요청이 여러 계층을 왕복하는 구조였고, backend에서 바로 사용할 수 있는 library 형태가 아니었습니다. SQL Generator를 backend에 직접 import해 사용할 수 있는 구조로 바꾸면서 불필요한 호출 경로와 중복 작업을 줄이고, SQL 생성 책임을 application backend 흐름과 분리했습니다.
+
+이 작업의 핵심은 SQL 생성 로직을 별도 module로 분리해 호출 경로와 책임 경계를 단순화하고, 테스트와 재사용 기준을 더 명확히 만든 점입니다.
 
 ## 엔티티 내보내기/가져오기
 
