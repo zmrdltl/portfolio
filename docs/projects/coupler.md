@@ -5,7 +5,7 @@
 ## 개요
 
 React Native 앱, API, 관리자 웹, 공개 문서로 구성된 개인 제품 개발 프로젝트입니다.
-1.0.0 운영 이후 2.0.0 전환 과정에서 TypeScript 전환 기준, 회원가입·심사 흐름 기준, 개발·리뷰 기준을 정리했습니다.
+외주 유지보수로 시작한 제품을 현재 개발총괄로 맡고 있으며, 1.0.0 운영 이후 2.0.0 전환 과정에서 TypeScript 전환 기준, 회원가입·심사 흐름 기준, AI 기반 개발 운영(AX)의 문제 분해·검증·리뷰 기준을 정리했습니다.
 
 정규 경력의 대표 플랫폼 사례와 분리해, 개인 제품을 운영하며 모바일 앱, API, 관리자 웹이 같은 상태 계약과 심사 정책을 따르도록 정리한 제품 오너십 사례로 둡니다.
 
@@ -13,16 +13,49 @@ React Native 앱, API, 관리자 웹, 공개 문서로 구성된 개인 제품 �
 
 - 개발총괄 / Software Engineer
 - 모바일 앱, API, 관리자 웹, 공개 문서의 개발 기준과 릴리스 기준을 정리했습니다.
+- 유지보수 중심으로 시작한 제품을 현재는 모바일 앱, API, 관리자 웹, DB 구조, 공개 문서까지 함께 다루는 범위로 총괄하고 있습니다.
+- AI 기반 개발 운영(AX)을 문제 분해, 구현, 리뷰, 회귀 테스트, 검증, 문서화 기준을 빠르게 순환시키는 개발 운영 방식으로 적용하고 있습니다.
 
 ## 문제와 제약
 
 React Native 제품을 1.0.0 초기 구현 이후 2.0.0까지 전환하면서 모바일 앱, API, 관리자 웹이 같은 상태 모델과 릴리스 기준으로 움직이도록 정리해야 했습니다.
 
+기존 가입 신청은 약 30개 항목을 한 번에 입력해야 하는 구조였고, 심사 단계와 화면 분기 기준이 제품 운영과 유지보수에 부담을 주고 있었습니다.
+
+```mermaid
+flowchart LR
+  decision["기획 결정 / 제품 기준"]
+  docs["공개 정책 문서"]
+  app["React Native App"]
+  api["API"]
+  admin["Admin Web"]
+  db["DB Schema / Migration"]
+  contract["Signup / Review Contract"]
+  qa["QA / Regression Check"]
+  release["Release Criteria"]
+
+  decision --> docs
+  decision --> app
+  decision --> api
+  decision --> admin
+  api --> db
+  docs --> contract
+  contract --> app
+  contract --> api
+  contract --> admin
+  app --> qa
+  api --> qa
+  admin --> qa
+  qa --> release
+```
+
 ## 설계와 구현
 
 - 관리자 웹 TypeScript 전환과 typecheck CI/migration guard로 유지보수 기준을 고정했습니다.
 - 회원가입과 심사 흐름을 use case와 [서버 응답 계약](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md) 중심으로 분리해 화면 분기 기준을 단일화했습니다.
+- 한 번에 약 30개 항목을 입력하던 가입 신청을 일반회원, 준회원, 정회원 단계로 나누고, 준회원·정회원 심사를 병렬로 제출하거나 탭을 이동하며 진행할 수 있도록 DB 구조와 상태 흐름을 재구성했습니다.
 - Admin/Mobile/API가 같은 [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)을 쓰도록 제출/재제출 UX와 심사 목록 기준을 정리했습니다.
+- AI 기반 개발 운영(AX) 흐름으로 요구사항을 작은 단위로 쪼개고, 앱/API/관리자 웹/DB 변경을 구현, 리뷰, 회귀 검증, 문서 동기화 순서로 반복했습니다.
 - [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)에 테스트, 문서 동기화, 회귀 안전성 기준을 남겼습니다.
 
 ## 검증과 기준
@@ -32,9 +65,15 @@ React Native 제품을 1.0.0 초기 구현 이후 2.0.0까지 전환하면서 �
 
 ## 결과
 
-2.0.0 전환 범위에서 모바일 앱, API, 관리자 웹의 개발 기준을 정리하고, 회원가입 응답 계약·회원 심사 정책·코드 리뷰 기준을 공개 문서로 남겼습니다.
+2.0.0 전환 범위에서 모바일 앱, API, 관리자 웹의 개발 기준을 정리하고, 약 30개 항목을 한 번에 받던 가입 신청을 단계형 심사 흐름으로 개편했습니다. 회원가입 응답 계약·회원 심사 정책·코드 리뷰 기준은 공개 문서로 남겼습니다.
 
-공개 범위에서는 제품 운영 과정에서 상태 계약, 심사 정책, TypeScript 전환 기준, 리뷰 기준을 문서와 코드 기준으로 남긴 점을 중심으로 설명합니다.
+공개 범위에서는 제품 운영 과정에서 상태 계약, 심사 정책, TypeScript 전환 기준, AI 기반 개발 운영, 리뷰 기준을 문서와 코드 기준으로 남긴 점을 중심으로 설명합니다.
+
+## 링크
+
+- [Google Play](https://play.google.com/store/apps/details?id=com.ritzy.fourhundred&pli=1)
+- [App Store](https://apps.apple.com/app/id1645569179)
+- [공개 개발 문서](https://github.com/coupler-developer/docs)
 
 ## 기술
 
