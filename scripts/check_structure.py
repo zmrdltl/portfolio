@@ -19,6 +19,22 @@ except ModuleNotFoundError as error:
     ) from error
 
 
+class MkDocsConfigLoader(yaml.SafeLoader):
+    pass
+
+
+def construct_python_name(loader: Any, tag_suffix: str, node: Any) -> str:
+    # MkDocs may use Python-name tags for extension callbacks. The
+    # structure check only needs nav/plugin metadata, so keep them inert.
+    return tag_suffix
+
+
+MkDocsConfigLoader.add_multi_constructor(
+    "tag:yaml.org,2002:python/name:",
+    construct_python_name,
+)
+
+
 ENGLISH_SUFFIX = ".en.md"
 MARKDOWN_SUFFIX = ".md"
 HANGUL_PATTERN = re.compile(r"[가-힣]")
@@ -34,7 +50,10 @@ class StructureSummary:
 
 def read_config(config_path: Path) -> dict[str, Any]:
     try:
-        config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+        config = yaml.load(
+            config_path.read_text(encoding="utf-8"),
+            Loader=MkDocsConfigLoader,
+        )
     except (FileNotFoundError, yaml.YAMLError):
         return {}
 

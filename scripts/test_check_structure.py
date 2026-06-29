@@ -9,6 +9,12 @@ from scripts.check_structure import validate_structure
 
 
 VALID_CONFIG = """\
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 nav:
   - 소개: index.md
 plugins:
