@@ -108,8 +108,10 @@ Use this shape as guidance, not as a required template. Omit sections that would
 - Use Conventional Commits with `docs(scope): summary`.
 - Prefer these scopes: `agents`, `structure`, `principles`, `experience`, `opensource`, `projects`, `activities`, `i18n`, `build`.
 - Keep the summary concise and specific.
-- Use only `What:` and `Why:` body lines when the change affects structure, classification, public-safety rules, or claim strength.
+- Use `What:`, `Why:`, `How:`, and `Verification:` body lines when the change affects structure, classification, public-safety rules, or claim strength.
 - `What:` must describe only the staged document changes.
 - `Why:` must use only confirmed user intent, reviewed source text, or public links; do not invent rationale.
+- `How:` must briefly describe the editing approach, claim boundary, or review loop; do not repeat implementation details that are obvious from the diff.
+- `Verification:` must summarize content verification before command verification. For portfolio changes, include source/claim checks, Korean/English parity, public-safety review, relevant public link checks, and then Markdown lint or MkDocs build results when applicable.
 - Do not use conversation-only labels, internal-document expressions, or unexplained abbreviations in commit messages.
 - Omit the body only for trivial typo, formatting, or link-only fixes.
