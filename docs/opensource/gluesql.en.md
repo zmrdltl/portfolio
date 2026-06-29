@@ -1,7 +1,7 @@
 # GlueSQL
 
 - Type: Open-source contribution
-- Period: 2021.08 - Present
+- Period: 2021.06 - Present
 
 ## Overview
 
@@ -13,6 +13,26 @@ This page is the publicly verifiable technical-depth case. It complements privat
 
 Adding a SQL engine feature does not end at syntax support. The parser must accept the syntax, the AST and plan/execution path must preserve the same meaning, and storage and test suites must lock edge cases. My GlueSQL contribution leaves that flow in publicly reviewable material.
 
+## Structure Summary
+
+```mermaid
+flowchart LR
+  syntax["SQL Syntax / Function"]
+  parser["Parser"]
+  ast["AST / Builder"]
+  plan["Plan / Execution"]
+  storage["Storage"]
+  tests["Test Suite"]
+  review["PR Review / Docs"]
+
+  syntax --> parser
+  parser --> ast
+  ast --> plan
+  plan --> storage
+  plan --> tests
+  tests --> review
+```
+
 ## CLI Application
 
 GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspect SQL execution flow during development.
@@ -21,7 +41,7 @@ GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspec
 
 ## 2021: SQL function and parser contribution
 
-In 2021, I joined GlueSQL as an OSSCA mentee and contributed from small SQL functions to parser integration while learning the structure of a Rust-based SQL engine.
+I started the program in 2021.06, used the early period to learn Rust and the GlueSQL project structure, and opened my first public PR in 2021.08. In 2021, I joined GlueSQL as an OSSCA mentee and contributed from small SQL functions to parser integration while learning the structure of a Rust-based SQL engine.
 
 - Added the `REVERSE` SQL function and wrote integration tests.
 - Wrote tests around `PartialEq` and `PartialOrd` behavior and fixed related bugs.

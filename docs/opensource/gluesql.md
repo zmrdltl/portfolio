@@ -1,7 +1,7 @@
 # GlueSQL
 
 - 유형: 오픈소스 기여
-- 기간: 2021.08 - Present
+- 기간: 2021.06 - Present
 
 ## 개요
 
@@ -13,6 +13,26 @@ GlueSQL은 Rust 기반 SQL database engine입니다. 기여 범위는 SQL engine
 
 SQL engine 기능은 문법만 추가한다고 끝나지 않습니다. parser가 구문을 받아들이고, AST와 plan/execution path가 같은 의미를 유지하며, storage와 test suite가 edge case를 고정해야 합니다. GlueSQL 기여는 이 흐름을 공개적으로 검증 가능한 자료로 남긴 사례입니다.
 
+## 구조 요약
+
+```mermaid
+flowchart LR
+  syntax["SQL Syntax / Function"]
+  parser["Parser"]
+  ast["AST / Builder"]
+  plan["Plan / Execution"]
+  storage["Storage"]
+  tests["Test Suite"]
+  review["PR Review / Docs"]
+
+  syntax --> parser
+  parser --> ast
+  ast --> plan
+  plan --> storage
+  plan --> tests
+  tests --> review
+```
+
 ## CLI Application
 
 GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 CLI로 SQL 실행 흐름을 확인할 수 있습니다.
@@ -21,7 +41,7 @@ GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 C
 
 ## 2021: SQL 함수와 parser 기여
 
-2021년에는 OSSCA 멘티로 GlueSQL에 참여하며 Rust 기반 SQL engine 구조를 학습하고 작은 SQL function부터 parser 연동까지 기여했습니다.
+2021.06에 프로그램을 시작해 Rust와 GlueSQL 프로젝트 구조를 파악했고, 2021.08에 첫 공개 PR을 진행했습니다. 2021년에는 OSSCA 멘티로 참여하며 Rust 기반 SQL engine 구조를 학습하고 작은 SQL function부터 parser 연동까지 기여했습니다.
 
 - `REVERSE` SQL function을 추가하고 integration test를 작성했습니다.
 - `PartialEq`, `PartialOrd` 관련 test를 작성하고 bug를 수정했습니다.
