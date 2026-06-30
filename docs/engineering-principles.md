@@ -14,7 +14,7 @@
 ```text
 도메인 지식과 요구사항
 -> 배경, 운영 정책, 예외 정책
--> context, non-goal, acceptance criteria
+-> context, 하지 않을 일, 완료 기준
 -> 구현 계획과 test harness
 -> 구현
 -> review, regression check, 운영 정리
@@ -25,7 +25,7 @@
 - 기능이 생긴 배경과 사용자 흐름
 - 운영 정책과 예외 정책
 - 코드 경계와 책임 범위
-- 성공 조건과 non-goal
+- 성공 조건과 하지 않을 일
 - 실패 시 확인할 로그, 테스트, 재현 절차
 
 ## Harness
@@ -33,7 +33,7 @@
 - 비즈니스 로직의 핵심 동작과 예외 흐름을 테스트로 고정합니다.
 - 회귀 가능성이 있는 경로는 샘플 입력, 재현 절차, 검증 명령으로 남깁니다.
 - 데이터 정합성, 시간 처리, serialization, API compatibility는 별도 확인 항목으로 둡니다.
-- 구현 결과가 acceptance criteria를 만족하는지 재확인합니다.
+- 구현 결과가 완료 기준을 만족하는지 재확인합니다.
 
 ## Review
 
@@ -51,6 +51,6 @@ No-code 플랫폼에서는 설계 정보를 SQL, DDL, Java service code, 데이�
 
 - 테스트 없는 AI-generated code 병합
 - 성공 조건 없는 prompt
-- non-goal 없는 구현 지시
+- 하지 않을 일을 정하지 않은 구현 지시
 - 회귀 위험 설명 없는 대량 변경
 - 도구 이름만 앞세우는 설명

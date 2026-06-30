@@ -31,26 +31,30 @@ No-code platform의 핵심 문제는 사용자가 화면에서 정의한 설계 
 
 설계 정보는 table/entity 정의, service in/out DTO, context, validation, SQL/DDL, Java service code, 테스트 요청 형식까지 연결되어야 했고, 누락된 mapping이나 반복 등록은 배포 전후의 디버깅 비용으로 이어질 수 있었습니다.
 
+### 대표 구조
+
 ```mermaid
 flowchart LR
-  ui["UI 설계 정보"]
-  meta["Metadata / Entity"]
-  service["Service Definition"]
-  code["Java Service Code"]
-  sql["SQL / DDL"]
-  artifact["Application Artifact"]
-  verify["WebSocket E2E Test Page"]
-  result["Request / Response + DB 반영 검증"]
+  ui["제품 UI\nApp / Entity / Service 정의"]
+  metadata["Metadata Store\n설계 정보 저장"]
+  generator["Generation Backend\nSQL / DDL, Java code, request schema 생성"]
+  artifact["Application Artifact\n생성된 Java application"]
+  deploy["Deployment Platform\n배포 설정과 container 실행"]
+  runtime["Generated Service Runtime\nrequest 처리"]
+  db["Application Database"]
+  test["E2E Test Page\nrequest 전송과 response / DB 반영 검증"]
 
-  ui --> meta
-  meta --> service
-  meta --> sql
-  service --> code
-  code --> artifact
-  sql --> artifact
-  artifact --> verify
-  verify --> result
+  ui --> metadata
+  metadata --> generator
+  generator --> artifact
+  artifact --> deploy
+  deploy --> runtime
+  runtime --> db
+  test --> runtime
+  test --> db
 ```
+
+위 그림은 내부 제품명, class/package명, private path를 제외하고 No-code platform의 대표 구조를 공개 가능한 이름으로 정리한 것입니다. 제가 맡은 구현은 metadata와 service definition을 code generation, SQL/DDL generation, request/response contract, generated service 검증 도구로 연결하는 범위였습니다.
 
 ### 역할과 범위
 

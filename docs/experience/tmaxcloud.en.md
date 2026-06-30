@@ -31,26 +31,30 @@ For users to design and deploy applications without writing code directly, metad
 
 The design information needed to flow into table/entity definitions, service in/out DTOs, context, validation, SQL/DDL, Java service code, and test request formats. Missing mappings or duplicated registration points could turn into debugging cost before and after deployment.
 
+### Representative Structure
+
 ```mermaid
 flowchart LR
-  ui["UI design information"]
-  meta["Metadata / Entity"]
-  service["Service Definition"]
-  code["Java Service Code"]
-  sql["SQL / DDL"]
-  artifact["Application Artifact"]
-  verify["WebSocket E2E Test Page"]
-  result["Request / Response + DB verification"]
+  ui["Product UI\nApp / Entity / Service definition"]
+  metadata["Metadata Store\nDesign information"]
+  generator["Generation Backend\nSQL / DDL, Java code, request schema"]
+  artifact["Application Artifact\nGenerated Java application"]
+  deploy["Deployment Platform\nDeployment settings and container startup"]
+  runtime["Generated Service Runtime\nRequest handling"]
+  db["Application Database"]
+  test["E2E Test Page\nRequest sending and response / DB verification"]
 
-  ui --> meta
-  meta --> service
-  meta --> sql
-  service --> code
-  code --> artifact
-  sql --> artifact
-  artifact --> verify
-  verify --> result
+  ui --> metadata
+  metadata --> generator
+  generator --> artifact
+  artifact --> deploy
+  deploy --> runtime
+  runtime --> db
+  test --> runtime
+  test --> db
 ```
+
+This public diagram removes internal product names, class/package names, and private paths. My implementation scope was connecting metadata and service definitions to code generation, SQL/DDL generation, request/response contracts, and generated-service validation tooling.
 
 ### Role and scope
 

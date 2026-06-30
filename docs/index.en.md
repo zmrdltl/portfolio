@@ -6,7 +6,7 @@ PLATFORM SOFTWARE ENGINEER
 
 I am a Platform Software Engineer who connects service design information and domain rules to SQL/DDL, service code, test criteria, and review criteria so platform features and change safety move together.
 
-At TmaxCloud, I connected design metadata in a Java/TypeScript-based No-code platform to code/DDL generation, data portability, change history, and validation tooling. In GlueSQL, I have worked on Rust-based SQL engine parser/AST work, SQL functions, storage, test suites, mentoring, and code review. At ClumL, I work on detection/report display consistency, Rust service compatibility checks, issue/spec writing, and PR review for a security event analysis product suite.
+At TmaxCloud, I connected design metadata in a Java/TypeScript-based No-code platform to code/DDL generation, data portability, change history, and validation tooling. In GlueSQL, I have worked on Rust-based SQL engine parser/AST work, SQL functions, storage, test suites, mentoring, and code review. At ClumL, I work on detection/report display consistency, Rust service compatibility checks, GitHub-issue-based work definition, and PR review for a security event analysis product suite.
 
 This site does not replace the submitted resume. It documents technical context, role scope, outcomes, and public links that do not fit into the resume.
 
@@ -36,7 +36,7 @@ flowchart LR
 
 - [Service generation platform from design information](experience/tmaxcloud.md): connected metadata, entities, and service definitions to SQL/DDL, Java service code, request/response contracts, and a generated-service E2E test page.
 - [Rust SQL engine open-source contribution](opensource/gluesql.md): worked on SQL functions, parser/AST, aggregate functions, storage, and test suites through public PRs and reviews.
-- [Display consistency and change safety in a security analysis product](experience/cluml.md): keep detection list/detail views, time ranges, port/packet display, and chart/report behavior aligned around the same event context through fixes, issue/spec criteria, and review checks.
+- [Display consistency and change safety in a security analysis product](experience/cluml.md): keep detection list/detail views, time ranges, port/packet display, and chart/report behavior aligned around the same event context through fixes, GitHub issue criteria, and review checks.
 
 ## Engineering Perspective
 
@@ -51,7 +51,7 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - Platform: connecting metadata and schema information to SQL/DDL, Java service code, data synchronization, change history, and test tooling
 - Rust/SQL: SQL engine internals, parser/AST, storage, Rust open-source contribution, and code review
 - Product quality: display consistency in security event analysis products, Rust service compatibility checks, React Native product operation, TypeScript migration, and signup/review flow cleanup
-- Review system: issue/spec writing, acceptance criteria, test coverage, change-safety review, and verification criteria for AI-assisted development
+- Review system: GitHub-issue-based work definition, completion criteria, test coverage, change-safety review, and verification criteria for AI-assisted development
 
 ## Skills
 

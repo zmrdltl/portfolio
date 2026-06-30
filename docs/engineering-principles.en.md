@@ -14,7 +14,7 @@ In product development, I document domain background, operational policies, resp
 ```text
 Domain knowledge and requirements
 -> background, operational policies, exception policies
--> context, non-goals, acceptance criteria
+-> context, out-of-scope items, completion criteria
 -> implementation plan and test harness
 -> implementation
 -> review, regression checks, operational cleanup
@@ -25,7 +25,7 @@ Domain knowledge and requirements
 - Feature background and user flow
 - Operational policies and exception policies
 - Code boundaries and responsibilities
-- Success criteria and non-goals
+- Success criteria and out-of-scope items
 - Logs, tests, and reproduction steps for failures
 
 ## Harness
@@ -33,7 +33,7 @@ Domain knowledge and requirements
 - Fix core business behavior and exception paths with tests.
 - Keep regression-prone paths as sample inputs, reproduction steps, and verification commands.
 - Treat data correctness, time handling, serialization, and API compatibility as explicit review points.
-- Re-check whether the implementation satisfies the acceptance criteria.
+- Re-check whether the implementation satisfies the completion criteria.
 
 ## Review
 
@@ -51,6 +51,6 @@ In No-code platform work, I transformed design information into SQL, DDL, Java s
 
 - Merging AI-generated code without tests
 - Prompts without success criteria
-- Implementation instructions without non-goals
+- Implementation instructions without out-of-scope items
 - Large changes without regression-risk explanation
 - Emphasizing tool names instead of verification criteria
