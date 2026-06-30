@@ -7,9 +7,9 @@
 
 I implemented backend/platform features in a Java/TypeScript-based No-code platform, connecting metadata and service design information to DDL, SQL, Java service code, data synchronization, change history, and test tooling.
 
-The central case on this page is the No-code service generation platform. Team test Kubernetes environment work, Terraform/k8s external provisioning research, and Redis on Kubernetes research were separate validation tracks, so they are kept as supporting cases near the bottom.
+The central work on this page is the No-code service generation platform. Team test Kubernetes environment work and Terraform/k8s external provisioning research were separate validation tracks, so they are kept only as supporting work near the bottom.
 
-## Why This Is the Representative Case
+## Why This Is the Representative Work
 
 The core problem in the No-code platform was that design information defined through the UI had to stay consistent as it turned into executable code, SQL, data flows, and test request formats.
 
@@ -234,19 +234,6 @@ Public learning records:
 - [gRPC learning record](https://codecollector.tistory.com/1533)
 - [Terraform/k8s experiment record](https://codecollector.tistory.com/1555)
 
-## Redis on Kubernetes research
-
-I researched how to deploy Redis reliably in Kubernetes and reduce redirect issues when external clients connected to a Redis Cluster.
-
-- Used Redis Operator to test standalone/cluster deployment, TLS configuration, and log management.
-- Adjusted Redis Operator manifests and custom variables for cluster integration.
-- Connected Redis Insight and Prometheus to visualize Redis command execution status and metrics.
-- Used Redis Cluster Proxy to resolve external-client redirect issues.
-- Compared proxy modules including Predixy, TwemProxy, and Corvus.
-- Had 3 related upstream Redis Operator PRs merged during validation: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
-
-The validation confirmed a Redis packet delivery success rate above 95% with Redis Operator and proxy-module combinations, and a 30% reduction in issue detection time through Redis Insight and Prometheus-based monitoring.
-
 ## Skills
 
-Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, CRI-O, MetalLB, Terraform, client-go, Redis Operator, Redis Cluster Proxy, Prometheus
+Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, CRI-O, MetalLB, Terraform, client-go

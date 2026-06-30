@@ -5,15 +5,15 @@
 
 ## 개요
 
-보안 이벤트 분석 제품군에서 탐지 화면·리포트 표시 일관성, Rust 서비스 compatibility 확인, GitHub issue 기반 작업 정의, PR review를 수행하고 있습니다.
+보안 이벤트 분석 제품군에서 탐지 화면·리포트 표시 일관성, Rust 서비스 compatibility 확인, 요구사항·완료 기준 정리, PR review를 수행하고 있습니다.
 
-이 페이지는 현재 경력의 표시 일관성과 변경 안전성 사례입니다. 비공개 제품의 내부 구현 세부사항은 공개하지 않고, 보안 분석 화면과 리포트가 같은 이벤트 맥락을 유지하도록 다룬 문제 범위와 검증 기준만 정리합니다.
+이 페이지는 현재 경력의 표시 일관성과 변경 안전성 작업입니다. 비공개 제품의 내부 구현 세부사항은 공개하지 않고, 보안 분석 화면과 리포트가 같은 이벤트 맥락을 유지하도록 다룬 문제 범위와 검증 기준만 정리합니다.
 
 ## 주요 업무
 
 - 탐지 목록/상세, time range, port/packet 표시, chart/report 표시 문제를 수정해 분석 화면과 보고서 신뢰성을 개선했습니다.
 - 비공개 제품의 내부 service 이름을 공개하지 않는 범위에서 사용자 진입, 중앙 관리, 이벤트 데이터 저장·분배, 탐지·분석 결과 흐름을 역할 기준으로 문서화했습니다.
-- GitHub issue에 문제, 범위, 완료 기준, 테스트 기준을 정리해 작업 범위와 검증 기준을 명확화했습니다.
+- 문제, 범위, 완료 기준, 테스트 기준을 정리해 작업 범위와 검증 기준을 명확화했습니다.
 - PR 변경 범위, API/protocol compatibility, test coverage, lint/clippy, change-safety risk를 검토했습니다.
 
 ## 대표 구조
@@ -82,17 +82,17 @@ flowchart LR
 
 Rust 서비스의 설정, 날짜·시간 처리, serialization, 테스트 경계를 검토하며 기존 동작과의 compatibility risk를 확인하는 방향으로 작업했습니다. dependency, lint/clippy, CI failure, compatibility risk는 PR review에서 별도 확인 항목으로 다룹니다.
 
-### GitHub issue 기반 작업 정의
+### 작업 기준 정리
 
-작업을 시작하기 전에 GitHub issue에 문제, 범위, 하지 않을 일, 완료 기준, 테스트 기준을 정리합니다. 이 기준은 동료와 AI agent가 같은 범위 안에서 구현하고, 리뷰 단계에서 변경 범위와 변경 안전성을 확인하기 위한 기준으로 사용합니다.
+작업을 시작하기 전에 문제, 범위, 하지 않을 일, 완료 기준, 테스트 기준을 정리합니다. 이 기준은 동료와 AI agent가 같은 범위 안에서 구현하고, 리뷰 단계에서 변경 범위와 변경 안전성을 확인하기 위한 기준으로 사용합니다.
 
 ### PR review와 품질 관리
 
-GitHub issue와 PR diff 사이의 정합성, API/protocol compatibility, test coverage, lint/clippy, change-safety risk를 검토하며 변경 범위가 합의된 요구사항과 검증 기준 안에 머물도록 확인합니다.
+작업 기준과 PR diff 사이의 정합성, API/protocol compatibility, test coverage, lint/clippy, change-safety risk를 검토하며 변경 범위가 합의된 요구사항과 검증 기준 안에 머물도록 확인합니다.
 
 ## 결과와 한계
 
-공개 범위에서는 탐지 화면·리포트 표시 일관성, Rust 서비스 compatibility 확인, GitHub issue 기반 작업 정의와 PR review 기준처럼 제품 품질과 변경 안전성에 직접 연결되는 범위를 중심으로 설명합니다.
+공개 범위에서는 탐지 화면·리포트 표시 일관성, Rust 서비스 compatibility 확인, 작업 기준 정리와 PR review 기준처럼 제품 품질과 변경 안전성에 직접 연결되는 범위를 중심으로 설명합니다.
 
 ## 기술
 

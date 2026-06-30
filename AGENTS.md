@@ -15,6 +15,8 @@ This site complements a submitted resume. It is not the resume itself; it provid
 - Do not fill blanks, dates, metrics, roles, names, links, outcomes, or rationale by assumption; ask the user when a field would require guessing.
 - Use Korean as the source language; update the matching `*.en.md` file when Korean content changes.
 - Use the minimum words needed to state scope, role, result, links, and skills.
+- Do not copy private preparation labels, routing names, readiness notes, or draft reasoning from the private LLM Context Vault into this public repository.
+- Use public-facing portfolio terms such as `대표 작업`, `기술 근거`, `공개 산출물`, `작업 범위`, and `검증 기준`. Public portfolio pages may use only reviewed public facts, public links, and public-safe technical summaries.
 
 ## Writing Rules
 

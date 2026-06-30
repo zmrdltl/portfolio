@@ -5,15 +5,15 @@
 
 ## Overview
 
-I work on a security event analysis product suite, focusing on detection/report display consistency, Rust service compatibility checks, GitHub-issue-based work definition, and PR review.
+I work on a security event analysis product suite, focusing on detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review.
 
-This page presents the current role as a display-consistency and change-safety case. It does not publish private implementation details; it documents the problem scope and verification criteria around keeping security analysis screens and reports aligned to the same event context.
+This page presents the current role through display-consistency and change-safety work. It does not publish private implementation details; it documents the problem scope and verification criteria around keeping security analysis screens and reports aligned to the same event context.
 
 ## Key Work
 
 - Improved analysis screen and report reliability by fixing display issues around detection list/detail views, time ranges, port/packet display, and chart/report behavior.
 - Documented user entry, central management, event-data storage/distribution, and detection/analysis result flows with role-based names instead of publishing private service names.
-- Clarified work scope and verification criteria through GitHub issues that include the problem, scope, completion criteria, and test expectations.
+- Clarified work scope and verification criteria by documenting the problem, scope, completion criteria, and test expectations.
 - Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk.
 
 ## Representative Structure
@@ -82,17 +82,17 @@ I did not publish security details such as authentication, authorization, or cer
 
 I reviewed configuration, date/time handling, serialization, and test boundaries in Rust services to check compatibility risk against existing behavior. Dependency, lint/clippy, CI failure, and compatibility risks are treated as explicit PR review checks.
 
-### GitHub-Issue-Based Work Definition
+### Work Criteria Definition
 
-Before implementation starts, I document the problem, scope, out-of-scope items, completion criteria, and test expectations in GitHub issues. These criteria help teammates and AI agents implement within the same scope and help PR review check scope and change-safety risk.
+Before implementation starts, I document the problem, scope, out-of-scope items, completion criteria, and test expectations. These criteria help teammates and AI agents implement within the same scope and help PR review check scope and change-safety risk.
 
 ### PR Review and Quality Control
 
-I review consistency between GitHub issues and PR diffs, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes stay aligned with the agreed scope and verification criteria.
+I review consistency between agreed criteria and PR diffs, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes stay aligned with the agreed scope and verification criteria.
 
 ## Result and Boundaries
 
-Within the public scope, this page focuses on product-quality and change-safety work: detection/report display consistency, Rust service compatibility checks, GitHub-issue-based work definition, and PR review criteria.
+Within the public scope, this page focuses on product-quality and change-safety work: detection/report display consistency, Rust service compatibility checks, work criteria definition, and PR review criteria.
 
 ## Skills
 

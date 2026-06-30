@@ -6,7 +6,7 @@ PLATFORM SOFTWARE ENGINEER
 
 I am a Platform Software Engineer who connects service design information and domain rules to SQL/DDL, service code, test criteria, and review criteria so platform features and change safety move together.
 
-At TmaxCloud, I connected design metadata in a Java/TypeScript-based No-code platform to code/DDL generation, data portability, change history, and validation tooling. In GlueSQL, I have worked on Rust-based SQL engine parser/AST work, SQL functions, storage, test suites, mentoring, and code review. At ClumL, I work on detection/report display consistency, Rust service compatibility checks, GitHub-issue-based work definition, and PR review for a security event analysis product suite.
+At TmaxCloud, I connected design metadata in a Java/TypeScript-based No-code platform to code/DDL generation, data portability, change history, and validation tooling. In GlueSQL, I have worked on Rust-based SQL engine parser/AST work, SQL functions, storage, test suites, mentoring, and code review. At ClumL, I work on detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review for a security event analysis product suite.
 
 This site does not replace the submitted resume. It documents technical context, role scope, outcomes, and public links that do not fit into the resume.
 
@@ -20,23 +20,24 @@ flowchart LR
   opensource["Open Source\nGlueSQL"]
   projects["Product Project\nCoupler"]
   principles["Engineering Principles"]
-  cases["Public Links / Technical Evidence"]
+  evidence["Public Links / Technical Evidence"]
 
   resume --> portfolio
   portfolio --> experience
   portfolio --> opensource
   portfolio --> projects
   portfolio --> principles
-  experience --> cases
-  opensource --> cases
-  projects --> cases
+  experience --> evidence
+  opensource --> evidence
+  projects --> evidence
 ```
 
 ## Representative Work
 
 - [Service generation platform from design information](experience/tmaxcloud.md): connected metadata, entities, and service definitions to SQL/DDL, Java service code, request/response contracts, and a generated-service E2E test page.
 - [Rust SQL engine open-source contribution](opensource/gluesql.md): worked on SQL functions, parser/AST, aggregate functions, storage, and test suites through public PRs and reviews.
-- [Display consistency and change safety in a security analysis product](experience/cluml.md): keep detection list/detail views, time ranges, port/packet display, and chart/report behavior aligned around the same event context through fixes, GitHub issue criteria, and review checks.
+- [Display consistency and change safety in a security analysis product](experience/cluml.md): keep detection list/detail views, time ranges, port/packet display, and chart/report behavior aligned around the same event context through fixes, completion criteria, and review checks.
+- [State contracts and review criteria for a personal product](projects/coupler.md): captured signup response contracts, member review policies, and code review criteria for a React Native app, API, and admin web in public docs.
 
 ## Engineering Perspective
 
@@ -51,7 +52,7 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - Platform: connecting metadata and schema information to SQL/DDL, Java service code, data synchronization, change history, and test tooling
 - Rust/SQL: SQL engine internals, parser/AST, storage, Rust open-source contribution, and code review
 - Product quality: display consistency in security event analysis products, Rust service compatibility checks, React Native product operation, TypeScript migration, and signup/review flow cleanup
-- Review system: GitHub-issue-based work definition, completion criteria, test coverage, change-safety review, and verification criteria for AI-assisted development
+- Review system: requirements-based work definition, completion criteria, test coverage, change-safety review, and verification criteria for AI-assisted development
 
 ## Skills
 
@@ -59,7 +60,7 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - Backend: WebSocket, Node.js, Express, Freemarker
 - Database: MySQL, Tibero, schema migration, SQL generation
 - Frontend: React, React Native, Material UI, React Flow
-- Infra/Tools: Kubernetes, Terraform, Redis Operator, GitHub Actions, Prometheus, AWS
+- Infra/Tools: Kubernetes, Terraform, GitHub Actions, AWS
 
 ## Links
 

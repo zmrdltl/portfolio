@@ -7,9 +7,9 @@
 
 Java/TypeScript 기반 No-code 플랫폼에서 메타데이터와 서비스 설계 정보를 DDL, SQL, Java 서비스 코드, 데이터 동기화, 변경 이력, 테스트 도구로 연결하는 backend/platform 기능을 구현했습니다.
 
-이 페이지의 중심 사례는 No-code service generation platform입니다. team test Kubernetes 환경, Terraform/k8s 외부 provisioning 검증, Redis on Kubernetes 연구는 별도 검증 작업이므로 하단의 보조 사례로 분리합니다.
+이 페이지의 중심 작업은 No-code service generation platform입니다. team test Kubernetes 환경과 Terraform/k8s 외부 provisioning 검증은 별도 검증 작업이므로 하단의 보조 작업으로만 분리합니다.
 
-## 대표 작업로 보는 이유
+## 대표 작업으로 보는 이유
 
 No-code platform의 핵심 문제는 사용자가 화면에서 정의한 설계 정보가 실제 실행 코드, SQL, 데이터 흐름, 테스트 요청 형식까지 일관되게 이어져야 한다는 점이었습니다.
 
@@ -234,19 +234,6 @@ Kubernetes cluster 외부에서 Terraform command를 원격 실행해 EC2 instan
 - [gRPC 학습 기록](https://codecollector.tistory.com/1533)
 - [Terraform/k8s 실험 기록](https://codecollector.tistory.com/1555)
 
-## Kubernetes 환경의 Redis 연구
-
-Kubernetes 환경에서 Redis를 안정적으로 배포하고 외부 client가 Redis Cluster에 접근할 때 발생하는 redirect 문제를 줄이기 위한 연구를 수행했습니다.
-
-- Redis Operator로 Redis standalone/cluster 배포, TLS 설정, log 관리 기능을 실험했습니다.
-- Redis Operator manifest와 custom variable 설정으로 cluster 연동을 조정했습니다.
-- Redis Insight와 Prometheus를 연계해 Redis command 수행 상태와 metric을 시각화했습니다.
-- Redis Cluster Proxy로 외부 client의 Redis Cluster redirect 문제를 해결했습니다.
-- Predixy, TwemProxy, Corvus 등 proxy module을 비교했습니다.
-- Redis Operator 검증 과정에서 관련 upstream PR 3개가 병합되었습니다: [#265](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/265), [#308](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/308), [#313](https://github.com/OT-CONTAINER-KIT/redis-operator/pull/313).
-
-검증 결과 Redis Operator와 proxy module 조합으로 packet 전달 성공률 95% 이상을 확보했고, Redis Insight와 Prometheus 기반 monitoring으로 장애 탐지 시간을 30% 단축했습니다.
-
 ## 기술
 
-Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, CRI-O, MetalLB, Terraform, client-go, Redis Operator, Redis Cluster Proxy, Prometheus
+Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, CRI-O, MetalLB, Terraform, client-go
