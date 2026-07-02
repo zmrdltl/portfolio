@@ -8,30 +8,6 @@ PLATFORM SOFTWARE ENGINEER
 
 ClumL에서는 보안 이벤트 분석 제품군의 리포트·탐지 화면 문제, Rust 서비스 compatibility, issue/spec 기반 검증 기준을 다룹니다. 티맥스클라우드에서는 Java/TypeScript 기반 No-code 플랫폼에서 generated service E2E 검증과 CAU 변경 이력 기준을 구현했습니다. GlueSQL에서는 Rust 기반 SQL engine의 parser/AST, SQL function, storage, test suite, 멘토링과 코드 리뷰를 이어왔고, Coupler에서는 React Native 제품의 앱·API·관리자 웹·DB·배포 기준과 가입·심사 플로우를 정리하고 있습니다.
 
-기술 포트폴리오에는 대표 작업의 문제 맥락, 역할 범위, 설계 선택, 검증 기준, 관련 링크를 정리했습니다.
-
-## 구조
-
-```mermaid
-flowchart LR
-  resume["1장 이력서"]
-  portfolio["기술 포트폴리오"]
-  experience["경력\nClumL / TmaxCloud"]
-  opensource["오픈소스\nGlueSQL"]
-  projects["제품 프로젝트\nCoupler"]
-  principles["개발 원칙"]
-  evidence["작업 상세 / 링크"]
-
-  resume --> portfolio
-  portfolio --> experience
-  portfolio --> opensource
-  portfolio --> projects
-  portfolio --> principles
-  experience --> evidence
-  opensource --> evidence
-  projects --> evidence
-```
-
 ## 대표 작업
 
 - [보안 분석 제품의 표시 일관성과 변경 안전성](experience/cluml.md): 탐지 목록/상세, time range, port/packet, chart/report가 같은 이벤트 맥락을 유지해야 하는 문제에서 원인과 수정 범위를 분리하고, 요구사항·완료 기준과 review 기준으로 변경 범위를 확인하고 있습니다.

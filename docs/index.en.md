@@ -8,30 +8,6 @@ I am a Platform Software Engineer who connects service design information and do
 
 At ClumL, I work on report/detection display issues, Rust service compatibility, and issue/spec-based validation criteria for a security event analysis product suite. At TmaxCloud, I implemented generated-service E2E validation and CAU change-history criteria in a Java/TypeScript-based No-code platform. In GlueSQL, I have worked on Rust-based SQL engine parser/AST work, SQL functions, storage, test suites, mentoring, and code review. In Coupler, I organize app, API, admin web, DB, deployment, and signup/review flow criteria for a React Native product.
 
-This portfolio documents representative work through problem context, role scope, design choices, validation criteria, and related links.
-
-## Structure
-
-```mermaid
-flowchart LR
-  resume["1-page Resume"]
-  portfolio["Technical Portfolio"]
-  experience["Experience\nClumL / TmaxCloud"]
-  opensource["Open Source\nGlueSQL"]
-  projects["Product Project\nCoupler"]
-  principles["Engineering Principles"]
-  evidence["Work Details / Links"]
-
-  resume --> portfolio
-  portfolio --> experience
-  portfolio --> opensource
-  portfolio --> projects
-  portfolio --> principles
-  experience --> evidence
-  opensource --> evidence
-  projects --> evidence
-```
-
 ## Representative Work
 
 - [Display consistency and change safety in a security analysis product](experience/cluml.md): separate causes and change scope for detection list/detail views, time ranges, port/packet display, and chart/report behavior, then check completion criteria and review evidence.
