@@ -1,13 +1,13 @@
 # Engineering Principles
 
-In product development, I document domain background, operational policies, responsibility boundaries, and verification criteria before implementation, then fix behavior through tests and review. In AI-assisted development, the goal is not code generation itself, but making the output verifiable under the same criteria.
+In product development, I document domain background, operational policies, responsibility boundaries, and verification criteria before implementation, then fix behavior through tests and review. In AI-assisted development, the goal is not code generation itself, but moving customer and market signals into product changes quickly while keeping the output verifiable under the same criteria.
 
 ## Core Principles
 
 - As repetitive implementation becomes easier, problem definition and verification criteria matter more.
 - Documentation is not a side artifact. It helps people learn context quickly and keeps judgment criteria stable.
 - Clear context, test, and review criteria let humans and AI agents implement and review in the same direction.
-- Time saved from repetitive implementation should go into domain understanding and code review.
+- Time saved from repetitive implementation should go into interpreting customer and market signals, domain understanding, and code review.
 
 ## Workflow
 
@@ -45,7 +45,7 @@ Domain knowledge and requirements
 
 ## Domain Learning
 
-In No-code platform work, I transformed design information into SQL, DDL, Java service code, data synchronization, and change history. In AI-assisted development, the same pattern matters: turn domain knowledge and requirements into context, tests, and review criteria.
+In No-code platform work, I transformed design information into SQL, DDL, Java service code, DB verification, and change-history criteria. In AI-assisted development, the same pattern matters: turn customer and market signals, domain knowledge, and requirements into context, tests, and review criteria.
 
 ## Anti-patterns
 
