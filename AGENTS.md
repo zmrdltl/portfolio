@@ -15,8 +15,11 @@ This site complements a submitted resume. It is not the resume itself; it provid
 - Do not fill blanks, dates, metrics, roles, names, links, outcomes, or rationale by assumption; ask the user when a field would require guessing.
 - Use Korean as the source language; update the matching `*.en.md` file when Korean content changes.
 - Use the minimum words needed to state scope, role, result, links, and skills.
-- Do not copy private preparation labels, routing names, readiness notes, or draft reasoning from the private LLM Context Vault into this public repository.
-- Use public-facing portfolio terms such as `대표 작업`, `기술 근거`, `공개 산출물`, `작업 범위`, and `검증 기준`. Public portfolio pages may use only reviewed public facts, public links, and public-safe technical summaries.
+- Never copy private preparation labels, routing names, readiness notes, status labels, or draft reasoning from the private LLM Context Vault into this public repository.
+- Do not use internal preparation terms in published pages, including `case`, `case study`, `케이스`, `사례`, `사례집`, `대표 사례`, `경로 묶음`, `Ready`, `Mixed`, `Shallow`, `readiness`, `work status`, or `backlog`.
+- Use `대표 작업` as the default reader-facing label. Use `대표 경력` only for regular-employment groupings and `대표 성과` only when the sentence is explicitly result-focused.
+- Use reader-facing portfolio terms such as `작업 상세`, `설계 선택`, `검증 기준`, `결과`, `링크`, and `산출물`.
+- Do not put public-safety disclaimers, claim-boundary notes, evidence-defense wording, or "do not publish" lists into published portfolio pages. Keep those checks in AGENTS, vault source documents, or private review notes. Published pages should state the work, role, result, validation, and links directly.
 
 ## Writing Rules
 
