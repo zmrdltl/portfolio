@@ -1,6 +1,6 @@
 # Activities
 
-This page summarizes public open-source mentoring and award history that supports the main work and open-source pages.
+This page summarizes open-source mentoring and award history that supports the main work and open-source pages.
 
 ## Open-source mentoring
 
@@ -20,7 +20,3 @@ This page summarizes public open-source mentoring and award history that support
 | 2019.06 | 4th Youth Startup League | Excellence Award | HiteJinro |
 | 2019.06 | Preliminary Startup Package | 2nd place, technology category | Ministry of SMEs and Startups |
 | 2019.02 | Campus Town Startup Support Program | Excellence Award | Sungkyunkwan University |
-
-## Public-safety rule
-
-Award names and organizers are summarized from available award records. This portfolio is not a credential archive, so certificates, award images, and Google Drive material folders are not linked publicly.

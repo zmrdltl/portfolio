@@ -5,235 +5,100 @@
 
 ## Overview
 
-I implemented backend/platform features in a Java/TypeScript-based No-code platform, connecting metadata and service design information to DDL, SQL, Java service code, data synchronization, change history, and test tooling.
+I implemented backend/platform features in a Java/TypeScript-based No-code platform, connecting app, entity, and service/API definitions from the UI to SQL/DDL, generated Java service code, DB verification, and change-history criteria.
 
-The central work on this page is the No-code service generation platform. Team test Kubernetes environment work and Terraform/k8s external provisioning research were separate validation tracks, so they are kept only as supporting work near the bottom.
+This page expands the TmaxCloud entry in my resume. The center is generated-service E2E validation and CAU table history; the SQL/DDL Generator and error logger are kept as supporting structural work.
 
-## Why This Is the Representative Work
+## Why This Is Representative Work
 
-The core problem in the No-code platform was that design information defined through the UI had to stay consistent as it turned into executable code, SQL, data flows, and test request formats.
+The core problem in the No-code platform was that design information defined through the UI had to remain consistent as it turned into executable code, SQL, DB state, and test request formats.
 
-My scope was broader than implementing one feature. I connected metadata, entities, and service definitions to code generation, SQL/DDL generation, data portability, change history, and request/response tooling.
+My scope was the backend/platform boundary that made generated service/API behavior verifiable before deployment and made generated CRUD services work with change-history tables.
 
 Representative outcomes:
 
-- Separated the SQL Generator into a backend-importable library structure, simplified the call path, and separated SQL generation responsibility from the application backend flow.
-- Moved generated-service verification, which previously required a separate deployment platform and container startup, into the design/validation stage through a WebSocket-based E2E test page.
-- Contributed to reducing the design-validation cycle from about four weeks to about two weeks in the work context from that period.
-- Reduced duplicated service mapping registration in the WebSocket request/response flow, reduced service integration time by more than 10%, and moved missing-mapping debugging toward compile-time checks.
-- Organized repeated logging through an invocation handler and error logger, reducing manual log-writing time by more than 30%.
+- Built a WebSocket-based generated-service E2E test page to verify request/response shape and DB write/read behavior before deployment.
+- Designed and implemented the CAU change-history table and the insert/update/delete row-snapshot copy flow in generated CRUD service SQL.
+- Defined select SQL criteria for reconstructing a point-in-time table snapshot from the needed snapshots.
+- Separated SQL/DDL generation responsibility into a backend-importable library structure, and organized terminal error highlighting and exception formatting as developer diagnostics support.
 
-## No-code service generation platform
-
-### Problem and constraints
-
-For users to design and deploy applications without writing code directly, metadata, entities, service definitions, and deployment artifacts had to be connected through the same model.
-
-The design information needed to flow into table/entity definitions, service in/out DTOs, context, validation, SQL/DDL, Java service code, and test request formats. Missing mappings or duplicated registration points could turn into debugging cost before and after deployment.
-
-### Representative Structure
+## Representative Structure
 
 ```mermaid
 flowchart LR
   ui["Product UI\nApp / Entity / Service definition"]
   metadata["Metadata Store\nDesign information"]
-  generator["Generation Backend\nSQL / DDL, Java code, request schema"]
-  artifact["Application Artifact\nGenerated Java application"]
-  deploy["Deployment Platform\nDeployment settings and container startup"]
+  generator["Generation Backend\nSQL / DDL, Java service code generation"]
+  artifact["Generated Application\nGenerated application artifact"]
   runtime["Generated Service Runtime\nRequest handling"]
   db["Application Database"]
-  test["E2E Test Page\nRequest sending and response / DB verification"]
+  test["E2E Test Page\nRequest / response / DB verification"]
+  history["CAU History Table\nRow snapshot storage"]
 
   ui --> metadata
   metadata --> generator
   generator --> artifact
-  artifact --> deploy
-  deploy --> runtime
+  artifact --> runtime
   runtime --> db
   test --> runtime
   test --> db
+  runtime --> history
 ```
 
-This public diagram removes internal product names, class/package names, and private paths. My implementation scope was connecting metadata and service definitions to code generation, SQL/DDL generation, request/response contracts, and generated-service validation tooling.
+This structure shows how design information from the UI flows into the generation backend, generated application, runtime, database, E2E test page, and change-history table.
 
-### Role and scope
+## Generated-Service E2E Validation
 
-- Defined service in/out DTOs, context, and node service structures.
-- Implemented entity-to-DTO/context mapping, search/delete/update conditions, and node-service-based Java service code generation flows.
-- Implemented Freemarker-template-based Java service generation for Select, Insert, Update, and Delete services.
-- Implemented JSON-input-based SQL Generator logic and JUnit tests.
-- Implemented React/TypeScript UI, a WebSocket-based generated-service E2E test page, and request/response tooling.
+### Generated-Service Validation Problem
 
-## Code generation
+In the No-code platform, generated service/API behavior could previously be verified only after jar generation and a separate deployment flow.
 
-To convert service definitions into Java service code, I organized the inDTO, outDTO, context, node service, SQL type mapping, and template input structures.
+As the number of services/APIs grew, finding incorrect service definitions or request/response shape issues required repeated build/deploy/verify cycles, increasing design and validation lead time.
 
-- Supported multiple node/block services inside one service flow.
-- Mapped entity attributes to inDTO, outDTO, and context values, and passed Update/Delete results into later node inputs.
-- Simplified repeated ResultSet SQL-type-to-Java-type mapping through Freemarker macros.
-- Designed service flows where each node service could map to a different entity when updating multiple tables.
-- Generated request JSON schema from service in/out DTO definitions so test requests and validation criteria could share the same shape.
+### Implementation Scope
 
-This was not simple CRUD implementation. It was a generation flow where design-time metadata became executable service code and request/response contracts.
+- Implemented WebSocket URL format validation and connection-state checks.
+- Fetched service lists after a successful connection and displayed service test items in an Accordion UI.
+- Generated JSON request templates per service and allowed edits in Monaco Editor.
+- Sent generated-service requests through WebSocket and checked response and DB write/read behavior.
 
-## Representative Generated Service Structure
+### Validation Criteria
 
-Internal class and package names are not published; the generated service structure is represented with generic names only.
+- Request/response shape validation
+- DB write/read verification
+- Consistency between service definitions and generated-service behavior
+- Pre-deployment detection of missing links between service definitions and generated-service behavior, or request/response shape issues
+- Avoiding unnecessary connection attempts through WebSocket URL validation
 
-```mermaid
-sequenceDiagram
-  participant Client as Client Request
-  participant Dispatcher as Service Dispatcher
-  participant Service as Generated Service
-  participant DTO as RequestDTO / Context
-  participant DB as SQL / CRUD
-  participant Mapper as Response Mapper
+## CAU Change History And Table Snapshot
 
-  Client->>Dispatcher: service ID + request JSON
-  Dispatcher->>Service: call generated service
-  Service->>DTO: request mapping + validation
-  DTO->>DB: SQL / CRUD execution
-  DB-->>Mapper: result
-  Mapper-->>Client: Client Response
-```
+### Change-History Reconstruction Problem
 
-## SQL Generator
+Generated CRUD applications primarily operate on current values. To reconstruct the table state at a specific point in time, the last modifier, or previous values of deleted records after insert/update/delete operations, the platform needed a separate change-history storage and query rule.
 
-I implemented a SQL Generator that accepted JSON requests based on designed entities and generated DDL/DML SQL before application deployment.
+### Design And Implementation
 
-- DDL: `CREATE TABLE`, `ALTER TABLE`, `CREATE VIEW`
-- DML/query: `SELECT`, `INSERT`, `INSERT ALL`, `UPDATE`, `DELETE`, `EXISTS`
-- SQL expression: `CASE`, `AND`, `OR`, `WITH`, `JOIN`, view column mapping
-- Key/sequence: primary key, sequence
-- Test: verified SQL generated from JSON input with JUnit and configured coverage checks.
+- Implemented a DDL/generation flow that creates both the original table and a change-history table for entities with the CAU option enabled.
+- Structured the CAU table with the original PK, `UP_TO`, `LAST_MODIFIED_BY`, and `DATA_SNAPSHOT`.
+- Connected generated CRUD service SQL so insert/update/delete operations copy affected row snapshots into the change-history table.
+- Defined select SQL criteria to reconstruct a point-in-time table snapshot by selecting only the needed snapshots.
 
-Previously, SQL generation requests had to pass through multiple layers and were not available as a library directly imported by the backend. I changed the SQL Generator into a backend-importable library structure, reduced unnecessary call paths and duplicated work, and separated SQL generation responsibility from the application backend flow.
+### Rationale
 
-The core result was a clearer SQL generation module boundary: simpler call paths, separated responsibility, and more explicit testing and reuse criteria.
+DB triggers or procedures were possible alternatives, but this feature was not just an audit log. It was a generation feature for reconstructing No-code platform generated entities as point-in-time table snapshots.
 
-## Entity export/import
+The request/user context, snapshot copy query, and point-in-time select SQL formula needed to stay within the same generation boundary, so I chose to make the snapshot copy query explicit in generated CRUD service SQL.
 
-I implemented an export/import MVP for copying and synchronizing entity data between applications through a topic/subscriber model.
+## Supporting Structure
 
-- The Export App defined the entities to export and registered topics.
-- When an exported entity changed, a publish service emitted messages.
-- The Import App stored import metadata and generated DDL and sync services during deployment.
-- The Import App subscribed to topics and synchronized data changes.
-- DML and metadata schema supported copying only selected attributes.
+### SQL/DDL Generator
 
-The implementation required synchronization metadata such as `created_by`, `created_at`, `modified_by`, `modified_at`, and selected attribute lists. Instead of increasing schema complexity with additional tables for selected attributes, I represented the selection data through an array-like field after considering performance and complexity.
+I separated SQL/DDL generation responsibility into a backend-importable library structure so it would not remain mixed into the application backend flow. I also added JSON-input-based SQL generation tests and coverage checks to make the generation responsibility and test criteria explicit.
 
-Some constraints remained. Redeployment could create PK conflicts with already copied data, and message queue handling during copy or before sync-service subscription was not fully completed within the time limit. This public portfolio includes those boundaries rather than presenting the MVP as a complete synchronization product.
+### Error Logger
 
-## Change history and table restore
-
-I implemented a flow that generated entity-level change-history tables, stored previous records before CRUD operations, and restored table state for a specific point in time.
-
-- Generated change-history table DDL when entities were created.
-- Stored a snapshot of the record matching the PK before Insert/Update/Delete operations.
-- Compared before/after states using `UP_TO`, `LAST_MODIFIED_BY`, `DATA_SNAPSHOT`, and a deletion flag.
-- Queried the original table and history table together so records no longer present in the current table could still be candidates for restore.
-- Used `ROW_NUMBER() OVER (PARTITION BY PK ORDER BY ...)`-style selection to choose snapshots before and after a target time.
-
-This was a data integrity feature for explaining and restoring point-in-time data state of metadata-generated application tables, not just an audit log.
-
-## Tibero JSON and column encryption
-
-I implemented NoSQL-like CRUD features on Tibero RDBMS using JSON types.
-
-- Automatically generated collection/document table DDL.
-- Queried and updated complex JSON objects, arrays, and primitive values through JSON Path Expression.
-- Provided MongoDB `find`-like APIs and projection to fetch only needed fields.
-- Reduced request-data format errors and integrity issues through JSON Schema validation.
-
-I also implemented CRUD service generation logic for metadata-level column encryption. Encrypted columns were encrypted during query binding and decrypted in responses.
-
-- Generated DBMS_CRYPTO-based encryption/decryption SQL.
-- Converted different metadata types into string representations to support one encryption/decryption flow.
-- Reviewed a structure where keys were not stored directly in the database but managed by a separate server, with key rotation considered.
-
-This public page does not include actual keys, internal function/package/class names, or operational log formats.
-
-## Product UI and service tooling
-
-I implemented React/TypeScript UI and WebSocket tooling for validating and operating metadata and generated services in the No-code platform.
-
-### Entity diagram
-
-I visualized entities and reference relationships with React Flow.
-
-- Displayed selected entities and reference relationships hierarchically.
-- Placed parent and child entities in inheritance structures.
-- Traversed referenced and referencing entities recursively.
-- Supported nodes/edges, zoom, filtering, fit view, automatic layout, and view modes.
-- Provided regex search and highlighting.
-- Handled parallel connections and self-reference paths separately in custom edges.
-
-Using a proven visualization library reduced the complexity of manually calculating node/edge position and connection state, and improved UI state management and maintainability.
-
-### Metadata history
-
-I implemented a Material UI-based metadata change history page.
-
-- Displayed modified time, metadata name, change type, and before/after values in a table.
-- Provided keyword-based filtering and highlighting.
-- Supported grouping by modified time and sorting within each group.
-- Managed independent sorting state per column.
-- Implemented conditional cell highlighting and click/sort interactions.
-
-The page made it easier to find needed items in large change history tables. Independent state management also solved the issue where one column's previous sort state affected another column.
-
-### Request/response flow
-
-I redesigned the WebSocket-based request/response flow.
-
-- Centralized service ID and handler mapping.
-- Built reverse mapping between backend service paths and client service IDs.
-- Registered message handlers automatically by service group.
-- Replaced hard-coded service name strings with service map keys in request senders.
-- Used match patterns to catch missing service ID and handler mappings at compile time.
-- Standardized server response handling regardless of success or error responses.
-
-Previously, adding a new service required registering the same information in service ID mappers, handler registries, and feature handlers. If one registration was missed, a response could fail to reach the handler. The redesign reduced duplicated registration, reduced service integration time by more than 10% in project records from that period, and replaced debugging sessions that could take at least 30 minutes with compile-time checks.
-
-### Generated-service E2E test page and logger
-
-In the No-code platform, users defined app, entity, and service/API fields through the UI, generated a jar artifact, handed that artifact to a separate deployment platform, configured the deployment mode, and started a container before they could verify actual behavior. As the number of services/APIs grew to roughly 200-300, finding an incorrect service definition or request/response mapping often required repeating a build/deploy/verify cycle. One verification cycle took about 20 minutes in the work context from that period.
-
-To reduce that cost, I implemented a WebSocket-based generated-service E2E test page.
-
-- Reduced invalid connection attempts through WebSocket URL regex validation.
-- Fetched service lists after successful connection and displayed them through an Accordion UI.
-- Generated JSON request templates per service.
-- Let users edit JSON requests in Monaco Editor and send them to generated services.
-- Checked responses together with actual DB write/read behavior, so service-definition and request/response mapping errors could be found during design and validation instead of after deployment.
-
-This moved issues that previously appeared only after jar generation, separate deployment-platform configuration, and container startup into an earlier validation flow. In the work context from that period, it contributed to reducing the design-validation cycle from about four weeks to about two weeks.
-
-I also organized repeated DAO/service logging through an invocation handler and error logger structure. Project records from that period indicate more than 30% reduction in manual log-writing time, and the error logging flow made SQL error metadata easier to distinguish from ordinary logs.
-
-## Team test Kubernetes environment
-
-I built a 1 master / 3 worker Kubernetes cluster for team development and testing.
-
-- Configured CRI-O runtime and MetalLB load balancing on a CentOS-based cluster.
-- The initial kubenet-based setup had average packet loss of 3-5% between worker nodes.
-- A compatible network plugin and MetalLB configuration reduced packet loss to below 1%.
-- Node downtime decreased from about 5-6 times per month to once or less per month, improving cluster availability.
-
-## Terraform/k8s external provisioning research
-
-I verified whether Terraform commands could be executed remotely from outside a Kubernetes cluster to create and manage EC2 instances.
-
-- Used Kubernetes API Exec and `client-go` to run `terraform init` and `terraform apply` inside a pod.
-- Studied the flow for passing commands from outside Kubernetes into a pod and the related gRPC communication pattern.
-- The Terraform/k8s provisioning validation recorded an average 5-minute reduction in repeated execution time.
-
-Public learning records:
-
-- [gRPC learning record](https://codecollector.tistory.com/1533)
-- [Terraform/k8s experiment record](https://codecollector.tistory.com/1555)
+During generated-service development, ordinary logs and error logs could make it difficult to locate exception context quickly. I organized exception messages, error codes, SQL state, and stack traces through an ErrorLogger and made terminal error logs visually distinct.
 
 ## Skills
 
-Java, TypeScript, React, Material UI, React Flow, WebSocket, Freemarker, Tibero, SQL generation, JUnit, Kubernetes, CRI-O, MetalLB, Terraform, client-go
+Java, TypeScript, React, Material UI, WebSocket, Monaco Editor, Freemarker, Tibero, SQL generation, JUnit

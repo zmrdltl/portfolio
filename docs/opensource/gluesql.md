@@ -7,11 +7,13 @@
 
 GlueSQL은 Rust 기반 SQL database engine입니다. 기여 범위는 SQL engine 기능, parser/AST, aggregate/data function, numeric type 처리, Parquet storage, test suite, 멘토링, 코드 리뷰를 포함합니다.
 
-`gluesql/gluesql`에서 [Merged 45+](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했고, 이력서와 포트폴리오에서는 public GitHub PR, review, docs로 확인 가능한 범위만 사용합니다.
+`gluesql/gluesql`에서 [Merged 45+](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했고, GitHub PR, review, docs로 확인할 수 있는 기여를 이어왔습니다.
 
-이 페이지는 공개 기술 깊이를 보여주는 자료입니다. 회사 제품의 내부 구현을 공개하지 못하는 제약을 보완하기 위해, SQL engine의 parser, AST, execution path, storage, test suite를 실제 공개 PR과 review로 보여줍니다.
+2025년에는 GlueSQL reviewer로 활동하면서 DISTINCT operations, Rust toolchain, deterministic ordering, Parquet storage clippy 정리 PR이 merge되며 유지보수 기여를 이어갔습니다.
 
-SQL engine 기능은 문법만 추가한다고 끝나지 않습니다. parser가 구문을 받아들이고, AST와 plan/execution path가 같은 의미를 유지하며, storage와 test suite가 예외 조건을 고정해야 합니다. GlueSQL 기여는 이 흐름을 공개적으로 검증 가능한 자료로 남긴 작업입니다.
+이 페이지는 SQL engine의 parser, AST, execution path, storage, test suite를 실제 GitHub PR과 review 흐름으로 보여주는 오픈소스 작업입니다.
+
+SQL engine 기능은 문법만 추가한다고 끝나지 않습니다. parser가 구문을 받아들이고, AST와 plan/execution path가 같은 의미를 유지하며, storage와 test suite가 예외 조건을 고정해야 합니다. GlueSQL 기여는 이 흐름을 PR과 review 기록으로 남긴 작업입니다.
 
 ## 구조 요약
 
@@ -41,7 +43,7 @@ GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 C
 
 ## 2021: SQL 함수와 parser 기여
 
-2021.06에 프로그램을 시작해 Rust와 GlueSQL 프로젝트 구조를 파악했고, 2021.08에 첫 공개 PR을 진행했습니다. 2021년에는 OSSCA 멘티로 참여하며 Rust 기반 SQL engine 구조를 학습하고 작은 SQL function부터 parser 연동까지 기여했습니다.
+2021.06에 프로그램을 시작해 Rust와 GlueSQL 프로젝트 구조를 파악했고, 2021.08에 첫 GitHub PR을 진행했습니다. 2021년에는 OSSCA 멘티로 참여하며 Rust 기반 SQL engine 구조를 학습하고 작은 SQL function부터 parser 연동까지 기여했습니다.
 
 - `REVERSE` SQL function을 추가하고 integration test를 작성했습니다.
 - `PartialEq`, `PartialOrd` 관련 test를 작성하고 bug를 수정했습니다.
@@ -70,7 +72,7 @@ GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 C
 
 기술적으로는 AggregateNode, CountArgExprNode, Expr 변환 구조를 다뤘고, numeric type casting, sqrt, variance, standard deviation 같은 SQL/data function 범위를 넓혔습니다. Aggregate expression 지원 과정에서는 async evaluate, storage I/O, lifetime 문제를 함께 다뤘습니다.
 
-Numeric type 판정을 위해 `bigdecimal-rs`에 [`get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)을 병합한 것도 이 범위의 공개 링크로 확인할 수 있는 작업입니다.
+Numeric type 판정을 위해 `bigdecimal-rs`에 [`get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)을 병합한 것도 이 범위의 연결 작업입니다.
 
 ## 2023: 멘토링, 리뷰, Parquet storage
 

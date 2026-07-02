@@ -7,11 +7,13 @@
 
 GlueSQL is a Rust-based SQL database engine. My contribution scope includes SQL engine features, parser/AST work, aggregate/data functions, numeric type handling, Parquet storage, test suites, mentoring, and code review.
 
-I authored [Merged 45+ PRs](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) in `gluesql/gluesql`, and this portfolio uses only the scope that can be supported by public GitHub PRs, reviews, and docs.
+I authored [Merged 45+ PRs](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) in `gluesql/gluesql`, continuing work visible through GitHub PRs, reviews, and docs.
 
-This page is publicly verifiable technical-depth evidence. It complements private company work by showing SQL engine parser, AST, execution path, storage, and test-suite work through public PRs and reviews.
+In 2025, I continued as a GlueSQL reviewer with merged PRs covering DISTINCT operations, a Rust toolchain bump, deterministic ordering cleanup, and Parquet-storage clippy work.
 
-Adding a SQL engine feature does not end at syntax support. The parser must accept the syntax, the AST and plan/execution path must preserve the same meaning, and storage and test suites must lock edge conditions. My GlueSQL contribution leaves that flow in publicly reviewable material.
+This page presents open-source work across SQL engine parser, AST, execution path, storage, and test suites through GitHub PR and review flow.
+
+Adding a SQL engine feature does not end at syntax support. The parser must accept the syntax, the AST and plan/execution path must preserve the same meaning, and storage and test suites must lock edge conditions. My GlueSQL contribution leaves that flow in PR and review records.
 
 ## Structure Summary
 
@@ -41,7 +43,7 @@ GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspec
 
 ## 2021: SQL function and parser contribution
 
-I started the program in 2021.06, used the early period to learn Rust and the GlueSQL project structure, and opened my first public PR in 2021.08. In 2021, I joined GlueSQL as an OSSCA mentee and contributed from small SQL functions to parser integration while learning the structure of a Rust-based SQL engine.
+I started the program in 2021.06, used the early period to learn Rust and the GlueSQL project structure, and opened my first GitHub PR in 2021.08. In 2021, I joined GlueSQL as an OSSCA mentee and contributed from small SQL functions to parser integration while learning the structure of a Rust-based SQL engine.
 
 - Added the `REVERSE` SQL function and wrote integration tests.
 - Wrote tests around `PartialEq` and `PartialOrd` behavior and fixed related bugs.

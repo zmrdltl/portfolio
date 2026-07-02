@@ -7,18 +7,18 @@
 
 I work on a security event analysis product suite, focusing on detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review.
 
-This page presents the current role through display-consistency and change-safety work. It does not publish private implementation details; it documents the problem scope and verification criteria around keeping security analysis screens and reports aligned to the same event context.
+The core of this current role is improving change safety by separating problem causes, change scope, and validation criteria so security analysis screens and reports stay aligned to the same event context.
 
 ## Key Work
 
-- Improved analysis screen and report reliability by fixing display issues around detection list/detail views, time ranges, port/packet display, and chart/report behavior.
-- Documented user entry, central management, event-data storage/distribution, and detection/analysis result flows with role-based names instead of publishing private service names.
+- Separated causes and change scope for display issues around detection list/detail views, time ranges, port/packet display, and chart/report behavior, then reviewed whether analysis screens and reports stayed aligned to the same event context.
+- Documented user entry, central management, event-data storage/distribution, and detection/analysis result flows by role.
 - Clarified work scope and verification criteria by documenting the problem, scope, completion criteria, and test expectations.
 - Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk.
 
 ## Representative Structure
 
-Internal repository and service names are not published; this diagram uses role-based names only.
+The security event analysis flow can be summarized by role as follows.
 
 ```mermaid
 flowchart LR
@@ -64,7 +64,7 @@ flowchart LR
   extraUi --> extraEngine
 ```
 
-Within this public scope, I describe the part where security events need to keep the same context across the user-facing screens, central management service, event-data storage/distribution service, detection/analysis services, and report display rules.
+My focus in this structure is keeping security events aligned across user-facing screens, the central management service, event-data storage/distribution, detection/analysis services, and report display rules.
 
 ## Work Areas
 
@@ -76,7 +76,7 @@ The core risk was that if list views, detail views, charts, and reports represen
 
 ### Product Structure and Data-flow Documentation
 
-I did not publish security details such as authentication, authorization, or certificate-operation procedures. Instead, I separated the user request path, control/status exchange with the central management service, event-data storage/distribution, and detection/analysis result return flow using role-based names.
+I separated the user request path, control/status exchange with the central management service, event-data storage/distribution, and detection/analysis result return flow by role.
 
 ### Rust Service Compatibility Checks
 
@@ -90,9 +90,9 @@ Before implementation starts, I document the problem, scope, out-of-scope items,
 
 I review consistency between agreed criteria and PR diffs, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes stay aligned with the agreed scope and verification criteria.
 
-## Result and Boundaries
+## Result
 
-Within the public scope, this page focuses on product-quality and change-safety work: detection/report display consistency, Rust service compatibility checks, work criteria definition, and PR review criteria.
+This work connects detection/report display consistency, Rust service compatibility checks, work criteria definition, and PR review criteria to product quality and change safety.
 
 ## Skills
 
