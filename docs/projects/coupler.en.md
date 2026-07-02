@@ -4,10 +4,8 @@
 
 ## Overview
 
-Coupler is a personal product development project spanning a React Native app, API, admin web, and policy docs.
+Coupler is product development work spanning a React Native app, API, admin web, and policy docs.
 I now lead development for a product that began as outsourced maintenance work. From 1.0.0 operation through the 2.0.0 transition, I aligned screen flows, server responses, and admin review criteria around shared state contracts and review criteria.
-
-I keep this page separate from the representative regular-work platform work. It covers product ownership where I operated a personal product and aligned the mobile app, API, and admin web around the same state contracts and review policies.
 
 ## Role and Scope
 

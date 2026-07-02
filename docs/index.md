@@ -73,6 +73,5 @@ flowchart LR
 - [티맥스클라우드](experience/tmaxcloud.md)
 - [원칙](engineering-principles.md)
 - [GlueSQL](opensource/gluesql.md)
-- [프로젝트](projects/index.md)
 - [Coupler](projects/coupler.md)
 - [활동](activities/index.md)

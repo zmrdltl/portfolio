@@ -73,6 +73,5 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - [TmaxCloud](experience/tmaxcloud.md)
 - [Principles](engineering-principles.md)
 - [GlueSQL](opensource/gluesql.md)
-- [Projects](projects/index.md)
 - [Coupler](projects/coupler.md)
 - [Activities](activities/index.md)

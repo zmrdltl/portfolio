@@ -1,6 +1,6 @@
 # Activities
 
-This page summarizes open-source mentoring and award history that supports the main work and open-source pages.
+This page briefly summarizes GlueSQL open-source mentoring and OSSCA award history.
 
 ## Open-source mentoring
 
@@ -17,6 +17,3 @@ This page summarizes open-source mentoring and award history that supports the m
 | 2023.11 | Open Source Contribution Academy | NIPA President's Award (Encouragement) | OSSCA |
 | 2022.12 | Open Source Contribution Academy | NIPA President's Award (Top Excellence) | OSSCA |
 | 2021.11 | Open Source Contribution Academy | NIPA President's Award (Top Excellence) | OSSCA |
-| 2019.06 | 4th Youth Startup League | Excellence Award | HiteJinro |
-| 2019.06 | Preliminary Startup Package | 2nd place, technology category | Ministry of SMEs and Startups |
-| 2019.02 | Campus Town Startup Support Program | Excellence Award | Sungkyunkwan University |

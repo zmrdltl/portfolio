@@ -58,7 +58,6 @@ plugins:
             티맥스클라우드: TmaxCloud
             오픈소스: Open Source
             프로젝트: Projects
-            목록: List
             활동: Activities
 
 nav:
@@ -71,6 +70,5 @@ nav:
   - 오픈소스:
       - GlueSQL: opensource/gluesql.md
   - 프로젝트:
-      - 목록: projects/index.md
       - Coupler: projects/coupler.md
   - 활동: activities/index.md
