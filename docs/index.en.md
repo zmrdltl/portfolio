@@ -6,14 +6,14 @@ PLATFORM SOFTWARE ENGINEER
 
 I am a Platform Software Engineer who connects service design information and domain rules to SQL/DDL, service code, test criteria, and review criteria so platform features and change safety move together.
 
-At ClumL, I work on report/detection display issues, Rust service compatibility, and issue/spec-based validation criteria for a security event analysis product suite. At TmaxCloud, I implemented generated-service E2E validation and CAU change-history criteria in a Java/TypeScript-based No-code platform. In GlueSQL, I have worked on Rust-based SQL engine parser/AST work, SQL functions, storage, test suites, mentoring, and code review. In Coupler, I organize app, API, admin web, DB, deployment, and signup/review flow criteria for a React Native product.
+I organize representative work around three problem areas: using validation criteria to close a race condition found during customer demo server operation while keeping detection and report displays consistent, making generated services and data history verifiable in metadata-driven platforms, and implementing service contracts plus test/review criteria in a Rust SQL engine and product operation work.
 
 ## Representative Work
 
-- [Display consistency and change safety in a security analysis product](experience/cluml.md): separate causes and change scope for detection list/detail views, time ranges, port/packet display, and chart/report behavior, then check completion criteria and review evidence.
-- [Generated-service validation and change-history criteria](experience/tmaxcloud.md): organized a generated-service E2E test page, CAU change-history table, and generated CRUD service row-snapshot copy flow.
-- [Rust SQL engine open-source contribution](opensource/gluesql.md): worked on SQL functions, parser/AST, aggregate functions, storage, and test suites through GitHub PRs and reviews.
-- [State contracts and review criteria for a personal product](projects/coupler.md): organized signup response contracts, member review policies, and code review criteria for a React Native app, API, and admin web as implementation and documentation standards.
+- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem and set invariant and regression-test criteria to prevent over-limit request admission. I also split detection/report display issues into query/API contract and review-validation scopes.
+- [Generated-service validation and change-history criteria](experience/tmaxcloud.md): built an E2E test page to verify generated-service request/response and DB write/read behavior before deployment, and connected CAU change-history tables with row-snapshot copy flow in generated CRUD service code.
+- [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths in GlueSQL.
+- [State contracts and review criteria for a personal product](projects/coupler.md): organized signup/review state contracts, TypeScript operating criteria, DB/release guardrails, and code review criteria across a React Native app, API, and admin web.
 
 ## Engineering Perspective
 

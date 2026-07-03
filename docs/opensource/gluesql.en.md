@@ -35,6 +35,12 @@ flowchart LR
   tests --> review
 ```
 
+## Representative Work
+
+- Implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths.
+- Extended SQL engine query and storage surfaces through AST Builder aggregate helpers, aggregate-expression argument paths, Parquet storage, and CLI surface work.
+- Reviewed and mentored contributor PRs around error handling, edge cases, test coverage, and code organization.
+
 ## CLI Application
 
 GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspect SQL execution flow during development.

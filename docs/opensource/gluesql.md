@@ -35,6 +35,12 @@ flowchart LR
   tests --> review
 ```
 
+## 대표 작업
+
+- `SELECT DISTINCT`와 aggregate `DISTINCT`를 SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, test-suite 경로로 구현·검증했습니다.
+- AST Builder aggregate helper, aggregate expression argument path, Parquet storage와 CLI surface처럼 SQL engine의 query interface와 storage surface를 확장했습니다.
+- Contributor PR에서는 error handling, edge case, test coverage, code organization 관점으로 review와 mentoring을 수행했습니다.
+
 ## CLI Application
 
 GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 CLI로 SQL 실행 흐름을 확인할 수 있습니다.

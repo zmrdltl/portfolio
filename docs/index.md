@@ -6,14 +6,14 @@ PLATFORM SOFTWARE ENGINEER
 
 서비스 설계 정보와 도메인 규칙을 SQL/DDL, 서비스 코드, 테스트·리뷰 기준으로 연결해 플랫폼 기능과 변경 안전성을 함께 다루는 Platform Software Engineer입니다.
 
-ClumL에서는 보안 이벤트 분석 제품군의 리포트·탐지 화면 문제, Rust 서비스 compatibility, issue/spec 기반 검증 기준을 다룹니다. 티맥스클라우드에서는 Java/TypeScript 기반 No-code 플랫폼에서 generated service E2E 검증과 CAU 변경 이력 기준을 구현했습니다. GlueSQL에서는 Rust 기반 SQL engine의 parser/AST, SQL function, storage, test suite, 멘토링과 코드 리뷰를 이어왔고, Coupler에서는 React Native 제품의 앱·API·관리자 웹·DB·배포 기준과 가입·심사 플로우를 정리하고 있습니다.
+대표 작업은 세 가지 축으로 정리합니다. 고객사 데모 서버 운영 중 드러난 race condition을 검증 기준으로 닫고 탐지 화면·리포트 표시 일관성을 맞추는 일, metadata-driven platform에서 생성된 서비스와 데이터 이력을 검증 가능하게 만드는 일, Rust SQL engine과 개인 제품에서 service contract와 test/review 기준을 구현하는 일입니다.
 
 ## 대표 작업
 
-- [보안 분석 제품의 표시 일관성과 변경 안전성](experience/cluml.md): 탐지 목록/상세, time range, port/packet, chart/report가 같은 이벤트 맥락을 유지해야 하는 문제에서 원인과 수정 범위를 분리하고, 요구사항·완료 기준과 review 기준으로 변경 범위를 확인하고 있습니다.
-- [생성 서비스 검증과 변경 이력 기준](experience/tmaxcloud.md): generated service E2E test page, CAU 변경 이력 table, generated CRUD service code의 row snapshot copy 흐름을 정리했습니다.
-- [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): SQL function, parser/AST, aggregate function, storage, test suite를 GitHub PR과 review 중심으로 다뤘습니다.
-- [개인 제품의 상태 계약과 리뷰 기준](projects/coupler.md): React Native app, API, 관리자 웹의 회원가입 응답 계약, 회원 심사 정책, 코드 리뷰 기준을 문서와 구현 기준으로 정리했습니다.
+- [보안 분석 제품의 변경 안전성](experience/cluml.md): 고객사 데모 서버 운영 중 관찰된 대기 증상을 요청 제한 동시성 문제로 재정의하고, 허용치 초과 요청 통과를 막는 불변 조건과 회귀 테스트 기준을 세웠습니다. 탐지 화면·리포트 표시 문제도 query/API contract와 review 기준으로 나누어 검증했습니다.
+- [생성 서비스 검증과 변경 이력 기준](experience/tmaxcloud.md): No-code platform에서 generated service의 request/response와 DB write/read 반영을 배포 전 확인하는 E2E test page를 만들고, CAU 변경 이력 table과 row snapshot copy 흐름을 generated CRUD service code에 연결했습니다.
+- [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): GlueSQL에서 `SELECT DISTINCT`와 aggregate `DISTINCT`를 SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, test-suite 경로로 구현·검증했습니다.
+- [개인 제품의 상태 계약과 리뷰 기준](projects/coupler.md): React Native app, API, 관리자 웹의 가입·심사 상태 계약, TypeScript 운영 기준, DB/release guardrail, 코드 리뷰 기준을 제품 운영 기준으로 정리했습니다.
 
 ## 개발 관점
 

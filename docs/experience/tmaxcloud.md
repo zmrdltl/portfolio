@@ -99,6 +99,12 @@ SQL/DDL 생성 책임이 application backend 흐름과 섞일 수 있는 구조�
 
 Generated service 개발 과정에서 일반 log와 error log가 섞여 문제 위치와 예외 정보를 빠르게 보기 어려운 문제가 있었습니다. ErrorLogger로 exception message, error code, SQL state, stack trace를 정리하고 terminal에서 error log가 빨간색으로 보이도록 출력 형식을 정리했습니다.
 
+## 결과
+
+배포 후에야 확인하던 generated service의 request/response와 DB write/read 반영을 설계·검증 단계에서 확인할 수 있게 했습니다.
+
+CAU 변경 이력은 원본 table, 변경 이력 table, generated CRUD service code의 row snapshot copy 흐름, 특정 시점 select SQL 기준이 같은 generation boundary 안에서 함께 관리되도록 정리했습니다.
+
 ## 기술
 
 Java, TypeScript, React, Material UI, WebSocket, Monaco Editor, Freemarker, Tibero, SQL generation, JUnit

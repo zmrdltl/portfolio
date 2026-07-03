@@ -99,6 +99,12 @@ I separated SQL/DDL generation responsibility into a backend-importable library 
 
 During generated-service development, ordinary logs and error logs could make it difficult to locate exception context quickly. I organized exception messages, error codes, SQL state, and stack traces through an ErrorLogger and made terminal error logs visually distinct.
 
+## Result
+
+I moved generated-service request/response and DB write/read verification from post-deployment checks into the design and validation stage.
+
+For CAU change history, I organized the original table, change-history table, generated CRUD service row-snapshot copy flow, and point-in-time select SQL criteria so they stayed within the same generation boundary.
+
 ## Skills
 
 Java, TypeScript, React, Material UI, WebSocket, Monaco Editor, Freemarker, Tibero, SQL generation, JUnit
