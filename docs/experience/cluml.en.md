@@ -5,12 +5,13 @@
 
 ## Overview
 
-I work on a security event analysis product suite, focusing on detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review.
+I work on a security event analysis product suite, focusing on rate-limiter concurrency problem definition, detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review.
 
-The core of this current role is improving change safety by separating problem causes, change scope, and validation criteria so security analysis screens and reports stay aligned to the same event context.
+The core of this current role is improving change safety by separating symptoms found during customer demo server operation into verifiable problems such as race conditions, API/query contracts, and compatibility risks, then narrowing change scope and completion criteria.
 
 ## Key Work
 
+- Reframed a long-wait symptom observed during customer demo server operation as a check-and-reserve race in request limiting, then organized concurrency invariants and regression-test criteria to prevent over-limit request admission.
 - Separated causes and change scope for display issues around detection list/detail views, time ranges, port/packet display, and chart/report behavior, then reviewed whether analysis screens and reports stayed aligned to the same event context.
 - Documented user entry, central management, event-data storage/distribution, and detection/analysis result flows by role.
 - Clarified work scope and verification criteria by documenting the problem, scope, completion criteria, and test expectations.
@@ -68,6 +69,12 @@ My focus in this structure is keeping security events aligned across user-facing
 
 ## Work Areas
 
+### Request-limiting concurrency and validation criteria
+
+I separated a long-wait symptom observed during customer demo server operation into a check-and-reserve race in the request-limiting logic instead of treating it as a vague latency issue. The problem was captured as a reproducible invariant: concurrent callers could observe the same pre-reservation state and admit requests beyond the effective limit.
+
+The fix direction was to make capacity checks and reservation updates operate against the same state. In PR review, I checked whether that direction was applied together with regression tests. This work is about correctness criteria that prevent over-limit request admission, not a latency-metric claim.
+
 ### Analysis UI and Report Display Consistency
 
 I worked on detection list/detail views, time ranges, port/packet display, and chart/report behavior used by security analysts. This was not only screen cleanup; the goal was to keep analysis results and report outputs aligned around the same event context.
@@ -92,7 +99,7 @@ I review consistency between agreed criteria and PR diffs, API/protocol compatib
 
 ## Result
 
-This work connects detection/report display consistency, Rust service compatibility checks, work criteria definition, and PR review criteria to product quality and change safety.
+This work connects request-limiting concurrency, detection/report display consistency, Rust service compatibility checks, work criteria definition, and PR review criteria to product quality and change safety.
 
 ## Skills
 

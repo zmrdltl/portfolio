@@ -4,7 +4,7 @@
 
 | Period | Organization | Role | Main Focus |
 | --- | --- | --- | --- |
-| 2025.03 - Present | ClumL | Software Engineer | Security event analysis product suite, detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, PR review |
+| 2025.03 - Present | ClumL | Software Engineer | Security event analysis product suite, request-limiting concurrency validation criteria, detection/report display consistency, Rust service compatibility checks, PR review |
 | 2021.10 - 2024.11 | TmaxCloud | Software Engineer | Java/TypeScript No-code platform, generated-service E2E validation, CAU change history, SQL/DDL generation |
 
 ## Direction
@@ -13,7 +13,7 @@ My core background is backend/platform engineering that connects service design 
 
 The representative work at TmaxCloud is connecting generated service/API behavior and table change history to pre-deployment validation, DB verification, and point-in-time snapshot reconstruction criteria in a No-code platform.
 
-At ClumL, I currently work on detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review in a security event analysis product suite. I present this as current product-quality and change-safety work.
+At ClumL, I currently work on request-limiting concurrency validation criteria, detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review in a security event analysis product suite. I present this as current product-quality and change-safety work.
 
 My GlueSQL open-source work is a representative technical-depth signal: SQL engine internals, parser/AST design, Rust-based data processing, storage support, test suites, mentoring, and code review.
 
