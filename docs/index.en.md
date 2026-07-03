@@ -6,7 +6,7 @@ PLATFORM SOFTWARE ENGINEER
 
 I am a Platform Software Engineer who connects service design information and domain rules to SQL/DDL, service code, test criteria, and review criteria so platform features and change safety move together.
 
-I organize representative work around three problem areas: using validation criteria to close a race condition found during customer demo server operation while keeping detection and report displays consistent, making generated services and data history verifiable in metadata-driven platforms, and implementing service contracts plus test/review criteria in a Rust SQL engine and product operation work.
+I organize representative work around three problem areas and four representative cases: using validation criteria to close a race condition found during customer demo server operation while keeping detection and report displays consistent, making generated services and data history verifiable in metadata-driven platforms, and implementing service contracts plus test/review criteria in a Rust SQL engine and product operation work.
 
 ## Representative Work
 

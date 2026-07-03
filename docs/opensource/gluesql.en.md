@@ -53,7 +53,7 @@ I started the program in 2021.06, used the early period to learn Rust and the Gl
 
 - Added the `REVERSE` SQL function and wrote integration tests.
 - Wrote tests around `PartialEq` and `PartialOrd` behavior and fixed related bugs.
-- Merged a [logical XOR parser PR](https://github.com/apache/datafusion-sqlparser-rs/pull/357) into the upstream parser, `sqlparser-rs`, to support logical XOR in GlueSQL.
+- Authored a [logical XOR parser PR](https://github.com/apache/datafusion-sqlparser-rs/pull/357) that was merged into the upstream parser, `sqlparser-rs`, to support logical XOR in GlueSQL.
 - Implemented logical XOR behavior for GlueSQL Boolean values.
 - Refactored aggregation function intermediate state into a private enum to reduce ambiguous value meaning.
 - Added unary plus/minus unit tests.

@@ -6,7 +6,7 @@ PLATFORM SOFTWARE ENGINEER
 
 서비스 설계 정보와 도메인 규칙을 SQL/DDL, 서비스 코드, 테스트·리뷰 기준으로 연결해 플랫폼 기능과 변경 안전성을 함께 다루는 Platform Software Engineer입니다.
 
-대표 작업은 세 가지 축으로 정리합니다. 고객사 데모 서버 운영 중 드러난 race condition을 검증 기준으로 닫고 탐지 화면·리포트 표시 일관성을 맞추는 일, metadata-driven platform에서 생성된 서비스와 데이터 이력을 검증 가능하게 만드는 일, Rust SQL engine과 개인 제품에서 service contract와 test/review 기준을 구현하는 일입니다.
+대표 작업은 세 가지 문제 축과 네 개 대표 사례로 정리합니다. 고객사 데모 서버 운영 중 드러난 race condition을 검증 기준으로 닫고 탐지 화면·리포트 표시 일관성을 맞추는 일, metadata-driven platform에서 생성된 서비스와 데이터 이력을 검증 가능하게 만드는 일, Rust SQL engine과 개인 제품에서 service contract와 test/review 기준을 구현하는 일입니다.
 
 ## 대표 작업
 
