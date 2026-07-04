@@ -101,9 +101,9 @@ During generated-service development, ordinary logs and error logs could make it
 
 ## Result
 
-I moved generated-service request/response and DB write/read verification from post-deployment checks into the design and validation stage.
+I moved generated-service request/response and DB write/read verification from post-deployment checks into the design and validation stage. Incorrect service definitions, request/response shape issues, and missing DB effects could be found before deployment instead of after a build/deploy cycle.
 
-For CAU change history, I organized the original table, change-history table, generated CRUD service row-snapshot copy flow, and point-in-time select SQL criteria so they stayed within the same generation boundary.
+For CAU change history, I organized the original table, change-history table, generated CRUD service row-snapshot copy flow, and point-in-time select SQL criteria so they stayed within the same generation boundary. This kept current-value CRUD behavior and historical snapshot reconstruction under one generated-service validation flow.
 
 ## Skills
 

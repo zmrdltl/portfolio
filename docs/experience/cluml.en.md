@@ -5,17 +5,17 @@
 
 ## Overview
 
-I work on a security event analysis product suite, focusing on rate-limiter concurrency problem definition, detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review.
+I work on change-safety criteria in a security event analysis product suite. I reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem, then organized detection/report display consistency, Rust service compatibility, requirements/completion criteria, and PR review into verifiable checks.
 
-The core of this current role is improving change safety by separating symptoms found during customer demo server operation into verifiable problems such as race conditions, API/query contracts, and compatibility risks, then narrowing change scope and completion criteria.
+The core of this current role is separating the problem definition, validation criteria, and review scope I directly handled. The work is not just screen cleanup or delay handling; it narrows race conditions, API/query contracts, and compatibility risks into criteria that can improve product quality and change safety.
 
 ## Key Work
 
 - Reframed a long-wait symptom observed during customer demo server operation as a check-and-reserve race in request limiting, then organized concurrency invariants and regression-test criteria to prevent over-limit request admission.
 - Separated causes and change scope for display issues around detection list/detail views, time ranges, port/packet display, and chart/report behavior, then reviewed whether analysis screens and reports stayed aligned to the same event context.
 - Documented user entry, central management, event-data storage/distribution, and detection/analysis result flows by role.
-- Clarified work scope and verification criteria by documenting the problem, scope, completion criteria, and test expectations.
-- Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk.
+- Clarified work scope and verification criteria by documenting the problem, scope, out-of-scope items, completion criteria, and test expectations.
+- Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes did not drift beyond the agreed problem scope.
 
 ## Representative Structure
 
@@ -73,7 +73,7 @@ My focus in this structure is keeping security events aligned across user-facing
 
 I separated a long-wait symptom observed during customer demo server operation into a check-and-reserve race in the request-limiting logic instead of treating it as a vague latency issue. The problem was captured as a reproducible invariant: concurrent callers could observe the same pre-reservation state and admit requests beyond the effective limit.
 
-The fix direction was to make capacity checks and reservation updates operate against the same state. In PR review, I checked whether that direction was applied together with regression tests. This work is about correctness criteria that prevent over-limit request admission, not a latency-metric claim.
+My scope was to reframe the symptom as a race condition and define the validation criteria: capacity checks and reservation updates should operate against the same state. In PR review, I checked whether that direction was applied together with regression tests. This work is about correctness criteria that prevent over-limit request admission, not a latency-metric claim.
 
 ### Analysis UI and Report Display Consistency
 
@@ -99,7 +99,7 @@ I review consistency between agreed criteria and PR diffs, API/protocol compatib
 
 ## Result
 
-This work connects request-limiting concurrency, detection/report display consistency, Rust service compatibility checks, work criteria definition, and PR review criteria to product quality and change safety.
+I framed the request-limiting concurrency issue with reproducible invariants and regression criteria, and reviewed detection/report display issues against a shared event context. Rust service compatibility checks, work criteria definition, and PR review became change-safety criteria that help product changes stay compatible with existing behavior and agreed requirements.
 
 ## Skills
 

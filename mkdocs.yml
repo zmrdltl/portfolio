@@ -62,7 +62,6 @@ plugins:
 
 nav:
   - 소개: index.md
-  - 원칙: engineering-principles.md
   - 경력:
       - 요약: experience/index.md
       - ClumL: experience/cluml.md
@@ -71,4 +70,5 @@ nav:
       - GlueSQL: opensource/gluesql.md
   - 프로젝트:
       - Coupler: projects/coupler.md
+  - 원칙: engineering-principles.md
   - 활동: activities/index.md

@@ -4,16 +4,16 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I am a Platform Software Engineer who connects service design information and domain rules to SQL/DDL, service code, test criteria, and review criteria so platform features and change safety move together.
+I am a Platform Software Engineer who connects service design information, data state, and test criteria into one change-safety flow. I turn platform problems into verifiable criteria: whether UI-defined metadata safely reaches executable code and databases, whether security events and reports stay aligned to the same context, and whether SQL engine features remain consistent across parser, AST, executor, and test-suite paths.
 
-I organize representative work around three problem areas and four representative cases: using validation criteria to close a race condition found during customer demo server operation while keeping detection and report displays consistent, making generated services and data history verifiable in metadata-driven platforms, and implementing service contracts plus test/review criteria in a Rust SQL engine and product operation work.
+I organize representative work around three problem areas. In my current role, I work on change safety in a security analysis product. In my previous role, I made generated services and data history verifiable in a metadata-driven platform. In open source, I left Rust SQL engine query semantics and test-suite work in PR and review records. In personal product work, I turned state contracts and release criteria into product operating standards.
 
 ## Representative Work
 
-- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem and set invariant and regression-test criteria to prevent over-limit request admission. I also split detection/report display issues into query/API contract and review-validation scopes.
-- [Generated-service validation and change-history criteria](experience/tmaxcloud.md): built an E2E test page to verify generated-service request/response and DB write/read behavior before deployment, and connected CAU change-history tables with row-snapshot copy flow in generated CRUD service code.
-- [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths in GlueSQL.
-- [State contracts and review criteria for a personal product](projects/coupler.md): organized signup/review state contracts, TypeScript operating criteria, DB/release guardrails, and code review criteria across a React Native app, API, and admin web.
+- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem, then defined invariants and regression-test criteria that prevent over-limit request admission. I also split detection/report display issues into query/API contracts, event context, and review criteria.
+- [Generated-service validation and change-history criteria](experience/tmaxcloud.md): moved generated-service request/response and DB write/read checks from post-deployment verification into pre-deployment E2E validation. I kept CAU change-history tables and row-snapshot copy flow inside the same generation boundary as generated CRUD service code.
+- [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths in GlueSQL. This work is visible through 45+ merged PRs plus review/docs records in `gluesql/gluesql`.
+- [State contracts and review criteria for a personal product](projects/coupler.md): organized signup/review state contracts, TypeScript operating criteria, DB/release guardrails, and code review criteria across a React Native app, API, and admin web. AI-assisted development was used as an operating method for keeping only changes that passed state-contract and regression-validation criteria, not as a replacement for verification.
 
 ## Engineering Perspective
 
@@ -47,7 +47,7 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - [Work](experience/index.md)
 - [ClumL](experience/cluml.md)
 - [TmaxCloud](experience/tmaxcloud.md)
-- [Principles](engineering-principles.md)
 - [GlueSQL](opensource/gluesql.md)
 - [Coupler](projects/coupler.md)
+- [Principles](engineering-principles.md)
 - [Activities](activities/index.md)

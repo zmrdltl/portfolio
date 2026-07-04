@@ -12,7 +12,7 @@ React Native 앱, API, 관리자 웹, 정책 문서로 구성된 제품 개발 �
 - 개발총괄 / Software Engineer
 - 모바일 앱, API, 관리자 웹, 정책 문서의 개발 기준과 릴리스 기준을 정리했습니다.
 - 유지보수 중심으로 시작한 제품을 현재는 모바일 앱, API, 관리자 웹, DB 구조, 정책 문서까지 함께 다루는 범위로 총괄하고 있습니다.
-- 고객·시장 반응과 운영 지표를 기준으로 기획을 조정하고, AI-assisted development를 제품 변경을 빠르게 만들고 검증하는 개발 운영 방식으로 적용하고 있습니다.
+- 고객·시장 반응과 운영 지표를 요구사항 단위로 나누고, 상태 계약·typecheck·migration guard·회귀 검증을 통과한 변경만 제품에 반영하는 운영 기준을 만들고 있습니다.
 
 ## 문제와 제약
 
@@ -61,7 +61,7 @@ flowchart LR
 - 한 번에 약 30개 항목을 입력하던 가입 신청을 일반회원, 준회원, 정회원 단계로 나누고, 준회원·정회원 심사를 병렬로 제출하거나 탭을 이동하며 진행할 수 있도록 DB 구조와 상태 흐름을 재구성했습니다.
 - Admin/Mobile/API가 같은 [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)을 쓰도록 제출/재제출 UX와 심사 목록 기준을 정리했습니다.
 - 고객·시장 반응과 운영 지표를 요구사항 단위로 쪼개고, 앱/API/관리자 웹/DB 변경을 빠르게 반복했습니다.
-- AI-assisted development 결과물은 상태 계약, typecheck, migration guard, 회귀 검증, 정책 문서 동기화 기준으로 검토해 운영 가능한 변경만 반영했습니다.
+- AI-assisted development 결과물은 상태 계약, typecheck, migration guard, 회귀 검증, 정책 문서 동기화 기준으로 검토해 운영 가능한 변경만 반영했습니다. 빠른 구현 자체보다 검증 기준 아래에서 제품 변경을 반복하는 운영 방식으로 제한했습니다.
 - [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)에 테스트, 문서 동기화, 회귀 안전성 기준을 남겼습니다.
 
 ## 검증과 기준
@@ -73,7 +73,7 @@ flowchart LR
 
 2.0.0 전환 범위에서 모바일 앱, API, 관리자 웹의 개발 기준을 정리하고, 약 30개 항목을 한 번에 받던 가입 신청을 단계형 심사 흐름으로 개편했습니다. 회원가입 응답 계약·회원 심사 정책·코드 리뷰 기준은 정책 문서로 남겼습니다.
 
-제품 운영 과정에서 고객·시장 반응을 제품 변경으로 빠르게 전환하되, 상태 계약, 심사 정책, TypeScript 전환 기준, AI-assisted development 검증 기준, 리뷰 기준을 문서와 코드 기준으로 남겼습니다.
+제품 운영 과정에서 고객·시장 반응을 제품 변경으로 빠르게 전환하되, 상태 계약, 심사 정책, TypeScript 전환 기준, AI-assisted development 검증 기준, 리뷰 기준을 문서와 코드 기준으로 남겼습니다. 핵심은 빠른 구현이 아니라 모바일 앱, API, 관리자 웹, DB, 정책 문서가 같은 상태 모델과 릴리스 기준을 공유하게 만든 점입니다.
 
 ## 링크
 

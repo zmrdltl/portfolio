@@ -41,6 +41,12 @@ flowchart LR
 - AST Builder aggregate helper, aggregate expression argument path, Parquet storage와 CLI surface처럼 SQL engine의 query interface와 storage surface를 확장했습니다.
 - Contributor PR에서는 error handling, edge case, test coverage, code organization 관점으로 review와 mentoring을 수행했습니다.
 
+## 검증 가능한 근거
+
+- `gluesql/gluesql`에서 authored merged PR 45개 이상
+- SQL parser, AST/query representation, execution path, storage, test suite를 실제 PR과 review 기록으로 확인 가능
+- OSSCA 2021 멘티, 2022 리드 멘티, 2023 멘토로 이어진 contributor mentoring과 review 기록
+
 ## CLI Application
 
 GlueSQL은 embedded SQL engine으로 사용할 수 있고, 개발 과정에서 CLI로 SQL 실행 흐름을 확인할 수 있습니다.

@@ -41,6 +41,12 @@ flowchart LR
 - Extended SQL engine query and storage surfaces through AST Builder aggregate helpers, aggregate-expression argument paths, Parquet storage, and CLI surface work.
 - Reviewed and mentored contributor PRs around error handling, edge cases, test coverage, and code organization.
 
+## Verifiable Evidence
+
+- Authored 45+ merged PRs in `gluesql/gluesql`
+- SQL parser, AST/query representation, execution path, storage, and test-suite work are visible through actual PR and review records
+- Contributor mentoring and review history continued across OSSCA 2021 mentee, 2022 lead mentee, and 2023 mentor roles
+
 ## CLI Application
 
 GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspect SQL execution flow during development.

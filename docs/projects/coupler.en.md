@@ -12,7 +12,7 @@ I now lead development for a product that began as outsourced maintenance work. 
 - Development lead / Software Engineer
 - Defined development and release criteria across the mobile app, API, admin web, and policy docs.
 - Expanded the work from maintenance-centered ownership into development leadership across the mobile app, API, admin web, database structure, and policy docs.
-- Used customer and market response plus operating signals to adjust product planning, applying AI-assisted development as an operating method for producing and validating product changes quickly.
+- Broke customer and market response plus operating signals into requirement-sized units, then kept only product changes that passed state-contract, typecheck, migration-guard, and regression-validation criteria.
 
 ## Problem and Constraints
 
@@ -61,7 +61,7 @@ My role in this structure was to connect product criteria to policy docs, the ap
 - Reworked the database structure and state flow so the roughly 30-field signup process could be split into general-member, associate-member, and full-member stages, with associate/full review submissions available in parallel or through tab navigation.
 - Aligned submission/resubmission UX and review-list criteria so Admin/Mobile/API use the same [member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md).
 - Broke customer and market response plus operating signals into requirement-sized units, then iterated app/API/admin web/database changes quickly.
-- Reviewed AI-assisted development output against state contracts, typechecks, migration guards, regression validation, and policy-doc sync before keeping operational changes.
+- Reviewed AI-assisted development output against state contracts, typechecks, migration guards, regression validation, and policy-doc sync before keeping operational changes. I used it as an operating method for iterating product changes under verification criteria rather than as a shortcut around validation.
 - Recorded testing, documentation-sync, and regression-safety criteria in the [code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md).
 
 ## Validation and Criteria
@@ -73,7 +73,7 @@ My role in this structure was to connect product criteria to policy docs, the ap
 
 Within the 2.0.0 transition scope, I clarified development criteria across the mobile app, API, and admin web, and changed the roughly 30-field signup flow into staged review flows. The signup response contract, member review policy, and code review criteria are captured in policy docs.
 
-While operating the product, I turned customer and market response into product changes quickly while keeping state contracts, review policies, TypeScript migration criteria, AI-assisted validation criteria, and review criteria as documentation and code standards.
+While operating the product, I turned customer and market response into product changes quickly while keeping state contracts, review policies, TypeScript migration criteria, AI-assisted validation criteria, and review criteria as documentation and code standards. The core result is not fast implementation by itself; it is making the mobile app, API, admin web, database, and policy docs share the same state model and release criteria.
 
 ## Links
 
