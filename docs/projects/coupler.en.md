@@ -81,6 +81,8 @@ My role in this structure was to connect product criteria to the server response
 
 Within the 2.0.0 transition scope, I clarified development criteria across the mobile app, API, and admin web, and changed the roughly 30-field signup flow into staged review flows. The signup response contract, member review policy, and code review criteria are captured in policy docs.
 
+Using Meta SDK postback data, I confirmed that review-request-related events over one month increased from roughly 40 to roughly 1.1k. This is not a user-count or conversion-rate claim; I use it only as event-count evidence for how often users reached the review-request action in the shortened initial application flow.
+
 While operating the product, I turned customer and market response into product changes quickly while keeping state contracts, review policies, TypeScript migration criteria, AI-assisted validation criteria, and review criteria as documentation and code standards. The core result is not fast implementation by itself; it is making the mobile app, API, admin web, database, and policy docs share the same state model and release criteria.
 
 ## Links

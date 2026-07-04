@@ -114,6 +114,8 @@ Generated service 개발 과정에서 일반 log와 error log가 섞여 문제 �
 
 배포 후에야 확인하던 generated service의 request/response와 DB write/read 반영을 설계·검증 단계에서 확인하는 흐름으로 옮겼습니다. 잘못된 service definition, request/response 형식, DB 반영 누락을 build/deploy 이후가 아니라 배포 전 검증 단계에서 발견할 수 있게 한 작업입니다.
 
+당시 작업 기준 반복되던 설계-검증 cycle을 약 4주에서 2주 수준으로 줄이는 데 기여한 것으로 기록되어 있습니다. 이 수치는 generated service 검증을 배포 전 단계로 옮긴 범위의 작업 기준이며, 전체 개발 생산성 일반화 주장으로 쓰지는 않습니다.
+
 CAU 변경 이력은 원본 table, 변경 이력 table, generated CRUD service code의 row snapshot copy 흐름, 특정 시점 select SQL 기준이 같은 generation boundary 안에서 함께 관리되도록 정리했습니다. 이 기준 덕분에 생성된 CRUD 앱의 현재값 처리와 과거 snapshot 재구성 책임이 흩어지지 않고 같은 생성 흐름 안에서 검증됩니다.
 
 ## 기술

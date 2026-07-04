@@ -4,7 +4,7 @@ PLATFORM SOFTWARE ENGINEER
 
 ## 요약
 
-서비스 설계 정보, 데이터 상태, 테스트 기준을 하나의 변경 안전성 흐름으로 묶는 Platform Software Engineer입니다. UI에서 정의된 메타데이터가 실행 코드와 DB에 안전하게 반영되는지, 보안 이벤트와 리포트가 같은 맥락을 유지하는지, SQL engine 기능이 parser/AST/executor/test suite까지 일관되는지 검증 가능한 기준으로 정리해 왔습니다.
+백엔드/플랫폼 문제를 서비스 계약, 데이터 상태, 테스트 기준으로 닫는 Platform Software Engineer입니다. ClumL에서는 보안 분석 제품의 요청 제한 동시성·표시 일관성 문제를 검증 기준으로 정리했고, 티맥스클라우드에서는 UI 메타데이터가 generated service code와 DB 변경 이력으로 이어지는 흐름을 구현했습니다. GlueSQL에서는 Rust SQL engine의 parser/AST/executor/test suite 변경을 45개 이상 merged PR과 review 기록으로 남겼고, Coupler에서는 React Native app/API/Admin의 상태 계약과 릴리스 기준을 제품 운영 기준으로 정리했습니다.
 
 대표 작업은 네 가지 작업 흐름으로 정리합니다. 최신 경력에서는 보안 분석 제품의 변경 안전성을 다루고, 이전 경력에서는 metadata-driven platform의 생성 서비스와 데이터 이력을 검증 가능하게 만들었으며, 오픈소스에서는 Rust SQL engine의 query semantics와 test suite를 PR과 review 기록으로 남겼습니다. 개인 제품에서는 상태 계약과 릴리스 기준을 제품 운영 기준으로 정리했습니다.
 
@@ -13,7 +13,7 @@ PLATFORM SOFTWARE ENGINEER
 - [보안 분석 제품의 변경 안전성](experience/cluml.md): 고객사 데모 서버 운영 중 관찰된 대기 증상을 요청 제한 동시성 문제로 재정의하고, 허용치 초과 요청 통과를 막는 불변 조건과 회귀 테스트 기준을 세웠습니다. 탐지 화면과 리포트 표시 문제는 query/API contract, event context, review 기준으로 나누어 검토했습니다.
 - [생성 서비스 검증과 변경 이력 기준](experience/tmaxcloud.md): No-code platform에서 generated service의 request/response와 DB write/read 반영을 배포 후 확인하던 흐름을 배포 전 E2E 검증 단계로 옮겼습니다. CAU 변경 이력 table과 row snapshot copy 흐름은 generated CRUD service code 안에서 같은 generation boundary로 관리되게 했습니다.
 - [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): GlueSQL에서 `SELECT DISTINCT`와 aggregate `DISTINCT`를 SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, test-suite 경로로 구현·검증했습니다. `gluesql/gluesql` 기준 merged PR 45개 이상과 review/docs 기록으로 확인할 수 있는 기여입니다.
-- [개인 제품의 상태 계약과 리뷰 기준](projects/coupler.md): React Native app, API, 관리자 웹의 가입·심사 상태 계약, TypeScript 운영 기준, DB/release guardrail, 코드 리뷰 기준을 제품 운영 기준으로 정리했습니다. AI-assisted development는 빠른 구현 자체가 아니라 상태 계약과 회귀 검증 기준 아래에서 운영 가능한 변경만 반영하는 방식으로 사용했습니다.
+- [개인 제품의 상태 계약과 리뷰 기준](projects/coupler.md): React Native app, API, 관리자 웹의 가입·심사 상태 계약, TypeScript 운영 기준, DB/release guardrail, 코드 리뷰 기준을 제품 운영 기준으로 정리했습니다. Meta SDK postback 기준 1개월 심사 요청 관련 event가 약 40개에서 약 1.1k 수준으로 증가한 것을 확인했고, 이 수치는 사용자 수나 전환율이 아니라 event count로만 사용합니다.
 
 ## 개발 관점
 
