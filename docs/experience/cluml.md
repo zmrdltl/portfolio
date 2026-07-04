@@ -99,19 +99,13 @@ flowchart LR
 ## 보조 작업 기준
 
 ```mermaid
-flowchart LR
-  issue["문제 정의"]
-  scope["범위/하지 않을 일"]
-  criteria["완료 기준"]
-  tests["테스트 기준"]
-  review["PR review"]
-  safety["변경 안전성 확인"]
+flowchart TD
+  issue["문제 정의 + 범위/하지 않을 일"]
+  criteria["완료 기준 + 테스트 기준"]
+  review["PR review + 변경 안전성 확인"]
 
-  issue --> scope
-  scope --> criteria
-  criteria --> tests
-  tests --> review
-  review --> safety
+  issue --> criteria
+  criteria --> review
 ```
 
 - Rust 서비스의 설정, 날짜·시간 처리, serialization, 테스트 경계를 검토하며 기존 동작과의 compatibility risk를 확인했습니다.

@@ -22,30 +22,41 @@ No-code platform의 핵심 문제는 사용자가 화면에서 정의한 설계 
 - 특정 시점의 table snapshot을 재구성하기 위해 필요한 snapshot만 고르는 select SQL 기준을 정리했습니다.
 - SQL/DDL 생성 책임은 backend에서 import 가능한 library 구조로 분리하고, terminal error highlighting과 예외 정보 formatting은 개발 진단 보조 구조로 정리했습니다.
 
-## 대표 구조
+## 대표 작업 흐름
 
 ```mermaid
-flowchart LR
+flowchart TD
   ui["제품 UI\nApp / Entity / Service 정의"]
-  metadata["Metadata Store\n설계 정보"]
-  generator["Generation Backend\nSQL / DDL, Java service code 생성"]
-  artifact["Generated Application\n생성된 application artifact"]
-  runtime["Generated Service Runtime\nrequest 처리"]
-  db["Application Database"]
-  test["E2E Test Page\nrequest / response / DB 반영 검증"]
-  history["CAU History Table\nrow snapshot 저장"]
+  generator["Generation Backend\nmetadata -> SQL / DDL / Java service"]
+  runtime["Generated Service Runtime"]
+  tester["E2E Test Page\nrequest template / WebSocket 호출"]
+  validation["Response + DB write/read 확인"]
+  gate["검증 기준\n배포 전 확인"]
 
-  ui --> metadata
-  metadata --> generator
-  generator --> artifact
-  artifact --> runtime
-  runtime --> db
-  test --> runtime
-  test --> db
-  runtime --> history
+  ui --> generator
+  generator --> runtime
+  tester --> runtime
+  runtime --> validation
+  validation --> gate
 ```
 
-이 구조는 화면에서 정의한 설계 정보가 generation backend, generated application, runtime, DB, E2E test page, 변경 이력 table로 이어지는 흐름을 보여줍니다.
+Generated service는 jar 생성과 별도 배포 후에야 확인하던 request/response와 DB 반영 문제를 배포 전 검증 단계로 당기는 작업이었습니다.
+
+```mermaid
+flowchart TD
+  entity["CAU 옵션이 켜진 entity"]
+  ddl["DDL / generation\n원본 table + 변경 이력 table"]
+  crud["Generated CRUD service SQL\ninsert/update/delete 전 snapshot copy"]
+  history["CAU 변경 이력 table\nPK / 수정자 / snapshot"]
+  restore["특정 시점 select SQL\nsnapshot 기반 table 상태 재구성"]
+
+  entity --> ddl
+  ddl --> crud
+  crud --> history
+  history --> restore
+```
+
+CAU 변경 이력은 DB trigger 구현 주장이 아니라, generated CRUD service SQL 안에서 row snapshot copy와 특정 시점 select SQL 기준을 같은 generation boundary에 둔 작업입니다.
 
 ## Generated Service E2E Validation
 

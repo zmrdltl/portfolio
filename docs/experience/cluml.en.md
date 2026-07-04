@@ -99,19 +99,13 @@ Validation/result:
 ## Supporting Work Criteria
 
 ```mermaid
-flowchart LR
-  issue["Problem Definition"]
-  scope["Scope / Non-goals"]
-  criteria["Completion Criteria"]
-  tests["Test Criteria"]
-  review["PR Review"]
-  safety["Change-Safety Check"]
+flowchart TD
+  issue["Problem Definition + Scope / Non-goals"]
+  criteria["Completion Criteria + Test Criteria"]
+  review["PR Review + Change-Safety Check"]
 
-  issue --> scope
-  scope --> criteria
-  criteria --> tests
-  tests --> review
-  review --> safety
+  issue --> criteria
+  criteria --> review
 ```
 
 - Reviewed configuration, date/time handling, serialization, and test boundaries in Rust services to check compatibility risk against existing behavior.

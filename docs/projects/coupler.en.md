@@ -20,39 +20,47 @@ While moving the React Native product from its 1.0.0 initial implementation thro
 
 The previous signup flow required users to enter roughly 30 fields at once, and the review stages and screen-branching rules were becoming a maintenance and product-operations burden.
 
-## Representative Structure
+## Signup And Review State Flow
+
+```mermaid
+stateDiagram-v2
+  [*] --> SignupSubmitted: Submit basic information and required profile
+  SignupSubmitted --> AssociateMember: Basic review approved
+  SignupSubmitted --> ReapplyRequired: Returned
+  ReapplyRequired --> SignupSubmitted: Resubmit after changes
+  AssociateMember --> AssociateReviewPending: Request associate review
+  AssociateMember --> FullReviewPending: Request full-member review
+  AssociateReviewPending --> AssociateMember: Approved or returned
+  FullReviewPending --> FullMember: Full-member approved
+  FullReviewPending --> AssociateMember: Returned for resubmission
+```
+
+The core change was splitting a roughly 30-field signup flow into staged review flows, then making app screens, API responses, and admin review queues follow the same state criteria.
+
+## App / API / Admin Boundary
 
 ```mermaid
 flowchart LR
-  decision["Product Decision / Criteria"]
-  docs["Policy Docs\nServer response contract / member review policy"]
-  state["Signup / Review State Model"]
-  app["React Native App"]
-  api["API\nUsage flows / response contracts"]
-  admin["Admin Web\nReview operations"]
-  db["MySQL\nSchema / migration"]
-  qa["QA / Regression Check"]
-  release["Release Criteria"]
-  stores["App Store / Google Play"]
+  docs["Policy Docs\nserver response contract / member review policy"]
+  api["API\naccess_context / request_origin"]
+  app["React Native App\nscreen routing / matching tab access"]
+  admin["Admin Web\nreview queue / detail handling"]
+  db["MySQL\nstate / review rows / migration"]
+  tests["Regression Validation\ncontract / routing / queue tests"]
+  release["Release Criteria\nQA / docs sync"]
 
-  decision --> docs
-  decision --> state
-  docs --> state
-  state --> app
-  state --> api
-  state --> admin
-  app --> api
-  admin --> api
+  docs --> api
+  api --> app
+  api --> admin
   api --> db
-  app --> qa
-  api --> qa
-  admin --> qa
-  docs --> qa
-  qa --> release
-  release --> stores
+  app --> tests
+  admin --> tests
+  api --> tests
+  db --> tests
+  tests --> release
 ```
 
-My role in this structure was to connect product criteria to policy docs, the app, API, admin web, database structure, QA, and release criteria.
+My role in this structure was to connect product criteria to the server response contract, app routing, admin review queues, database state, regression tests, and release criteria.
 
 ## Design and Implementation
 

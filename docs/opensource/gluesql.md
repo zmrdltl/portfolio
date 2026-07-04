@@ -15,25 +15,21 @@ GlueSQL은 Rust 기반 SQL database engine입니다. 기여 범위는 SQL engine
 
 SQL engine 기능은 문법만 추가한다고 끝나지 않습니다. parser가 구문을 받아들이고, AST와 plan/execution path가 같은 의미를 유지하며, storage와 test suite가 예외 조건을 고정해야 합니다. GlueSQL 기여는 이 흐름을 PR과 review 기록으로 남긴 작업입니다.
 
-## 구조 요약
+## DISTINCT 처리와 검증 흐름
 
 ```mermaid
-flowchart LR
-  syntax["SQL Syntax / Function"]
-  parser["Parser"]
-  ast["AST / Builder"]
-  plan["Plan / Execution"]
-  storage["Storage"]
-  tests["Test Suite"]
-  review["PR Review / Docs"]
+flowchart TD
+  sql["SQL\nSELECT DISTINCT / aggregate DISTINCT"]
+  model["Translation + AST / Query Model\nSelect.distinct / Function distinct"]
+  execute["Execution\nprojection / aggregate state / de-duplication"]
+  tests["Regression Coverage\nsingle column / multi column / map / aggregate / CI"]
 
-  syntax --> parser
-  parser --> ast
-  ast --> plan
-  plan --> storage
-  plan --> tests
-  tests --> review
+  sql --> model
+  model --> execute
+  execute --> tests
 ```
+
+이 그림은 GlueSQL 전체 구조가 아니라 `DISTINCT` support를 문법, translation, AST/query representation, executor, aggregate state, test suite까지 이어서 검증한 경로입니다.
 
 ## 대표 작업
 

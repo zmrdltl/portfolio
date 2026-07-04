@@ -15,25 +15,21 @@ This page presents open-source work across SQL engine parser, AST, execution pat
 
 Adding a SQL engine feature does not end at syntax support. The parser must accept the syntax, the AST and plan/execution path must preserve the same meaning, and storage and test suites must lock edge conditions. My GlueSQL contribution leaves that flow in PR and review records.
 
-## Structure Summary
+## DISTINCT Processing And Validation Flow
 
 ```mermaid
-flowchart LR
-  syntax["SQL Syntax / Function"]
-  parser["Parser"]
-  ast["AST / Builder"]
-  plan["Plan / Execution"]
-  storage["Storage"]
-  tests["Test Suite"]
-  review["PR Review / Docs"]
+flowchart TD
+  sql["SQL\nSELECT DISTINCT / aggregate DISTINCT"]
+  model["Translation + AST / Query Model\nSelect.distinct / Function distinct"]
+  execute["Execution\nprojection / aggregate state / de-duplication"]
+  tests["Regression Coverage\nsingle column / multi column / map / aggregate / CI"]
 
-  syntax --> parser
-  parser --> ast
-  ast --> plan
-  plan --> storage
-  plan --> tests
-  tests --> review
+  sql --> model
+  model --> execute
+  execute --> tests
 ```
+
+This diagram is not a full GlueSQL architecture overview. It shows how `DISTINCT` support was carried from SQL syntax through translation, AST/query representation, execution, aggregate state, and regression coverage.
 
 ## Representative Work
 

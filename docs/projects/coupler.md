@@ -20,39 +20,47 @@ React Native 제품을 1.0.0 초기 구현 이후 2.0.0까지 전환하면서 �
 
 기존 가입 신청은 약 30개 항목을 한 번에 입력해야 하는 구조였고, 심사 단계와 화면 분기 기준이 제품 운영과 유지보수에 부담을 주고 있었습니다.
 
-## 대표 구조
+## 회원가입·심사 상태 흐름
+
+```mermaid
+stateDiagram-v2
+  [*] --> SignupSubmitted: 기본정보와 필수 프로필 제출
+  SignupSubmitted --> AssociateMember: 기본정보 심사 승인
+  SignupSubmitted --> ReapplyRequired: 반려
+  ReapplyRequired --> SignupSubmitted: 변경 후 재제출
+  AssociateMember --> AssociateReviewPending: 준회원 심사 요청
+  AssociateMember --> FullReviewPending: 정회원 심사 요청
+  AssociateReviewPending --> AssociateMember: 승인 또는 반려 처리
+  FullReviewPending --> FullMember: 정회원 승인
+  FullReviewPending --> AssociateMember: 반려 후 재제출 대기
+```
+
+핵심은 한 번에 약 30개 항목을 입력하던 가입 신청을 단계형 심사 흐름으로 나누고, 제출·재제출·승인·반려 상태를 앱, API, 관리자 웹이 같은 기준으로 판단하게 만든 것입니다.
+
+## App / API / Admin 책임 경계
 
 ```mermaid
 flowchart LR
-  decision["기획 결정 / 제품 기준"]
   docs["정책 문서\n서버 응답 계약 / 회원 심사 정책"]
-  state["회원가입·심사 상태 모델"]
-  app["React Native App"]
-  api["API\n사용 흐름 / response contract"]
-  admin["Admin Web\n심사 운영 화면"]
-  db["MySQL\nschema / migration"]
-  qa["QA / Regression Check"]
-  release["Release Criteria"]
-  stores["App Store / Google Play"]
+  api["API\naccess_context / request_origin"]
+  app["React Native App\n화면 분기 / matching tab 접근"]
+  admin["Admin Web\n심사 큐 / 상세 처리"]
+  db["MySQL\n상태 / 심사 row / migration"]
+  tests["회귀 검증\ncontract / routing / queue tests"]
+  release["릴리스 기준\nQA / 문서 동기화"]
 
-  decision --> docs
-  decision --> state
-  docs --> state
-  state --> app
-  state --> api
-  state --> admin
-  app --> api
-  admin --> api
+  docs --> api
+  api --> app
+  api --> admin
   api --> db
-  app --> qa
-  api --> qa
-  admin --> qa
-  docs --> qa
-  qa --> release
-  release --> stores
+  app --> tests
+  admin --> tests
+  api --> tests
+  db --> tests
+  tests --> release
 ```
 
-위 구조에서 제 역할은 제품 기준을 정책 문서, 앱, API, 관리자 웹, DB 구조, QA와 릴리스 기준으로 이어지게 만드는 것이었습니다.
+이 구조에서 제 역할은 제품 기준을 서버 응답 계약, 앱 화면 분기, 관리자 심사 큐, DB 상태, 회귀 테스트와 릴리스 기준으로 이어지게 만드는 것이었습니다.
 
 ## 설계와 구현
 

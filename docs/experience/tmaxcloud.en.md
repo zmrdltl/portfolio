@@ -22,30 +22,41 @@ Representative outcomes:
 - Defined select SQL criteria for reconstructing a point-in-time table snapshot from the needed snapshots.
 - Separated SQL/DDL generation responsibility into a backend-importable library structure, and organized terminal error highlighting and exception formatting as developer diagnostics support.
 
-## Representative Structure
+## Representative Work Flows
 
 ```mermaid
-flowchart LR
+flowchart TD
   ui["Product UI\nApp / Entity / Service definition"]
-  metadata["Metadata Store\nDesign information"]
-  generator["Generation Backend\nSQL / DDL, Java service code generation"]
-  artifact["Generated Application\nGenerated application artifact"]
-  runtime["Generated Service Runtime\nRequest handling"]
-  db["Application Database"]
-  test["E2E Test Page\nRequest / response / DB verification"]
-  history["CAU History Table\nRow snapshot storage"]
+  generator["Generation Backend\nmetadata -> SQL / DDL / Java service"]
+  runtime["Generated Service Runtime"]
+  tester["E2E Test Page\nrequest template / WebSocket call"]
+  validation["Response + DB write/read check"]
+  gate["Validation criteria\npre-deployment check"]
 
-  ui --> metadata
-  metadata --> generator
-  generator --> artifact
-  artifact --> runtime
-  runtime --> db
-  test --> runtime
-  test --> db
-  runtime --> history
+  ui --> generator
+  generator --> runtime
+  tester --> runtime
+  runtime --> validation
+  validation --> gate
 ```
 
-This structure shows how design information from the UI flows into the generation backend, generated application, runtime, database, E2E test page, and change-history table.
+The generated-service work moved request/response and DB-effect checks from post-deployment verification into a pre-deployment validation step.
+
+```mermaid
+flowchart TD
+  entity["Entity with CAU option"]
+  ddl["DDL / generation\noriginal table + history table"]
+  crud["Generated CRUD service SQL\nsnapshot copy before insert/update/delete"]
+  history["CAU history table\nPK / modifier / snapshot"]
+  restore["Point-in-time SQL\nreconstruct table state from snapshots"]
+
+  entity --> ddl
+  ddl --> crud
+  crud --> history
+  history --> restore
+```
+
+The CAU change-history work is not a DB-trigger implementation claim. The key decision was to keep row-snapshot copy and point-in-time select criteria inside the same generation boundary as generated CRUD service SQL.
 
 ## Generated-Service E2E Validation
 
