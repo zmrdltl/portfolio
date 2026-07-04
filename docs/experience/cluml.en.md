@@ -5,101 +5,118 @@
 
 ## Overview
 
-I work on change-safety criteria in a security event analysis product suite. I reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem, then organized detection/report display consistency, Rust service compatibility, requirements/completion criteria, and PR review into verifiable checks.
+I work on change-safety criteria in a security event analysis product suite. The core of my current role is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and close them with verifiable criteria.
 
-The core of this current role is separating the problem definition, validation criteria, and review scope I directly handled. The work is not just screen cleanup or delay handling; it narrows race conditions, API/query contracts, and compatibility risks into criteria that can improve product quality and change safety.
+The representative work here is request-limiting concurrency and detection/report display consistency. Rust service compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
 
-## Key Work
+## Representative Work
 
-- Reframed a long-wait symptom observed during customer demo server operation as a check-and-reserve race in request limiting, then organized concurrency invariants and regression-test criteria to prevent over-limit request admission.
-- Separated causes and change scope for display issues around detection list/detail views, time ranges, port/packet display, and chart/report behavior, then reviewed whether analysis screens and reports stayed aligned to the same event context.
-- Documented user entry, central management, event-data storage/distribution, and detection/analysis result flows by role.
-- Clarified work scope and verification criteria by documenting the problem, scope, out-of-scope items, completion criteria, and test expectations.
-- Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes did not drift beyond the agreed problem scope.
+### Aimer RateLimiter Over-Limit Request Admission
 
-## Representative Structure
+I reframed a long-wait symptom observed during customer demo server operation as a check-and-reserve race in request limiting, not as a generic latency problem.
 
-The security event analysis flow can be summarized by role as follows.
+#### Problem Context
 
 ```mermaid
 flowchart LR
-  browser["Browser"]
-  web["User Entry Web UI"]
-  management["Central Management Service"]
-  data["Event Data Storage / Distribution Service"]
-  collector["Network Event Generation / Packet Extraction Service"]
-  replay["Log / Historical Data Ingestion Service"]
-  detection["Detection Service"]
-  analysis["Analysis Service"]
-  timeseries["Time-series Processing Service"]
-  reference["Threat Reference Service"]
-  extraUi["User-driven Additional Analysis UI"]
-  extraEngine["Additional Analysis Engine"]
+  ui["Analysis UI"]
+  api["Aimer API"]
+  limiter["RateLimiter"]
+  bucket["Reservation / Capacity State"]
+  worker["Aimer Work Execution"]
 
-  browser --> web
-  web --> management
-  web --> data
-  web --> reference
-
-  management --> detection
-  detection --> management
-
-  management --> analysis
-  analysis --> management
-
-  management --> collector
-  collector --> management
-
-  management --> timeseries
-  timeseries --> management
-
-  replay --> data
-  collector --> data
-  data --> collector
-  data --> detection
-  data --> analysis
-  data --> timeseries
-  timeseries --> data
-
-  browser -. user-driven analysis handoff .-> extraUi
-  extraUi --> extraEngine
+  ui --> api
+  api --> limiter
+  limiter --> bucket
+  limiter --> worker
 ```
 
-My focus in this structure is keeping security events aligned across user-facing screens, the central management service, event-data storage/distribution, detection/analysis services, and report display rules.
+#### Failure Flow
 
-## Work Areas
+```mermaid
+sequenceDiagram
+  participant A as Request A
+  participant B as Request B
+  participant L as RateLimiter
+  participant S as Reservation / Capacity State
 
-### Request-limiting concurrency and validation criteria
+  A->>L: Check capacity
+  L->>S: Read pre-reservation state
+  S-->>L: Can pass
+  B->>L: Check capacity
+  L->>S: Read the same pre-reservation state
+  S-->>L: Can pass
+  A->>S: Record reservation
+  B->>S: Record reservation
+  Note over L,S: Multiple requests passing from the same state can admit over-limit requests
+```
 
-I separated a long-wait symptom observed during customer demo server operation into a check-and-reserve race in the request-limiting logic instead of treating it as a vague latency issue. The problem was captured as a reproducible invariant: concurrent callers could observe the same pre-reservation state and admit requests beyond the effective limit.
+What I did:
 
-My scope was to reframe the symptom as a race condition and define the validation criteria: capacity checks and reservation updates should operate against the same state. In PR review, I checked whether that direction was applied together with regression tests. This work is about correctness criteria that prevent over-limit request admission, not a latency-metric claim.
+- Separated the long-wait symptom into a check-and-reserve race in `RateLimiter`.
+- Defined the validation criterion that capacity checks and reservation updates must operate against the same state.
+- Reviewed whether the PR change matched the acceptance criteria and regression-test criteria.
 
-### Analysis UI and Report Display Consistency
+Validation/result:
 
-I worked on detection list/detail views, time ranges, port/packet display, and chart/report behavior used by security analysts. This was not only screen cleanup; the goal was to keep analysis results and report outputs aligned around the same event context.
+- Captured the condition where requests could pass more than 10x beyond the allowed limit as a reproducible correctness problem.
+- Framed the result as a correctness criterion that prevents over-limit request admission, not as a latency-metric claim.
 
-The core risk was that if list views, detail views, charts, and reports represented the same security event through different criteria, analyst trust could break. I therefore checked not only the screen-level fix but also whether the display rules and data flow stayed aligned to the same event context.
+### Detection Screen and Report Display Consistency
 
-### Product Structure and Data-flow Documentation
+If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break. This work is not a list of screen fixes; it is about checking whether event context stays consistent through the display path.
 
-I separated the user request path, control/status exchange with the central management service, event-data storage/distribution, and detection/analysis result return flow by role.
+```mermaid
+flowchart LR
+  event["Security Event"]
+  list["Detection List"]
+  detail["Detail Screen"]
+  chart["Chart"]
+  report["Report"]
+  context["Shared Event Context"]
 
-### Rust Service Compatibility Checks
+  event --> list
+  event --> detail
+  event --> chart
+  event --> report
+  list --> context
+  detail --> context
+  chart --> context
+  report --> context
+```
 
-I reviewed configuration, date/time handling, serialization, and test boundaries in Rust services to check compatibility risk against existing behavior. Dependency, lint/clippy, CI failure, and compatibility risks are treated as explicit PR review checks.
+What I did:
 
-### Work Criteria Definition
+- Separated causes and change scope for detection list/detail views, time ranges, port/packet display, and chart/report behavior.
+- Reviewed whether analysis screens and reports stayed aligned to the same event context, rather than checking only screen-level fixes.
+- Included API/query contracts and display-rule drift in review criteria.
 
-Before implementation starts, I document the problem, scope, out-of-scope items, completion criteria, and test expectations. These criteria help teammates and AI agents implement within the same scope and help PR review check scope and change-safety risk.
+Validation/result:
 
-### PR Review and Quality Control
+- Organized detection/report display issues around whether the same event context was preserved.
+- Connected those checks to change-safety criteria so product changes would not weaken trust in analysis results and report outputs.
 
-I review consistency between agreed criteria and PR diffs, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes stay aligned with the agreed scope and verification criteria.
+## Supporting Work Criteria
 
-## Result
+```mermaid
+flowchart LR
+  issue["Problem Definition"]
+  scope["Scope / Non-goals"]
+  criteria["Completion Criteria"]
+  tests["Test Criteria"]
+  review["PR Review"]
+  safety["Change-Safety Check"]
 
-I framed the request-limiting concurrency issue with reproducible invariants and regression criteria, and reviewed detection/report display issues against a shared event context. Rust service compatibility checks, work criteria definition, and PR review became change-safety criteria that help product changes stay compatible with existing behavior and agreed requirements.
+  issue --> scope
+  scope --> criteria
+  criteria --> tests
+  tests --> review
+  review --> safety
+```
+
+- Reviewed configuration, date/time handling, serialization, and test boundaries in Rust services to check compatibility risk against existing behavior.
+- Clarified the problem, scope, non-goals, completion criteria, and test expectations before implementation so implementation and review used the same criteria.
+- Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes did not drift beyond the agreed problem scope.
 
 ## Skills
 
