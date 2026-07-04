@@ -6,7 +6,7 @@ PLATFORM SOFTWARE ENGINEER
 
 서비스 설계 정보, 데이터 상태, 테스트 기준을 하나의 변경 안전성 흐름으로 묶는 Platform Software Engineer입니다. UI에서 정의된 메타데이터가 실행 코드와 DB에 안전하게 반영되는지, 보안 이벤트와 리포트가 같은 맥락을 유지하는지, SQL engine 기능이 parser/AST/executor/test suite까지 일관되는지 검증 가능한 기준으로 정리해 왔습니다.
 
-대표 작업은 세 가지 문제 축으로 정리합니다. 최신 경력에서는 보안 분석 제품의 변경 안전성을 다루고, 이전 경력에서는 metadata-driven platform의 생성 서비스와 데이터 이력을 검증 가능하게 만들었으며, 오픈소스에서는 Rust SQL engine의 query semantics와 test suite를 PR과 review 기록으로 남겼습니다. 개인 제품에서는 상태 계약과 릴리스 기준을 제품 운영 기준으로 정리했습니다.
+대표 작업은 네 가지 작업 흐름으로 정리합니다. 최신 경력에서는 보안 분석 제품의 변경 안전성을 다루고, 이전 경력에서는 metadata-driven platform의 생성 서비스와 데이터 이력을 검증 가능하게 만들었으며, 오픈소스에서는 Rust SQL engine의 query semantics와 test suite를 PR과 review 기록으로 남겼습니다. 개인 제품에서는 상태 계약과 릴리스 기준을 제품 운영 기준으로 정리했습니다.
 
 ## 대표 작업
 

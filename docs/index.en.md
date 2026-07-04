@@ -6,7 +6,7 @@ PLATFORM SOFTWARE ENGINEER
 
 I am a Platform Software Engineer who connects service design information, data state, and test criteria into one change-safety flow. I turn platform problems into verifiable criteria: whether UI-defined metadata safely reaches executable code and databases, whether security events and reports stay aligned to the same context, and whether SQL engine features remain consistent across parser, AST, executor, and test-suite paths.
 
-I organize representative work around three problem areas. In my current role, I work on change safety in a security analysis product. In my previous role, I made generated services and data history verifiable in a metadata-driven platform. In open source, I left Rust SQL engine query semantics and test-suite work in PR and review records. In personal product work, I turned state contracts and release criteria into product operating standards.
+I organize representative work around four work streams. In my current role, I work on change safety in a security analysis product. In my previous role, I made generated services and data history verifiable in a metadata-driven platform. In open source, I left Rust SQL engine query semantics and test-suite work in PR and review records. In personal product work, I turned state contracts and release criteria into product operating standards.
 
 ## Representative Work
 
