@@ -4,15 +4,15 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I am a Platform Software Engineer who improves change safety as AI-assisted development accelerates product and platform work, connecting problem definition, service contracts, types, tests, reviews, and release criteria into one validation system.
+I am a Platform Software Engineer who turns fragile state transitions, data flows, and service contracts in changing products and platforms into verifiable criteria.
 
-In my current role, I narrow operational concurrency, configuration, and display issues into reproducible criteria. In prior platform work, I made generated services and data history verifiable before deployment. In product development, I align app, API, admin, and database behavior around shared state contracts and release criteria.
+In my current role, I closed a request-limiting concurrency issue with reproducible invariants and regression-test criteria. In prior platform work, I made generated services and data history verifiable before deployment. In product development, I align app, API, admin, and database behavior around shared state contracts and release criteria.
 
-I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
+In AI-assisted development, I focus less on code generation itself and more on keeping problem definitions, docs, type checks, regression tests, and review criteria aligned so only operable changes remain. I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
 
 ## Representative Work
 
-- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem, then defined invariants and regression-test criteria that prevent over-limit request admission. I organized detection/report display around shared event-context criteria and moved HOG detection-period settings into external configuration, reducing repeated operating-change work time by more than 30%.
+- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency-correctness problem, then closed it with invariants and regression-test criteria that prevent over-limit request admission. I handled detection/report display consistency, Rust service configuration changes, and PR review criteria as part of the same change-safety thread.
 - [Generated-platform validation and data history](experience/tmaxcloud.md): moved generated-service request/response and DB write/read checks from post-deployment verification into pre-deployment E2E validation. I kept CAU change-history tables and row-snapshot copy flow inside the same generation boundary as generated CRUD service code.
 - [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths in GlueSQL. This work is visible through 45+ merged PRs plus review/docs records in `gluesql/gluesql`.
 

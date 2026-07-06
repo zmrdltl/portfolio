@@ -4,15 +4,15 @@ PLATFORM SOFTWARE ENGINEER
 
 ## 요약
 
-AI-assisted development 환경에서 제품·플랫폼 변경 속도가 빨라질수록, 문제 정의부터 서비스 계약·타입·테스트·리뷰·릴리스 기준까지 하나의 검증 체계로 묶어 변경 안전성을 높이는 Platform Software Engineer입니다.
+제품과 플랫폼의 변경이 빨라질수록 깨지기 쉬운 상태 전이, 데이터 흐름, 서비스 계약을 검증 가능한 기준으로 정리하는 Platform Software Engineer입니다.
 
-최신 경력에서는 운영 중 드러난 동시성·설정·표시 문제를 재현 가능한 기준으로 좁혀 다뤘고, 이전 경력에서는 generated service와 데이터 이력을 배포 전 검증 가능한 구조로 만들었습니다. 제품 개발에서는 앱/API/관리자 웹/DB가 같은 상태 계약과 릴리스 기준을 따르도록 정리했습니다.
+최신 경력에서는 운영 중 드러난 요청 제한 동시성 문제를 재현 가능한 불변 조건과 회귀 테스트 기준으로 닫았고, 이전 경력에서는 generated service와 데이터 이력을 배포 전 검증 가능한 구조로 만들었습니다. 제품 개발에서는 앱/API/관리자 웹/DB가 같은 상태 계약과 릴리스 기준을 따르도록 정리했습니다.
 
-공개 기술 깊이는 Rust SQL engine 오픈소스 기여로 보강합니다. GlueSQL에서는 query semantics, AST/execution path, storage surface, test suite를 PR과 review 기록으로 남겼습니다.
+AI-assisted development 환경에서도 코드 생성 자체보다 문제 정의, 문서, 타입 검사, 회귀 테스트, 리뷰 기준을 함께 고정해 운영 가능한 변경만 남기는 방식을 사용합니다. 공개 기술 깊이는 Rust SQL engine 오픈소스 기여로 보강합니다. GlueSQL에서는 query semantics, AST/execution path, storage surface, test suite를 PR과 review 기록으로 남겼습니다.
 
 ## 대표 작업
 
-- [보안 분석 제품의 변경 안전성](experience/cluml.md): 고객사 데모 서버 운영 중 관찰된 대기 증상을 요청 제한 동시성 문제로 재정의하고, 허용치 초과 요청 통과를 막는 불변 조건과 회귀 테스트 기준을 세웠습니다. 탐지 화면·리포트는 같은 event context를 유지하는 기준으로 정리했고, HOG 탐지 주기 설정은 외부 config로 분리해 반복 운영 변경 작업 시간을 30% 이상 줄였습니다.
+- [보안 분석 제품의 변경 안전성](experience/cluml.md): 고객사 데모 서버 운영 중 관찰된 대기 증상을 요청 제한 동시성 정확성 문제로 재정의하고, 허용치 초과 요청 통과를 막는 불변 조건과 회귀 테스트 기준으로 닫았습니다. 탐지 화면·리포트 표시 일관성, Rust 서비스 설정 변경, PR review 기준도 같은 변경 안전성 흐름 안에서 다뤘습니다.
 - [생성 플랫폼 검증과 데이터 이력](experience/tmaxcloud.md): No-code platform에서 generated service의 request/response와 DB write/read 반영을 배포 후 확인하던 흐름을 배포 전 E2E 검증 단계로 옮겼습니다. CAU 변경 이력 table과 row snapshot copy 흐름은 generated CRUD service code 안에서 같은 generation boundary로 관리되게 했습니다.
 - [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): GlueSQL에서 `SELECT DISTINCT`와 aggregate `DISTINCT`를 SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, test-suite 경로로 구현·검증했습니다. `gluesql/gluesql` 기준 merged PR 45개 이상과 review/docs 기록으로 확인할 수 있는 기여입니다.
 
