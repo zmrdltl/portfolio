@@ -1,6 +1,6 @@
 # Activities
 
-This page briefly summarizes mentoring and OSSCA award history that support my GlueSQL technical contribution. The main technical narrative stays on the [GlueSQL](../opensource/gluesql.md) page.
+Mentoring and OSSCA award history continued alongside my GlueSQL technical contribution. The main technical narrative stays on the [GlueSQL](../opensource/gluesql.md) page.
 
 ## Open-source mentoring
 
@@ -8,7 +8,7 @@ This page briefly summarizes mentoring and OSSCA award history that support my G
 - Mentored contributors, reviewed PRs, and guided issues while working around SQL engine features, AST Builder, Parquet storage, and test-suite improvements.
 - In 2023, held 1:1 mentoring coffee chats with 17 contributors over 4 weeks.
 - Explained Rust project commands, test writing, GlueSQL SQL execution flow, storage structure, AST builder, and function implementation directions.
-- This page is supporting evidence, not a separate catalog of representative work.
+- These activities extend GlueSQL code contribution and review work into contributor mentoring.
 
 ## Awards
 

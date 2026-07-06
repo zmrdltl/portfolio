@@ -18,7 +18,7 @@ I support this with public Rust SQL engine work. In GlueSQL, I left query semant
 
 I value code that is consistent, extensible, cohesive, loosely coupled, and clear in its separation of responsibilities.
 
-As some repetitive implementation work becomes less of a bottleneck, I consider problem definition, domain policies, responsibility boundaries, test criteria, and review criteria more important. Good engineering documents should become executable guidance that helps teammates and AI agents implement and review from the same perspective.
+As some repetitive implementation work becomes less of a bottleneck, I consider problem definition, domain policies, responsibility boundaries, test criteria, and review criteria more important. Good engineering documents should become executable guidance that helps teammates implement and review from the same perspective.
 
 I describe this in more detail in [Principles](engineering-principles.md).
 

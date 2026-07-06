@@ -17,4 +17,4 @@ At ClumL, I currently work on request-limiting concurrency validation criteria, 
 
 My GlueSQL open-source work is a representative technical-depth signal: SQL engine internals, parser/AST design, Rust-based data processing, storage support, test suites, mentoring, and code review.
 
-In recent development work, I consider documentation and verification criteria as important as implementation quality. I aim to leave requirements, domain policies, responsibility boundaries, test criteria, and review criteria in clear documents so teammates and AI agents can implement and review using the same standards.
+In recent development work, I consider documentation and verification criteria as important as implementation quality. I aim to leave requirements, domain policies, responsibility boundaries, test criteria, and review criteria in clear documents so teammates can implement and review using the same standards.

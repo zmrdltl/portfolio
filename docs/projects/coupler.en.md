@@ -69,7 +69,7 @@ My role in this structure was to connect product criteria to the server response
 - Reworked the database structure and state flow so the roughly 30-field signup process could be split into general-member, associate-member, and full-member stages, with associate/full review submissions available in parallel or through tab navigation.
 - Aligned submission/resubmission UX and review-list criteria so Admin/Mobile/API use the same [member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md).
 - Broke customer and market response plus operating signals into requirement-sized units, then iterated app/API/admin web/database changes quickly.
-- Reviewed AI-assisted development output against state contracts, typechecks, migration guards, regression validation, and policy-doc sync before keeping operational changes.
+- Reviewed tool-assisted change drafts against state contracts, typechecks, migration guards, regression validation, and policy-doc sync before keeping operational changes.
 - Recorded testing, documentation-sync, and regression-safety criteria in the [code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md).
 
 ## Validation and Criteria

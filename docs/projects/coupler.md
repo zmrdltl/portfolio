@@ -69,7 +69,7 @@ flowchart LR
 - 한 번에 약 30개 항목을 입력하던 가입 신청을 일반회원, 준회원, 정회원 단계로 나누고, 준회원·정회원 심사를 병렬로 제출하거나 탭을 이동하며 진행할 수 있도록 DB 구조와 상태 흐름을 재구성했습니다.
 - Admin/Mobile/API가 같은 [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)을 쓰도록 제출/재제출 UX와 심사 목록 기준을 정리했습니다.
 - 고객·시장 반응과 운영 지표를 요구사항 단위로 쪼개고, 앱/API/관리자 웹/DB 변경을 빠르게 반복했습니다.
-- AI-assisted development 결과물은 상태 계약, typecheck, migration guard, 회귀 검증, 정책 문서 동기화 기준으로 검토해 운영 가능한 변경만 반영했습니다.
+- 자동화 도구로 만든 변경안은 상태 계약, typecheck, migration guard, 회귀 검증, 정책 문서 동기화 기준으로 검토해 운영 가능한 변경만 반영했습니다.
 - [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)에 테스트, 문서 동기화, 회귀 안전성 기준을 남겼습니다.
 
 ## 검증과 기준

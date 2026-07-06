@@ -11,7 +11,7 @@ GlueSQL은 Rust 기반 SQL database engine입니다. 기여 범위는 SQL engine
 
 2025년에는 GlueSQL reviewer로 활동하면서 DISTINCT operations, Rust toolchain, deterministic ordering, Parquet storage clippy 정리 PR이 merge되며 유지보수 기여를 이어갔습니다.
 
-이 페이지는 SQL engine의 parser, AST, execution path, storage, test suite를 실제 GitHub PR과 review 흐름으로 보여주는 오픈소스 작업입니다.
+GlueSQL 작업은 SQL engine의 parser, AST, execution path, storage, test suite를 실제 GitHub PR과 review 흐름으로 보여주는 오픈소스 기여입니다.
 
 SQL engine 기능은 문법만 추가한다고 끝나지 않습니다. parser가 구문을 받아들이고, AST와 plan/execution path가 같은 의미를 유지하며, storage와 test suite가 예외 조건을 고정해야 합니다. GlueSQL 기여는 이 흐름을 PR과 review 기록으로 남긴 작업입니다.
 
