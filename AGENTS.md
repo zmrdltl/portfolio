@@ -20,8 +20,14 @@ Do not recreate portfolio strategy, case selection, writing policy, review lense
 Use these local checks after content or navigation changes:
 
 - `pnpm run lint:md`
+- `pnpm run check:public-copy`
 - `.venv/bin/python scripts/check_structure.py`
 - `.venv/bin/mkdocs build --strict`
+
+When validation behavior changes, also run the matching unit test:
+
+- `pnpm run test:public-copy`
+- `pnpm run test:structure`
 
 For `AGENTS.md`-only changes, Markdown lint is enough unless the change affects publishing, navigation, or validation behavior.
 
