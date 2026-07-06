@@ -29,7 +29,7 @@ flowchart TD
   execute --> tests
 ```
 
-This diagram is not a full GlueSQL architecture overview. It shows how `DISTINCT` support was carried from SQL syntax through translation, AST/query representation, execution, aggregate state, and regression coverage.
+This diagram shows how `DISTINCT` support was carried from SQL syntax through translation, AST/query representation, execution, aggregate state, and regression coverage.
 
 ## Representative Work
 
@@ -105,7 +105,7 @@ Related links:
 
 ## Maintenance contribution
 
-I later continued maintenance PRs around Rust toolchain updates, clippy, deterministic ordering, and `DISTINCT` operation. I classify this work as project compatibility, lint, deterministic behavior, and regression-safety contribution rather than as one isolated feature.
+I later continued maintenance PRs around Rust toolchain updates, clippy, deterministic ordering, and `DISTINCT` operation. This work fits project compatibility, lint, deterministic behavior, and regression-safety contribution.
 
 ## Activities and awards
 

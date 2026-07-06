@@ -69,7 +69,7 @@ My role in this structure was to connect product criteria to the server response
 - Reworked the database structure and state flow so the roughly 30-field signup process could be split into general-member, associate-member, and full-member stages, with associate/full review submissions available in parallel or through tab navigation.
 - Aligned submission/resubmission UX and review-list criteria so Admin/Mobile/API use the same [member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md).
 - Broke customer and market response plus operating signals into requirement-sized units, then iterated app/API/admin web/database changes quickly.
-- Reviewed AI-assisted development output against state contracts, typechecks, migration guards, regression validation, and policy-doc sync before keeping operational changes. I used it as an operating method for iterating product changes under verification criteria rather than as a shortcut around validation.
+- Reviewed AI-assisted development output against state contracts, typechecks, migration guards, regression validation, and policy-doc sync before keeping operational changes.
 - Recorded testing, documentation-sync, and regression-safety criteria in the [code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md).
 
 ## Validation and Criteria
@@ -81,9 +81,9 @@ My role in this structure was to connect product criteria to the server response
 
 Within the 2.0.0 transition scope, I clarified development criteria across the mobile app, API, and admin web, and changed the roughly 30-field signup flow into staged review flows. The signup response contract, member review policy, and code review criteria are captured in policy docs.
 
-Using Meta SDK postback data, I confirmed that review-request-related events over one month increased from roughly 40 to roughly 1.1k. This is not a user-count or conversion-rate claim; I use it only as event-count evidence for how often users reached the review-request action in the shortened initial application flow.
+Meta SDK postback event count showed review-request-related events increasing from roughly 40 to roughly 1.1k over one month.
 
-While operating the product, I turned customer and market response into product changes quickly while keeping state contracts, review policies, TypeScript migration criteria, AI-assisted validation criteria, and review criteria as documentation and code standards. The core result is not fast implementation by itself; it is making the mobile app, API, admin web, database, and policy docs share the same state model and release criteria.
+While operating the product, I turned customer and market response into product changes while keeping the mobile app, API, admin web, database, and policy docs aligned around the same state model and release criteria.
 
 ## Links
 

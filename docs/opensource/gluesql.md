@@ -29,7 +29,7 @@ flowchart TD
   execute --> tests
 ```
 
-이 그림은 GlueSQL 전체 구조가 아니라 `DISTINCT` support를 문법, translation, AST/query representation, executor, aggregate state, test suite까지 이어서 검증한 경로입니다.
+이 그림은 `DISTINCT` support를 문법, translation, AST/query representation, executor, aggregate state, test suite까지 이어서 검증한 경로입니다.
 
 ## 대표 작업
 

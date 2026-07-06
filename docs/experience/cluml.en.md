@@ -7,13 +7,13 @@
 
 I work on change-safety criteria in a security event analysis product suite. The core of my current role is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and close them with verifiable criteria.
 
-The representative work here is request-limiting concurrency and detection/report display consistency. Rust service compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
+The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
 
 ## Representative Work
 
 ### Aimer RateLimiter Over-Limit Request Admission
 
-I reframed a long-wait symptom observed during customer demo server operation as a check-and-reserve race in request limiting, not as a generic latency problem.
+I separated a check-and-reserve race in request limiting from a long-wait symptom observed during customer demo server operation.
 
 #### Problem Context
 
@@ -60,11 +60,13 @@ What I did:
 Validation/result:
 
 - Captured the condition where requests could pass more than 10x beyond the allowed limit as a reproducible correctness problem.
-- Framed the result as a correctness criterion that prevents over-limit request admission, not as a latency-metric claim.
+- Framed the result as a correctness criterion that prevents over-limit request admission.
+
+## Supporting Work Criteria
 
 ### Detection Screen and Report Display Consistency
 
-If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break. This work is not a list of screen fixes; it is about checking whether event context stays consistent through the display path.
+If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break. This work checks whether event context stays consistent through the display path.
 
 ```mermaid
 flowchart LR
@@ -96,7 +98,7 @@ Validation/result:
 - Organized detection/report display issues around whether the same event context was preserved.
 - Connected those checks to change-safety criteria so product changes would not weaken trust in analysis results and report outputs.
 
-## Supporting Work Criteria
+### Problem Definition And Review Criteria
 
 ```mermaid
 flowchart TD

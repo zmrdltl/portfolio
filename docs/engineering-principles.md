@@ -28,12 +28,16 @@
 - 성공 조건과 하지 않을 일
 - 실패 시 확인할 로그, 테스트, 재현 절차
 
+관련 대표 작업: [Coupler](projects/coupler.md)에서는 회원가입 응답 계약과 회원 심사 정책을 문서로 고정했고, [ClumL](experience/cluml.md)에서는 운영 중 관찰된 대기 증상을 요청 제한 동시성 문제로 좁혔습니다.
+
 ## Harness
 
 - 비즈니스 로직의 핵심 동작과 예외 흐름을 테스트로 고정합니다.
 - 회귀 가능성이 있는 경로는 샘플 입력, 재현 절차, 검증 명령으로 남깁니다.
 - 데이터 정합성, 시간 처리, serialization, API compatibility는 별도 확인 항목으로 둡니다.
 - 구현 결과가 완료 기준을 만족하는지 재확인합니다.
+
+관련 대표 작업: [티맥스클라우드](experience/tmaxcloud.md)에서는 generated service의 request/response와 DB write/read 반영을 배포 전 검증 흐름으로 당겼고, [GlueSQL](opensource/gluesql.md)에서는 SQL translation부터 test suite까지 회귀 기준을 남겼습니다.
 
 ## Review
 
@@ -42,6 +46,8 @@
 - 기존 API, 설정, 직렬화 구조, 사용자 흐름과 호환되는지 확인합니다.
 - 테스트가 실제 위험 경로를 닫는지 봅니다.
 - 새 복잡도가 문제 해결에 필요한 수준인지 판단합니다.
+
+관련 대표 작업: [ClumL](experience/cluml.md)에서는 PR 변경이 수용 기준과 회귀 테스트 기준에 맞는지 검토했고, [Coupler](projects/coupler.md)에서는 상태 계약, typecheck, migration guard, 정책 문서 동기화 기준을 함께 확인했습니다.
 
 ## 도메인 학습
 

@@ -28,12 +28,16 @@ Domain knowledge and requirements
 - Success criteria and out-of-scope items
 - Logs, tests, and reproduction steps for failures
 
+Representative work: in [Coupler](projects/coupler.md), I documented signup response contracts and member review policies in public docs; in [ClumL](experience/cluml.md), I narrowed an operational wait symptom into a request-limiting concurrency problem.
+
 ## Harness
 
 - Fix core business behavior and exception paths with tests.
 - Keep regression-prone paths as sample inputs, reproduction steps, and verification commands.
 - Treat data correctness, time handling, serialization, and API compatibility as explicit review points.
 - Re-check whether the implementation satisfies the completion criteria.
+
+Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved generated-service request/response and DB write/read checks into a pre-deployment validation flow; in [GlueSQL](opensource/gluesql.md), I left regression criteria from SQL translation through the test suite.
 
 ## Review
 
@@ -42,6 +46,8 @@ Domain knowledge and requirements
 - Check compatibility with existing APIs, configuration, serialization, and user flows.
 - Confirm whether tests cover real risk paths.
 - Decide whether new complexity is justified by the problem.
+
+Representative work: in [ClumL](experience/cluml.md), I reviewed whether PR changes matched acceptance criteria and regression-test criteria; in [Coupler](projects/coupler.md), I checked state contracts, typechecks, migration guards, and policy-doc synchronization together.
 
 ## Domain Learning
 

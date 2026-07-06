@@ -56,7 +56,7 @@ flowchart TD
   history --> restore
 ```
 
-The CAU change-history work is not a DB-trigger implementation claim. The key decision was to keep row-snapshot copy and point-in-time select criteria inside the same generation boundary as generated CRUD service SQL.
+The CAU change-history work kept row-snapshot copy and point-in-time select criteria inside the same generation boundary as generated CRUD service SQL.
 
 ## Generated-Service E2E Validation
 
@@ -114,7 +114,7 @@ During generated-service development, ordinary logs and error logs could make it
 
 I moved generated-service request/response and DB write/read verification from post-deployment checks into the design and validation stage. Incorrect service definitions, request/response shape issues, and missing DB effects could be found before deployment instead of after a build/deploy cycle.
 
-The source record says this contributed to reducing the repeated design-validation cycle from roughly 4 weeks to roughly 2 weeks under the working conditions at the time. I use this metric only for the generated-service validation scope, not as a broad productivity claim for all development work.
+The source record says this contributed to reducing the repeated design-validation cycle from roughly 4 weeks to roughly 2 weeks under the working conditions at the time. This metric belongs to the generated-service validation scope.
 
 For CAU change history, I organized the original table, change-history table, generated CRUD service row-snapshot copy flow, and point-in-time select SQL criteria so they stayed within the same generation boundary. This kept current-value CRUD behavior and historical snapshot reconstruction under one generated-service validation flow.
 
