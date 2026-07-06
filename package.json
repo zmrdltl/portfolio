@@ -3,9 +3,11 @@
   "packageManager": "pnpm@11.5.2",
   "private": true,
   "scripts": {
+    "check:contract": ".venv/bin/python scripts/check_portfolio_contract.py",
     "check:public-copy": ".venv/bin/python scripts/check_public_copy.py",
     "check:structure": ".venv/bin/python scripts/check_structure.py",
     "lint:md": "markdownlint-cli2",
+    "test:contract": ".venv/bin/python -m unittest scripts/test_check_portfolio_contract.py",
     "test:public-copy": ".venv/bin/python -m unittest scripts/test_check_public_copy.py",
     "test:structure": ".venv/bin/python -m unittest scripts/test_check_structure.py"
   },

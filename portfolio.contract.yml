@@ -1,0 +1,17 @@
+version: 1
+
+homepage:
+  pages:
+    - path: docs/index.md
+      representative_heading: 대표 작업
+    - path: docs/index.en.md
+      representative_heading: Representative Work
+  representative_work:
+    max_items: 3
+    required_links:
+      - experience/cluml.md
+      - experience/tmaxcloud.md
+      - opensource/gluesql.md
+  supporting_only_links:
+    - projects/coupler.md
+    - activities/index.md
