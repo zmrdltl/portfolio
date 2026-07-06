@@ -43,16 +43,24 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
 
       - name: Test structure checker
         run: pnpm run test:structure
 
+      - name: Test public copy checker
+        run: pnpm run test:public-copy
+
       - name: Check portfolio structure
         run: pnpm run check:structure
 
+      - name: Check public copy
+        run: pnpm run check:public-copy
+
       - name: Build site
-        run: mkdocs build --strict
+        run: .venv/bin/mkdocs build --strict
 
       - name: Upload artifact
         if: github.event_name == 'push'
