@@ -4,16 +4,16 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I am a Platform Software Engineer who closes backend/platform problems through service contracts, data-state criteria, and tests. In my current role, I reframed a request-limiting concurrency issue in a security analysis product. In previous work and open source, I backed generated-service validation and Rust SQL engine changes with implementation and validation records.
+I am a backend/platform engineer who makes product and platform changes safer through service contracts and validation criteria. I aligned app, API, admin web, and database behavior around shared state models; made generated services and data history verifiable before deployment; and narrowed operational concurrency, configuration, and display issues into reproducible criteria in my current role.
 
-I organize representative work around four work streams. In my current role, I work on change safety in a security analysis product. In my previous role, I made generated services and data history verifiable in a metadata-driven platform. In open source, I left Rust SQL engine query semantics and test-suite work in PR and review records. In personal product work, I turned state contracts and release criteria into product operating standards.
+I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
 
 ## Representative Work
 
-- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem, then defined invariants and regression-test criteria that prevent over-limit request admission.
-- [Generated-service validation and change-history criteria](experience/tmaxcloud.md): moved generated-service request/response and DB write/read checks from post-deployment verification into pre-deployment E2E validation. I kept CAU change-history tables and row-snapshot copy flow inside the same generation boundary as generated CRUD service code.
+- [Product state contracts and operating criteria](projects/coupler.md): aligned signup/review state models across a React Native app, API, admin web, database, and policy docs. I connected TypeScript operating criteria, typecheck/migration guards, regression validation, and code review criteria into product-change standards, and the detail page also explains the operating signal observed through review-request postback event count.
+- [Generated-platform validation and data history](experience/tmaxcloud.md): moved generated-service request/response and DB write/read checks from post-deployment verification into pre-deployment E2E validation. I kept CAU change-history tables and row-snapshot copy flow inside the same generation boundary as generated CRUD service code.
+- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency problem, then defined invariants and regression-test criteria that prevent over-limit request admission. I also reviewed detection/report display consistency and Rust service configuration changes against agreed problem scope and existing behavior.
 - [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths in GlueSQL. This work is visible through 45+ merged PRs plus review/docs records in `gluesql/gluesql`.
-- [State contracts and review criteria for a personal product](projects/coupler.md): organized signup/review state contracts, TypeScript operating criteria, DB/release guardrails, and code review criteria across a React Native app, API, and admin web. The detail page also explains the operating signal observed through review-request postback event count.
 
 ## Engineering Perspective
 
@@ -25,10 +25,10 @@ I describe this in more detail in [Principles](engineering-principles.md).
 
 ## Technical Focus Areas
 
-- Platform: connecting metadata and schema information to SQL/DDL, generated service code, DB verification, change history, and test criteria
+- Service contract: aligning app/API/admin/database behavior through server response contracts, review policies, permission criteria, and routing criteria
+- Generated platform: connecting metadata and schema information to SQL/DDL, generated service code, DB verification, change history, and test criteria
+- Change safety: separating operational symptoms, configuration changes, and display-consistency issues into reproduction conditions, completion criteria, regression tests, and PR review criteria
 - Rust/SQL: SQL engine internals, parser/AST, storage, Rust open-source contribution, and code review
-- Product quality: display consistency in security event analysis products, Rust service compatibility checks, React Native product operation, TypeScript migration, and signup/review flow cleanup
-- Review system: requirements-based work definition, completion criteria, test coverage, change-safety review, and verification criteria for AI-assisted development
 
 ## Skills
 
