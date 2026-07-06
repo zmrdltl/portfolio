@@ -13,6 +13,10 @@ import sys
 class PublicCopyPattern:
     name: str
     pattern: re.Pattern[str]
+    paths: tuple[str, ...] | None = None
+
+    def applies_to(self, relative_path: str) -> bool:
+        return self.paths is None or relative_path in self.paths
 
 
 PUBLIC_COPY_PATTERNS = [
@@ -29,7 +33,44 @@ PUBLIC_COPY_PATTERNS = [
     ),
     PublicCopyPattern(
         "claim-boundary wording",
-        re.compile(r"claim[- ]boundary|주장\s*경계", re.IGNORECASE),
+        re.compile(r"claim[- ]boundary|claim\s+scoped|주장\s*경계", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "source-record wording",
+        re.compile(
+            r"기록되어\s*(있습니다|있다|있는|있으며)?|"
+            r"source\s+record\s+says|recorded\s+in\s+the\s+source",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "page-framing wording",
+        re.compile(r"이\s*페이지는|This\s+page\s+is", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "supporting-evidence wording",
+        re.compile(
+            r"supporting\s+evidence|not\s+a\s+separate\s+catalog|"
+            r"대표\s*작업이\s*아니라",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "shallow portfolio headings",
+        re.compile(
+            r"^\s*(내가\s+한\s+일|검증/결과|What\s+I\s+did|Validation/result)\s*:",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "tool-centered homepage wording",
+        re.compile(r"\bAI\s+agents?", re.IGNORECASE),
+        paths=(
+            "index.md",
+            "index.en.md",
+            "experience/index.md",
+            "experience/index.en.md",
+        ),
     ),
     PublicCopyPattern(
         "internal preparation wording",
@@ -82,7 +123,7 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
             start=1,
         ):
             for copy_pattern in PUBLIC_COPY_PATTERNS:
-                if copy_pattern.pattern.search(line):
+                if copy_pattern.applies_to(relative_path) and copy_pattern.pattern.search(line):
                     findings.append(
                         f"{relative_path}:{line_number}: "
                         f"{copy_pattern.name}: {line.strip()}"

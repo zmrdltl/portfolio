@@ -48,6 +48,55 @@ class PublicCopyCheckTests(unittest.TestCase):
             any("internal preparation wording" in finding for finding in self.validate())
         )
 
+    def test_source_record_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 결과\n\n약 4주에서 2주 수준으로 줄이는 데 기여한 것으로 기록되어 있습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("source-record wording" in finding for finding in self.validate())
+        )
+
+    def test_page_framing_wording_is_rejected(self) -> None:
+        (self.docs_dir / "activities.md").write_text(
+            "# 활동\n\n이 페이지는 대표 기술 설명을 보조합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("page-framing wording" in finding for finding in self.validate())
+        )
+
+    def test_shallow_portfolio_headings_are_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n내가 한 일:\n\n- 문제를 정리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("shallow portfolio headings" in finding for finding in self.validate())
+        )
+
+    def test_homepage_ai_agent_wording_is_rejected(self) -> None:
+        (self.docs_dir / "index.md").write_text(
+            "# 소개\n\n동료와 AI agent가 같은 기준으로 구현합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("tool-centered homepage wording" in finding for finding in self.validate())
+        )
+
+    def test_ai_agent_wording_is_allowed_outside_summary_pages(self) -> None:
+        principles = self.docs_dir / "engineering-principles.md"
+        principles.write_text(
+            "# 원칙\n\n사람과 AI agent가 같은 기준으로 리뷰합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
     def test_sensitive_local_path_is_rejected(self) -> None:
         (self.docs_dir / "index.md").write_text(
             "# 소개\n\n근거는 /Users/example/Desktop/private-repo 입니다.\n",
