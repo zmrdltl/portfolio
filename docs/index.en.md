@@ -4,7 +4,9 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I am a backend/platform engineer who makes product and platform changes safer through service contracts and validation criteria. In my current role, I narrow operational concurrency, configuration, and display issues into reproducible criteria. In prior platform work, I made generated services and data history verifiable before deployment.
+I am a Platform Software Engineer who improves change safety as AI-assisted development accelerates product and platform work, connecting problem definition, service contracts, types, tests, reviews, and release criteria into one validation system.
+
+In my current role, I narrow operational concurrency, configuration, and display issues into reproducible criteria. In prior platform work, I made generated services and data history verifiable before deployment. In product development, I align app, API, admin, and database behavior around shared state contracts and release criteria.
 
 I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
 
@@ -14,16 +16,17 @@ I support this with public Rust SQL engine work. In GlueSQL, I left query semant
 - [Generated-platform validation and data history](experience/tmaxcloud.md): moved generated-service request/response and DB write/read checks from post-deployment verification into pre-deployment E2E validation. I kept CAU change-history tables and row-snapshot copy flow inside the same generation boundary as generated CRUD service code.
 - [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths in GlueSQL. This work is visible through 45+ merged PRs plus review/docs records in `gluesql/gluesql`.
 
-## Engineering Perspective
+## Engineering Operating Perspective
 
 I value code that is consistent, extensible, cohesive, loosely coupled, and clear in its separation of responsibilities.
 
-As some repetitive implementation work becomes less of a bottleneck, I consider problem definition, domain policies, responsibility boundaries, test criteria, and review criteria more important. Good engineering documents should become executable guidance that helps teammates implement and review from the same perspective.
+As some repetitive implementation work becomes less of a bottleneck, I consider problem definition, domain policies, responsibility boundaries, test criteria, and review criteria more important. Good engineering documents should become executable guidance that helps teammates and automation tools implement and review from the same perspective.
 
 I describe this in more detail in [Principles](engineering-principles.md).
 
 ## Technical Focus Areas
 
+- AI-assisted engineering workflow: designing change units and validation criteria so docs, type checks, tests, reviews, and release criteria move together
 - Service contract: aligning app/API/admin/database behavior through server response contracts, review policies, permission criteria, and routing criteria
 - Generated platform: connecting metadata and schema information to SQL/DDL, generated service code, DB verification, change history, and test criteria
 - Change safety: separating operational symptoms, configuration changes, and display-consistency issues into reproduction conditions, completion criteria, regression tests, and PR review criteria

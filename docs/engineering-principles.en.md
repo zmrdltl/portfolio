@@ -1,12 +1,13 @@
 # Engineering Principles
 
-In product development, I document domain background, operational policies, responsibility boundaries, and verification criteria before implementation, then fix behavior through tests and review. When using automation tools, the goal is not code generation itself, but moving customer and market signals into product changes quickly while keeping the output verifiable under the same criteria.
+In product development, I document domain background, operational policies, responsibility boundaries, and verification criteria before implementation, then fix behavior through tests and review. In AI-assisted development, the goal is not code generation itself, but moving customer and market signals into product changes quickly while keeping problem definition, docs, types, tests, reviews, and release criteria inside the same validation system.
 
 ## Core Principles
 
 - As repetitive implementation becomes easier, problem definition and verification criteria matter more.
 - Documentation is not a side artifact. It helps people learn context quickly and keeps judgment criteria stable.
 - Clear context, test, and review criteria let people implement and review in the same direction.
+- Automation-generated output becomes a product change only after it passes service contracts, type checks, regression tests, and review criteria.
 - Time saved from repetitive implementation should go into interpreting customer and market signals, domain understanding, and code review.
 
 ## Workflow

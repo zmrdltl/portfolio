@@ -4,7 +4,9 @@ PLATFORM SOFTWARE ENGINEER
 
 ## 요약
 
-서비스 계약과 검증 기준으로 제품/플랫폼 변경을 안전하게 만드는 백엔드/플랫폼 개발자입니다. 최신 경력에서는 운영 중 드러난 동시성·설정·표시 문제를 재현 가능한 기준으로 좁혀 다뤘고, 이전 경력에서는 generated service와 데이터 이력을 배포 전 검증 가능한 구조로 만들었습니다.
+AI-assisted development 환경에서 제품·플랫폼 변경 속도가 빨라질수록, 문제 정의부터 서비스 계약·타입·테스트·리뷰·릴리스 기준까지 하나의 검증 체계로 묶어 변경 안전성을 높이는 Platform Software Engineer입니다.
+
+최신 경력에서는 운영 중 드러난 동시성·설정·표시 문제를 재현 가능한 기준으로 좁혀 다뤘고, 이전 경력에서는 generated service와 데이터 이력을 배포 전 검증 가능한 구조로 만들었습니다. 제품 개발에서는 앱/API/관리자 웹/DB가 같은 상태 계약과 릴리스 기준을 따르도록 정리했습니다.
 
 공개 기술 깊이는 Rust SQL engine 오픈소스 기여로 보강합니다. GlueSQL에서는 query semantics, AST/execution path, storage surface, test suite를 PR과 review 기록으로 남겼습니다.
 
@@ -14,16 +16,17 @@ PLATFORM SOFTWARE ENGINEER
 - [생성 플랫폼 검증과 데이터 이력](experience/tmaxcloud.md): No-code platform에서 generated service의 request/response와 DB write/read 반영을 배포 후 확인하던 흐름을 배포 전 E2E 검증 단계로 옮겼습니다. CAU 변경 이력 table과 row snapshot copy 흐름은 generated CRUD service code 안에서 같은 generation boundary로 관리되게 했습니다.
 - [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): GlueSQL에서 `SELECT DISTINCT`와 aggregate `DISTINCT`를 SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, test-suite 경로로 구현·검증했습니다. `gluesql/gluesql` 기준 merged PR 45개 이상과 review/docs 기록으로 확인할 수 있는 기여입니다.
 
-## 개발 관점
+## 개발 운영 관점
 
 유지보수를 위한 일관성, 확장성, 응집도와 결합도, 책임 분리가 분명한 코드 작성을 중요하게 봅니다.
 
-반복 구현의 일부 허들이 낮아질수록 문제 정의, 도메인 정책, 책임 범위, 테스트 기준, 리뷰 기준을 흔들리지 않게 남기는 일이 더 중요해진다고 봅니다. 좋은 개발 문서는 동료가 같은 관점으로 구현과 리뷰를 이어갈 수 있게 만드는 실행 가능한 기준이어야 한다고 생각합니다.
+반복 구현의 일부 허들이 낮아질수록 문제 정의, 도메인 정책, 책임 범위, 테스트 기준, 리뷰 기준을 흔들리지 않게 남기는 일이 더 중요해진다고 봅니다. 좋은 개발 문서는 동료와 자동화 도구가 같은 기준으로 구현과 리뷰를 이어갈 수 있게 만드는 실행 가능한 기준이어야 한다고 생각합니다.
 
 자세한 기준은 [원칙](engineering-principles.md)에 정리했습니다.
 
 ## 주요 기술 영역
 
+- AI-assisted engineering workflow: 문서, 타입 검사, 테스트, 리뷰, 릴리스 기준이 함께 움직이도록 변경 단위와 검증 기준을 설계
 - Service contract: 앱/API/관리자 웹/DB가 같은 상태 모델을 따르도록 서버 응답 계약, 심사 정책, 권한·화면 분기 기준을 정리
 - Generated platform: 메타데이터와 스키마를 SQL/DDL, generated service code, DB 반영 검증, 변경 이력, 테스트 기준으로 연결
 - Change safety: 운영 증상, 설정 변경, 표시 일관성 문제를 재현 조건, 완료 기준, 회귀 테스트, PR review 기준으로 분리
