@@ -90,7 +90,7 @@ Generated CRUD applications primarily operate on current values. To reconstruct 
 ### Design And Implementation
 
 - Implemented a DDL/generation flow that creates both the original table and a change-history table for entities with the CAU option enabled.
-- Structured the CAU table with the original PK, `UP_TO`, `LAST_MODIFIED_BY`, and `DATA_SNAPSHOT`.
+- Structured the CAU table with the original PK, valid-through metadata, modifier metadata, and row-snapshot metadata.
 - Connected generated CRUD service SQL so insert/update/delete operations copy affected row snapshots into the change-history table.
 - Defined select SQL criteria to reconstruct a point-in-time table snapshot by selecting only the needed snapshots.
 

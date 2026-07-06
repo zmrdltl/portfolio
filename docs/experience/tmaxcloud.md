@@ -90,7 +90,7 @@ service/API 수가 늘어나면 잘못된 service definition이나 request/respo
 ### 설계와 구현
 
 - CAU 옵션이 켜진 entity에 대해 원본 table과 변경 이력 table이 함께 생성되도록 DDL/generation 흐름을 구현했습니다.
-- CAU table에 원본 PK, `UP_TO`, `LAST_MODIFIED_BY`, `DATA_SNAPSHOT`을 포함하도록 구성했습니다.
+- CAU table에 원본 PK, 유효 기간, 수정자, row snapshot metadata를 포함하도록 구성했습니다.
 - generated CRUD service code의 insert/update/delete SQL이 영향받는 row snapshot을 변경 이력 table에 copy하도록 generation logic을 연동했습니다.
 - select SQL로 필요한 snapshot만 골라 특정 시점의 table snapshot을 재구성하는 기준을 정리했습니다.
 
@@ -98,7 +98,7 @@ service/API 수가 늘어나면 잘못된 service definition이나 request/respo
 
 DB trigger/procedure도 가능한 대안이었지만, 이 기능은 단순 audit log가 아니라 No-code platform이 생성한 entity를 특정 시점 table snapshot으로 재구성하기 위한 generation feature였습니다.
 
-`LAST_MODIFIED_BY` 같은 request/user context, snapshot copy query, 특정 시점 select SQL 공식이 같은 generation boundary 안에서 연결되어야 했기 때문에 generated CRUD service SQL 안에 snapshot copy query를 명시하는 방향을 선택했습니다.
+request/user context, snapshot copy query, 특정 시점 select SQL 공식이 같은 generation boundary 안에서 연결되어야 했기 때문에 generated CRUD service SQL 안에 snapshot copy query를 명시하는 방향을 선택했습니다.
 
 ## 보조 구조
 

@@ -7,7 +7,7 @@
 
 I work on change-safety criteria in a security event analysis product suite. The core of my current role is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and close them with verifiable criteria.
 
-The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
+The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service configuration workflow cleanup, compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
 
 ## Representative Work
 
@@ -97,6 +97,19 @@ Validation/result:
 
 - Organized detection/report display issues around whether the same event context was preserved.
 - Connected those checks to change-safety criteria so product changes would not weaken trust in analysis results and report outputs.
+
+### Simplifying Rust Service Configuration Changes
+
+I separated HOG detection-period settings that previously led to code edits and build-centered deployment work into a configuration boundary.
+
+What I did:
+
+- Moved HOG detection-period settings into externally supplied configuration, reducing repeated operational changes to config-centered edits.
+- Kept the claim scoped to simplifying the operational change workflow, not to detection accuracy, throughput, or latency.
+
+Validation/result:
+
+- Reduced repeated adjustment work time by more than 30%.
 
 ### Problem Definition And Review Criteria
 

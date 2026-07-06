@@ -13,7 +13,7 @@ PLATFORM SOFTWARE ENGINEER
 - [보안 분석 제품의 변경 안전성](experience/cluml.md): 고객사 데모 서버 운영 중 관찰된 대기 증상을 요청 제한 동시성 문제로 재정의하고, 허용치 초과 요청 통과를 막는 불변 조건과 회귀 테스트 기준을 세웠습니다.
 - [생성 서비스 검증과 변경 이력 기준](experience/tmaxcloud.md): No-code platform에서 generated service의 request/response와 DB write/read 반영을 배포 후 확인하던 흐름을 배포 전 E2E 검증 단계로 옮겼습니다. CAU 변경 이력 table과 row snapshot copy 흐름은 generated CRUD service code 안에서 같은 generation boundary로 관리되게 했습니다.
 - [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): GlueSQL에서 `SELECT DISTINCT`와 aggregate `DISTINCT`를 SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, test-suite 경로로 구현·검증했습니다. `gluesql/gluesql` 기준 merged PR 45개 이상과 review/docs 기록으로 확인할 수 있는 기여입니다.
-- [개인 제품의 상태 계약과 리뷰 기준](projects/coupler.md): React Native app, API, 관리자 웹의 가입·심사 상태 계약, TypeScript 운영 기준, DB/release guardrail, 코드 리뷰 기준을 제품 운영 기준으로 정리했습니다. Meta SDK postback 기준 1개월 심사 요청 관련 event count가 약 40개에서 약 1.1k 수준으로 증가한 것을 확인했습니다.
+- [개인 제품의 상태 계약과 리뷰 기준](projects/coupler.md): React Native app, API, 관리자 웹의 가입·심사 상태 계약, TypeScript 운영 기준, DB/release guardrail, 코드 리뷰 기준을 제품 운영 기준으로 정리했습니다. 상세 페이지에서는 심사 요청 postback event count로 확인한 운영 신호도 함께 설명합니다.
 
 ## 개발 관점
 
