@@ -11,7 +11,7 @@ The representative work here is request-limiting concurrency. Detection/report d
 
 ## Representative Work
 
-### Aimer RateLimiter Over-Limit Request Admission
+### AI Security Analysis Engine Request-Limiting Concurrency Issue
 
 I separated a check-and-reserve race in request limiting from a long-wait symptom observed during customer demo server operation.
 
@@ -20,10 +20,10 @@ I separated a check-and-reserve race in request limiting from a long-wait sympto
 ```mermaid
 flowchart LR
   ui["Analysis UI"]
-  api["Aimer API"]
-  limiter["RateLimiter"]
+  api["Security Analysis API"]
+  limiter["Request Limiter"]
   bucket["Reservation / Capacity State"]
-  worker["Aimer Work Execution"]
+  worker["Analysis Work Execution"]
 
   ui --> api
   api --> limiter
@@ -37,7 +37,7 @@ flowchart LR
 sequenceDiagram
   participant A as Request A
   participant B as Request B
-  participant L as RateLimiter
+  participant L as Request Limiter
   participant S as Reservation / Capacity State
 
   A->>L: Check capacity
@@ -55,7 +55,7 @@ sequenceDiagram
 
 **Solution:** I defined the invariant that capacity checks and reservation updates must operate against the same state. The fix direction was to remove the stale-state gap between checking capacity and recording reservation state.
 
-**Rationale:** Reducing wait time or hiding the symptom in the UI would not close over-limit admission. The issue had to be handled before work execution, where `RateLimiter` decides whether a request may pass.
+**Rationale:** Reducing wait time or hiding the symptom in the UI would not close over-limit admission. The issue had to be handled before work execution, where the request limiter decides whether a request may pass.
 
 **Selection:** I narrowed the representative scope to over-limit admission caused by the check-and-reserve race. Other long-wait concerns, such as a TPM wait cap, were separated as follow-up failure modes.
 
@@ -71,7 +71,7 @@ sequenceDiagram
 
 ### Display-Consistency Review Criteria
 
-This is a change-safety criterion that supports the RateLimiter representative work. If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break, so I organized the review around whether event context stays consistent through the display path.
+This is a change-safety criterion that supports the request-limiting concurrency representative work. If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break, so I organized the review around whether event context stays consistent through the display path.
 
 ```mermaid
 flowchart LR
