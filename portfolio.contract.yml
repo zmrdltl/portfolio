@@ -7,11 +7,11 @@ homepage:
     - path: docs/index.en.md
       representative_heading: Representative Work
   representative_work:
-    max_items: 3
+    max_items: 4
     required_links:
       - experience/cluml.md
       - experience/tmaxcloud.md
       - opensource/gluesql.md
+      - projects/coupler.md
   supporting_only_links:
-    - projects/coupler.md
     - activities/index.md

@@ -15,6 +15,7 @@ AI-assisted development 환경에서도 코드 생성 자체보다 문제 정의
 - [보안 분석 제품의 변경 안전성](experience/cluml.md): 고객사 데모 서버 운영 중 관찰된 대기 증상을 요청 제한 동시성 정확성 문제로 재정의하고, 허용치 초과 요청 통과를 막는 불변 조건과 회귀 테스트 기준으로 닫았습니다. 탐지 화면·리포트 표시 일관성, Rust 서비스 설정 변경, PR review 기준도 같은 변경 안전성 흐름 안에서 다뤘습니다.
 - [생성 플랫폼 검증과 데이터 이력](experience/tmaxcloud.md): No-code platform에서 generated service의 request/response와 DB write/read 반영을 배포 후 확인하던 흐름을 배포 전 E2E 검증 단계로 옮겼습니다. CAU 변경 이력 table과 row snapshot copy 흐름은 generated CRUD service code 안에서 같은 generation boundary로 관리되게 했습니다.
 - [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): GlueSQL에서 `SELECT DISTINCT`와 aggregate `DISTINCT`를 SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, test-suite 경로로 구현·검증했습니다. `gluesql/gluesql` 기준 merged PR 45개 이상과 review/docs 기록으로 확인할 수 있는 기여입니다.
+- [제품 상태 계약과 운영 기준](projects/coupler.md): React Native 앱, API, 관리자 웹, DB가 같은 가입·심사 상태 모델을 따르도록 정리하고, TypeScript 운영 기준, typecheck/migration guard, 회귀 검증, 코드 리뷰 기준을 제품 변경 기준으로 연결했습니다.
 
 ## 개발 운영 관점
 

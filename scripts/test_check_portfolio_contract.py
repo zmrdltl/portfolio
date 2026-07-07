@@ -27,13 +27,14 @@ class PortfolioContractCheckTests(unittest.TestCase):
                     "    - path: index.md",
                     "      representative_heading: 대표 작업",
                     "  representative_work:",
-                    "    max_items: 3",
+                    "    max_items: 4",
                     "    required_links:",
                     "      - experience/cluml.md",
                     "      - experience/tmaxcloud.md",
                     "      - opensource/gluesql.md",
+                    "      - projects/coupler.md",
                     "  supporting_only_links:",
-                    "    - projects/coupler.md",
+                    "    - activities/index.md",
                     "",
                 ]
             ),
@@ -65,6 +66,7 @@ class PortfolioContractCheckTests(unittest.TestCase):
                     "- [ClumL](experience/cluml.md): 설명",
                     "- [TmaxCloud](experience/tmaxcloud.md): 설명",
                     "- [GlueSQL](opensource/gluesql.md): 설명",
+                    "- [Coupler](projects/coupler.md): 설명",
                     "",
                     "## 다음",
                     "",
@@ -86,6 +88,7 @@ class PortfolioContractCheckTests(unittest.TestCase):
                     "- [TmaxCloud](experience/tmaxcloud.md): 설명",
                     "- [GlueSQL](opensource/gluesql.md): 설명",
                     "- [Coupler](projects/coupler.md): 설명",
+                    "- [Activities](activities/index.md): 설명",
                     "",
                 ]
             )
@@ -106,6 +109,7 @@ class PortfolioContractCheckTests(unittest.TestCase):
                     "- [TmaxCloud](experience/tmaxcloud.md): 설명",
                     "- [ClumL](experience/cluml.md): 설명",
                     "- [GlueSQL](opensource/gluesql.md): 설명",
+                    "- [Coupler](projects/coupler.md): 설명",
                     "",
                 ]
             )
