@@ -28,6 +28,32 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertEqual(self.validate(), [])
 
+    def test_explained_public_abbreviation_passes(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n변경 이력 기능(CAU)의 table 생성 흐름을 정리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_english_explained_public_abbreviation_passes(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nI implemented change-history feature (CAU) tables.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_unexplained_public_abbreviation_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\nCAU table과 snapshot copy 흐름을 정리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("unexplained CAU abbreviation" in finding for finding in self.validate())
+        )
+
     def test_internal_boundary_wording_is_rejected(self) -> None:
         (self.docs_dir / "index.md").write_text(
             "# 소개\n\n이 수치는 사용자 수나 전환율이 아니라 event count로만 사용합니다.\n",

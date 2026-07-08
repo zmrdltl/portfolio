@@ -19,6 +19,13 @@ class PublicCopyPattern:
         return self.paths is None or relative_path in self.paths
 
 
+@dataclass(frozen=True)
+class PublicAbbreviationRequirement:
+    name: str
+    token_pattern: re.Pattern[str]
+    explanation_pattern: re.Pattern[str]
+
+
 PUBLIC_COPY_PATTERNS = [
     PublicCopyPattern(
         "internal public-boundary wording",
@@ -108,10 +115,46 @@ PUBLIC_COPY_PATTERNS = [
 ]
 
 
+PUBLIC_ABBREVIATION_REQUIREMENTS = [
+    PublicAbbreviationRequirement(
+        "unexplained CAU abbreviation",
+        re.compile(r"\bCAU\b"),
+        re.compile(
+            r"변경\s*이력\s*기능\s*\(CAU\)|"
+            r"change[- ]history\s+feature\s*\(CAU\)",
+            re.IGNORECASE,
+        ),
+    ),
+]
+
+
 @dataclass(frozen=True)
 class PublicCopySummary:
     checked_files: int
     findings: int
+
+
+def collect_abbreviation_findings(docs_dir: Path) -> list[str]:
+    findings: list[str] = []
+    for path in sorted(docs_dir.rglob("*.md")):
+        relative_path = path.relative_to(docs_dir).as_posix()
+        text = path.read_text(encoding="utf-8")
+
+        for requirement in PUBLIC_ABBREVIATION_REQUIREMENTS:
+            if not requirement.token_pattern.search(text):
+                continue
+            if requirement.explanation_pattern.search(text):
+                continue
+
+            for line_number, line in enumerate(text.splitlines(), start=1):
+                if requirement.token_pattern.search(line):
+                    findings.append(
+                        f"{relative_path}:{line_number}: "
+                        f"{requirement.name}: {line.strip()}"
+                    )
+                    break
+
+    return findings
 
 
 def collect_public_copy_findings(docs_dir: Path) -> list[str]:
@@ -130,6 +173,7 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
                     )
                     break
 
+    findings.extend(collect_abbreviation_findings(docs_dir))
     return findings
 
 
