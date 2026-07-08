@@ -5,7 +5,7 @@
 | 기간 | 조직 | 역할 | 주요 내용 |
 | --- | --- | --- | --- |
 | 2025.03 - Present | ClumL | Software Engineer | 보안 이벤트 분석 제품군, 요청 제한 동시성 검증 기준, 탐지 화면·리포트 표시 일관성, Rust service compatibility 확인, PR review |
-| 2021.10 - 2024.11 | 티맥스클라우드 | Software Engineer | Java/TypeScript No-code 플랫폼, generated service E2E 검증, CAU 변경 이력, SQL/DDL generation |
+| 2021.10 - 2024.11 | 티맥스클라우드 | Software Engineer | Java/TypeScript No-code 플랫폼, generated service E2E 검증, 변경 이력 기능(CAU), SQL/DDL generation |
 
 ## 방향
 
