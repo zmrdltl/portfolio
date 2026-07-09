@@ -38,7 +38,7 @@ Representative work: in [Coupler](projects/coupler.md), I documented signup resp
 - Treat data correctness, time handling, serialization, and API compatibility as explicit review points.
 - Re-check whether the implementation satisfies the completion criteria.
 
-Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved generated-service request/response and DB write/read checks into a pre-deployment validation flow; in [GlueSQL](opensource/gluesql.md), I left regression criteria from SQL translation through the test suite.
+Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved request/response and DB write/read checks for service/API code defined in the UI into a pre-deployment validation flow; in [GlueSQL](opensource/gluesql.md), I left validation criteria from SQL translation through regression tests.
 
 ## Review
 

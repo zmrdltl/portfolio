@@ -20,7 +20,7 @@ While moving the React Native product from its 1.0.0 initial implementation thro
 
 The previous signup flow required users to enter roughly 30 fields at once, and the review stages and screen-branching rules were becoming a maintenance and product-operations burden.
 
-## Signup And Review State Flow
+## Representative Workflow
 
 ```mermaid
 stateDiagram-v2

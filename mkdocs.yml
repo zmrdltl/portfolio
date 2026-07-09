@@ -58,7 +58,6 @@ plugins:
             티맥스클라우드: TmaxCloud
             오픈소스: Open Source
             프로젝트: Projects
-            활동: Activities
 
 nav:
   - 소개: index.md
@@ -71,4 +70,3 @@ nav:
   - 프로젝트:
       - Coupler: projects/coupler.md
   - 원칙: engineering-principles.md
-  - 활동: activities/index.md

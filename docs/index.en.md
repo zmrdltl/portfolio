@@ -4,18 +4,18 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I am a Platform Software Engineer who turns fragile state transitions, data flows, and service contracts in changing products and platforms into verifiable criteria.
+I am a Platform Software Engineer who connects user-defined services and product changes to working code, SQL, data flows, and test criteria.
 
-In recent work, I closed a request-limiting concurrency issue with reproducible invariants and regression-test criteria. In prior platform work, I made generated services and data history verifiable before deployment. In product development, I align app, API, admin, and database behavior around shared state contracts and release criteria.
+In my recent ClumL work, I reframed a request-limiting concurrency issue in a security analysis product and set handling criteria and regression tests so over-limit requests could not enter job execution. At TmaxCloud, I worked on a No-code platform where service/API designs from the UI became executable Java code and SQL, and I made deployed apps store and query data-change history so Studio could show table state at a target point in time. In my personal product Coupler, I aligned the React Native app, API, admin web, and database around the same signup and review rules.
 
-I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
+In open source, I have contributed to the Rust SQL engine GlueSQL. I worked on `SELECT DISTINCT`, aggregate `DISTINCT`, SQL parser and AST representation, executor and aggregate handling, Parquet storage, regression tests, and PR review.
 
 ## Representative Work
 
-- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency-correctness problem, then closed it with invariants and regression-test criteria that prevent over-limit request admission. I handled detection/report display consistency, Rust service configuration changes, and PR review criteria as part of the same change-safety thread.
-- [Generated-platform validation and data history](experience/tmaxcloud.md): moved generated-service request/response and DB write/read checks from post-deployment verification into pre-deployment E2E validation. I kept change-history feature (CAU) tables and row-snapshot copy flow inside the same generation boundary as generated CRUD service code.
-- [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths in GlueSQL. This work is visible through 45+ merged PRs plus review/docs records in `gluesql/gluesql`.
-- [Product state contracts and operating criteria](projects/coupler.md): aligned signup/review state models across a React Native app, API, admin web, and database, then connected TypeScript operating criteria, typecheck/migration guards, regression validation, and code review criteria into product-change standards.
+- [Change safety in a security analysis product](experience/cluml.md): reframed a wait symptom observed during customer demo server operation as a rate-limiter concurrency-correctness problem, then set reservation-state criteria and regression tests so over-limit requests could not enter job execution. I handled detection/report display consistency, Rust service configuration changes, and PR review criteria as part of the same change-safety thread.
+- [No-code platform service generation and data history](experience/tmaxcloud.md): in TmaxCloud's No-code platform, I turned UI-designed service/API definitions into Java code and SQL, then built a WebSocket test page to verify request/response and DB write/read behavior before deployment. For entities with the data-history option enabled, deployment created the source table and history table together, and insert/update/delete service code saved previous row data so the platform could query table state at a target point in time.
+- [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST representation, executor de-duplication, aggregate handling, AST builder, and regression tests in GlueSQL. This work is visible through 50+ merged PRs in GitHub `is:merged` search for `gluesql/gluesql`.
+- [Operating criteria for the personal product Coupler](projects/coupler.md): worked across the React Native app, API, admin web, and database; converted signup/review into staged flows; and connected TypeScript operating criteria, typecheck/migration guards, regression tests, and code review criteria to release criteria.
 
 ## Engineering Operating Perspective
 
@@ -28,10 +28,10 @@ I describe this in more detail in [Principles](engineering-principles.md).
 ## Technical Focus Areas
 
 - Engineering workflow: designing change units and validation criteria so docs, type checks, tests, reviews, and release criteria move together
-- Service contract: aligning app/API/admin/database behavior through server response contracts, review policies, permission criteria, and routing criteria
-- Generated platform: connecting metadata and schema information to SQL/DDL, generated service code, DB verification, change history, and test criteria
+- Service contracts: aligning app/API/admin/database behavior through server response contracts, review policies, permission rules, and routing rules
+- Service-generation platforms: connecting UI-defined metadata/schema to Java service code, SQL/DDL, DB verification, data-change history, and entity export/import
 - Change safety: separating operational symptoms, configuration changes, and display-consistency issues into reproduction conditions, completion criteria, regression tests, and PR review criteria
-- Rust/SQL: SQL engine internals, parser/AST, storage, Rust open-source contribution, and code review
+- Rust/SQL: Rust SQL engine work, SQL parser/AST, executor/aggregate handling, storage, regression tests, and code review
 
 ## Skills
 
@@ -53,4 +53,3 @@ I describe this in more detail in [Principles](engineering-principles.md).
 - [GlueSQL](opensource/gluesql.md)
 - [Coupler](projects/coupler.md)
 - [Principles](engineering-principles.md)
-- [Activities](activities/index.md)

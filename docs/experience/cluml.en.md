@@ -5,7 +5,7 @@
 
 ## Overview
 
-I worked on change-safety criteria in a security event analysis product suite. The core of this recent ClumL work is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and close them with verifiable criteria.
+I worked on change-safety criteria in a security event analysis product suite. The core of this recent ClumL work is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and organize them with verifiable criteria.
 
 The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service configuration workflow cleanup, compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
 
@@ -55,7 +55,7 @@ sequenceDiagram
 
 **Solution:** I defined the invariant that capacity checks and reservation updates must operate against the same state. The fix direction was to remove the stale-state gap between checking capacity and recording reservation state.
 
-**Rationale:** Reducing wait time or hiding the symptom in the UI would not close over-limit admission. The issue had to be handled before work execution, where the request limiter decides whether a request may pass.
+**Rationale:** Reducing wait time or hiding the symptom in the UI would leave over-limit admission unresolved. The issue had to be handled before work execution, where the request limiter decides whether a request may pass.
 
 **Selection:** I narrowed the representative scope to over-limit admission caused by the check-and-reserve race. Other long-wait concerns, such as a TPM wait cap, were separated as follow-up failure modes.
 
@@ -63,15 +63,15 @@ sequenceDiagram
 
 **Validation:** I captured the condition where requests could pass more than 10x beyond the allowed limit as a reproducible correctness problem. The validation criterion was whether over-limit requests were blocked and whether concurrent requests reading the same state could no longer over-reserve.
 
-**Result:** The long-wait symptom was closed as a rate-limit correctness problem, with invariants and regression-test criteria that prevent over-limit request admission.
+**Result:** The long-wait symptom was reframed as a rate-limit correctness problem, with invariants and regression-test criteria that prevent over-limit request admission.
 
 **Limitation:** This is an admission-correctness result, not a latency, throughput, or incident-rate metric. I do not present it as p95/p99 latency improvement without a separate benchmark or operating log.
 
-## Supporting Work Criteria
+## Related Work Criteria
 
 ### Display-Consistency Review Criteria
 
-This is a change-safety criterion that supports the request-limiting concurrency representative work. If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break, so I organized the review around whether event context stays consistent through the display path.
+This is a related change-safety criterion for the request-limiting concurrency work. If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break, so I organized the review around whether event context stays consistent through the display path.
 
 ```mermaid
 flowchart LR

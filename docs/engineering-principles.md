@@ -38,14 +38,14 @@
 - 데이터 정합성, 시간 처리, serialization, API compatibility는 별도 확인 항목으로 둡니다.
 - 구현 결과가 완료 기준을 만족하는지 재확인합니다.
 
-관련 대표 작업: [티맥스클라우드](experience/tmaxcloud.md)에서는 generated service의 request/response와 DB write/read 반영을 배포 전 검증 흐름으로 당겼고, [GlueSQL](opensource/gluesql.md)에서는 SQL translation부터 test suite까지 회귀 기준을 남겼습니다.
+관련 대표 작업: [티맥스클라우드](experience/tmaxcloud.md)에서는 화면에서 정의한 service/API 코드의 request/response와 DB write/read 반영을 배포 전 검증 흐름으로 당겼고, [GlueSQL](opensource/gluesql.md)에서는 SQL translation부터 회귀 테스트까지 검증 기준을 남겼습니다.
 
 ## Review
 
 - 변경 범위가 문제 범위를 넘지 않았는지 확인합니다.
 - 책임 분리, 일관성, 확장성, 응집도와 결합도를 봅니다.
 - 기존 API, 설정, 직렬화 구조, 사용자 흐름과 호환되는지 확인합니다.
-- 테스트가 실제 위험 경로를 닫는지 봅니다.
+- 테스트가 실제 위험 경로를 검증하는지 봅니다.
 - 새 복잡도가 문제 해결에 필요한 수준인지 판단합니다.
 
 관련 대표 작업: [ClumL](experience/cluml.md)에서는 PR 변경이 수용 기준과 회귀 테스트 기준에 맞는지 검토했고, [Coupler](projects/coupler.md)에서는 상태 계약, typecheck, migration guard, 정책 문서 동기화 기준을 함께 확인했습니다.

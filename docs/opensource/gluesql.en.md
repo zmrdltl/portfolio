@@ -5,15 +5,20 @@
 
 ## Overview
 
-GlueSQL is a Rust-based SQL database engine. My contribution scope includes SQL engine features, parser/AST work, aggregate/data functions, numeric type handling, Parquet storage, test suites, mentoring, and code review.
+GlueSQL is a Rust-based SQL database engine. My contribution scope includes SQL engine features, parser/AST work, aggregate/data functions, numeric type handling, Parquet storage, regression tests, mentoring, and code review.
 
-I authored [Merged 45+ PRs](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) in `gluesql/gluesql`, continuing work visible through GitHub PRs, reviews, and docs.
+In `gluesql/gluesql`, I authored [50+ merged PRs in GitHub `is:merged` search](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged). In 2025, I continued as a GlueSQL reviewer with merged work around DISTINCT operations, a Rust toolchain bump, deterministic ordering cleanup, and Parquet-storage clippy work.
 
-In 2025, I continued as a GlueSQL reviewer with merged PRs covering DISTINCT operations, a Rust toolchain bump, deterministic ordering cleanup, and Parquet-storage clippy work.
+This open-source work spans SQL engine parser, AST, execution logic, storage, and regression tests through GitHub PR and review flow.
 
-This page presents open-source work across SQL engine parser, AST, execution path, storage, and test suites through GitHub PR and review flow.
+Adding a SQL engine feature does not end at syntax support. The parser must accept the syntax, the AST and execution logic must preserve the same meaning, and storage and regression tests must lock edge conditions. My GlueSQL work connects those layers instead of treating syntax support as an isolated change.
 
-Adding a SQL engine feature does not end at syntax support. The parser must accept the syntax, the AST and plan/execution path must preserve the same meaning, and storage and test suites must lock edge conditions. My GlueSQL contribution leaves that flow in PR and review records.
+## Representative Work
+
+- Implemented `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST representation, executor de-duplication, aggregate handling, AST builder, and regression tests. Key PRs include [SELECT DISTINCT](https://github.com/gluesql/gluesql/pull/835) and [aggregate DISTINCT](https://github.com/gluesql/gluesql/pull/1710).
+- Extended the SQL engine query interface through AST Builder aggregate helpers, `COUNT` argument handling, and aggregate-expression argument paths. Related PRs include [aggregate helper](https://github.com/gluesql/gluesql/pull/635), [`COUNT` argument handling](https://github.com/gluesql/gluesql/pull/656), and [aggregate expression argument evaluation](https://github.com/gluesql/gluesql/pull/749).
+- Connected Parquet storage to GlueSQL storage traits and SQL execution paths, adding docs, tests, CLI prompts, and CLI examples with it. Related PRs include [Parquet storage read/write](https://github.com/gluesql/gluesql/pull/1269) and [Parquet storage clippy refactor](https://github.com/gluesql/gluesql/pull/1806).
+- Reviewed and mentored contributor PRs around error handling, edge cases, test coverage, and code organization.
 
 ## DISTINCT Processing And Validation Flow
 
@@ -31,40 +36,29 @@ flowchart TD
 
 This diagram shows how `DISTINCT` support was carried from SQL syntax through translation, AST/query representation, execution, aggregate state, and regression coverage.
 
-## Representative Work
+## Review, Mentoring, And Awards
 
-- Implemented and validated `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST/query representation, executor de-duplication, aggregate state, AST builder, and test-suite paths.
-- Extended SQL engine query and storage surfaces through AST Builder aggregate helpers, aggregate-expression argument paths, Parquet storage, and CLI surface work.
-- Reviewed and mentored contributor PRs around error handling, edge cases, test coverage, and code organization.
+As a GlueSQL reviewer and OSSCA mentor, I checked contributor PRs around error handling, edge cases, test coverage, and code organization. In mentoring, I covered Rust project commands, test writing, GlueSQL SQL execution flow, storage structure, AST builder structure, and function implementation direction.
 
-## Verifiable Evidence
+| Date | Program | Award | Organizer |
+| --- | --- | --- | --- |
+| 2023.11 | Open Source Contribution Academy | NIPA President's Award (Encouragement) | OSSCA |
+| 2022.12 | Open Source Contribution Academy | NIPA President's Award (Top Excellence) | OSSCA |
+| 2021.11 | Open Source Contribution Academy | NIPA President's Award (Top Excellence) | OSSCA |
 
-- Authored 45+ merged PRs in `gluesql/gluesql`
-- SQL parser, AST/query representation, execution path, storage, and test-suite work are visible through actual PR and review records
-- Contributor mentoring and review history continued across OSSCA 2021 mentee, 2022 lead mentee, and 2023 mentor roles
-
-## CLI Application
-
-GlueSQL can be used as an embedded SQL engine, and its CLI can be used to inspect SQL execution flow during development.
-
-![GlueSQL CLI application](attachments/gluesql-cli.png)
-
-## Extended Contribution
-
-Beyond `DISTINCT`, I contributed to AST Builder APIs, aggregate/data functions, Parquet storage, CLI surfaces, numeric type handling, and test-suite improvements. This work supports the same technical signal: changing a SQL engine requires parser, AST, execution, storage, and regression coverage to stay aligned.
-
-Contributor PR review and mentoring are treated as supporting technical evidence, not as a separate activity catalog. In review, I focused on error handling, edge cases, test coverage, and code organization.
-
-Awards and program history are summarized on the [Activities](../activities/index.md) page. This page keeps the technical scope of code contribution and review.
+OSSCA public materials are available in the [award proof folder](https://drive.google.com/drive/folders/1Kp0WQnuLxfCKPfvxvYLO27yjkDyE2Wda?usp=sharing) and the [certificate/activity proof folder](https://drive.google.com/drive/folders/1xQb6YpfgiYz59uKkaK0rvNL82mQ_6Nqn).
 
 ## Links
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
-- [GlueSQL PR search authored by `zmrdltl`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl)
+- [Merged GlueSQL PR search authored by `zmrdltl`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)
 - [GlueSQL 2023 official docs](https://gluesql.org/docs/0.14/)
+- [SELECT DISTINCT PR](https://github.com/gluesql/gluesql/pull/835)
+- [Aggregate DISTINCT PR](https://github.com/gluesql/gluesql/pull/1710)
+- [Parquet storage read/write PR](https://github.com/gluesql/gluesql/pull/1269)
+- [Parquet storage clippy refactor PR](https://github.com/gluesql/gluesql/pull/1806)
 - [DataFusion SQL Parser logical XOR PR](https://github.com/apache/datafusion-sqlparser-rs/pull/357)
 - [BigDecimal `get_scale` PR](https://github.com/akubera/bigdecimal-rs/pull/116)
-- [Parquet Storage PR #1269](https://github.com/gluesql/gluesql/pull/1269)
 
 ## Articles
 
@@ -73,4 +67,4 @@ Awards and program history are summarized on the [Activities](../activities/inde
 
 ## Skills
 
-Rust, SQL engine internals, parser/AST design, aggregate functions, numeric data types, storage, Parquet, test suites, code review, mentoring
+Rust, SQL engine internals, parser/AST design, aggregate functions, numeric data types, storage, Parquet, regression tests, code review, mentoring
