@@ -1,7 +1,7 @@
 # ClumL
 
 - 역할: Software Engineer
-- 기간: 2025.03 - Present
+- 기간: 2025.03 - 2026.07
 
 ## 개요
 

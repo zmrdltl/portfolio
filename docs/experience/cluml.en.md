@@ -1,7 +1,7 @@
 # ClumL
 
 - Role: Software Engineer
-- Period: 2025.03 - Present
+- Period: 2025.03 - 2026.07
 
 ## Overview
 

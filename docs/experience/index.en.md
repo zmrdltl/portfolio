@@ -4,7 +4,7 @@
 
 | Period | Organization | Role | Main Focus |
 | --- | --- | --- | --- |
-| 2025.03 - Present | ClumL | Software Engineer | Security event analysis product suite, request-limiting concurrency validation criteria, detection/report display consistency, Rust service compatibility checks, PR review |
+| 2025.03 - 2026.07 | ClumL | Software Engineer | Security event analysis product suite, request-limiting concurrency validation criteria, detection/report display consistency, Rust service compatibility checks, PR review |
 | 2021.10 - 2024.11 | TmaxCloud | Software Engineer | Java/TypeScript No-code platform, generated-service E2E validation, change-history feature (CAU), SQL/DDL generation |
 
 ## Direction
