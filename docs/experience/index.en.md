@@ -17,7 +17,7 @@
 
 My core background is backend/platform engineering that connects service design information and schema to code, SQL, data flows, and verification criteria.
 
-At ClumL, I separated operational symptoms into request-limiting correctness, display consistency, and configuration-change safety, then set reproduction conditions and test criteria.
+At ClumL, I separated operational symptoms into request-limiting correctness, display consistency, and configuration-change validation, then set reproduction conditions and test criteria.
 
 At TmaxCloud, I implemented backend/platform boundaries that connected app, entity, and service/API definitions from the UI to Java service code, SQL/DDL, DB verification, and data-change history storage/query.
 

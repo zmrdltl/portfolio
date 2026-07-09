@@ -38,7 +38,7 @@ flowchart TD
 
 ## 리뷰·멘토링·수상
 
-GlueSQL reviewer와 OSSCA mentor로 contributor PR의 error handling, edge case, test coverage, code organization을 검토했습니다. mentoring에서는 Rust project 기본 명령어, test 작성, GlueSQL SQL 실행 흐름, storage 구조, AST builder, function 구현 방향을 다뤘습니다.
+GlueSQL reviewer와 OSSCA mentor로 contributor PR의 error handling, edge case, test coverage, code organization을 검토했습니다. mentoring에서는 Rust project 기본 명령어, test 작성, GlueSQL SQL 실행 흐름, storage 구조, AST builder, function 구현 방향을 안내했습니다.
 
 | 날짜 | 대회/프로그램 | 수상 | 주최기관 |
 | --- | --- | --- | --- |

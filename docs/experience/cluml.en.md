@@ -5,9 +5,9 @@
 
 ## Overview
 
-I worked on change-safety criteria in a security event analysis product suite. The core of this recent ClumL work is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and organize them with verifiable criteria.
+In a security event analysis product suite, I narrowed operational symptoms into concrete technical problems and organized them with reproduction and validation criteria. The core of this recent ClumL work is not to describe the whole system, but to turn operational symptoms into narrow technical problems with verifiable criteria.
 
-The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service configuration workflow cleanup, compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
+The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service configuration workflow cleanup, compatibility checks, requirements/completion criteria, and PR review are separate changes where I checked the problem scope and compatibility with existing behavior.
 
 ## Representative Work
 
@@ -71,7 +71,7 @@ sequenceDiagram
 
 ### Display-Consistency Review Criteria
 
-This is a related change-safety criterion for the request-limiting concurrency work. If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break, so I organized the review around whether event context stays consistent through the display path.
+This is a product-display validation criterion that I organized separately from the request-limiting concurrency work. If detection lists, detail screens, charts, and reports show the same security event through different criteria, analyst trust can break, so I organized the review around whether event context stays consistent through the display path.
 
 ```mermaid
 flowchart LR
@@ -98,13 +98,13 @@ flowchart LR
 
 **Rationale:** Fixing each screen separately can leave drift in time ranges, port/packet display, or chart criteria. Analysis results and reports need API/query contracts and display rules to stay aligned.
 
-**Selection:** I scoped this as change-safety work around display consistency, not as a new detection feature or detection-accuracy claim.
+**Selection:** I scoped this as product validation work around display consistency, not as a new detection feature or detection-accuracy claim.
 
 **Implementation:** I separated causes and change scope for detection list/detail views, time ranges, port/packet display, and chart/report behavior. I included API/query contract drift and display-rule drift in review criteria.
 
 **Validation:** I checked whether analysis screens and reports preserved the same event context, and whether screen-level fixes changed the meaning of analysis results or report outputs.
 
-**Result:** Detection/report display issues became reviewable through shared event-context criteria, reducing the risk that product changes weaken trust in analysis results and report outputs.
+**Result:** Detection/report display issues became reviewable through shared event-context criteria, and I reflected that in review criteria so product changes would not weaken trust in analysis results and report outputs.
 
 **Limitation:** This work defines display and review criteria. It is not a detection-accuracy, throughput, or latency metric.
 
@@ -134,7 +134,7 @@ I separated HOG detection-period settings that previously led to code edits and 
 flowchart TD
   issue["Problem Definition + Scope / Non-goals"]
   criteria["Completion Criteria + Test Criteria"]
-  review["PR Review + Change-Safety Check"]
+  review["PR Review + Regression-Risk Check"]
 
   issue --> criteria
   criteria --> review
@@ -142,7 +142,7 @@ flowchart TD
 
 - Reviewed configuration, date/time handling, serialization, and test boundaries in Rust services to check compatibility risk against existing behavior.
 - Clarified the problem, scope, non-goals, completion criteria, and test expectations before implementation so implementation and review used the same criteria.
-- Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and change-safety risk so changes did not drift beyond the agreed problem scope.
+- Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and regression risk so changes did not drift beyond the agreed problem scope.
 
 ## Skills
 

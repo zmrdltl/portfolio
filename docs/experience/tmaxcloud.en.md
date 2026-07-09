@@ -13,7 +13,7 @@ The representative axes are service/API code-generation validation and data-chan
 
 The core problem in the No-code platform was that design information defined through the UI had to remain consistent as it turned into executable code, SQL, DB state, and test request formats.
 
-The representative scope is the backend/platform boundary that made UI-designed service/API definitions become executable Java code and SQL, made that behavior verifiable before deployment, and connected insert/update/delete service code to change-history tables. I also worked on entity export/import data copy between generated applications, SQL/DDL generation, and error diagnostics.
+The representative scope is the backend/platform boundary that made UI-designed service/API definitions become executable Java code and SQL, made that behavior verifiable before deployment, and connected insert/update/delete service code to change-history tables. The scope also includes entity export/import data copy between generated applications, SQL/DDL generation, and error diagnostics.
 
 Representative outcomes:
 

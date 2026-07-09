@@ -4,21 +4,21 @@
 
 ## Overview
 
-Coupler is product development work spanning a React Native app, API, admin web, and policy docs.
-I now lead development for a product that began as outsourced maintenance work. From 1.0.0 operation through the 2.0.0 transition, I aligned screen flows, server responses, and admin review criteria around shared state contracts and review criteria.
+Coupler is development-lead work for a React Native mobile dating app.
+I now lead development for a product that began as outsourced maintenance work. From 1.0.0 operation through the 2.0.0 transition, I reduced signup-request burden and rebuilt app screen flows, API responses, admin review criteria, and database state around the same signup/review model.
 
 ## Role and Scope
 
 - Development lead / Software Engineer
-- Defined development and release criteria across the mobile app, API, admin web, and policy docs.
+- Defined development and release criteria across the mobile app, API, admin web, database, and policy docs.
 - Expanded the work from maintenance-centered ownership into development leadership across the mobile app, API, admin web, database structure, and policy docs.
-- Broke customer and market response plus operating signals into requirement-sized units, then kept only product changes that passed state-contract, typecheck, migration-guard, and regression-validation criteria.
+- Broke customer and market response plus operating signals into requirement-sized units, then kept product changes behind state-contract, typecheck, migration-guard, and regression-validation checks.
 
 ## Problem and Constraints
 
 While moving the React Native product from its 1.0.0 initial implementation through the 2.0.0 transition, I needed the mobile app, API, and admin web to follow the same state model and release criteria.
 
-The previous signup flow required users to enter roughly 30 fields at once, and the review stages and screen-branching rules were becoming a maintenance and product-operations burden.
+The previous signup flow required users to enter roughly 30 fields at once, creating a high input burden before they could reach review submission. Review stages and screen-branching rules also had to stay consistent across the app, API, and admin web.
 
 ## Representative Workflow
 
@@ -35,7 +35,7 @@ stateDiagram-v2
   FullReviewPending --> AssociateMember: Returned for resubmission
 ```
 
-The core change was splitting a roughly 30-field signup flow into staged review flows, then making app screens, API responses, and admin review queues follow the same state criteria.
+The core change was reducing a roughly 30-field signup flow into staged review flows centered on basic information and required profile material, then making app screens, API responses, and admin review queues follow the same state criteria.
 
 ## App / API / Admin Boundary
 
@@ -79,9 +79,9 @@ My role in this structure was to connect product criteria to the server response
 
 ## Result
 
-Within the 2.0.0 transition scope, I clarified development criteria across the mobile app, API, and admin web, and changed the roughly 30-field signup flow into staged review flows. The signup response contract, member review policy, and code review criteria are captured in policy docs.
+Within the 2.0.0 transition scope, I clarified development criteria across the mobile app, API, admin web, and database, and changed the roughly 30-field signup flow into staged review flows centered on basic information and required profile material. The signup response contract, member review policy, and code review criteria are captured in policy docs.
 
-Meta SDK postback event count showed review-request-related events increasing from roughly 40 to roughly 1.1k over one month.
+Meta SDK postback event count showed one-month review-request reach events increasing from roughly 50 to roughly 1.1k.
 
 While operating the product, I turned customer and market response into product changes while keeping the mobile app, API, admin web, database, and policy docs aligned around the same state model and release criteria.
 
