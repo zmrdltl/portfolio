@@ -10,8 +10,8 @@ I now lead development for a product that began as outsourced maintenance work. 
 ## Role and Scope
 
 - Development lead / Software Engineer
-- Organized development flow and release checks across the mobile app, API, admin web, database, and policy docs.
-- Expanded the work from maintenance-centered ownership into development leadership across the mobile app, API, admin web, database structure, and policy docs.
+- Documented policy, flow, architecture, release, deployment, and rollback criteria across the mobile app, API, admin web, and database.
+- Expanded the work from maintenance-centered ownership into development leadership across the mobile app, API, admin web, database structure, and public development docs.
 - Broke customer and market response plus operating signals into requirement-sized units, then kept product changes behind state-contract, typecheck, migration-guard, and regression-validation checks.
 
 ## Problem and Constraints
@@ -41,13 +41,13 @@ The core change was reducing a roughly 30-field signup flow into staged review f
 
 ```mermaid
 flowchart LR
-  docs["Policy Docs\nserver response contract / member review policy"]
+  docs["Public Dev Docs\npolicy / flow / architecture"]
   api["API\naccess_context / request_origin"]
   app["React Native App\nscreen routing / matching tab access"]
   admin["Admin Web\nreview queue / detail handling"]
   db["MySQL\nstate / review rows / migration"]
   tests["Regression Validation\ncontract / routing / queue tests"]
-  release["Release Check\nQA / docs sync"]
+  release["Release Criteria\nQA / deploy / rollback"]
 
   docs --> api
   api --> app
@@ -60,7 +60,7 @@ flowchart LR
   tests --> release
 ```
 
-My role in this structure was to reflect product requirements in the server response contract, app routing, admin review queues, database state, regression tests, and release checks.
+My role in this structure was to translate product requirements into policy/flow/architecture docs, server response contracts, app routing, admin review queues, database state, regression tests, and release/deployment/rollback checks.
 
 ## Design and Implementation
 
@@ -69,7 +69,7 @@ My role in this structure was to reflect product requirements in the server resp
 - Reworked the database structure and state flow so the roughly 30-field signup process could be split into general-member, associate-member, and full-member stages, with associate/full review submissions available in parallel or through tab navigation.
 - Aligned submission/resubmission UX and review-list behavior so Admin/Mobile/API use the same [member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md).
 - Broke customer and market response plus operating signals into requirement-sized units, then iterated app/API/admin web/database changes quickly.
-- Reviewed tool-assisted change drafts against state contracts, typechecks, migration guards, regression validation, and policy-doc sync before keeping operational changes.
+- Reviewed tool-assisted change drafts against state contracts, typechecks, migration guards, regression validation, and public-doc sync before keeping operational changes.
 - Recorded testing, documentation-sync, and regression-safety checks in the [code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md).
 
 ## Validation
@@ -79,11 +79,11 @@ My role in this structure was to reflect product requirements in the server resp
 
 ## Result
 
-During the 2.0.0 transition, I clarified the development flow across the mobile app, API, admin web, and database, and changed the roughly 30-field signup flow into staged review flows centered on basic information and required profile material. The signup response contract, member review policy, and code review checks are captured in policy docs.
+During the 2.0.0 transition, I clarified policy, flow, architecture, and release/deployment/rollback criteria across the mobile app, API, admin web, and database, and changed the roughly 30-field signup flow into staged review flows centered on basic information and required profile material. The signup response contract, member review policy, and code review checks are captured in public development docs.
 
 Meta SDK postback event count showed one-month review-request reach events increasing from roughly 50 to roughly 1.1k.
 
-While operating the product, I turned customer and market response into product changes while keeping the mobile app, API, admin web, database, and policy docs aligned around the same state model and release-check flow.
+While operating the product, I turned customer and market response into product changes while keeping the mobile app, API, admin web, database, and public development docs aligned around the same state model and release/deployment/rollback flow.
 
 ## Links
 
@@ -93,6 +93,10 @@ While operating the product, I turned customer and market response into product 
 
 ## Artifacts
 
+- [Public development docs](https://github.com/coupler-developer/docs)
+- [Architecture docs](https://github.com/coupler-developer/docs/tree/main/content/architecture)
+- [Flow docs](https://github.com/coupler-developer/docs/tree/main/content/flows)
+- [Release docs](https://github.com/coupler-developer/docs/tree/main/content/releases)
 - [Signup response contract](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md)
 - [Member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)
 - [Code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)

@@ -29,7 +29,7 @@
 - 성공 조건과 하지 않을 일
 - 실패 시 확인할 로그, 테스트, 재현 절차
 
-관련 대표 작업: [Coupler](projects/coupler.md)에서는 회원가입 응답 계약과 회원 심사 정책을 문서로 고정했고, [ClumL](experience/cluml.md)에서는 운영 중 관찰된 대기 증상을 요청 제한 동시성 문제로 좁혔습니다.
+관련 대표 작업: [Coupler](projects/coupler.md)에서는 앱·API·관리자 웹·DB의 정책·플로우·아키텍처와 릴리스·배포/롤백 기준을 공개 개발 문서로 정리했고, [ClumL](experience/cluml.md)에서는 운영 중 관찰된 대기 증상을 요청 제한 동시성 문제로 좁혔습니다.
 
 ## Harness
 
@@ -48,7 +48,7 @@
 - 테스트가 실제 위험 경로를 검증하는지 봅니다.
 - 새 복잡도가 문제 해결에 필요한 수준인지 판단합니다.
 
-관련 대표 작업: [ClumL](experience/cluml.md)에서는 PR 변경이 수용 기준과 회귀 테스트 기준에 맞는지 검토했고, [Coupler](projects/coupler.md)에서는 상태 계약, typecheck, migration guard, 정책 문서 동기화 기준을 함께 확인했습니다.
+관련 대표 작업: [ClumL](experience/cluml.md)에서는 PR 변경이 수용 기준과 회귀 테스트 기준에 맞는지 검토했고, [Coupler](projects/coupler.md)에서는 상태 계약, typecheck, migration guard, 공개 개발 문서 동기화, 릴리스·배포/롤백 기준을 함께 확인했습니다.
 
 ## 도메인 학습
 

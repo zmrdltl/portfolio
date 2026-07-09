@@ -10,8 +10,8 @@ React Native 기반 모바일 소개팅 앱 Coupler의 개발총괄 작업입니
 ## 역할과 범위
 
 - 개발총괄 / Software Engineer
-- 모바일 앱, API, 관리자 웹, DB, 정책 문서의 개발 흐름과 릴리스 절차를 정리했습니다.
-- 유지보수 중심으로 시작한 제품을 현재는 모바일 앱, API, 관리자 웹, DB 구조, 정책 문서까지 함께 다루는 범위로 총괄하고 있습니다.
+- 모바일 앱, API, 관리자 웹, DB의 정책·플로우·아키텍처와 릴리스·배포/롤백 기준을 공개 개발 문서로 정리했습니다.
+- 유지보수 중심으로 시작한 제품을 현재는 모바일 앱, API, 관리자 웹, DB 구조, 공개 개발 문서까지 함께 다루는 범위로 총괄하고 있습니다.
 - 고객·시장 반응과 운영 지표를 요구사항 단위로 나누고, 상태 계약·typecheck·migration guard·회귀 검증을 통과한 변경만 제품에 반영하고 있습니다.
 
 ## 문제와 제약
@@ -41,13 +41,13 @@ stateDiagram-v2
 
 ```mermaid
 flowchart LR
-  docs["정책 문서\n서버 응답 계약 / 회원 심사 정책"]
+  docs["공개 개발 문서\n정책 / 플로우 / 아키텍처"]
   api["API\naccess_context / request_origin"]
   app["React Native App\n화면 분기 / matching tab 접근"]
   admin["Admin Web\n심사 큐 / 상세 처리"]
   db["MySQL\n상태 / 심사 row / migration"]
   tests["회귀 검증\ncontract / routing / queue tests"]
-  release["릴리스 확인\nQA / 문서 동기화"]
+  release["릴리스 기준\nQA / 배포·롤백"]
 
   docs --> api
   api --> app
@@ -60,7 +60,7 @@ flowchart LR
   tests --> release
 ```
 
-이 구조에서 제 역할은 제품 요구를 서버 응답 계약, 앱 화면 분기, 관리자 심사 큐, DB 상태, 회귀 테스트, 릴리스 확인 항목에 반영하는 것이었습니다.
+이 구조에서 제 역할은 제품 요구를 정책·플로우·아키텍처 문서, 서버 응답 계약, 앱 화면 분기, 관리자 심사 큐, DB 상태, 회귀 테스트, 릴리스·배포/롤백 확인 항목에 반영하는 것이었습니다.
 
 ## 설계와 구현
 
@@ -69,7 +69,7 @@ flowchart LR
 - 한 번에 약 30개 항목을 입력하던 가입 신청을 일반회원, 준회원, 정회원 단계로 나누고, 준회원·정회원 심사를 병렬로 제출하거나 탭을 이동하며 진행할 수 있도록 DB 구조와 상태 흐름을 재구성했습니다.
 - Admin/Mobile/API가 같은 [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)을 쓰도록 제출/재제출 UX와 심사 목록 동작을 정리했습니다.
 - 고객·시장 반응과 운영 지표를 요구사항 단위로 쪼개고, 앱/API/관리자 웹/DB 변경을 빠르게 반복했습니다.
-- 자동화 도구로 만든 변경안은 상태 계약, typecheck, migration guard, 회귀 검증, 정책 문서 동기화를 통과한 것만 반영했습니다.
+- 자동화 도구로 만든 변경안은 상태 계약, typecheck, migration guard, 회귀 검증, 공개 개발 문서 동기화를 통과한 것만 반영했습니다.
 - [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)에 테스트, 문서 동기화, 회귀 안전성 확인 항목을 남겼습니다.
 
 ## 검증
@@ -79,11 +79,11 @@ flowchart LR
 
 ## 결과
 
-2.0.0 전환 과정에서 모바일 앱, API, 관리자 웹, DB의 개발 흐름을 정리하고, 약 30개 항목을 한 번에 받던 가입 신청을 기본정보와 필수 프로필 중심의 단계형 심사 흐름으로 개편했습니다. 회원가입 응답 계약·회원 심사 정책·코드 리뷰 정책은 문서로 남겼습니다.
+2.0.0 전환 과정에서 모바일 앱, API, 관리자 웹, DB의 정책·플로우·아키텍처와 릴리스·배포/롤백 기준을 정리하고, 약 30개 항목을 한 번에 받던 가입 신청을 기본정보와 필수 프로필 중심의 단계형 심사 흐름으로 개편했습니다. 회원가입 응답 계약·회원 심사 정책·코드 리뷰 정책은 공개 개발 문서로 남겼습니다.
 
 Meta SDK postback event count 기준으로 1개월 심사 요청 도달 event가 약 50건에서 약 1.1k 수준으로 증가한 것을 확인했습니다.
 
-제품 운영 과정에서 고객·시장 반응을 제품 변경으로 빠르게 전환하면서, 모바일 앱, API, 관리자 웹, DB, 정책 문서가 같은 상태 모델과 릴리스 확인 흐름을 공유하도록 정리했습니다.
+제품 운영 과정에서 고객·시장 반응을 제품 변경으로 빠르게 전환하면서, 모바일 앱, API, 관리자 웹, DB, 공개 개발 문서가 같은 상태 모델과 릴리스·배포/롤백 기준을 공유하도록 정리했습니다.
 
 ## 링크
 
@@ -93,6 +93,10 @@ Meta SDK postback event count 기준으로 1개월 심사 요청 도달 event가
 
 ## 산출물
 
+- [공개 개발 문서 전체](https://github.com/coupler-developer/docs)
+- [아키텍처 문서](https://github.com/coupler-developer/docs/tree/main/content/architecture)
+- [플로우 문서](https://github.com/coupler-developer/docs/tree/main/content/flows)
+- [릴리스 문서](https://github.com/coupler-developer/docs/tree/main/content/releases)
 - [회원가입 응답 계약](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md)
 - [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)
 - [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)

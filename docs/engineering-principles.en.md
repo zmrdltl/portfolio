@@ -29,7 +29,7 @@ Domain knowledge and requirements
 - Success criteria and out-of-scope items
 - Logs, tests, and reproduction steps for failures
 
-Representative work: in [Coupler](projects/coupler.md), I documented signup response contracts and member review policies in public docs; in [ClumL](experience/cluml.md), I narrowed an operational wait symptom into a request-limiting concurrency problem.
+Representative work: in [Coupler](projects/coupler.md), I documented policy, flow, architecture, release, deployment, and rollback criteria across the app, API, admin web, and database in public development docs; in [ClumL](experience/cluml.md), I narrowed an operational wait symptom into a request-limiting concurrency problem.
 
 ## Harness
 
@@ -48,7 +48,7 @@ Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved request/re
 - Confirm whether tests cover real risk paths.
 - Decide whether new complexity is justified by the problem.
 
-Representative work: in [ClumL](experience/cluml.md), I reviewed whether PR changes matched acceptance criteria and regression-test criteria; in [Coupler](projects/coupler.md), I checked state contracts, typechecks, migration guards, and policy-doc synchronization together.
+Representative work: in [ClumL](experience/cluml.md), I reviewed whether PR changes matched acceptance criteria and regression-test criteria; in [Coupler](projects/coupler.md), I checked state contracts, typechecks, migration guards, public-doc synchronization, and release/deployment/rollback criteria together.
 
 ## Domain Learning
 
