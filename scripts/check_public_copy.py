@@ -81,6 +81,22 @@ PUBLIC_COPY_PATTERNS = [
         re.compile(r"보조\s*구조|supporting\s+structural\s+work", re.IGNORECASE),
     ),
     PublicCopyPattern(
+        "ambiguous Coupler operating-label wording",
+        re.compile(
+            r"개인\s*제품\s*Coupler\s*운영\s*기준|"
+            r"Operating\s+criteria\s+for\s+the\s+personal\s+product\s+Coupler",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "opaque bundled-flow wording",
+        re.compile(
+            r"같은\s+[^.\n]{0,60}(?:흐름|thread|flow)\s+안에서\s+다뤘|"
+            r"as\s+part\s+of\s+the\s+same\s+[^.\n]{0,60}(?:thread|flow)",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
         "evidence-style section heading",
         re.compile(
             r"^\s*#{1,6}\s+(검증\s+가능한\s+근거|Verifiable\s+Evidence)\s*$",
@@ -176,6 +192,23 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
+        "stale Coupler postback baseline",
+        re.compile(
+            r"(?:약\s*)?40(?:개|건|events?)?[^.\n]{0,80}1\.1k|"
+            r"1\.1k[^.\n]{0,80}(?:약\s*)?40(?:개|건|events?)?",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "unverified Coupler conversion-cost metric",
+        re.compile(
+            r"전환율|가입\s*성공률|심사\s*시간\s*단축|"
+            r"광고\s*단가|광고비|\bCAC\b|\bCPA\b|"
+            r"cost\s+per|conversion\s+rate|signup\s+success|review\s+time",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
         "defensive implementation wording",
         re.compile(
             r"구현 주장이 아니라|not a .*implementation claim|"
@@ -200,7 +233,7 @@ PUBLIC_ABBREVIATION_REQUIREMENTS: list[PublicAbbreviationRequirement] = []
 PUBLIC_LINE_REQUIREMENTS = [
     PublicLineRequirement(
         "unqualified Coupler Meta SDK postback metric",
-        re.compile(r"(?=.*(?:약\s*)?40(?:개)?)(?=.*1\.1k)", re.IGNORECASE),
+        re.compile(r"(?=.*(?:약\s*)?50(?:개|건)?)(?=.*1\.1k)", re.IGNORECASE),
         re.compile(r"Meta\s+SDK\s+postback\s+event\s+count", re.IGNORECASE),
     ),
     PublicLineRequirement(

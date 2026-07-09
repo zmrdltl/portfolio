@@ -32,7 +32,7 @@ class PublicCopyCheckTests(unittest.TestCase):
         (self.docs_dir / "projects.md").write_text(
             "# 프로젝트\n\n"
             "Meta SDK postback event count 기준으로 event가 "
-            "약 40개에서 약 1.1k 수준으로 증가했습니다.\n",
+            "약 50건에서 약 1.1k 수준으로 증가했습니다.\n",
             encoding="utf-8",
         )
 
@@ -41,13 +41,71 @@ class PublicCopyCheckTests(unittest.TestCase):
     def test_unqualified_coupler_postback_metric_is_rejected(self) -> None:
         (self.docs_dir / "projects.md").write_text(
             "# 프로젝트\n\n"
-            "심사 요청 관련 event가 약 40개에서 약 1.1k 수준으로 증가했습니다.\n",
+            "심사 요청 관련 event가 약 50건에서 약 1.1k 수준으로 증가했습니다.\n",
             encoding="utf-8",
         )
 
         self.assertTrue(
             any(
                 "unqualified Coupler Meta SDK postback metric" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_stale_coupler_postback_baseline_is_rejected(self) -> None:
+        (self.docs_dir / "projects.md").write_text(
+            "# 프로젝트\n\n"
+            "Meta SDK postback event count 기준으로 event가 "
+            "약 40건에서 약 1.1k 수준으로 증가했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "stale Coupler postback baseline" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_ambiguous_coupler_operating_label_is_rejected(self) -> None:
+        (self.docs_dir / "index.md").write_text(
+            "# 소개\n\n"
+            "- [개인 제품 Coupler 운영 기준](projects/coupler.md): "
+            "가입 심사 기준을 정리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "ambiguous Coupler operating-label wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_ambiguous_coupler_operating_label_is_rejected(self) -> None:
+        (self.docs_dir / "index.en.md").write_text(
+            "# Summary\n\n"
+            "- [Operating criteria for the personal product Coupler]"
+            "(projects/coupler.md): aligned review criteria.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "ambiguous Coupler operating-label wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_unverified_coupler_conversion_cost_metric_is_rejected(self) -> None:
+        (self.docs_dir / "projects.md").write_text(
+            "# Coupler\n\n광고단가가 10만원에서 2만5천원으로 낮아졌습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "unverified Coupler conversion-cost metric" in finding
                 for finding in self.validate()
             )
         )
@@ -142,6 +200,34 @@ class PublicCopyCheckTests(unittest.TestCase):
         self.assertTrue(
             any(
                 "ambiguous supporting-structure wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_opaque_bundled_flow_wording_is_rejected(self) -> None:
+        (self.docs_dir / "index.md").write_text(
+            "# 소개\n\n"
+            "탐지 화면과 PR review 기준도 같은 변경 안전성 흐름 안에서 다뤘습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque bundled-flow wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_opaque_bundled_flow_wording_is_rejected(self) -> None:
+        (self.docs_dir / "index.en.md").write_text(
+            "# Summary\n\n"
+            "I handled display consistency as part of the same change-safety thread.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque bundled-flow wording" in finding
                 for finding in self.validate()
             )
         )
