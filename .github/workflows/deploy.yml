@@ -1,4 +1,4 @@
-name: Deploy MkDocs
+name: Build MkDocs
 
 on:
   workflow_dispatch:
@@ -70,13 +70,13 @@ jobs:
         run: .venv/bin/mkdocs build --strict
 
       - name: Upload artifact
-        if: github.event_name == 'push'
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
   deploy:
-    if: github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     permissions:

@@ -47,7 +47,7 @@ pushing changes to `main`:
 pnpm run ci:local
 ```
 
-After pushing, confirm the GitHub Actions run reaches `success`:
+After pushing, confirm the GitHub Actions build run reaches `success`:
 
 ```bash
 pnpm run check:actions
@@ -56,6 +56,10 @@ pnpm run check:actions
 If a run is cancelled before any job steps start with a hosted-runner acquisition
 message, rerun the workflow from GitHub Actions instead of treating it as a
 content validation failure.
+
+GitHub Pages deployment is manual. Do not dispatch the deploy workflow unless
+the current public content has been reviewed and deployment is explicitly
+requested.
 
 ## Structure Check
 
