@@ -83,21 +83,131 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
-    def test_explained_public_abbreviation_passes(self) -> None:
+    def test_verbose_rationale_heading_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n**왜 이 해결 방법인지:** 이 접근을 선택했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("verbose rationale heading" in finding for finding in self.validate())
+        )
+
+    def test_opaque_cau_rationale_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n"
+            "write 시점의 snapshot copy와 read 시점의 select SQL 기준이 "
+            "같은 metadata/generation boundary 안에 있어야 했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("opaque CAU rationale wording" in finding for finding in self.validate())
+        )
+
+    def test_resolution_as_closing_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n회귀 테스트 기준으로 닫았습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "resolution-as-closing wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_opaque_generated_platform_jargon_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n"
+            "generated service와 row snapshot copy를 같은 generation boundary로 "
+            "관리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque generated-platform jargon" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_ambiguous_supporting_structure_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\nSQL/DDL Generator는 보조 구조로 둡니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "ambiguous supporting-structure wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_evidence_style_section_heading_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.md").write_text(
+            "# GlueSQL\n\n## 검증 가능한 근거\n\n- 링크 없이 주장합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("evidence-style section heading" in finding for finding in self.validate())
+        )
+
+    def test_english_evidence_style_section_heading_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.en.md").write_text(
+            "# GlueSQL\n\n## Verifiable Evidence\n\n- Trust this claim.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("evidence-style section heading" in finding for finding in self.validate())
+        )
+
+    def test_standalone_cli_application_heading_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.md").write_text(
+            "# GlueSQL\n\n## CLI Application\n\nCLI만 별도 섹션으로 둡니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "standalone CLI application heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_inconsistent_numbered_parquet_pr_label_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.md").write_text(
+            "# GlueSQL\n\n"
+            "- [Parquet Storage PR #1269](https://github.com/gluesql/gluesql/pull/1269)\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "inconsistent numbered Parquet PR label" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_public_cau_abbreviation_is_rejected_even_when_explained(self) -> None:
         (self.docs_dir / "experience.md").write_text(
             "# 경험\n\n변경 이력 기능(CAU)의 table 생성 흐름을 정리했습니다.\n",
             encoding="utf-8",
         )
 
-        self.assertEqual(self.validate(), [])
+        self.assertTrue(any("internal CAU acronym" in finding for finding in self.validate()))
 
-    def test_english_explained_public_abbreviation_passes(self) -> None:
+    def test_english_public_cau_abbreviation_is_rejected_even_when_explained(self) -> None:
         (self.docs_dir / "experience.en.md").write_text(
             "# Work\n\nI implemented change-history feature (CAU) tables.\n",
             encoding="utf-8",
         )
 
-        self.assertEqual(self.validate(), [])
+        self.assertTrue(any("internal CAU acronym" in finding for finding in self.validate()))
 
     def test_unexplained_public_abbreviation_is_rejected(self) -> None:
         (self.docs_dir / "experience.md").write_text(
@@ -105,9 +215,7 @@ class PublicCopyCheckTests(unittest.TestCase):
             encoding="utf-8",
         )
 
-        self.assertTrue(
-            any("unexplained CAU abbreviation" in finding for finding in self.validate())
-        )
+        self.assertTrue(any("internal CAU acronym" in finding for finding in self.validate()))
 
     def test_internal_boundary_wording_is_rejected(self) -> None:
         (self.docs_dir / "index.md").write_text(
@@ -142,6 +250,16 @@ class PublicCopyCheckTests(unittest.TestCase):
     def test_page_framing_wording_is_rejected(self) -> None:
         (self.docs_dir / "activities.md").write_text(
             "# 활동\n\n이 페이지는 대표 기술 설명을 보조합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("page-framing wording" in finding for finding in self.validate())
+        )
+
+    def test_extended_page_framing_wording_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.en.md").write_text(
+            "# Open Source\n\nThis page presents PR and review records.\n",
             encoding="utf-8",
         )
 

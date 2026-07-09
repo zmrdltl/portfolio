@@ -39,6 +39,63 @@ class PublicLineRequirement:
 
 PUBLIC_COPY_PATTERNS = [
     PublicCopyPattern(
+        "verbose rationale heading",
+        re.compile(r"^\s*\*\*왜 이 해결 방법인지:\*\*", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "opaque CAU rationale wording",
+        re.compile(
+            r"같은\s+metadata/generation\s+boundary|"
+            r"same\s+metadata\s+and\s+generation\s+boundary|"
+            r"read\s*시점|select\s+SQL\s+기준|select\s+SQL\s+criteria|"
+            r"단순\s+audit\s+log로만|simple\s+audit\s+log",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "internal CAU acronym",
+        re.compile(r"\bCAU\b"),
+    ),
+    PublicCopyPattern(
+        "resolution-as-closing wording",
+        re.compile(
+            r"닫(?:았|았고|았습니다|는|으려면|고,|습니다)|"
+            r"\bclosed\b.*\b(criteria|invariant|issue|problem|with)|"
+            r"\bclose\b.*\b(issue|problem|criteria)",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "opaque generated-platform jargon",
+        re.compile(
+            r"generated[- ]service|generated\s+CRUD\s+service|"
+            r"row[- ]snapshot|snapshot\s+copy|snapshot\s+재구성|"
+            r"generation\s+boundary|metadata/generation\s+boundary|"
+            r"storage[- ]surface|query\s+semantics|test[- ]suite|"
+            r"경로로\s*구현|세대\s*경계|생성\s*경계",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "ambiguous supporting-structure wording",
+        re.compile(r"보조\s*구조|supporting\s+structural\s+work", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "evidence-style section heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(검증\s+가능한\s+근거|Verifiable\s+Evidence)\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "standalone CLI application heading",
+        re.compile(r"^\s*#{1,6}\s+CLI\s+Application\s*$", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "inconsistent numbered Parquet PR label",
+        re.compile(r"Parquet\s+Storage\s+PR\s+#\d+", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
         "HOG CVE/parser misclassification",
         re.compile(
             r"\bHOG\b.*(?:CVE|parser|parse|parsing|파싱|파서)|"
@@ -71,7 +128,10 @@ PUBLIC_COPY_PATTERNS = [
     ),
     PublicCopyPattern(
         "page-framing wording",
-        re.compile(r"이\s*페이지는|This\s+page\s+is", re.IGNORECASE),
+        re.compile(
+            r"이\s*페이지(?:는|에서는)?|This\s+page\s+(?:is|presents|keeps|summarizes)",
+            re.IGNORECASE,
+        ),
     ),
     PublicCopyPattern(
         "supporting-evidence wording",
@@ -134,17 +194,7 @@ PUBLIC_COPY_PATTERNS = [
 ]
 
 
-PUBLIC_ABBREVIATION_REQUIREMENTS = [
-    PublicAbbreviationRequirement(
-        "unexplained CAU abbreviation",
-        re.compile(r"\bCAU\b"),
-        re.compile(
-            r"변경\s*이력\s*기능\s*\(CAU\)|"
-            r"change[- ]history\s+feature\s*\(CAU\)",
-            re.IGNORECASE,
-        ),
-    ),
-]
+PUBLIC_ABBREVIATION_REQUIREMENTS: list[PublicAbbreviationRequirement] = []
 
 
 PUBLIC_LINE_REQUIREMENTS = [
