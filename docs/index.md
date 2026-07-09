@@ -25,14 +25,6 @@ PLATFORM SOFTWARE ENGINEER
 
 자세한 기준은 [원칙](engineering-principles.md)에 정리했습니다.
 
-## 주요 기술 영역
-
-- 개발 운영: 문서, 타입 검사, 테스트, 리뷰, 릴리스 기준이 함께 움직이도록 변경 단위와 검증 기준을 설계
-- 서비스 계약: 앱/API/관리자 웹/DB가 같은 상태 모델을 따르도록 서버 응답 계약, 심사 정책, 권한·화면 분기 기준을 정리
-- 서비스 생성 플랫폼: 화면에서 정의한 metadata/schema를 Java service code, SQL/DDL, DB 검증, 데이터 변경 이력, entity export/import로 연결
-- 운영 변경 검증: 운영 증상, 설정 변경, 표시 일관성 문제를 재현 조건, 완료 기준, 회귀 테스트, PR review 기준으로 분리
-- Rust/SQL: Rust SQL engine, SQL parser/AST, executor/aggregate 처리, storage, 회귀 테스트, 코드 리뷰
-
 ## 기술
 
 - Languages: Rust, Java, TypeScript, SQL

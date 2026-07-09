@@ -25,14 +25,6 @@ As some repetitive implementation work becomes less of a bottleneck, I consider 
 
 I describe this in more detail in [Principles](engineering-principles.md).
 
-## Technical Focus Areas
-
-- Engineering workflow: designing change units and validation criteria so docs, type checks, tests, reviews, and release criteria move together
-- Service contracts: aligning app/API/admin/database behavior through server response contracts, review policies, permission rules, and routing rules
-- Service-generation platforms: connecting UI-defined metadata/schema to Java service code, SQL/DDL, DB verification, data-change history, and entity export/import
-- Operational change validation: separating operational symptoms, configuration changes, and display-consistency issues into reproduction conditions, completion criteria, regression tests, and PR review criteria
-- Rust/SQL: Rust SQL engine work, SQL parser/AST, executor/aggregate handling, storage, regression tests, and code review
-
 ## Skills
 
 - Languages: Rust, Java, TypeScript, SQL
