@@ -7,13 +7,19 @@
 | 2025.03 - 2026.07 | ClumL | Software Engineer | Security event analysis product suite, request-limiting concurrency validation criteria, detection/report display consistency, Rust service compatibility checks, PR review |
 | 2021.10 - 2024.11 | TmaxCloud | Software Engineer | Java/TypeScript No-code platform, generated-service E2E validation, change-history feature (CAU), SQL/DDL generation |
 
+## Career Snapshot
+
+- [ClumL](cluml.md): reframed a wait symptom observed during customer demo server operation as a request-limiting correctness problem, then closed an over-limit concurrency issue that had admitted more than 10x the allowed request volume with invariants and regression-test criteria.
+- [TmaxCloud generated service](tmaxcloud.md): moved generated-service request/response and DB write/read checks in a No-code platform into pre-deployment E2E validation, contributing to reducing the repeated design-validation cycle from roughly 4 weeks to roughly 2 weeks under the working conditions at the time.
+- [TmaxCloud change-history feature (CAU)](tmaxcloud.md): designed and implemented a generation boundary that keeps original tables, change-history tables, generated CRUD service row-snapshot copy flow, and point-in-time select SQL criteria together.
+
 ## Direction
 
 My core background is backend/platform engineering that connects service design information and schema to code, SQL, data flows, and verification criteria.
 
-The representative work at TmaxCloud is connecting generated service/API behavior and table change history to pre-deployment validation, DB verification, and point-in-time snapshot reconstruction criteria in a No-code platform.
+At ClumL, I separated operational symptoms into narrow correctness and change-safety problems, then closed them with reproduction conditions, completion criteria, regression tests, and PR review criteria.
 
-At ClumL, I worked on request-limiting concurrency validation criteria, detection/report display consistency, Rust service compatibility checks, requirements and completion-criteria definition, and PR review in a security event analysis product suite. I present this as recent product-quality and change-safety work.
+At TmaxCloud, I implemented backend/platform boundaries that connected app, entity, and service/API definitions from the UI to SQL/DDL, generated service code, DB verification, and change-history criteria.
 
 My GlueSQL open-source work is a representative technical-depth signal: SQL engine internals, parser/AST design, Rust-based data processing, storage support, test suites, mentoring, and code review.
 

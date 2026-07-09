@@ -8,7 +8,7 @@ I am a Platform Software Engineer who turns fragile state transitions, data flow
 
 In recent work, I closed a request-limiting concurrency issue with reproducible invariants and regression-test criteria. In prior platform work, I made generated services and data history verifiable before deployment. In product development, I align app, API, admin, and database behavior around shared state contracts and release criteria.
 
-In AI-assisted development, I focus less on code generation itself and more on keeping problem definitions, docs, type checks, regression tests, and review criteria aligned so only operable changes remain. I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
+I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
 
 ## Representative Work
 
@@ -27,7 +27,7 @@ I describe this in more detail in [Principles](engineering-principles.md).
 
 ## Technical Focus Areas
 
-- AI-assisted engineering workflow: designing change units and validation criteria so docs, type checks, tests, reviews, and release criteria move together
+- Engineering workflow: designing change units and validation criteria so docs, type checks, tests, reviews, and release criteria move together
 - Service contract: aligning app/API/admin/database behavior through server response contracts, review policies, permission criteria, and routing criteria
 - Generated platform: connecting metadata and schema information to SQL/DDL, generated service code, DB verification, change history, and test criteria
 - Change safety: separating operational symptoms, configuration changes, and display-consistency issues into reproduction conditions, completion criteria, regression tests, and PR review criteria

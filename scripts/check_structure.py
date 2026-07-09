@@ -37,6 +37,7 @@ MkDocsConfigLoader.add_multi_constructor(
 
 ENGLISH_SUFFIX = ".en.md"
 MARKDOWN_SUFFIX = ".md"
+FORBIDDEN_STATIC_FILENAMES = {".DS_Store"}
 HANGUL_PATTERN = re.compile(r"[가-힣]")
 HEADING_PATTERN = re.compile(r"^(#{1,6})[ \t]+\S")
 FENCE_OPEN_PATTERN = re.compile(r"^[ \t]*(`{3,}|~{3,})")
@@ -161,6 +162,11 @@ def validate_structure(
     docs_dir: Path, config_path: Path
 ) -> tuple[list[str], StructureSummary]:
     errors: list[str] = []
+    for path in sorted(docs_dir.rglob("*")):
+        if path.is_file() and path.name in FORBIDDEN_STATIC_FILENAMES:
+            relative_path = path.relative_to(docs_dir).as_posix()
+            errors.append(f"Forbidden static file in docs: {relative_path}.")
+
     markdown_files = sorted(
         path.relative_to(docs_dir).as_posix()
         for path in docs_dir.rglob(f"*{MARKDOWN_SUFFIX}")

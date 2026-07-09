@@ -58,6 +58,14 @@ class StructureCheckTests(unittest.TestCase):
     def test_valid_structure(self) -> None:
         self.assertEqual(self.validate(), [])
 
+    def test_macos_metadata_file_is_rejected(self) -> None:
+        (self.docs_dir / ".DS_Store").write_bytes(b"local metadata")
+
+        self.assertIn(
+            "Forbidden static file in docs: .DS_Store.",
+            self.validate(),
+        )
+
     def test_missing_translation_is_rejected(self) -> None:
         (self.docs_dir / "index.en.md").unlink()
 
