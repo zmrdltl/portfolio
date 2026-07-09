@@ -5,7 +5,7 @@
 
 ## Overview
 
-I work on change-safety criteria in a security event analysis product suite. The core of my current role is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and close them with verifiable criteria.
+I worked on change-safety criteria in a security event analysis product suite. The core of this recent ClumL work is not to describe the whole system, but to narrow operational symptoms into concrete technical problems and close them with verifiable criteria.
 
 The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service configuration workflow cleanup, compatibility checks, requirements/completion criteria, and PR review support those changes by keeping them inside the agreed problem scope and compatible with existing behavior.
 

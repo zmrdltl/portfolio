@@ -6,7 +6,7 @@ PLATFORM SOFTWARE ENGINEER
 
 I am a Platform Software Engineer who turns fragile state transitions, data flows, and service contracts in changing products and platforms into verifiable criteria.
 
-In my current role, I closed a request-limiting concurrency issue with reproducible invariants and regression-test criteria. In prior platform work, I made generated services and data history verifiable before deployment. In product development, I align app, API, admin, and database behavior around shared state contracts and release criteria.
+In recent work, I closed a request-limiting concurrency issue with reproducible invariants and regression-test criteria. In prior platform work, I made generated services and data history verifiable before deployment. In product development, I align app, API, admin, and database behavior around shared state contracts and release criteria.
 
 In AI-assisted development, I focus less on code generation itself and more on keeping problem definitions, docs, type checks, regression tests, and review criteria aligned so only operable changes remain. I support this with public Rust SQL engine work. In GlueSQL, I left query semantics, AST/execution-path, storage-surface, and test-suite work in PR and review records.
 
