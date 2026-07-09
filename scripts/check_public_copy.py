@@ -26,7 +26,26 @@ class PublicAbbreviationRequirement:
     explanation_pattern: re.Pattern[str]
 
 
+@dataclass(frozen=True)
+class PublicLineRequirement:
+    name: str
+    trigger_pattern: re.Pattern[str]
+    required_pattern: re.Pattern[str]
+    paths: tuple[str, ...] | None = None
+
+    def applies_to(self, relative_path: str) -> bool:
+        return self.paths is None or relative_path in self.paths
+
+
 PUBLIC_COPY_PATTERNS = [
+    PublicCopyPattern(
+        "HOG CVE/parser misclassification",
+        re.compile(
+            r"\bHOG\b.*(?:CVE|parser|parse|parsing|파싱|파서)|"
+            r"(?:CVE|parser|parse|parsing|파싱|파서).*\bHOG\b",
+            re.IGNORECASE,
+        ),
+    ),
     PublicCopyPattern(
         "internal public-boundary wording",
         re.compile(r"공개\s*(경계|범위)|public\s+(boundary|scope)", re.IGNORECASE),
@@ -128,6 +147,24 @@ PUBLIC_ABBREVIATION_REQUIREMENTS = [
 ]
 
 
+PUBLIC_LINE_REQUIREMENTS = [
+    PublicLineRequirement(
+        "unqualified Coupler Meta SDK postback metric",
+        re.compile(r"(?=.*(?:약\s*)?40(?:개)?)(?=.*1\.1k)", re.IGNORECASE),
+        re.compile(r"Meta\s+SDK\s+postback\s+event\s+count", re.IGNORECASE),
+    ),
+    PublicLineRequirement(
+        "unqualified HOG wording",
+        re.compile(r"\bHOG\b"),
+        re.compile(
+            r"탐지|detection|config|configuration|period|운영|operational|"
+            r"brute[- ]force|threat|위협|network\s+event|네트워크\s*이벤트",
+            re.IGNORECASE,
+        ),
+    ),
+]
+
+
 @dataclass(frozen=True)
 class PublicCopySummary:
     checked_files: int
@@ -172,6 +209,20 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
                         f"{copy_pattern.name}: {line.strip()}"
                     )
                     break
+
+            for requirement in PUBLIC_LINE_REQUIREMENTS:
+                if not requirement.applies_to(relative_path):
+                    continue
+                if not requirement.trigger_pattern.search(line):
+                    continue
+                if requirement.required_pattern.search(line):
+                    continue
+
+                findings.append(
+                    f"{relative_path}:{line_number}: "
+                    f"{requirement.name}: {line.strip()}"
+                )
+                break
 
     findings.extend(collect_abbreviation_findings(docs_dir))
     return findings

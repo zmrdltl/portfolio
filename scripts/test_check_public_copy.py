@@ -28,6 +28,61 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertEqual(self.validate(), [])
 
+    def test_qualified_coupler_postback_metric_passes(self) -> None:
+        (self.docs_dir / "projects.md").write_text(
+            "# 프로젝트\n\n"
+            "Meta SDK postback event count 기준으로 event가 "
+            "약 40개에서 약 1.1k 수준으로 증가했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_unqualified_coupler_postback_metric_is_rejected(self) -> None:
+        (self.docs_dir / "projects.md").write_text(
+            "# 프로젝트\n\n"
+            "심사 요청 관련 event가 약 40개에서 약 1.1k 수준으로 증가했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "unqualified Coupler Meta SDK postback metric" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_qualified_hog_wording_passes(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\nHOG 탐지 period 설정을 외부 config로 분리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_unqualified_hog_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\nHOG 작업을 정리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("unqualified HOG wording" in finding for finding in self.validate())
+        )
+
+    def test_hog_cve_parser_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\nHOG CVE 파싱 흐름을 config로 분리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "HOG CVE/parser misclassification" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_explained_public_abbreviation_passes(self) -> None:
         (self.docs_dir / "experience.md").write_text(
             "# 경험\n\n변경 이력 기능(CAU)의 table 생성 흐름을 정리했습니다.\n",
