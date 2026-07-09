@@ -1,6 +1,6 @@
 # Engineering Principles
 
-In product development, I document domain background, operational policies, responsibility boundaries, and verification criteria before implementation, then fix behavior through tests and review. In AI-assisted development, the goal is not code generation itself, but moving customer and market signals into product changes quickly while keeping problem definition, docs, types, tests, reviews, and release criteria inside the same validation system.
+In product development, I document domain background, operational policies, responsibility boundaries, and verification criteria before implementation, then fix behavior through tests and review. In AI-assisted development, the goal is not code generation itself, but moving customer and market signals into product changes quickly while making problem definition, docs, types, tests, reviews, and release criteria check the same completion conditions for each change.
 
 ## Core Principles
 
@@ -43,7 +43,7 @@ Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved request/re
 ## Review
 
 - Check whether the change stays within the problem scope.
-- Review responsibility boundaries, consistency, extensibility, cohesion, and coupling.
+- Review responsibility boundaries, API/state contracts, extensibility, cohesion, and coupling.
 - Check compatibility with existing APIs, configuration, serialization, and user flows.
 - Confirm whether tests cover real risk paths.
 - Decide whether new complexity is justified by the problem.
@@ -52,7 +52,7 @@ Representative work: in [ClumL](experience/cluml.md), I reviewed whether PR chan
 
 ## Domain Learning
 
-In No-code platform work, I transformed design information into SQL, DDL, Java service code, DB verification, and change-history criteria. The same pattern matters when using automation tools: turn customer and market signals, domain knowledge, and requirements into context, tests, and review criteria.
+In No-code platform work, I made UI-defined service/API and entity designs generate SQL, DDL, and Java service code, then made request/response and DB effects verifiable before deployment. The same pattern matters when using automation tools: turn customer and market signals, domain knowledge, and requirements into context, tests, and review criteria.
 
 ## Anti-patterns
 
