@@ -32,6 +32,31 @@ npx pnpm@11.5.2 install --frozen-lockfile
 npx pnpm@11.5.2 run lint:md
 ```
 
+## Pre-push CI
+
+Install the repository pre-push hook once:
+
+```bash
+pnpm run setup:githooks
+```
+
+Run the same local validation path as the GitHub Actions build job before
+pushing changes to `main`:
+
+```bash
+pnpm run ci:local
+```
+
+After pushing, confirm the GitHub Actions run reaches `success`:
+
+```bash
+pnpm run check:actions
+```
+
+If a run is cancelled before any job steps start with a hosted-runner acquisition
+message, rerun the workflow from GitHub Actions instead of treating it as a
+content validation failure.
+
 ## Structure Check
 
 한국어와 영어 본문은 각각 검수할 수 있도록 `*.md`, `*.en.md` 파일로 유지합니다.

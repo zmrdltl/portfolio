@@ -19,6 +19,8 @@ Do not recreate portfolio strategy, case selection, writing policy, review lense
 
 Use these local checks after content or navigation changes:
 
+- `pnpm run ci:local` before pushing deployed `main` changes
+- `pnpm run check:actions` after pushing deployed `main` changes
 - `pnpm run lint:md`
 - `pnpm run check:contract`
 - `pnpm run check:public-copy`
@@ -38,3 +40,6 @@ For `AGENTS.md`-only changes, Markdown lint is enough unless the change affects 
 - `main` is the deployed branch.
 - Use `pnpm` as declared by `packageManager`.
 - Deploy only reviewed public content.
+- Configure hooks with `pnpm run setup:githooks` in local clones that publish this repository.
+- Before pushing `main`, run `pnpm run ci:local`; the repository pre-push hook runs the same command when hooks are configured.
+- After pushing `main`, run `pnpm run check:actions` and verify the GitHub Actions run status. If GitHub cancels before job steps start because a hosted runner was not acquired, rerun the workflow rather than treating that as a content failure.

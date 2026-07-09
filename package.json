@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "check:contract": ".venv/bin/python scripts/check_portfolio_contract.py",
+    "check:actions": "python3 scripts/check_latest_action_run.py --wait --sha HEAD",
     "check:public-copy": ".venv/bin/python scripts/check_public_copy.py",
     "check:structure": ".venv/bin/python scripts/check_structure.py",
+    "ci:local": "bash scripts/run_local_ci.sh",
     "lint:md": "markdownlint-cli2",
+    "setup:githooks": "git config core.hooksPath .githooks",
     "test:contract": ".venv/bin/python -m unittest scripts/test_check_portfolio_contract.py",
     "test:public-copy": ".venv/bin/python -m unittest scripts/test_check_public_copy.py",
     "test:structure": ".venv/bin/python -m unittest scripts/test_check_structure.py"
