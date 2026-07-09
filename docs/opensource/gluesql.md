@@ -7,7 +7,7 @@
 
 GlueSQL은 Rust 기반 SQL database engine입니다. 기여 범위는 SQL engine 기능, parser/AST, aggregate/data function, numeric type 처리, Parquet storage, 회귀 테스트, 멘토링, 코드 리뷰를 포함합니다.
 
-`gluesql/gluesql`에서는 [GitHub `is:merged` 검색 기준 병합 PR 50건 이상](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했습니다. 2025년에는 GlueSQL reviewer로 활동하면서 DISTINCT operations, Rust toolchain, deterministic ordering, Parquet storage clippy 정리 PR을 이어갔습니다.
+`gluesql/gluesql`에서는 [GitHub `is:merged` 검색 기준 병합 PR 44건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했습니다. 2025년에는 GlueSQL reviewer로 활동하면서 DISTINCT operations, Rust toolchain, deterministic ordering, Parquet storage clippy 정리 PR을 이어갔습니다.
 
 GlueSQL 작업은 SQL engine의 parser, AST, 실행 로직, storage, 회귀 테스트를 GitHub PR과 review 흐름으로 보여주는 오픈소스 기여입니다.
 

@@ -20,7 +20,7 @@ Representative outcomes:
 - Built a WebSocket-based E2E test page to verify request/response shape and DB write/read behavior before deployment.
 - Designed and implemented source tables, history tables, and insert/update/delete service-code flows that save previous row data.
 - Built point-in-time query logic that chooses valid row data per primary key when showing table state at a target time.
-- In the entity export/import MVP, split cross-app entity data copy/sync requirements into export entity, Broker App, and import entity links, and owned the metadata schema plus Export client page.
+- In the entity export/import MVP, split cross-app entity data copy/sync requirements into exporting entity, intermediate connector app, and importing entity links, and owned the metadata schema plus Export client page.
 - Separated SQL/DDL generation responsibility into a backend-importable library structure, and organized terminal error highlighting and exception formatting as a developer diagnostics case.
 
 ## Representative Work Flows
@@ -113,9 +113,9 @@ As the number of services/APIs grew, finding incorrect service definitions or re
 
 ### Entity Export/Import Data Copy
 
-The entity export/import MVP supported initial entity-data copy between generated applications and connected that flow to change-event synchronization. I participated in the DB schema/API for exported/imported entity information and owned the metadata schema, `selected_attr_ids` design for copying selected attributes, Export client page, and `export entity -> Broker App -> import entity` connection structure.
+The entity export/import MVP supported initial entity-data copy between generated applications and connected that flow to change-event synchronization. I participated in the DB schema/API for exported/imported entity information and owned the metadata schema for copying selected attributes, the Export client page, and the connection structure between exporting entities, an intermediate connector app, and importing entities.
 
-The import-cancel detail page, `syncservice.ftl` or message sync service, message ordering/retry, and migration strategy remained separate follow-up areas.
+The import-cancel detail page, message-sync service template or runtime sync service, message ordering/retry, and migration strategy remained separate follow-up areas.
 
 ### SQL/DDL Generator
 

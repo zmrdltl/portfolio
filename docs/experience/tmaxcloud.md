@@ -20,7 +20,7 @@ No-code platform의 핵심 문제는 사용자가 화면에서 정의한 service
 - WebSocket 기반 E2E test page로 배포 전 request/response 형식과 DB write/read 반영을 확인할 수 있게 했습니다.
 - 변경 이력 옵션이 켜진 entity의 원본 table, 변경 이력 table, insert/update/delete 서비스 코드의 이력 저장 흐름을 설계·구현했습니다.
 - 특정 시점 조회 SQL이 목표 시점에 유효한 row data를 골라 table 상태를 보여주도록 만들었습니다.
-- Entity export/import MVP에서 앱 간 entity data copy/sync 요구를 export entity, Broker App, import entity 연결로 나누고, metadata schema와 Export client page를 담당했습니다.
+- Entity export/import MVP에서 앱 간 entity data copy/sync 요구를 내보내는 entity, 중간 연결 앱, 가져오는 entity의 연결 구조로 나누고, metadata schema와 Export client page를 담당했습니다.
 - SQL/DDL 생성 책임은 backend에서 import 가능한 library 구조로 분리하고, terminal error highlighting과 예외 정보 formatting은 개발 진단 사례로 정리했습니다.
 
 ## 대표 작업 흐름
@@ -113,9 +113,9 @@ service/API 수가 늘어나면 잘못된 service definition이나 request/respo
 
 ### Entity Export/Import Data Copy
 
-Entity export/import MVP는 서로 다른 생성 앱 사이에서 entity data를 초기 복사하고 변경 이벤트 동기화 흐름과 연결하기 위한 작업이었습니다. 저는 exported/imported entity 정보를 저장하는 DB schema/API에 참여하고, 선택한 속성만 복사하기 위한 metadata schema와 `selected_attr_ids`, Export client page, `export entity -> Broker App -> import entity` 연결 구조를 맡았습니다.
+Entity export/import MVP는 서로 다른 생성 앱 사이에서 entity data를 초기 복사하고 변경 이벤트 동기화 흐름과 연결하기 위한 작업이었습니다. 저는 exported/imported entity 정보를 저장하는 DB schema/API에 참여하고, 선택한 속성만 복사하기 위한 metadata schema와 Export client page, 내보내는 entity와 가져오는 entity를 중간 연결 앱으로 이어 주는 연결 구조를 맡았습니다.
 
-Import 취소 상세 목록 page, `syncservice.ftl` 또는 message sync service, message ordering/retry, migration strategy는 후속 연계 영역으로 분리했습니다.
+Import 취소 상세 목록 page, 메시지 동기화 service template 또는 message sync service, message ordering/retry, migration strategy는 후속 연계 영역으로 분리했습니다.
 
 ### SQL/DDL Generator
 

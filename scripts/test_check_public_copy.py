@@ -506,6 +506,99 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_stale_gluesql_merged_pr_count_wording_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.md").write_text(
+            "# GlueSQL\n\nGitHub `is:merged` 검색 기준 병합 PR 50건을 작성했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "stale GlueSQL merged PR count wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_stale_gluesql_merged_pr_count_range_wording_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.md").write_text(
+            "# GlueSQL\n\nGitHub `is:merged` 검색 기준 병합 PR 50건 이상을 작성했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "stale GlueSQL merged PR count wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_stale_gluesql_merged_pr_count_wording_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.en.md").write_text(
+            "# GlueSQL\n\nI authored 50+ merged PRs in GitHub search.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "stale GlueSQL merged PR count wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_stale_gluesql_exact_merged_pr_count_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.en.md").write_text(
+            "# GlueSQL\n\nI authored 50 merged PRs in GitHub search.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "stale GlueSQL merged PR count wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_coupler_funnel_baseline_count_is_not_rejected_as_gluesql_count(self) -> None:
+        (self.docs_dir / "projects.md").write_text(
+            "# Coupler\n\n"
+            "Meta SDK postback event count 기준으로 1개월 심사 요청 도달 event가 "
+            "약 50건에서 약 1.1k 수준으로 증가했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertFalse(
+            any(
+                "stale GlueSQL merged PR count wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_internal_entity_export_import_identifier_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n`selected_attr_ids`와 Broker App 연결을 정리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "internal entity export/import identifier" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_internal_entity_export_import_template_identifier_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n`syncservice.ftl`은 후속 영역으로 분리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "internal entity export/import identifier" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_public_cau_abbreviation_is_rejected_even_when_explained(self) -> None:
         (self.docs_dir / "experience.md").write_text(
             "# 경험\n\n변경 이력 기능(CAU)의 table 생성 흐름을 정리했습니다.\n",

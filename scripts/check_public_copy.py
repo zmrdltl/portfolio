@@ -180,6 +180,18 @@ PUBLIC_COPY_PATTERNS = [
         re.compile(r"Parquet\s+Storage\s+PR\s+#\d+", re.IGNORECASE),
     ),
     PublicCopyPattern(
+        "stale GlueSQL merged PR count wording",
+        re.compile(
+            r"병합\s+PR\s+50\s*건(?:\s*이상)?|"
+            r"50(?:\+)?\s+merged\s+PRs",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "internal entity export/import identifier",
+        re.compile(r"Broker\s+App|selected_attr_ids|syncservice\.ftl", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
         "internal HOG product name",
         re.compile(r"\bHOG\b", re.IGNORECASE),
     ),
