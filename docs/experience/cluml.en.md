@@ -59,7 +59,7 @@ sequenceDiagram
 
 **Selection:** I narrowed the representative scope to over-limit admission caused by the check-and-reserve race. Other long-wait concerns, such as a TPM wait cap, were separated as follow-up failure modes.
 
-**Implementation:** From the operational symptom and logs, I organized reproduction conditions and acceptance criteria around same-state capacity check and reservation update. I reviewed whether the PR change matched those criteria and the regression-test criteria.
+**Implementation:** From the operational symptom and logs, I organized reproduction conditions, the fix direction, and acceptance criteria around same-state capacity check and reservation update. I reflected that criterion in the implementation change, then reviewed whether the PR change satisfied the acceptance and regression-test criteria.
 
 **Validation:** I captured the condition where requests could pass more than 10x beyond the allowed limit as a reproducible correctness problem. The validation criterion was whether over-limit requests were blocked and whether concurrent requests reading the same state could no longer over-reserve.
 
