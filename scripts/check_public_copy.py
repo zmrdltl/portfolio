@@ -108,6 +108,13 @@ PUBLIC_COPY_PATTERNS = [
         re.compile(r"^\s*#{1,6}\s+CLI\s+Application\s*$", re.IGNORECASE),
     ),
     PublicCopyPattern(
+        "duplicative technical focus heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(주요\s*기술\s*영역|Technical\s+Focus\s+Areas)\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
         "inconsistent numbered Parquet PR label",
         re.compile(r"Parquet\s+Storage\s+PR\s+#\d+", re.IGNORECASE),
     ),

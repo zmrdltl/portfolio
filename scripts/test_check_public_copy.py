@@ -265,6 +265,32 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_duplicative_technical_focus_heading_is_rejected(self) -> None:
+        (self.docs_dir / "index.md").write_text(
+            "# 소개\n\n## 주요 기술 영역\n\n- 대표 작업 요약을 다시 나열합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "duplicative technical focus heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_duplicative_technical_focus_heading_is_rejected(self) -> None:
+        (self.docs_dir / "index.en.md").write_text(
+            "# Summary\n\n## Technical Focus Areas\n\n- Repeats representative work.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "duplicative technical focus heading" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_inconsistent_numbered_parquet_pr_label_is_rejected(self) -> None:
         (self.docs_dir / "opensource.md").write_text(
             "# GlueSQL\n\n"
