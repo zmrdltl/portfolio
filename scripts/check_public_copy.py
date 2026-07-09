@@ -77,6 +77,21 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
+        "vague no-code consistency wording",
+        re.compile(
+            r"일관되게\s*(?:이어|동작|처리|반영)|"
+            r"실행\s*코드,\s*SQL,\s*DB\s*상태,\s*테스트\s*요청\s*형식|"
+            r"사용자가\s*정의한\s*서비스와\s*제품\s*변경이\s*실제\s*코드,\s*SQL,\s*데이터\s*흐름|"
+            r"service\s+definition(?:과|와)\s*코드\s*실행\s*결과의\s*일치|"
+            r"같은\s+(?:generation|생성)\s+흐름|"
+            r"connects\s+user-defined\s+services\s+and\s+product\s+changes\s+to\s+working\s+code|"
+            r"consistent\s+as\s+it\s+turned\s+into|"
+            r"consistency\s+between\s+service\s+definitions\s+and\s+code\s+execution|"
+            r"\bone\s+generation\s+flow\b|\bsame\s+generation\s+flow\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
         "ambiguous supporting-structure wording",
         re.compile(r"보조\s*구조|supporting\s+structural\s+work", re.IGNORECASE),
     ),
@@ -97,9 +112,42 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
+        "generic display-consistency wording",
+        re.compile(
+            r"변경\s*안전성\s*기준|change[- ]safety|"
+            r"\bevent\s+context\b|같은\s+event\s+context|"
+            r"\bdrift\b|표시\s*drift",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
         "evidence-style section heading",
         re.compile(
             r"^\s*#{1,6}\s+(검증\s+가능한\s+근거|Verifiable\s+Evidence)\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "opaque related-work criteria heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(관련\s*작업\s*기준|Related\s+Work\s+Criteria)\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "opaque display-consistency criteria heading",
+        re.compile(
+            r"^\s*#{1,6}\s+("
+            r"표시\s*일관성\s*검토\s*기준|"
+            r"Display[- ]Consistency\s+Review\s+Criteria"
+            r")\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "generic validation-criteria heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(검증과\s*기준|Validation\s+and\s+Criteria)\s*$",
             re.IGNORECASE,
         ),
     ),
@@ -115,16 +163,29 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
+        "duplicative homepage engineering-perspective heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(개발\s*운영\s*관점|Engineering\s+Operating\s+Perspective)\s*$",
+            re.IGNORECASE,
+        ),
+        paths=("index.md", "index.en.md"),
+    ),
+    PublicCopyPattern(
+        "duplicative work-direction heading",
+        re.compile(r"^\s*#{1,6}\s+(엔지니어링\s*방향|Direction)\s*$", re.IGNORECASE),
+        paths=("experience/index.md", "experience/index.en.md"),
+    ),
+    PublicCopyPattern(
         "inconsistent numbered Parquet PR label",
         re.compile(r"Parquet\s+Storage\s+PR\s+#\d+", re.IGNORECASE),
     ),
     PublicCopyPattern(
-        "HOG CVE/parser misclassification",
-        re.compile(
-            r"\bHOG\b.*(?:CVE|parser|parse|parsing|파싱|파서)|"
-            r"(?:CVE|parser|parse|parsing|파싱|파서).*\bHOG\b",
-            re.IGNORECASE,
-        ),
+        "internal HOG product name",
+        re.compile(r"\bHOG\b", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "opaque detection-period wording",
+        re.compile(r"탐지\s*period|detection[- ]period|탐지\s*주기\s*설정", re.IGNORECASE),
     ),
     PublicCopyPattern(
         "internal public-boundary wording",
@@ -199,6 +260,74 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
+        "public defensive claim-disclaimer wording",
+        re.compile(
+            r"주장하지\s*(?:않|말)|주장으로\s*쓰지|"
+            r"I\s+do\s+not\s+(?:present|claim|generalize)|"
+            r"do\s+not\s+claim|does\s+not\s+extend|"
+            r"일반화하지\s*않",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "public claim-scope wording",
+        re.compile(
+            r"성과\s*범위|결과\s*범위|구현\s*범위|"
+            r"(?:근거|결과|성과)[^.\n]{0,40}로\s*제한(?:했|했습니다|한다|합니다)|"
+            r"Result\s+Scope|Implementation\s+Scope|"
+            r"I\s+scoped\s+the\s+result|limited\s+the\s+result|"
+            r"scope(?:d)?\s+the\s+result",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "scope-limiting public selection wording",
+        re.compile(
+            r"(?:대표|검증|작업|성과|결과|구현)\s*범위(?:는|를)?"
+            r"[^.\n]{0,50}(?:좁|줄|제한|한정)|"
+            r"\bI\s+(?:scoped|narrowed)\s+(?:the\s+)?"
+            r"(?:work|scope|representative\s+scope)"
+            r"[^.\n]{0,50}(?:to|into)",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "defensive direct-scope wording",
+        re.compile(
+            r"제가\s*맡은\s*범위|직접\s*담당한\s*범위가\s*아닙니다|"
+            r"\bdirect\s+scope\b|outside\s+my\s+direct\s+scope",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "opaque working-criteria wording",
+        re.compile(
+            r"당시\s*작업\s*기준|under\s+the\s+working\s+conditions",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "public performance-disclaimer wording",
+        re.compile(
+            r"\bp95\b|\bp99\b|\bbenchmark\b|별도\s*benchmark|"
+            r"운영\s*로그|operating\s+logs?|\blatency\b|"
+            r"지연\s*시간\s*개선",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "unsupported admission wording",
+        re.compile(r"\badmission\b|\badmit(?:s|ted|ting)?\b", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "overclaim absolute-solution wording",
+        re.compile(
+            r"정확히\s*해결|완전히\s*해결|매우\s+많은|수많은|"
+            r"exactly\s+solv|fully\s+solv|very\s+many|huge\s+number",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
         "stale Coupler postback baseline",
         re.compile(
             r"(?:약\s*)?40(?:개|건|events?)?[^.\n]{0,80}1\.1k|"
@@ -244,11 +373,11 @@ PUBLIC_LINE_REQUIREMENTS = [
         re.compile(r"Meta\s+SDK\s+postback\s+event\s+count", re.IGNORECASE),
     ),
     PublicLineRequirement(
-        "unqualified HOG wording",
-        re.compile(r"\bHOG\b"),
+        "unqualified percentage comparison",
+        re.compile(r"\d+%\s*(?:이상\s*)?(?:줄|감소|단축|개선|reduc|decreas|improv)", re.IGNORECASE),
         re.compile(
-            r"탐지|detection|config|configuration|period|운영|operational|"
-            r"brute[- ]force|threat|위협|network\s+event|네트워크\s*이벤트",
+            r"변경\s*전|변경\s*후|전후|비교|1회|작업\s*시간|"
+            r"before|after|compared|one\s+.*change|work\s+time|workflow",
             re.IGNORECASE,
         ),
     ),

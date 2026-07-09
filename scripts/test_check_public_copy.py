@@ -110,13 +110,15 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
-    def test_qualified_hog_wording_passes(self) -> None:
+    def test_public_hog_product_name_is_rejected(self) -> None:
         (self.docs_dir / "experience.md").write_text(
             "# 경험\n\nHOG 탐지 period 설정을 외부 config로 분리했습니다.\n",
             encoding="utf-8",
         )
 
-        self.assertEqual(self.validate(), [])
+        self.assertTrue(
+            any("internal HOG product name" in finding for finding in self.validate())
+        )
 
     def test_unqualified_hog_wording_is_rejected(self) -> None:
         (self.docs_dir / "experience.md").write_text(
@@ -125,18 +127,18 @@ class PublicCopyCheckTests(unittest.TestCase):
         )
 
         self.assertTrue(
-            any("unqualified HOG wording" in finding for finding in self.validate())
+            any("internal HOG product name" in finding for finding in self.validate())
         )
 
-    def test_hog_cve_parser_wording_is_rejected(self) -> None:
+    def test_opaque_detection_period_wording_is_rejected(self) -> None:
         (self.docs_dir / "experience.md").write_text(
-            "# 경험\n\nHOG CVE 파싱 흐름을 config로 분리했습니다.\n",
+            "# 경험\n\n탐지 period 설정을 외부 config로 분리했습니다.\n",
             encoding="utf-8",
         )
 
         self.assertTrue(
             any(
-                "HOG CVE/parser misclassification" in finding
+                "opaque detection-period wording" in finding
                 for finding in self.validate()
             )
         )
@@ -232,6 +234,149 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_vague_no_code_consistency_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n화면 설계 정보가 실행 코드, SQL, DB 상태, 테스트 요청 형식까지 일관되게 이어져야 했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "vague no-code consistency wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_vague_no_code_consistency_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nDesign information had to remain consistent as it turned into executable code.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "vague no-code consistency wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_vague_homepage_connection_wording_is_rejected(self) -> None:
+        (self.docs_dir / "index.md").write_text(
+            "# 소개\n\n사용자가 정의한 서비스와 제품 변경이 실제 코드, SQL, 데이터 흐름까지 이어지도록 정리합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "vague no-code consistency wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_vague_homepage_connection_wording_is_rejected(self) -> None:
+        (self.docs_dir / "index.en.md").write_text(
+            "# Summary\n\nConnects user-defined services and product changes to working code.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "vague no-code consistency wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_opaque_related_work_criteria_heading_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n## 관련 작업 기준\n\n추상적인 기준을 설명합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque related-work criteria heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_opaque_related_work_criteria_heading_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\n## Related Work Criteria\n\nExplains internal criteria.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque related-work criteria heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_display_consistency_criteria_heading_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n## 표시 일관성 검토 기준\n\n기준을 반복합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque display-consistency criteria heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_generic_validation_criteria_heading_is_rejected(self) -> None:
+        (self.docs_dir / "project.md").write_text(
+            "# 프로젝트\n\n## 검증과 기준\n\n기준을 반복합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "generic validation-criteria heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_generic_validation_criteria_heading_is_rejected(self) -> None:
+        (self.docs_dir / "project.en.md").write_text(
+            "# Project\n\n## Validation and Criteria\n\nRepeats criteria.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "generic validation-criteria heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_generic_display_consistency_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n같은 event context가 유지되는지 변경 안전성 기준으로 봤습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "generic display-consistency wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_generic_display_consistency_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nI reviewed event context drift as change-safety.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "generic display-consistency wording" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_evidence_style_section_heading_is_rejected(self) -> None:
         (self.docs_dir / "opensource.md").write_text(
             "# GlueSQL\n\n## 검증 가능한 근거\n\n- 링크 없이 주장합니다.\n",
@@ -291,6 +436,62 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_homepage_engineering_perspective_heading_is_rejected(self) -> None:
+        (self.docs_dir / "index.md").write_text(
+            "# 소개\n\n## 개발 운영 관점\n\n일반적인 개발 기준을 반복합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "duplicative homepage engineering-perspective heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_homepage_engineering_perspective_heading_is_rejected(self) -> None:
+        (self.docs_dir / "index.en.md").write_text(
+            "# Summary\n\n## Engineering Operating Perspective\n\nRepeats principles.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "duplicative homepage engineering-perspective heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_work_direction_heading_is_rejected(self) -> None:
+        experience_dir = self.docs_dir / "experience"
+        experience_dir.mkdir()
+        (experience_dir / "index.md").write_text(
+            "# 경력\n\n## 엔지니어링 방향\n\n홈과 원칙 페이지 내용을 반복합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "duplicative work-direction heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_work_direction_heading_is_rejected(self) -> None:
+        experience_dir = self.docs_dir / "experience"
+        experience_dir.mkdir()
+        (experience_dir / "index.en.md").write_text(
+            "# Work\n\n## Direction\n\nRepeats the homepage and principles.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "duplicative work-direction heading" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_inconsistent_numbered_parquet_pr_label_is_rejected(self) -> None:
         (self.docs_dir / "opensource.md").write_text(
             "# GlueSQL\n\n"
@@ -337,6 +538,190 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any("defensive metric wording" in finding for finding in self.validate())
+        )
+
+    def test_public_defensive_claim_disclaimer_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\np95 latency 개선으로 주장하지 않습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "public defensive claim-disclaimer wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_public_claim_scope_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n**선택:** 성과 범위는 반복 변경 절차로 제한했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("public claim-scope wording" in finding for finding in self.validate())
+        )
+
+    def test_english_public_claim_scope_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\n**Selection:** I scoped the result to the workflow.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any("public claim-scope wording" in finding for finding in self.validate())
+        )
+
+    def test_scope_limiting_selection_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n**선택:** 검증 범위는 API 확인으로 좁혔습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "scope-limiting public selection wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_scope_limiting_selection_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\n**Selection:** I scoped the work to API validation.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "scope-limiting public selection wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_defensive_direct_scope_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n제가 맡은 범위는 Export client page입니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "defensive direct-scope wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_defensive_direct_scope_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nThe import page is outside my direct scope.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "defensive direct-scope wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_opaque_working_criteria_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n당시 작업 기준 반복되던 cycle을 줄였습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque working-criteria wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_opaque_working_criteria_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nUnder the working conditions at the time, it helped.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque working-criteria wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_unqualified_percentage_comparison_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n설정 변경을 config 중심으로 바꾸어 30% 이상 줄였습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "unqualified percentage comparison" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_qualified_percentage_comparison_passes(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n반복 설정 변경 1회 기준 작업 시간이 30% 이상 줄었습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_english_public_defensive_claim_disclaimer_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nI do not present it as p95 latency improvement.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "public defensive claim-disclaimer wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_public_performance_disclaimer_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n별도 benchmark나 운영 로그 없이 p95/p99 latency 개선을 말합니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "public performance-disclaimer wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_unsupported_admission_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nThe limiter prevented over-limit admission.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "unsupported admission wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_overclaim_absolute_solution_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n문제를 정확히 해결했고 매우 많은 문제를 처리했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "overclaim absolute-solution wording" in finding
+                for finding in self.validate()
+            )
         )
 
     def test_internal_preparation_wording_is_rejected(self) -> None:
