@@ -4,22 +4,20 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I am a Platform Software Engineer who turns UI-defined service/API designs into code and SQL, then checks whether product changes are reflected in API responses, database state, tests, and release criteria.
+I turn services defined from entities and fields in a UI into Java code and SQL, then verify API calls and database effects as one platform workflow.
 
-In my recent ClumL work, I reframed a request-limiting concurrency issue in a security analysis product and set handling criteria and regression tests so over-limit requests could not enter job execution. At TmaxCloud's No-code platform, I made UI-designed service/API definitions generate Java code and SQL, then made request/response and DB write/read behavior checkable before deployment. I also made deployed apps store and query data-change history so Studio could show table state at a target point in time. At Coupler, I lead development for a mobile dating app, rebuilt signup/review flows across the React Native app, API, admin web, and database, and documented policy, flow, architecture, release, deployment, and rollback criteria in public development docs.
-
-In open source, I have contributed to the Rust SQL engine GlueSQL. I contributed `SELECT DISTINCT` and aggregate `DISTINCT` handling, SQL parser and AST representation, executor and aggregate behavior, Parquet storage, regression tests, and PR review.
+Most recently, I fixed request-limiting concurrency and externalized a repeated operational setting in Rust services for a security analysis product. I also implemented pre-deployment generated-code validation and data-history storage in a No-code platform, plus `DISTINCT` in the Rust SQL engine GlueSQL.
 
 ## Representative Work
 
-- [Request-limiting correctness in a security analysis product](experience/cluml.md): reframed a long-wait symptom observed during customer demo server operation as a rate-limiter concurrency problem. I identified where concurrent requests could read the same pre-reservation state and pass beyond the limit, then set acceptance and regression-test criteria so over-limit requests are stopped before job execution.
-- [No-code platform service generation and data history](experience/tmaxcloud.md): in TmaxCloud's No-code platform, I turned UI-designed service/API definitions into Java code and SQL, then built a WebSocket test page to verify request/response and DB write/read behavior before deployment. For entities with the data-history option enabled, deployment created the source table and history table together, and insert/update/delete service code saved previous row data so the platform could query table state at a target point in time.
-- [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST representation, executor de-duplication, aggregate handling, AST builder, and regression tests in GlueSQL. This work is visible through 44 merged PRs under GitHub `is:merged` search for `gluesql/gluesql`.
-- [Development lead for a mobile dating app](projects/coupler.md): reduced a roughly 30-field signup request into a staged review flow centered on basic information and required profile material. I aligned app/API/Admin/database state so associate and full-member reviews could be submitted in parallel, then documented policy, flow, architecture, release, deployment, and rollback criteria in public development docs. Meta SDK postback event count showed one-month review-request reach events increasing from roughly 50 to roughly 1.1k.
+- [Rust service improvements in a security analysis product](experience/cluml.md): moved the request-limiter capacity check and reservation update into one lock scope, fixing a race that had allowed requests to pass at more than 10x the effective limit. I also externalized a repeatedly adjusted detection setting, reducing the work for one setting change by more than 30%.
+- [No-code platform service generation and data history](experience/tmaxcloud.md): in TmaxCloud's No-code platform, I generated Java code and SQL from services defined through UI entities and fields. A WebSocket test page made API responses and database writes/reads verifiable before deployment. I implemented history-table and previous-row storage flows, then defined the select-SQL rule for reconstructing table state at a target point in time.
+- [Rust SQL engine open-source contribution](opensource/gluesql.md): implemented `SELECT DISTINCT` and aggregate `DISTINCT` across SQL translation, AST representation, executor de-duplication, aggregate handling, AST builder, and regression tests in GlueSQL. This work is visible through 50 merged PRs under GitHub `is:merged` search for `gluesql/gluesql`.
+- [Development lead for a contracted mobile dating app project](projects/coupler.md): reduced a roughly 30-field signup request into a staged review flow centered on basic information and required profile material. I aligned app/API/Admin/database state so associate and full-member reviews could be submitted in parallel, then documented policy, flow, architecture, release, deployment, and rollback criteria in public development docs. Meta SDK postback event count showed one-month review-request reach events increasing from roughly 50 to roughly 1.1k.
 
 ## Skills
 
-- Languages: Rust, Java, TypeScript, SQL
+- Languages: Java, Rust, TypeScript, SQL
 - Backend/Data: SQL/DDL Generator, GraphQL, WebSocket, PostgreSQL, MySQL, Tibero
 - Frontend: React, React Native, Material UI, React Flow
 - Infra/Tools: Kubernetes, Terraform, GitHub Actions, AWS

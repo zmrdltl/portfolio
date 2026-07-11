@@ -506,9 +506,25 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
-    def test_stale_gluesql_merged_pr_count_wording_is_rejected(self) -> None:
+    def test_current_gluesql_merged_pr_count_wording_passes(self) -> None:
         (self.docs_dir / "opensource.md").write_text(
             "# GlueSQL\n\nGitHub `is:merged` 검색 기준 병합 PR 50건을 작성했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_english_current_gluesql_merged_pr_count_wording_passes(self) -> None:
+        (self.docs_dir / "opensource.en.md").write_text(
+            "# GlueSQL\n\nI authored 50 merged PRs under GitHub `is:merged` search.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_stale_gluesql_merged_pr_count_wording_is_rejected(self) -> None:
+        (self.docs_dir / "opensource.md").write_text(
+            "# GlueSQL\n\nGitHub `is:merged` 검색 기준 병합 PR 44건을 작성했습니다.\n",
             encoding="utf-8",
         )
 
@@ -534,7 +550,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
     def test_english_stale_gluesql_merged_pr_count_wording_is_rejected(self) -> None:
         (self.docs_dir / "opensource.en.md").write_text(
-            "# GlueSQL\n\nI authored 50+ merged PRs in GitHub search.\n",
+            "# GlueSQL\n\nI authored 44+ merged PRs in GitHub search.\n",
             encoding="utf-8",
         )
 
@@ -547,7 +563,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
     def test_english_stale_gluesql_exact_merged_pr_count_is_rejected(self) -> None:
         (self.docs_dir / "opensource.en.md").write_text(
-            "# GlueSQL\n\nI authored 50 merged PRs in GitHub search.\n",
+            "# GlueSQL\n\nI authored 44 merged PRs in GitHub search.\n",
             encoding="utf-8",
         )
 

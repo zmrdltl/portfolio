@@ -38,7 +38,7 @@
 - 데이터 정합성, 시간 처리, serialization, API compatibility는 별도 확인 항목으로 둡니다.
 - 구현 결과가 완료 기준을 만족하는지 재확인합니다.
 
-관련 대표 작업: [티맥스클라우드](experience/tmaxcloud.md)에서는 화면에서 정의한 service/API 코드의 request/response와 DB write/read 반영을 배포 전 검증 흐름으로 당겼고, [GlueSQL](opensource/gluesql.md)에서는 SQL translation부터 회귀 테스트까지 검증 기준을 남겼습니다.
+관련 대표 작업: [티맥스클라우드](experience/tmaxcloud.md)에서는 UI의 서비스 정의로 생성된 API 응답과 DB 쓰기·읽기를 배포 전에 확인했고, [GlueSQL](opensource/gluesql.md)에서는 SQL translation부터 회귀 테스트까지 검증 기준을 남겼습니다.
 
 ## Review
 
@@ -52,7 +52,7 @@
 
 ## 도메인 학습
 
-No-code 플랫폼에서는 화면에서 정의한 service/API와 entity를 SQL, DDL, Java service code로 생성하고, request/response와 DB 반영을 배포 전 확인하는 흐름을 만들었습니다. 자동화 도구를 쓰는 개발에서도 고객·시장 신호, 도메인 지식, 요구사항을 context, test, review 기준으로 바꾸는 일이 중요합니다.
+No-code 플랫폼에서는 UI의 엔티티·필드로 정의한 서비스를 SQL, DDL, Java 서비스 코드로 생성하고, API 응답과 DB 반영을 배포 전에 확인하는 흐름을 만들었습니다. 자동화 도구를 쓰는 개발에서도 고객·시장 신호, 도메인 지식, 요구사항을 context, test, review 기준으로 바꾸는 일이 중요합니다.
 
 ## 피해야 할 방식
 

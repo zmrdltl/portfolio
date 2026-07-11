@@ -182,8 +182,10 @@ PUBLIC_COPY_PATTERNS = [
     PublicCopyPattern(
         "stale GlueSQL merged PR count wording",
         re.compile(
-            r"병합\s+PR\s+50\s*건(?:\s*이상)?|"
-            r"50(?:\+)?\s+merged\s+PRs",
+            r"병합\s+PR\s+44\s*건(?:\s*이상)?|"
+            r"44(?:\+)?\s+merged\s+PRs|"
+            r"병합\s+PR\s+50\s*건\s*이상|"
+            r"50\+\s+merged\s+PRs",
             re.IGNORECASE,
         ),
     ),

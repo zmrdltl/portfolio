@@ -2,17 +2,19 @@
 
 2024.07 - Present
 
+- 유형: 외주 프로젝트
+
 ## 개요
 
-React Native 기반 모바일 소개팅 앱 Coupler의 개발총괄 작업입니다.
-외주 유지보수로 시작한 제품을 현재 개발총괄로 맡고 있습니다. 1.0.0 운영 이후 2.0.0 전환 과정에서 가입 신청 부담을 줄이고, 앱 화면 흐름, API 응답, 관리자 심사 흐름, DB 상태가 같은 가입·심사 모델을 따르도록 재구성했습니다.
+React Native 기반 모바일 소개팅 앱 Coupler의 외주 프로젝트 개발총괄 작업입니다.
+1.0.0 운영 이후 2.0.0 전환에서 약 30개 항목의 가입 신청을 단계형 심사 흐름으로 바꾸고, 앱 화면 흐름, API 응답, 관리자 심사 큐, DB 상태가 같은 가입·심사 모델을 따르도록 재구성했습니다.
 
 ## 역할과 범위
 
 - 개발총괄 / Software Engineer
-- 모바일 앱, API, 관리자 웹, DB의 정책·플로우·아키텍처와 릴리스·배포/롤백 기준을 공개 개발 문서로 정리했습니다.
-- 유지보수 중심으로 시작한 제품을 현재는 모바일 앱, API, 관리자 웹, DB 구조, 공개 개발 문서까지 함께 다루는 범위로 총괄하고 있습니다.
-- 고객·시장 반응과 운영 지표를 요구사항 단위로 나누고, 상태 계약·typecheck·migration guard·회귀 검증을 통과한 변경만 제품에 반영하고 있습니다.
+- 모바일 앱, API, 관리자 웹, DB 구조와 공개 개발 문서의 개발을 총괄합니다.
+- 정책·플로우·아키텍처와 릴리스·배포/롤백 기준을 공개 개발 문서로 정리했습니다.
+- 상태 계약, typecheck, migration guard, 회귀 검증을 통과한 변경만 제품에 반영합니다.
 
 ## 문제와 제약
 
@@ -68,8 +70,6 @@ flowchart LR
 - 회원가입과 심사 흐름을 사용 흐름과 [서버 응답 계약](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md) 중심으로 분리해 화면 분기 로직을 단일화했습니다.
 - 한 번에 약 30개 항목을 입력하던 가입 신청을 일반회원, 준회원, 정회원 단계로 나누고, 준회원·정회원 심사를 병렬로 제출하거나 탭을 이동하며 진행할 수 있도록 DB 구조와 상태 흐름을 재구성했습니다.
 - Admin/Mobile/API가 같은 [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)을 쓰도록 제출/재제출 UX와 심사 목록 동작을 정리했습니다.
-- 고객·시장 반응과 운영 지표를 요구사항 단위로 쪼개고, 앱/API/관리자 웹/DB 변경을 빠르게 반복했습니다.
-- 자동화 도구로 만든 변경안은 상태 계약, typecheck, migration guard, 회귀 검증, 공개 개발 문서 동기화를 통과한 것만 반영했습니다.
 - [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)에 테스트, 문서 동기화, 회귀 안전성 확인 항목을 남겼습니다.
 
 ## 검증

@@ -38,7 +38,7 @@ Representative work: in [Coupler](projects/coupler.md), I documented policy, flo
 - Treat data correctness, time handling, serialization, and API compatibility as explicit review points.
 - Re-check whether the implementation satisfies the completion criteria.
 
-Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved request/response and DB write/read checks for service/API code defined in the UI into a pre-deployment validation flow; in [GlueSQL](opensource/gluesql.md), I left validation criteria from SQL translation through regression tests.
+Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved API-response and database-write/read checks for code generated from UI service definitions into a pre-deployment validation flow; in [GlueSQL](opensource/gluesql.md), I left validation criteria from SQL translation through regression tests.
 
 ## Review
 
@@ -52,7 +52,7 @@ Representative work: in [ClumL](experience/cluml.md), I reviewed whether PR chan
 
 ## Domain Learning
 
-In No-code platform work, I made UI-defined service/API and entity designs generate SQL, DDL, and Java service code, then made request/response and DB effects verifiable before deployment. The same pattern matters when using automation tools: turn customer and market signals, domain knowledge, and requirements into context, tests, and review criteria.
+In No-code platform work, I turned services defined from entities and fields in the UI into SQL, DDL, and Java service code, then made API responses and database effects verifiable before deployment. The same pattern matters when using automation tools: turn customer and market signals, domain knowledge, and requirements into context, tests, and review criteria.
 
 ## Anti-patterns
 

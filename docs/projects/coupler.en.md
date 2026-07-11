@@ -2,17 +2,19 @@
 
 2024.07 - Present
 
+- Engagement: Contract project
+
 ## Overview
 
-Coupler is development-lead work for a React Native mobile dating app.
-I now lead development for a product that began as outsourced maintenance work. From 1.0.0 operation through the 2.0.0 transition, I reduced signup-request burden and rebuilt app screen flows, API responses, admin review flows, and database state around the same signup/review model.
+Coupler is a contract project where I lead development for a React Native mobile dating app.
+From 1.0.0 operation through the 2.0.0 transition, I changed a roughly 30-field signup request into staged review flows and rebuilt app screen flows, API responses, admin review queues, and database state around the same signup/review model.
 
 ## Role and Scope
 
 - Development lead / Software Engineer
-- Documented policy, flow, architecture, release, deployment, and rollback criteria across the mobile app, API, admin web, and database.
-- Expanded the work from maintenance-centered ownership into development leadership across the mobile app, API, admin web, database structure, and public development docs.
-- Broke customer and market response plus operating signals into requirement-sized units, then kept product changes behind state-contract, typecheck, migration-guard, and regression-validation checks.
+- Lead development across the mobile app, API, admin web, database structure, and public development docs.
+- Documented policy, flow, architecture, release, deployment, and rollback criteria.
+- Keep product changes behind state-contract, typecheck, migration-guard, and regression-validation checks.
 
 ## Problem and Constraints
 
@@ -68,8 +70,6 @@ My role in this structure was to translate product requirements into policy/flow
 - Unified screen branching by separating signup and review flows around usage flows and the [server response contract](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md).
 - Reworked the database structure and state flow so the roughly 30-field signup process could be split into general-member, associate-member, and full-member stages, with associate/full review submissions available in parallel or through tab navigation.
 - Aligned submission/resubmission UX and review-list behavior so Admin/Mobile/API use the same [member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md).
-- Broke customer and market response plus operating signals into requirement-sized units, then iterated app/API/admin web/database changes quickly.
-- Reviewed tool-assisted change drafts against state contracts, typechecks, migration guards, regression validation, and public-doc sync before keeping operational changes.
 - Recorded testing, documentation-sync, and regression-safety checks in the [code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md).
 
 ## Validation

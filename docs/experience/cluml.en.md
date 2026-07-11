@@ -5,13 +5,13 @@
 
 ## Overview
 
-In a security event analysis product suite, I narrowed operational symptoms into concrete technical problems and organized them with reproduction conditions and validation methods. The core of this recent ClumL work is not to describe the whole system, but to turn operational symptoms into narrow technical problems with verifiable conditions.
+In a security event analysis product suite, I narrowed production-facing symptoms to code-level causes, implemented focused fixes, and verified them with reproducible regression tests.
 
-The representative work here is request-limiting concurrency. Detection/report display consistency, Rust service configuration workflow cleanup, compatibility checks, requirements/completion conditions, and PR review are separate changes where I checked the problem scope and compatibility with existing behavior.
+The representative implementations are a request-limiting concurrency fix and external configuration for repeated Rust-service operations. An additional Rust implementation migrated time handling from Chrono to Jiff. In detection and report work, I validated that query and formatter changes reached the visible output correctly.
 
-## Representative Work
+## Representative Implementations
 
-### AI Security Analysis Engine Request-Limiting Concurrency Issue
+### Request-Limiting Concurrency in an AI Security Analysis Engine
 
 I separated a check-and-reserve race in request limiting from a long-wait symptom observed during customer demo server operation.
 
@@ -48,92 +48,68 @@ sequenceDiagram
   S-->>L: Can pass
   A->>S: Record reservation
   B->>S: Record reservation
-  Note over L,S: Multiple requests passing from the same state can enter work execution over the limit
+  Note over L,S: Requests reading the same state can over-reserve together
 ```
 
-**Problem Definition:** I reframed a long-wait operational symptom as a correctness problem in request limiting. If multiple requests read the same pre-reservation state, they can all pass before the reservation state is updated, allowing more work to enter execution than the effective limit allows.
+**Problem Definition:** Multiple requests could read the same pre-reservation state and pass together, allowing more work to enter execution than the effective limit allowed. I reframed the apparent long-wait symptom as a request-limiting correctness problem.
 
-**Solution:** I defined the invariant that capacity checks and reservation updates must operate against one reservation state. The fix direction was to remove the stale-state gap between checking capacity and recording reservation state.
+**Solution:** I moved the capacity check and reservation-state update into the same lock scope, removing the stale-state gap between those operations.
 
-**Rationale:** Reducing wait time or hiding the symptom in the UI would leave the limit-checking gap in place. I narrowed the issue to the decision point before work execution, where the request limiter must decide from one reservation state whether a request can pass.
+**Selection:** This change addressed the check-and-reserve race only. Other long-wait failure modes, such as a TPM wait cap, remained separate follow-up work.
 
-**Selection:** The representative case is over-limit requests passing through the check-and-reserve race. Other long-wait failure modes, such as a TPM wait cap, were separated as follow-up work.
+**Implementation:** I changed request limiting so capacity checking and reservation updates used one locked state, then checked the implementation against the reproduction tests.
 
-**Implementation:** From the operational symptom and logs, I organized reproduction conditions, the fix direction, and acceptance conditions around same-state capacity check and reservation update. I reflected that condition in the implementation change, then reviewed whether the PR change satisfied the acceptance condition and regression tests.
+**Validation:** I reproduced a case where requests passed at more than 10x the allowed limit. Regression tests then checked that concurrent requests reading the same state could no longer over-reserve and that requests outside the limit did not pass.
 
-**Validation:** I captured the condition where requests could pass more than 10x beyond the allowed limit as a reproducible correctness problem. I checked whether over-limit requests were blocked and whether concurrent requests reading the same state could no longer over-reserve.
+**Result:** The fix kept requests within the allowed limit and locked the failure mode into regression tests. The 10x figure measures requests that passed beyond the limit before the fix.
 
-**Result:** The long-wait symptom was reframed as a rate-limit correctness problem, with acceptance conditions and regression tests that stop over-limit requests before work execution.
+### Externalizing a Detection-Decision Setting in a Rust Service
 
-## Additional Work
+Operational validation required lowering an occurrence-count threshold, replaying a pcap, and checking DB-published detection events.
 
-### Detection And Report Display Consistency
+**Problem Definition:** Because the setting was hardcoded, a small adjustment expanded into a code edit, build, binary replacement, and service restart.
 
-Separately from the request-limiting concurrency work, I checked whether a detection result stayed readable as the same event across lists, detail screens, charts, and reports. In this context, the same event means detection time, source/destination ports, packet/body fields, DHCP options, and report filters carrying the same meaning across screens and generated outputs.
+**Solution:** I moved the repeatedly adjusted setting out of code and into externally supplied configuration.
 
-```mermaid
-flowchart LR
-  raw["Raw event\nTime / ports / packets / DHCP options"]
-  api["GraphQL / API\nFields and query shape"]
-  formatter["Display formatter"]
-  list["Detection List"]
-  detail["Detail Screen"]
-  report["Chart / Report / PDF"]
+**Selection:** I kept the detection logic intact and moved only the setting repeatedly changed during pcap-based validation.
 
-  raw --> api
-  api --> formatter
-  formatter --> list
-  formatter --> detail
-  formatter --> report
-```
+**Implementation:** I changed the Rust service to read the detection-decision setting from external configuration, reducing repeated changes to config edits.
 
-**Problem Definition:** Analysts choose an event in the detection list and then confirm the same result in detail screens, charts, and reports. If the time range, ports, packet fields, DHCP options, or chart labels differ across that path, users have to re-check whether they are still looking at the same detection result.
+**Validation:** I compared the same pcap replay and DB-publish check before and after the change. Afterward, the same validation could run after a config edit without rebuilding or replacing the binary.
 
-**Solution:** I did not treat the issues as isolated display typos. I split the path from raw event data to GraphQL/API fields, formatters, and list/detail/report output.
+**Result:** One repeated setting change no longer required a code edit, build, or binary replacement, reducing the operational work before pcap replay and DB verification by more than 30%.
 
-**Rationale:** The Report tab needed only the first event time, but its previous query also requested fields for the full event list, which could slow initial entry and customer selection. For DHCP options, adding the API field was not enough if the UI query and formatter did not show the same value in raw event, detection list, and detail views. That is why query shape, formatter behavior, fallback, localization, and visible output had to be reviewed together.
+## Additional Implementation
 
-**Selection:** For Report tab, I used a screen-specific lightweight query and incremental rendering instead of broad server-schema changes. For DHCP options, I kept the change in the presentation formatter and aligned the visible format as `code: value`.
+### Migrating Time Handling from Chrono to Jiff
 
-**Implementation:** I separated first-event query behavior, customer dropdown loading, and DHCP options API/display contract into separate issues. In PR review, I checked unused GraphQL field removal, paging caps, fallback behavior, formatter placement, missing localization keys, and cargo check/clippy/tests.
+**Problem Definition:** A successful compile was not enough to show that existing timestamp conversion and visible output remained compatible after changing a Rust time-handling dependency.
 
-**Validation:** For DHCP options, I checked raw event lookup, detection list display, and detail display together. For Report tab, I reviewed whether the screen-specific query fetched only the needed values and whether the customer dropdown could work without waiting for every page to be collected.
+**Solution:** I first added Chrono baseline tests for MITRE and clustering timestamp helpers in the web application, moved the implementation to Jiff while retaining those tests, and removed the old dependency after the new behavior matched.
 
-**Result:** I separated Report tab query and customer-dropdown delay into distinct problems, then checked DHCP options API/display behavior from raw event data through visible screen output. Later display-change PRs had concrete review items for catching mismatches between API fields and product-visible output.
+**Selection:** I kept the change to the MITRE and clustering timestamp helpers used by the UI, covering baseline tests, the Jiff implementation, and old-dependency cleanup in one migration flow.
 
-### Simplifying Detection-Decision Configuration Changes In A Rust Service
+**Implementation:** I split the change into three reviewable stages: Chrono baseline coverage, Jiff implementation, and removal of the Chrono dev-dependency plus transition-only comparison tests.
 
-During operational validation, operators often needed to adjust the value used by a Rust service to decide when repeated network events should become a detection. Previously, even lowering that value to replay a pcap and inspect DB-published detection events required a code edit, build, binary replacement, and service restart.
+**Validation:** I ran tests for each stage and checked affected visible output, feature coverage, and server compatibility. Before/after screenshots and the affected surface were reviewed alongside the code change.
 
-**Problem Definition:** The occurrence-count-based detection decision value was hardcoded, so a small operational validation step expanded into code edits, builds, binary replacement, and service restarts.
+**Result:** I migrated the MITRE and clustering timestamp helpers to Jiff and removed Chrono from those modules.
 
-**Solution:** I moved the operationally adjusted detection decision value out of hardcoded code and into externally supplied configuration.
+## Supporting Validation Work
 
-**Rationale:** When the value had to be lowered for pcap replay and checked through DB-published detection events, the repeated build, binary replacement, and service restart work cost more than the value change itself. External configuration reduced the operational validation unit without rewriting detection logic.
+### Detection and Report Display
 
-**Selection:** I moved only the repeatedly adjusted decision value into external configuration. The detection logic stayed in place, while the part that previously required code edits, builds, and binary replacement moved to configuration input.
+The Report tab needed only the first event time, while its existing query also requested fields for the full event list. I separated customer-dropdown loading as another problem and reviewed a screen-specific lightweight query plus incremental rendering.
 
-**Implementation:** I changed the Rust service to read the detection decision value from external configuration, reducing repeated operational changes to config-centered edits.
+For DHCP options, I checked GraphQL/API fields, formatter behavior, raw-event output, detection lists, and detail screens together. PR review covered unused fields, paging caps, fallbacks, formatter placement, localization, and cargo check, clippy, and test results.
 
-**Validation:** I compared the before/after workflow for one adjustment: lowering the decision value, replaying the pcap, and checking DB-published detection events. Before the change, that required code edits, a build, binary replacement, service restart, and then the same pcap/DB check. After the change, I could change the config value and run the same pcap/DB check without rebuilding or replacing the binary.
+My role in this work was to validate that query and formatter changes reached the visible output correctly.
 
-**Result:** One repeated setting change no longer required code edits, builds, or binary replacement, reducing the work before pcap replay and DB-publish verification by more than 30%.
+### Problem Definition and PR Review
 
-### Problem Definition And PR Review
-
-```mermaid
-flowchart TD
-  issue["Problem Definition + Scope / Non-goals"]
-  criteria["Completion Conditions + Tests"]
-  review["PR Review + Regression-Risk Check"]
-
-  issue --> criteria
-  criteria --> review
-```
-
-- Reviewed configuration, date/time handling, serialization, and test boundaries in Rust services to check compatibility risk against existing behavior.
-- Clarified the problem, scope, non-goals, completion conditions, and test expectations before implementation so implementation and review used the same agreement.
-- Reviewed PR scope, API/protocol compatibility, test coverage, lint/clippy results, and regression risk so changes did not move beyond the agreed problem scope.
+- Clarified the problem, scope, non-goals, completion conditions, and test expectations before implementation.
+- Checked PR scope, API and protocol compatibility, test coverage, lint and clippy results, and regression risk.
+- Kept direct implementation, review, and operational validation as separate contribution types.
 
 ## Skills
 
