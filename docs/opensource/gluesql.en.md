@@ -7,7 +7,7 @@
 
 GlueSQL is a Rust-based SQL database engine. My contribution scope includes SQL engine features, parser/AST work, aggregate/data functions, numeric type handling, Parquet storage, regression tests, mentoring, and code review.
 
-In `gluesql/gluesql`, I authored [50 merged PRs under GitHub `is:merged` search](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged). In 2025, I continued as a GlueSQL reviewer with merged work around DISTINCT operations, a Rust toolchain bump, deterministic ordering cleanup, and Parquet-storage clippy work.
+In `gluesql/gluesql`, I authored [50 merged PRs under GitHub `is:merged` search](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged). In 2025, I continued merged work around DISTINCT operations, a Rust toolchain bump, deterministic ordering cleanup, and Parquet-storage clippy work; I currently contribute to maintenance as a GlueSQL reviewer.
 
 This open-source work spans SQL engine parser, AST, execution logic, storage, and regression tests through GitHub PR and review flow.
 
