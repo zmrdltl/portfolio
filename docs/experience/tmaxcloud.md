@@ -9,20 +9,6 @@ Java/TypeScript 기반 No-code 플랫폼에서 UI의 앱·엔티티·서비스 �
 
 대표 축은 서비스 코드 생성 검증과 데이터 변경 이력 저장·조회입니다. 그 외 확인된 작업 사례로 entity export/import data copy, SQL/DDL Generator, error logger를 별도로 정리합니다.
 
-## 대표 작업으로 보는 이유
-
-No-code platform의 핵심 문제는 UI의 서비스·엔티티 정의를 실행 가능한 코드와 SQL로 생성하고, 그 산출물을 배포 전에 호출·검증하는 것이었습니다.
-
-대표로 앞세우는 작업은 UI의 엔티티·필드로 정의한 서비스를 Java 코드와 SQL로 생성하고, JSON 요청으로 API를 호출해 응답과 DB 쓰기·읽기를 배포 전에 확인할 수 있게 만든 것입니다. 배포된 CRUD 앱의 insert/update/delete 동작이 변경 전 row data를 이력 table에 남기도록 구현하고, select SQL로 특정 시점의 table 상태를 재구성하는 기준도 정리했습니다. 그 외에도 생성된 앱 사이의 entity export/import data copy, SQL/DDL generation, error diagnostics 작업을 맡았습니다.
-
-대표 결과는 아래와 같습니다.
-
-- WebSocket 기반 E2E test page로 배포 전 request/response 형식과 DB write/read 반영을 확인할 수 있게 했습니다.
-- 변경 이력 옵션이 켜진 entity의 원본 table, 변경 이력 table, insert/update/delete 서비스 코드의 이력 저장 흐름을 설계·구현했습니다.
-- select SQL이 목표 시점에 유효한 row data를 골라 table 상태를 재구성하는 기준을 정리했습니다.
-- Entity export/import MVP에서 앱 간 entity data copy/sync 요구를 내보내는 entity, 중간 연결 앱, 가져오는 entity의 연결 구조로 나누고, metadata schema와 Export client page를 담당했습니다.
-- SQL/DDL 생성 책임은 backend에서 import 가능한 library 구조로 분리하고, terminal error highlighting과 예외 정보 formatting은 개발 진단 사례로 정리했습니다.
-
 ## 대표 작업 흐름
 
 ```mermaid

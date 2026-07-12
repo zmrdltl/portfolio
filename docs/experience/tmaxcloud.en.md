@@ -9,20 +9,6 @@ I implemented backend/platform features in a Java/TypeScript-based No-code platf
 
 The representative axes are service-code generation validation and data-change history storage/query. I also include additional work examples for entity export/import data copy, the SQL/DDL Generator, and the error logger.
 
-## Why This Is Representative Work
-
-The core problem in the No-code platform was turning UI definitions of services and entities into executable code and SQL, then making those artifacts callable and verifiable before deployment.
-
-The representative work turned services defined from entities and fields in the UI into Java code and SQL, then let users call the generated API with a JSON request and check the response plus database writes/reads before deployment. It also covers data-history storage in CRUD insert/update/delete code and the select-SQL rule for reconstructing table state at a target point in time. Additional work includes entity export/import data copy between platform-created applications, SQL/DDL generation, and error diagnostics.
-
-Representative outcomes:
-
-- Built a WebSocket-based E2E test page to verify request/response shape and DB write/read behavior before deployment.
-- Designed and implemented source tables, history tables, and insert/update/delete service-code flows that save previous row data.
-- Defined how point-in-time select SQL chooses valid row data per primary key to reconstruct table state at a target time.
-- In the entity export/import MVP, split cross-app entity data copy/sync requirements into exporting entity, intermediate connector app, and importing entity links, and owned the metadata schema plus Export client page.
-- Separated SQL/DDL generation responsibility into a backend-importable library structure, and organized terminal error highlighting and exception formatting as a developer diagnostics case.
-
 ## Representative Work Flows
 
 ```mermaid
