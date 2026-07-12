@@ -20,52 +20,490 @@ class PublicCopyCheckTests(unittest.TestCase):
         findings, _ = validate_public_copy(self.docs_dir)
         return findings
 
+    def write_coupler_page(self, text: str, *, english: bool = False) -> None:
+        projects_dir = self.docs_dir / "projects"
+        projects_dir.mkdir(exist_ok=True)
+        filename = "coupler.en.md" if english else "coupler.md"
+        (projects_dir / filename).write_text(text, encoding="utf-8")
+
     def test_clean_public_copy_passes(self) -> None:
         (self.docs_dir / "index.md").write_text(
-            "# 소개\n\nMeta SDK postback event가 증가한 것을 계측했습니다.\n",
+            "# 소개\n\n문제 해결 과정과 검증 방법을 정리했습니다.\n",
             encoding="utf-8",
         )
 
         self.assertEqual(self.validate(), [])
 
-    def test_qualified_coupler_postback_metric_passes(self) -> None:
-        (self.docs_dir / "projects.md").write_text(
+    def test_curator_facing_review_wording_is_rejected(self) -> None:
+        samples = (
+            "## 대표 작업으로 보는 이유\n",
+            "## Why This Is Representative Work\n",
+            "## 보조 검증 작업\n",
+            "## Supporting Validation Work\n",
+            "- 직접 구현, review, 운영 검증의 역할을 같은 성과로 합치지 않았습니다.\n",
+            "- Kept direct implementation, review, and operational validation "
+            "as separate contribution types.\n",
+            "용량 확인과 예약 갱신을 같은 잠금 구간으로 묶었습니다.\n",
+        )
+
+        for sample in samples:
+            with self.subTest(sample=sample):
+                (self.docs_dir / "index.md").write_text(sample, encoding="utf-8")
+                self.assertTrue(self.validate())
+
+    def test_multiline_qualified_coupler_observations_pass(self) -> None:
+        pages = (
+            (
+                False,
+                "# Coupler\n\n"
+                "최초 가입 심사 도달 시\n"
+                "기록되는 Meta SDK CompleteRegistration(등록 완료) 이벤트가\n"
+                "회원가입·심사 흐름 개편 전 약 10건에서\n"
+                "개편 후 약 100건으로 관측됐습니다.\n",
+            ),
+            (
+                True,
+                "# Coupler\n\n"
+                "The Meta SDK CompleteRegistration event, recorded when a person\n"
+                "reached the first signup review, was observed at roughly 10 events\n"
+                "before the signup/review-flow redesign and roughly 100 afterward.\n",
+            ),
+        )
+
+        for english, page in pages:
+            with self.subTest(english=english):
+                self.write_coupler_page(page, english=english)
+                self.assertEqual(self.validate(), [])
+
+    def test_unrelated_growth_in_another_list_item_does_not_taint_metric(self) -> None:
+        (self.docs_dir / "index.md").write_text(
             "# 프로젝트\n\n"
-            "Meta SDK postback event count 기준으로 event가 "
-            "약 50건에서 약 1.1k 수준으로 증가했습니다.\n",
+            "- 처리량 증가를 확인했습니다.\n"
+            "- 최초 가입 심사 도달 시 기록되는 Meta SDK "
+            "CompleteRegistration(등록 완료) 이벤트가 개편 전 약 10건에서 "
+            "개편 후 약 100건으로 관측됐습니다.\n",
             encoding="utf-8",
         )
 
         self.assertEqual(self.validate(), [])
 
-    def test_unqualified_coupler_postback_metric_is_rejected(self) -> None:
-        (self.docs_dir / "projects.md").write_text(
-            "# 프로젝트\n\n"
-            "심사 요청 관련 event가 약 50건에서 약 1.1k 수준으로 증가했습니다.\n",
-            encoding="utf-8",
+    def test_qualified_korean_coupler_complete_registration_observation_passes(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "최초 가입 심사 도달 시 기록되는 Meta SDK "
+            "CompleteRegistration(등록 완료) 이벤트가 회원가입·심사 흐름 "
+            "개편 전 약 10건에서 개편 후 약 100건으로 관측됐습니다.\n",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_qualified_english_coupler_complete_registration_observation_passes(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "The Meta SDK CompleteRegistration event, recorded when a person reached "
+            "the first signup review, was observed at roughly 10 events before the "
+            "signup/review-flow redesign and roughly 100 afterward.\n",
+            english=True,
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_korean_coupler_complete_registration_growth_wording_is_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "Meta SDK CompleteRegistration(등록 완료) 이벤트가 회원가입·심사 흐름 "
+            "개편 전 약 10건에서 개편 후 약 100건으로 증가했습니다.\n",
         )
 
         self.assertTrue(
             any(
-                "unqualified Coupler Meta SDK postback metric" in finding
+                "unsupported Coupler CompleteRegistration growth wording"
+                in finding
                 for finding in self.validate()
             )
         )
 
-    def test_stale_coupler_postback_baseline_is_rejected(self) -> None:
-        (self.docs_dir / "projects.md").write_text(
-            "# 프로젝트\n\n"
-            "Meta SDK postback event count 기준으로 event가 "
-            "약 40건에서 약 1.1k 수준으로 증가했습니다.\n",
-            encoding="utf-8",
+    def test_english_coupler_complete_registration_growth_wording_is_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "The Meta SDK CompleteRegistration event increased from roughly 10 "
+            "events before the signup/review-flow redesign to roughly 100 after.\n",
+            english=True,
         )
 
         self.assertTrue(
             any(
-                "stale Coupler postback baseline" in finding
+                "unsupported Coupler CompleteRegistration growth wording"
+                in finding
                 for finding in self.validate()
             )
         )
+
+    def test_korean_observed_growth_wording_is_rejected(self) -> None:
+        claims = (
+            "관측됐지만 증가했습니다.",
+            "관측됐지만 늘어났습니다.",
+        )
+
+        for claim in claims:
+            with self.subTest(claim=claim):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "최초 가입 심사 도달 시 기록되는 Meta SDK CompleteRegistration"
+                    "(등록 완료) 이벤트가 개편 전 약 10건에서 개편 후 약 "
+                    f"100건으로 {claim}\n",
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration growth wording"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_english_observed_growth_wording_is_rejected(self) -> None:
+        claims = (
+            "was observed to increase from roughly 10 events before the redesign "
+            "to roughly 100 after.",
+            "was observed at roughly 10 events before the redesign and roughly 100 "
+            "after, and grew.",
+            "was observed at roughly 10 events before the redesign and roughly 100 "
+            "after, and rose.",
+            "was observed at roughly 10 events before the redesign and roughly 100 "
+            "after, and showed growth.",
+        )
+
+        for claim in claims:
+            with self.subTest(claim=claim):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "The Meta SDK CompleteRegistration event recorded at first "
+                    f"signup review {claim}\n",
+                    english=True,
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration growth wording"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_multiline_unqualified_coupler_observation_is_rejected(self) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "Meta SDK CompleteRegistration(등록 완료) 이벤트가\n"
+            "회원가입·심사 흐름 개편 전 약 10건에서\n"
+            "개편 후 약 100건으로 관측됐습니다.\n",
+        )
+
+        self.assertTrue(
+            any(
+                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_multiline_coupler_growth_wording_is_rejected(self) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "최초 가입 심사 도달 시 기록되는 Meta SDK\n"
+            "CompleteRegistration(등록 완료) 이벤트가 개편 전 약 10건에서\n"
+            "개편 후 약 100건으로 관측됐지만\n"
+            "증가했습니다.\n",
+        )
+
+        self.assertTrue(
+            any(
+                "unsupported Coupler CompleteRegistration growth wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_korean_coupler_complete_registration_without_first_review_is_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "Meta SDK CompleteRegistration(등록 완료) 이벤트가 회원가입·심사 흐름 "
+            "개편 전 약 10건에서 개편 후 약 100건으로 관측됐습니다.\n",
+        )
+
+        self.assertTrue(
+            any(
+                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_coupler_complete_registration_without_first_review_is_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "The Meta SDK CompleteRegistration event was observed at roughly 10 "
+            "events before the redesign and roughly 100 afterward.\n",
+            english=True,
+        )
+
+        self.assertTrue(
+            any(
+                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_unqualified_korean_coupler_complete_registration_observation_is_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "최초 가입 심사 도달 이벤트가 개편 전 약 10건에서 "
+            "개편 후 약 100건으로 관측됐습니다.\n",
+        )
+
+        self.assertTrue(
+            any(
+                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_unqualified_english_coupler_complete_registration_observation_is_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "First-signup-review reach was observed at roughly 10 events before the "
+            "redesign and roughly 100 afterward.\n",
+            english=True,
+        )
+
+        self.assertTrue(
+            any(
+                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_stale_coupler_pre_complete_registration_comparisons_are_rejected(
+        self,
+    ) -> None:
+        for baseline in ("40", "50"):
+            for high_value in ("1.1k", "1,100", "1100"):
+                with self.subTest(language="ko", baseline=baseline, high=high_value):
+                    self.write_coupler_page(
+                        "# Coupler\n\n"
+                        f"기존 비교는 약 {baseline}건에서 약 {high_value}건으로 "
+                        "기록됐습니다.\n",
+                    )
+
+                    self.assertTrue(
+                        any(
+                            "stale Coupler pre-CompleteRegistration comparison"
+                            in finding
+                            for finding in self.validate()
+                        )
+                    )
+
+                with self.subTest(language="en", baseline=baseline, high=high_value):
+                    self.write_coupler_page(
+                        "# Coupler\n\n"
+                        "The old comparison changed from about "
+                        f"{baseline} events to about {high_value} events.\n",
+                        english=True,
+                    )
+
+                    self.assertTrue(
+                        any(
+                            "stale Coupler pre-CompleteRegistration comparison"
+                            in finding
+                            for finding in self.validate()
+                        )
+                    )
+
+    def test_korean_coupler_complete_registration_user_counts_are_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "최초 가입 심사 도달 시 기록되는 Meta SDK CompleteRegistration"
+            "(등록 완료) 이벤트가 개편 전 약 10명에서 개편 후 약 100명으로 "
+            "관측됐습니다.\n",
+        )
+
+        self.assertTrue(
+            any(
+                "unsupported Coupler CompleteRegistration metric interpretation"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_coupler_complete_registration_user_counts_are_rejected(
+        self,
+    ) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "The Meta SDK CompleteRegistration event for first signup review reach "
+            "was observed at roughly 10 users before the redesign and roughly 100 "
+            "users afterward.\n",
+            english=True,
+        )
+
+        self.assertTrue(
+            any(
+                "unsupported Coupler CompleteRegistration metric interpretation"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_korean_coupler_registration_result_counts_are_rejected(self) -> None:
+        for result_label in ("가입 완료 건수", "가입 성공 건수"):
+            with self.subTest(result_label=result_label):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "최초 가입 심사 도달 시 기록되는 Meta SDK CompleteRegistration"
+                    f"(등록 완료) 이벤트의 {result_label}가 개편 전 약 10건에서 "
+                    "개편 후 약 100건으로 관측됐습니다.\n",
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration metric interpretation"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_english_coupler_registration_result_counts_are_rejected(self) -> None:
+        for result_label in ("completed registrations", "successful registrations"):
+            with self.subTest(result_label=result_label):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "The Meta SDK CompleteRegistration event for first signup review "
+                    f"reach was observed at roughly 10 {result_label} before the "
+                    f"redesign and roughly 100 {result_label} afterward.\n",
+                    english=True,
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration metric interpretation"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_korean_coupler_causal_metric_claims_are_rejected(self) -> None:
+        for causal_wording in ("개편으로", "개편 때문에"):
+            with self.subTest(causal_wording=causal_wording):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "최초 가입 심사 도달 시 기록되는 Meta SDK CompleteRegistration"
+                    "(등록 완료) 이벤트는 개편 전 약 10건, 개편 후 약 100건으로 "
+                    f"관측됐고 이는 {causal_wording} 발생했습니다.\n",
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration metric interpretation"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_english_coupler_causal_metric_claims_are_rejected(self) -> None:
+        causal_claims = (
+            "The change was caused by the redesign.",
+            "The redesign led to this change.",
+            "The redesign resulted in this change.",
+        )
+        for causal_claim in causal_claims:
+            with self.subTest(causal_claim=causal_claim):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "The Meta SDK CompleteRegistration event for first signup review "
+                    "reach was observed at roughly 10 events before and roughly 100 "
+                    f"after. {causal_claim}\n",
+                    english=True,
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration metric interpretation"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_korean_coupler_monthly_normalization_is_rejected(self) -> None:
+        for period_wording in ("1개월 기준", "월간"):
+            with self.subTest(period_wording=period_wording):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "최초 가입 심사 도달 시 기록되는 Meta SDK CompleteRegistration"
+                    f"(등록 완료) 이벤트가 {period_wording} 개편 전 약 10건에서 "
+                    "개편 후 약 100건으로 관측됐습니다.\n",
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration metric interpretation"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_english_coupler_monthly_normalization_is_rejected(self) -> None:
+        for period_wording in ("monthly", "one-month"):
+            with self.subTest(period_wording=period_wording):
+                self.write_coupler_page(
+                    "# Coupler\n\n"
+                    "The Meta SDK CompleteRegistration event for first signup review "
+                    f"reach was observed on a {period_wording} basis at roughly 10 "
+                    "events before the redesign and roughly 100 afterward.\n",
+                    english=True,
+                )
+
+                self.assertTrue(
+                    any(
+                        "unsupported Coupler CompleteRegistration metric interpretation"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_unrelated_rounded_ten_and_hundred_values_pass(self) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n"
+            "월간 계획에는 약 10개의 화면과 회귀 테스트 약 100개가 있습니다. "
+            "이벤트 문서는 40개이고 참고 포트는 1100입니다.\n",
+        )
+        (self.docs_dir / "analytics.md").write_text(
+            "# Analytics\n\n"
+            "The Meta SDK CompleteRegistration metric changed from about 10 users "
+            "to about 100 users on a monthly basis.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
 
     def test_ambiguous_coupler_operating_label_is_rejected(self) -> None:
         (self.docs_dir / "index.md").write_text(
@@ -97,18 +535,25 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
-    def test_unverified_coupler_conversion_cost_metric_is_rejected(self) -> None:
-        (self.docs_dir / "projects.md").write_text(
-            "# Coupler\n\n광고단가가 10만원에서 2만5천원으로 낮아졌습니다.\n",
-            encoding="utf-8",
+    def test_unverified_coupler_conversion_and_cost_metrics_are_rejected(self) -> None:
+        claims = (
+            "전환율이 개선됐습니다.",
+            "가입 성공률이 높아졌습니다.",
+            "심사 시간 단축을 확인했습니다.",
+            "CAC가 낮아졌습니다.",
+            "CPA가 낮아졌습니다.",
         )
 
-        self.assertTrue(
-            any(
-                "unverified Coupler conversion-cost metric" in finding
-                for finding in self.validate()
-            )
-        )
+        for claim in claims:
+            with self.subTest(claim=claim):
+                self.write_coupler_page(f"# Coupler\n\n{claim}\n")
+
+                self.assertTrue(
+                    any(
+                        "unverified Coupler conversion-cost metric" in finding
+                        for finding in self.validate()
+                    )
+                )
 
     def test_public_hog_product_name_is_rejected(self) -> None:
         (self.docs_dir / "experience.md").write_text(
@@ -574,12 +1019,14 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
-    def test_coupler_funnel_baseline_count_is_not_rejected_as_gluesql_count(self) -> None:
-        (self.docs_dir / "projects.md").write_text(
+    def test_coupler_complete_registration_counts_are_not_rejected_as_gluesql_count(
+        self,
+    ) -> None:
+        self.write_coupler_page(
             "# Coupler\n\n"
-            "Meta SDK postback event count 기준으로 1개월 심사 요청 도달 event가 "
-            "약 50건에서 약 1.1k 수준으로 증가했습니다.\n",
-            encoding="utf-8",
+            "최초 가입 심사 도달 시 기록되는 Meta SDK "
+            "CompleteRegistration(등록 완료) 이벤트가 개편 전 약 10건에서 "
+            "개편 후 약 100건으로 관측됐습니다.\n",
         )
 
         self.assertFalse(

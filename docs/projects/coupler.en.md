@@ -7,7 +7,7 @@
 ## Overview
 
 Coupler is a contract project where I lead development for a React Native mobile dating app.
-From 1.0.0 operation through the 2.0.0 transition, I changed a roughly 30-field signup request into staged review flows and rebuilt app screen flows, API responses, admin review queues, and database state around the same signup/review model.
+From 1.0.0 operation through the 2.0.0 transition, I changed a roughly 30-field signup request into staged review flows and rebuilt app screen flows, API responses, admin review queues, and database state around a shared signup/review state contract.
 
 ## Role and Scope
 
@@ -18,7 +18,7 @@ From 1.0.0 operation through the 2.0.0 transition, I changed a roughly 30-field 
 
 ## Problem and Constraints
 
-While moving the React Native product from its 1.0.0 initial implementation through the 2.0.0 transition, I needed the mobile app, API, and admin web to follow the same signup/review state model.
+While moving the React Native product from its 1.0.0 initial implementation through the 2.0.0 transition, I needed the mobile app, API, and admin web to follow a shared signup/review state contract.
 
 The previous signup flow required users to enter roughly 30 fields at once, creating a high input burden before they could reach review submission. Review stages and screen-branching rules also had to use the same state values across the server response contract, member review policy, app screens, and admin review queue.
 
@@ -81,9 +81,9 @@ My role in this structure was to translate product requirements into policy/flow
 
 During the 2.0.0 transition, I clarified policy, flow, architecture, and release/deployment/rollback criteria across the mobile app, API, admin web, and database, and changed the roughly 30-field signup flow into staged review flows centered on basic information and required profile material. The signup response contract, member review policy, and code review checks are captured in public development docs.
 
-Meta SDK postback event count showed one-month review-request reach events increasing from roughly 50 to roughly 1.1k.
+The Meta SDK CompleteRegistration event, recorded when a person reached the first signup review, was observed at roughly 10 events before the signup/review-flow redesign and roughly 100 afterward.
 
-While operating the product, I turned customer and market response into product changes while keeping the mobile app, API, admin web, database, and public development docs aligned around the same state model and release/deployment/rollback flow.
+While operating the product, I turned customer and market response into product changes while keeping the mobile app, API, admin web, database, and public development docs aligned around a shared signup/review state contract and release/deployment/rollback flow.
 
 ## Links
 

@@ -37,6 +37,95 @@ class PublicLineRequirement:
         return self.paths is None or relative_path in self.paths
 
 
+COUPLER_PUBLIC_PATHS = (
+    "index.md",
+    "index.en.md",
+    "projects/coupler.md",
+    "projects/coupler.en.md",
+)
+
+COUPLER_APPROXIMATE_COMPARISON = (
+    r"(?=.*(?:약\s*|(?:about|around|roughly|approximately)\s+|~\s*)"
+    r"10(?!\d))"
+    r"(?=.*(?:약\s*|(?:about|around|roughly|approximately)\s+|~\s*)"
+    r"100(?!\d))"
+    r"(?=.*(?:에서|까지|개편\s*전|개편\s*후|변경\s*전|변경\s*후|"
+    r"before|after|from|\bto\b|→|->))"
+)
+
+COUPLER_COMPLETE_REGISTRATION_COMPARISON = (
+    r"(?=.*(?:CompleteRegistration|등록\s*완료))"
+    r"(?=.*(?<!\d)10(?!\d))"
+    r"(?=.*(?<!\d)100(?!\d))"
+    r"(?=.*(?:에서|까지|개편\s*전|개편\s*후|변경\s*전|변경\s*후|"
+    r"before|after|from|\bto\b|→|->))"
+)
+
+COUPLER_STALE_COMPARISON = (
+    r"(?=.*(?<!\d)(?:40|50)(?![\d.]))"
+    r"(?=.*(?<![\d.])(?:1\.1k|1,100|1100)(?![A-Za-z0-9_,.]))"
+    r"(?=.*(?:에서|부터|까지|전후|비교|→|->|\bfrom\b|\bto\b|"
+    r"\bbefore\b|\bafter\b|\bversus\b|\bvs\.?\b))"
+)
+
+COUPLER_GROWTH_WORDING = (
+    r"증가|늘(?:어|었|어난|어났)|\bgrowth\b|"
+    r"\bincreas(?:e|ed|es|ing)\b|\bgrew\b|\bgrown\b|"
+    r"\brose\b|\bris(?:e|en|es|ing)\b"
+)
+
+COUPLER_PARAGRAPH_PATTERNS = (
+    PublicCopyPattern(
+        "stale Coupler pre-CompleteRegistration comparison",
+        re.compile(COUPLER_STALE_COMPARISON, re.IGNORECASE),
+        paths=COUPLER_PUBLIC_PATHS,
+    ),
+    PublicCopyPattern(
+        "unsupported Coupler CompleteRegistration metric interpretation",
+        re.compile(
+            COUPLER_COMPLETE_REGISTRATION_COMPARISON
+            + r"(?=.*(?:"
+            r"(?<!\d)100\s*(?:명|users?\b)|"
+            r"가입\s*(?:완료|성공)\s*(?:건수|횟수|수|건|명)|"
+            r"(?:완료|성공)(?:한|된)?\s*가입\s*(?:건수|횟수|수|건|명)|"
+            r"(?:completed|successful)\s+(?:registrations?|signups?)"
+            r"(?:\s+counts?)?|"
+            r"(?:registration|signup)\s+(?:completion|success)(?:es)?"
+            r"(?:\s+counts?)?|"
+            r"개편\s*으로|때문에|caused\s+by|led\s+to|resulted\s+in|"
+            r"1\s*개월|월간|monthly|one[-\s]+month"
+            r"))",
+            re.IGNORECASE,
+        ),
+        paths=COUPLER_PUBLIC_PATHS,
+    ),
+    PublicCopyPattern(
+        "unsupported Coupler CompleteRegistration growth wording",
+        re.compile(
+            COUPLER_APPROXIMATE_COMPARISON
+            + rf"(?=.*(?:{COUPLER_GROWTH_WORDING}))",
+            re.IGNORECASE,
+        ),
+        paths=COUPLER_PUBLIC_PATHS,
+    ),
+)
+
+COUPLER_PARAGRAPH_REQUIREMENTS = (
+    PublicLineRequirement(
+        "unqualified Coupler Meta SDK CompleteRegistration observation",
+        re.compile(COUPLER_APPROXIMATE_COMPARISON, re.IGNORECASE),
+        re.compile(
+            r"(?=.*Meta\s+SDK)"
+            r"(?=.*(?:CompleteRegistration|등록\s*완료))"
+            r"(?=.*(?:최초\s+가입\s+심사|first\s+signup\s+review))"
+            r"(?=.*(?:관측|\bobserved\b))",
+            re.IGNORECASE,
+        ),
+        paths=COUPLER_PUBLIC_PATHS,
+    ),
+)
+
+
 PUBLIC_COPY_PATTERNS = [
     PublicCopyPattern(
         "verbose rationale heading",
@@ -174,6 +263,34 @@ PUBLIC_COPY_PATTERNS = [
         "duplicative work-direction heading",
         re.compile(r"^\s*#{1,6}\s+(엔지니어링\s*방향|Direction)\s*$", re.IGNORECASE),
         paths=("experience/index.md", "experience/index.en.md"),
+    ),
+    PublicCopyPattern(
+        "curator-facing representative-work heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(대표\s*작업으로\s*보는\s*이유|"
+            r"Why\s+This\s+Is\s+Representative\s+Work)\s*$",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "internal contribution-boundary wording",
+        re.compile(
+            r"직접\s*구현[^.\n]{0,80}같은\s*성과로\s*합치지|"
+            r"kept\s+direct\s+implementation[^.\n]{0,100}"
+            r"separate\s+contribution\s+types",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicCopyPattern(
+        "ambiguous Korean reservation-renewal wording",
+        re.compile(r"용량\s*확인[^.\n]{0,60}예약\s*갱신", re.IGNORECASE),
+    ),
+    PublicCopyPattern(
+        "curator-facing supporting-validation heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(보조\s*검증\s*작업|Supporting\s+Validation\s+Work)\s*$",
+            re.IGNORECASE,
+        ),
     ),
     PublicCopyPattern(
         "inconsistent numbered Parquet PR label",
@@ -342,18 +459,11 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
-        "stale Coupler postback baseline",
-        re.compile(
-            r"(?:약\s*)?40(?:개|건|events?)?[^.\n]{0,80}1\.1k|"
-            r"1\.1k[^.\n]{0,80}(?:약\s*)?40(?:개|건|events?)?",
-            re.IGNORECASE,
-        ),
-    ),
-    PublicCopyPattern(
         "unverified Coupler conversion-cost metric",
         re.compile(
             r"전환율|가입\s*성공률|심사\s*시간\s*단축|"
-            r"광고\s*단가|광고비|\bCAC\b|\bCPA\b|"
+            r"광고\s*단가|광고비|(?<![A-Za-z])CAC(?![A-Za-z])|"
+            r"(?<![A-Za-z])CPA(?![A-Za-z])|"
             r"cost\s+per|conversion\s+rate|signup\s+success|review\s+time",
             re.IGNORECASE,
         ),
@@ -381,11 +491,6 @@ PUBLIC_ABBREVIATION_REQUIREMENTS: list[PublicAbbreviationRequirement] = []
 
 
 PUBLIC_LINE_REQUIREMENTS = [
-    PublicLineRequirement(
-        "unqualified Coupler Meta SDK postback metric",
-        re.compile(r"(?=.*(?:약\s*)?50(?:개|건)?)(?=.*1\.1k)", re.IGNORECASE),
-        re.compile(r"Meta\s+SDK\s+postback\s+event\s+count", re.IGNORECASE),
-    ),
     PublicLineRequirement(
         "unqualified percentage comparison",
         re.compile(r"\d+%\s*(?:이상\s*)?(?:줄|감소|단축|개선|reduc|decreas|improv)", re.IGNORECASE),
@@ -427,14 +532,75 @@ def collect_abbreviation_findings(docs_dir: Path) -> list[str]:
     return findings
 
 
+def normalized_markdown_paragraphs(text: str) -> list[tuple[int, str]]:
+    paragraphs: list[tuple[int, str]] = []
+    paragraph_lines: list[str] = []
+    start_line = 0
+
+    def flush_paragraph() -> None:
+        nonlocal paragraph_lines
+        if paragraph_lines:
+            paragraphs.append((start_line, " ".join(paragraph_lines)))
+            paragraph_lines = []
+
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        stripped_line = line.strip()
+        if stripped_line:
+            starts_markdown_block = bool(
+                re.match(r"^(?:#{1,6}\s|[-*+]\s|\d+[.)]\s|>\s|```|~~~|\|)", stripped_line)
+            )
+            if paragraph_lines and starts_markdown_block:
+                flush_paragraph()
+            if not paragraph_lines:
+                start_line = line_number
+            paragraph_lines.append(stripped_line)
+            continue
+
+        flush_paragraph()
+
+    flush_paragraph()
+
+    return paragraphs
+
+
+def collect_coupler_paragraph_findings(
+    relative_path: str,
+    text: str,
+) -> list[str]:
+    if relative_path not in COUPLER_PUBLIC_PATHS:
+        return []
+
+    findings: list[str] = []
+    for line_number, paragraph in normalized_markdown_paragraphs(text):
+        for copy_pattern in COUPLER_PARAGRAPH_PATTERNS:
+            if copy_pattern.pattern.search(paragraph):
+                findings.append(
+                    f"{relative_path}:{line_number}: "
+                    f"{copy_pattern.name}: {paragraph}"
+                )
+                break
+
+        for requirement in COUPLER_PARAGRAPH_REQUIREMENTS:
+            if not requirement.trigger_pattern.search(paragraph):
+                continue
+            if requirement.required_pattern.search(paragraph):
+                continue
+
+            findings.append(
+                f"{relative_path}:{line_number}: "
+                f"{requirement.name}: {paragraph}"
+            )
+            break
+
+    return findings
+
+
 def collect_public_copy_findings(docs_dir: Path) -> list[str]:
     findings: list[str] = []
     for path in sorted(docs_dir.rglob("*.md")):
         relative_path = path.relative_to(docs_dir).as_posix()
-        for line_number, line in enumerate(
-            path.read_text(encoding="utf-8").splitlines(),
-            start=1,
-        ):
+        text = path.read_text(encoding="utf-8")
+        for line_number, line in enumerate(text.splitlines(), start=1):
             for copy_pattern in PUBLIC_COPY_PATTERNS:
                 if copy_pattern.applies_to(relative_path) and copy_pattern.pattern.search(line):
                     findings.append(
@@ -456,6 +622,8 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
                     f"{requirement.name}: {line.strip()}"
                 )
                 break
+
+        findings.extend(collect_coupler_paragraph_findings(relative_path, text))
 
     findings.extend(collect_abbreviation_findings(docs_dir))
     return findings
