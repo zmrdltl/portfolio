@@ -95,7 +95,7 @@ sequenceDiagram
 
 **결과:** MITRE·clustering timestamp helper를 Jiff 기반으로 전환하고, 해당 모듈의 Chrono 의존성을 제거했습니다.
 
-## 보조 검증 작업
+## 추가 검증 작업
 
 ### 탐지 화면·리포트 표시
 
@@ -109,7 +109,6 @@ DHCP options는 GraphQL/API field, formatter, raw event, 탐지 목록, 상세 �
 
 - 구현 전에 문제, 범위, 제외 범위, 완료 조건, 테스트 기대값을 정리했습니다.
 - PR 변경 범위, API·protocol compatibility, test coverage, lint·clippy, 회귀 위험을 확인했습니다.
-- 직접 구현, review, 운영 검증의 역할을 같은 성과로 합치지 않았습니다.
 
 ## 기술
 

@@ -95,7 +95,7 @@ Operational validation required lowering an occurrence-count threshold, replayin
 
 **Result:** I migrated the MITRE and clustering timestamp helpers to Jiff and removed Chrono from those modules.
 
-## Supporting Validation Work
+## Additional Validation Work
 
 ### Detection and Report Display
 
@@ -109,7 +109,6 @@ My role in this work was to validate that query and formatter changes reached th
 
 - Clarified the problem, scope, non-goals, completion conditions, and test expectations before implementation.
 - Checked PR scope, API and protocol compatibility, test coverage, lint and clippy results, and regression risk.
-- Kept direct implementation, review, and operational validation as separate contribution types.
 
 ## Skills
 
