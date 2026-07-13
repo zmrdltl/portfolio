@@ -1,63 +1,36 @@
 # Engineering Principles
 
-In product development, I document domain background, operational policies, responsibility boundaries, and verification criteria before implementation, then fix behavior through tests and review. In AI-assisted development, the goal is not code generation itself, but moving customer and market signals into product changes quickly while making problem definition, docs, types, tests, reviews, and release criteria check the same completion conditions for each change.
+I define the problem and completion criteria before optimizing implementation speed, then keep code, documentation, tests, and review aligned to those criteria.
 
 ## Core Principles
 
-- As repetitive implementation becomes easier, problem definition and verification criteria matter more.
-- Documentation is not a side artifact. It helps people learn context quickly and keeps judgment criteria stable.
-- Clear context, test, and review criteria let people implement and review in the same direction.
-- Automation-generated output becomes a product change only after it passes service contracts, type checks, regression tests, and review criteria.
-- Time saved from repetitive implementation should go into interpreting customer and market signals, domain understanding, and code review.
+### 1. Define the Problem and Boundaries First
+
+I examine why a feature is needed, the user flow, and operational policy before separating the problem from non-goals. Clear success criteria and ownership boundaries keep implementation and review focused on the same outcome, with problem definition before tool selection.
+
+### 2. Make Completion Verifiable
+
+I fix core behavior and exceptional paths in tests, then check high-risk areas such as API contracts, data shapes, and compatibility separately. Incorrect changes should surface in automated checks or a documented reproduction path.
+
+### 3. Review and Deliver the Whole Change
+
+I review documentation, state contracts, migrations, user flows, deployment, and rollback criteria along with the code diff. I release only after checking that any new complexity is necessary for the problem.
 
 ## Workflow
 
 ```text
-Domain knowledge and requirements
--> background, operational policies, exception policies
--> context, out-of-scope items, completion criteria
--> implementation plan and test harness
--> implementation
--> review, regression checks, operational cleanup
+Understand the domain and requirements
+-> Define the problem, non-goals, and completion criteria
+-> Write an implementation and verification plan
+-> Implement in small units
+-> Test, review, and synchronize documentation
+-> Release and check for regressions
 ```
 
-## Context
+## Principles and Related Work
 
-- Feature background and user flow
-- Operational policies and exception policies
-- Code boundaries and responsibilities
-- Success criteria and out-of-scope items
-- Logs, tests, and reproduction steps for failures
-
-Representative work: in [Coupler](projects/coupler.md), I documented policy, flow, architecture, release, deployment, and rollback criteria across the app, API, admin web, and database in public development docs; in [ClumL](experience/cluml.md), I narrowed an operational wait symptom into a request-limiting concurrency problem.
-
-## Harness
-
-- Fix core business behavior and exception paths with tests.
-- Keep regression-prone paths as sample inputs, reproduction steps, and verification commands.
-- Treat data correctness, time handling, serialization, and API compatibility as explicit review points.
-- Re-check whether the implementation satisfies the completion criteria.
-
-Representative work: in [TmaxCloud](experience/tmaxcloud.md), I moved API-response and database-write/read checks for code generated from UI service definitions into a pre-deployment validation flow; in [GlueSQL](opensource/gluesql.md), I left validation criteria from SQL translation through regression tests.
-
-## Review
-
-- Check whether the change stays within the problem scope.
-- Review responsibility boundaries, API/state contracts, extensibility, cohesion, and coupling.
-- Check compatibility with existing APIs, configuration, serialization, and user flows.
-- Confirm whether tests cover real risk paths.
-- Decide whether new complexity is justified by the problem.
-
-Representative work: in [ClumL](experience/cluml.md), I reviewed whether PR changes matched acceptance criteria and regression-test criteria; in [Coupler](projects/coupler.md), I checked state contracts, typechecks, migration guards, public-doc synchronization, and release/deployment/rollback criteria together.
-
-## Domain Learning
-
-In No-code platform work, I turned services defined from entities and fields in the UI into SQL, DDL, and Java service code, then made API responses and database effects verifiable before deployment. The same pattern matters when using automation tools: turn customer and market signals, domain knowledge, and requirements into context, tests, and review criteria.
-
-## Anti-patterns
-
-- Merging generated code without tests
-- Prompts without success criteria
-- Implementation instructions without out-of-scope items
-- Large changes without regression-risk explanation
-- Emphasizing tool names instead of verification criteria
+| Principle | Work Examples |
+| --- | --- |
+| Problem and boundaries | [ClumL](experience/cluml.md) |
+| Verifiable completion | [TmaxCloud](experience/tmaxcloud.md), [GlueSQL](opensource/gluesql.md) |
+| Review and delivery | [Coupler](projects/coupler.md) |
