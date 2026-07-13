@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "Removing macOS Finder metadata from docs..."
+find docs -type f -name '.DS_Store' -delete
+
 pnpm install --frozen-lockfile
 pnpm run lint:md
 
