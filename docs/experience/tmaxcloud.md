@@ -1,41 +1,44 @@
 # 티맥스클라우드
 
-- 역할: Software Engineer
 - 기간: 2021.10 - 2024.11
 
 ## 개요
 
-Java/TypeScript 기반 No-code 플랫폼에서 UI의 앱·엔티티·서비스 정의를 Java 서비스 코드와 SQL/DDL로 생성하고, API 응답과 DB 쓰기·읽기를 배포 전에 확인하는 백엔드·플랫폼 기능을 구현했습니다.
+Java/TypeScript 기반 No-code 플랫폼에서 UI 정의로부터 생성된 서비스와 SQL/DDL을 검증·관리하는 기능을 개발했습니다. 대표 작업은 생성된 서비스의 배포 전 검증, 데이터 변경 이력 저장과 시점 조회 기준 설계이며, SQL/DDL Generator와 Entity Export/Import 등 일부 생성 기능도 구현했습니다.
 
-대표 축은 서비스 코드 생성 검증과 데이터 변경 이력 저장·조회입니다. 그 외 확인된 작업 사례로 entity export/import data copy, SQL/DDL Generator, error logger를 별도로 정리합니다.
+## 서비스 코드 생성 검증
 
-## 대표 작업 흐름
+**문제:** UI로 정의한 서비스는 JAR 생성과 별도 배포를 마친 뒤에야 실제 API 응답과 DB 반영을 확인할 수 있었습니다. 잘못된 서비스 정의나 요청·응답 형식을 찾을 때마다 빌드·배포·검증을 반복해야 했습니다.
 
 ```mermaid
 flowchart TD
-  ui["제품 UI\nApp / Entity / Service 정의"]
-  generator["Generation Backend\nmetadata -> SQL / DDL / Java service"]
-  runtime["Application Runtime"]
-  tester["E2E Test Page\nrequest template / WebSocket 호출"]
-  validation["Response + DB write/read 확인"]
-  gate["배포 전 확인\nrequest / response / DB"]
+  ui["제품 UI\n앱 / 엔티티 / 서비스 정의"]
+  generator["코드 생성\nSQL / DDL / Java"]
+  tester["E2E 테스트 화면\n요청 편집 / WebSocket 호출"]
+  validation["배포 전 확인\n응답 / DB 쓰기·읽기"]
 
   ui --> generator
-  generator --> runtime
-  tester --> runtime
-  runtime --> validation
-  validation --> gate
+  generator --> tester
+  tester --> validation
 ```
 
-이 작업은 jar 생성과 별도 배포 후에야 확인하던 API 응답과 DB 반영을 배포 전 검증 단계로 당기는 작업이었습니다.
+**판단:** 생성된 API를 WebSocket 기반 E2E 테스트 화면에서 호출해 JSON 요청·응답과 DB 쓰기·읽기를 배포 전에 확인하도록 했습니다.
+
+**구현:** WebSocket URL과 연결 상태를 검사하고, 서비스 목록을 조회해 항목별 JSON 요청 양식을 만들었습니다. Monaco Editor에서 요청을 수정한 뒤 API를 호출하고 응답과 DB 반영을 확인하는 흐름을 구현했습니다.
+
+**검증과 결과:** 요청·응답 형식, DB 쓰기·읽기, 서비스 정의와 생성 코드의 연결 누락을 배포 전에 확인했습니다. 배포 후에야 발견하던 오류를 설계·검증 단계에서 확인할 수 있게 했습니다.
+
+## 데이터 변경 이력 저장과 시점 조회 설계
+
+**문제:** 생성된 CRUD 앱은 현재값만 남기기 때문에 수정·삭제 뒤 특정 시점의 table 상태, 마지막 수정자, 과거 값을 다시 보여주려면 별도 저장과 조회 구조가 필요했습니다.
 
 ```mermaid
 flowchart TD
-  entity["변경 이력 옵션이 켜진 entity"]
-  ddl["DDL / generation\n원본 table + 변경 이력 table"]
-  crud["CRUD service code\ninsert/update/delete 시 이력 저장"]
-  history["변경 이력 table\nPK / 수정자 / 변경 전 row data"]
-  restore["특정 시점 조회 SQL\n목표 시점 row data 선택"]
+  entity["변경 이력 옵션이 켜진 엔티티"]
+  ddl["DDL 생성\n원본 table + 변경 이력 table"]
+  crud["CRUD 코드\n영향받는 row data 저장"]
+  history["변경 이력 table\nPK / 수정자 / 유효 기간 / row data"]
+  restore["특정 시점 조회 SQL\nPK별 유효 row 선택"]
 
   entity --> ddl
   ddl --> crud
@@ -43,80 +46,26 @@ flowchart TD
   history --> restore
 ```
 
-변경 이력 작업은 옵션이 켜진 entity를 배포할 때 원본 table과 변경 이력 table을 함께 만들고, insert/update/delete 서비스 코드가 변경 전 row data를 이력 table에 저장하도록 한 작업입니다. 조회 단계에서는 select SQL로 목표 시점에 유효한 row data를 고르는 재구성 기준을 정리했습니다.
+**판단:** 변경 이력 table과 CRUD 코드의 저장 SQL이 엔티티의 column과 PK를 따르도록 구현하고, 특정 시점 조회 SQL이 같은 정보를 기준으로 유효한 row를 고르도록 재구성 기준을 정리했습니다. DB trigger/procedure 대신 요청 사용자 정보를 이미 가진 CRUD 코드에 저장 query를 명시해 쓰기와 조회 기준을 한 생성 흐름에서 관리했습니다.
 
-## 서비스 코드 생성 검증
+**구현:** 변경 이력 옵션이 켜진 엔티티를 배포할 때 원본 table과 변경 이력 table을 함께 만들었습니다. CRUD service 호출 시 영향받는 row data와 PK, 수정자, 유효 기간을 저장하도록 Freemarker template과 코드 생성 로직을 연동했습니다.
 
-**문제 정의:** No-code platform에서 UI로 정의한 서비스는 jar 생성과 별도 배포 흐름을 거친 뒤에야 실제 API 응답과 DB 반영을 확인할 수 있었습니다.
+**검증과 결과:** 원본·변경 이력 table DDL과 CRUD 저장 SQL에 같은 엔티티 column·PK가 반영되는지 확인했습니다. 이어 저장된 row data에서 목표 시점에 유효한 값을 PK별로 고르는 조회 기준을 정리했습니다.
 
-서비스 수가 늘어나면 잘못된 서비스 정의나 요청·응답 형식 문제를 찾기 위해 build/deploy/verify cycle을 반복해야 했고, 이 반복은 설계와 검증 리드타임을 늘렸습니다.
-
-**해결 방법:** WebSocket 기반 E2E test page로 배포 전 검증 흐름을 만들었습니다. 사용자가 서비스를 선택하고 JSON 요청을 생성·수정한 뒤 API를 호출해 응답과 DB 쓰기·읽기를 확인할 수 있게 했습니다.
-
-**근거:** 문제를 jar 생성 이후의 배포 단계에서만 확인하면 서비스 정의 오류와 요청·응답 형식 오류가 늦게 드러납니다. 생성 API를 배포 전에 호출하고 응답과 DB 쓰기·읽기를 확인할 수 있어야 설계와 검증 cycle이 짧아집니다.
-
-**선택:** 검증 대상은 UI의 서비스 정의가 생성 코드로 실행되는지, JSON 요청·응답 형식이 맞는지, API 호출 결과가 DB 쓰기·읽기에 반영되는지였습니다.
-
-**구현:**
-
-- WebSocket URL 형식 검증과 연결 상태 확인 흐름을 구현했습니다.
-- 연결 성공 후 서비스 목록을 조회하고, 서비스별 테스트 항목을 Accordion UI로 표시했습니다.
-- Service별 JSON request template을 생성하고 Monaco Editor에서 수정할 수 있게 했습니다.
-- API 요청을 WebSocket으로 전송하고 응답과 DB 쓰기·읽기를 확인하는 테스트 흐름을 만들었습니다.
-
-**검증:**
-
-- 요청·응답 형식 확인
-- DB 쓰기·읽기 확인
-- UI의 서비스 정의가 생성 코드로 실행되는지 확인
-- 서비스 정의와 생성 코드 연결 누락 또는 요청·응답 형식 오류를 배포 전 검증 단계에서 확인
-- 잘못된 WebSocket URL 입력을 사전에 막아 불필요한 연결 시도와 오류 감소
-
-**결과:** 배포 후에야 확인하던 API 응답과 DB 쓰기·읽기를 설계·검증 단계에서 확인하는 흐름으로 옮겼습니다. 당시 반복되던 설계-검증 cycle을 약 4주에서 2주 수준으로 줄이는 데 기여했습니다.
-
-## 데이터 변경 이력 저장과 조회
-
-**문제 정의:** 코드로 생성된 CRUD 앱은 기본적으로 현재값 중심으로 동작합니다. insert/update/delete 이후 특정 시점의 table 상태, 마지막 수정자, 삭제된 record의 과거 값을 다시 보여주려면 별도 변경 이력 저장 구조와 조회 로직이 필요했습니다.
-
-**해결 방법:** 변경 이력 옵션이 켜진 entity에 대해 원본 table과 변경 이력 table을 함께 만들고, insert/update/delete 서비스 코드가 변경 전 row data를 변경 이력 table에 저장하도록 구성했습니다. 특정 시점 조회 SQL은 목표 시점에 각 PK별로 유효한 row data를 골라 table 상태를 보여주도록 정리했습니다.
-
-**근거:** 요구는 변경 사실을 나열하는 감사 로그가 아니라, 생성된 CRUD 앱이 특정 시점의 table 상태를 다시 보여주는 것이었습니다. 그래서 쓰기 동작에서는 변경 전 row data를 저장해야 했고, 조회 동작에서는 목표 시점에 각 PK별로 어떤 row data가 유효한지 선택해야 했습니다. 이 두 흐름의 column, PK, 유효 기간 해석이 어긋나지 않도록 원본 table, 변경 이력 table, 이력 저장 SQL, 특정 시점 조회 SQL이 같은 entity 정의 정보를 따라야 한다는 기준을 세웠습니다.
-
-**선택:** DB trigger/procedure도 변경 전 row data 저장에는 사용할 수 있었지만, request/user context 전달과 특정 시점 조회 SQL을 별도 DB artifact나 session 규약으로 관리해야 했습니다. 그래서 CRUD service code 안에 이력 저장 query를 명시하고, 변경 이력 table DDL과 조회 SQL이 같은 entity 정의를 따르도록 기준을 맞췄습니다.
-
-**구현:**
-
-- 변경 이력 옵션이 켜진 entity에 대해 원본 table과 변경 이력 table이 함께 생성되도록 DDL/generation 흐름을 구현했습니다.
-- 변경 이력 table에 원본 PK, 유효 기간, 수정자, 변경 전 row data를 포함하도록 구성했습니다.
-- CRUD service code의 insert/update/delete SQL이 영향받는 변경 전 row data를 변경 이력 table에 저장하도록 Freemarker template과 generation logic을 연동했습니다.
-- 특정 시점 조회 SQL이 각 PK별 유효 row data를 골라 table 상태를 재구성하는 기준을 정리했습니다.
-
-**검증:** 같은 entity 정의의 column, PK, 변경 이력 옵션이 원본 table DDL, 변경 이력 table DDL, CRUD service SQL, 특정 시점 조회 SQL에 반영되는지 확인했습니다. 쓰기 동작이 저장한 변경 전 row data를 조회 SQL이 목표 시점에 다시 선택할 수 있는지 검토했습니다.
-
-**결과:** insert/update/delete 때 변경 전 row data를 남기는 흐름을 구현하고, 특정 시점 조회 SQL이 필요한 row data를 선택해 table 상태를 재구성하는 기준을 정리했습니다. 변경 이력 table, 이력 저장 SQL, 특정 시점 조회 SQL은 같은 entity 정의의 column, PK, 이력 옵션을 따릅니다.
-
-## 추가 작업 사례
+## 추가 작업
 
 ### Entity Export/Import Data Copy
 
-Entity export/import MVP는 서로 다른 생성 앱 사이에서 entity data를 초기 복사하고 변경 이벤트 동기화 흐름과 연결하기 위한 작업이었습니다. 저는 exported/imported entity 정보를 저장하는 DB schema/API에 참여하고, 선택한 속성만 복사하기 위한 metadata schema와 Export client page, 내보내는 entity와 가져오는 entity를 중간 연결 앱으로 이어 주는 연결 구조를 맡았습니다.
-
-Import 취소 상세 목록 page, 메시지 동기화 service template 또는 message sync service, message ordering/retry, migration strategy는 후속 연계 영역으로 분리했습니다.
+서로 다른 생성 앱 사이에서 엔티티 데이터를 초기 복사하기 위해 exported/imported entity 정보를 저장하는 DB schema와 API에 참여했습니다. 선택 속성 metadata, Export 화면, 내보내는 엔티티와 가져오는 엔티티의 연결 구조를 맡았고 메시지 동기화 서비스와 migration strategy는 후속 영역으로 분리했습니다.
 
 ### SQL/DDL Generator
 
-SQL/DDL 생성 책임이 application backend 흐름과 섞일 수 있는 구조를 backend에서 import 가능한 library 형태로 분리했습니다. JSON input 기반 SQL 생성 테스트와 coverage 확인 흐름을 붙여, SQL 생성 책임과 테스트 흐름을 명확히 했습니다.
+SQL 생성 책임을 backend에서 import할 수 있는 library로 분리하는 작업에 참여했습니다. JSON 입력 기반 SQL 생성 테스트와 coverage 확인을 붙여 생성 로직을 독립적으로 검증할 수 있게 했습니다.
 
-### Error Logger
+### 예외 출력 정리
 
-서비스 코드 생성 개발 과정에서 일반 log와 error log가 섞여 문제 위치와 예외 정보를 빠르게 보기 어려운 문제가 있었습니다. ErrorLogger로 exception message, error code, SQL state, stack trace를 정리하고 terminal에서 error log가 빨간색으로 보이도록 출력 형식을 정리했습니다.
-
-## 결과
-
-서비스 코드 생성 검증은 배포 후 확인하던 API 응답과 DB 쓰기·읽기를 설계·검증 단계로 옮겼고, 당시 반복되던 설계-검증 cycle을 약 4주에서 2주 수준으로 줄이는 데 기여했습니다.
-
-데이터 변경 이력 작업은 원본·변경 이력 table과 CRUD service code의 이력 저장 SQL을 구현하고, 특정 시점 조회 SQL이 같은 entity 정의의 column, PK, 이력 옵션을 사용하도록 재구성 기준을 정리한 작업입니다.
+예외 message, error code, SQL state, stack trace를 한 형식으로 정리하고 terminal의 오류 log를 일반 log와 시각적으로 구분했습니다.
 
 ## 기술
 
-Java, TypeScript, React, Material UI, WebSocket, Monaco Editor, Freemarker, Tibero, SQL generation, JUnit
+Java, TypeScript, React, WebSocket, Monaco Editor, Freemarker, Tibero, SQL generation, JUnit
