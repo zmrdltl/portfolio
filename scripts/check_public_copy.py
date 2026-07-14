@@ -159,6 +159,8 @@ PUBLIC_COPY_PATTERNS = [
         re.compile(
             r"generated[- ]service|generated\s+CRUD\s+service|"
             r"row[- ]snapshot|snapshot\s+copy|snapshot\s+재구성|"
+            r"특정\s*시점\s*상태\s*재구성|상태\s*계약\s*재구성|"
+            r"point[- ]in[- ]time\s+state\s+reconstruction|"
             r"generation\s+boundary|metadata/generation\s+boundary|"
             r"storage[- ]surface|query\s+semantics|test[- ]suite|"
             r"경로로\s*구현|세대\s*경계|생성\s*경계",
@@ -433,7 +435,8 @@ PUBLIC_COPY_PATTERNS = [
     PublicCopyPattern(
         "opaque working-criteria wording",
         re.compile(
-            r"당시\s*작업\s*기준|under\s+the\s+working\s+conditions",
+            r"당시\s*작업\s*기준|당시\s*개발\s*환경에서|"
+            r"in\s+the\s+working\s+environment|under\s+the\s+working\s+conditions",
             re.IGNORECASE,
         ),
     ),

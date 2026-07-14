@@ -638,6 +638,45 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_opaque_point_in_time_state_reconstruction_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n특정 시점 상태 재구성을 설계했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque generated-platform jargon" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_point_in_time_state_reconstruction_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nI designed Point-in-Time State Reconstruction.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque generated-platform jargon" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_opaque_state_contract_reconstruction_is_rejected(self) -> None:
+        (self.docs_dir / "project.md").write_text(
+            "# 프로젝트\n\n상태 계약 재구성을 구현했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque generated-platform jargon" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_ambiguous_supporting_structure_wording_is_rejected(self) -> None:
         (self.docs_dir / "experience.md").write_text(
             "# 경험\n\nSQL/DDL Generator는 보조 구조로 둡니다.\n",
@@ -1194,9 +1233,35 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_opaque_development_environment_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.md").write_text(
+            "# 경험\n\n당시 개발 환경에서 반복되던 cycle을 줄였습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque working-criteria wording" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_english_opaque_working_criteria_wording_is_rejected(self) -> None:
         (self.docs_dir / "experience.en.md").write_text(
             "# Work\n\nUnder the working conditions at the time, it helped.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "opaque working-criteria wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_english_working_environment_wording_is_rejected(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Work\n\nIn the working environment, it reduced repetition.\n",
             encoding="utf-8",
         )
 
