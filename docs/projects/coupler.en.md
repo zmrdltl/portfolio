@@ -7,13 +7,13 @@
 
 ## Overview
 
-I now lead development and operations across the React Native mobile app, API, admin web, and database. While moving the existing codebase to version 2.0.0, I split signup into staged reviews and aligned the app, API, admin web, and database around the same review states.
+I now lead development and operations across the React Native mobile app, API, admin web, and database. While moving the existing codebase to version 2.0.0, I implemented signup and review state transitions and reworked the database structure so the app, API, and admin web use the same review states.
 
 ## Role and Responsibilities
 
 - Translate product decisions into the app, API, admin web, DB schema, and migrations.
 - Own QA, code review, merges, releases, deployment, and rollback.
-- Maintain public engineering documents for policy, flows, architecture, and release criteria.
+- Document policy, flows, architecture, DB-change verification procedures, and deployment and rollback rules in the [public engineering documentation](https://coupler-developer.github.io/docs/).
 
 ## Problem
 
@@ -60,21 +60,21 @@ The API response contract supplies routing and access rights. The app and admin 
 
 ## Implementation and Validation
 
-- The [signup response contract](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md) separates successful API responses from screen-routing state so clients do not infer server state.
-- The [member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md) defines submission and resubmission, separates signup from profile-edit reviews, and standardizes admin queue classification.
-- I migrated the admin web to TypeScript and added automated type checks and a guard against JavaScript reintroduction.
-- API contract, mobile routing, and admin queue regression tests, together with the [code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md), are part of release checks.
+- The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful API responses from screen-routing state so clients do not infer server state.
+- The [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) defines submission and resubmission, separates signup from profile-edit reviews, and standardizes admin queue classification.
+- I migrated the admin web from JavaScript to TypeScript and added CI checks for type errors and JavaScript reintroduction.
+- API contract, mobile routing, and admin queue regression tests, together with the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), are part of release checks.
 - I used AI-assisted development for problem decomposition and implementation, while I remained directly responsible for requirements, product and technical judgment, code review, test criteria, merges, and release decisions.
 
 ## Observed Result
 
-The Meta SDK CompleteRegistration event, recorded upon reaching the first signup review, was observed at about 10 before the redesign and about 100 from Jun 14 to Jul 11, 2026, after it.
+The Meta SDK first signup review event (`CompleteRegistration`) was observed about 10 times before the redesign and about 100 times from June 14 to July 11, 2026, after it.
 
 ## Related Links
 
 - [Google Play](https://play.google.com/store/apps/details?id=com.ritzy.fourhundred&pli=1)
 - [App Store](https://apps.apple.com/kr/app/id1645569179)
-- [Engineering documentation](https://github.com/coupler-developer/docs)
+- [Engineering documentation](https://coupler-developer.github.io/docs/)
 
 ## Technologies
 

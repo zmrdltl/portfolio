@@ -7,13 +7,13 @@
 
 ## 개요
 
-현재 React Native 모바일 앱, API, 관리자 웹, DB의 개발과 운영을 총괄하고 있습니다. 기존 코드베이스를 2.0.0으로 전환하면서 가입 신청을 단계형 심사 흐름으로 바꾸고, 앱·API·관리자 웹·DB가 같은 심사 상태를 따르도록 했습니다.
+현재 React Native 모바일 앱, API, 관리자 웹, DB의 개발과 운영을 총괄하고 있습니다. 기존 코드베이스를 2.0.0으로 전환하면서 가입·심사 상태 전이 로직을 구현하고 DB 구조를 재구성해 앱·API·관리자 웹이 같은 심사 상태를 사용하도록 했습니다.
 
 ## 역할과 책임
 
 - 기획 결정을 앱, API, 관리자 웹, DB schema와 migration에 반영합니다.
 - QA, 코드 리뷰, merge, 릴리스, 배포·롤백을 책임집니다.
-- 정책·플로우·아키텍처와 릴리스 기준을 공개 개발 문서로 관리합니다.
+- 정책·플로우·아키텍처, DB 변경 검증 절차, 배포·롤백 기준을 [공개 개발 문서](https://coupler-developer.github.io/docs/)로 문서화합니다.
 
 ## 문제
 
@@ -60,21 +60,21 @@ API 응답 계약이 화면 분기와 접근 권한을 제공하고, 앱과 관�
 
 ## 구현과 검증
 
-- [회원가입 응답 계약](https://github.com/coupler-developer/docs/blob/main/content/policy/signup-response-contract.md)을 기준으로 성공 응답과 화면 분기 상태를 분리하고, 앱이 서버 상태를 추측하지 않도록 했습니다.
-- [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
-- 관리자 웹을 TypeScript 기반으로 전환하고 자동 타입 검사와 JavaScript 재유입 방지 검사를 추가했습니다.
-- API contract, mobile routing, 관리자 심사 큐의 회귀 테스트와 [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)을 릴리스 확인 항목으로 사용했습니다.
+- [회원가입 응답 계약](https://coupler-developer.github.io/docs/policy/signup-response-contract/)을 기준으로 성공 응답과 화면 분기 상태를 분리하고, 앱이 서버 상태를 추측하지 않도록 했습니다.
+- [회원 심사 정책](https://coupler-developer.github.io/docs/policy/member-review-policy/)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
+- 관리자 웹의 JavaScript 코드를 TypeScript로 마이그레이션하고, CI에 typecheck와 JavaScript 재유입 방지 검사를 추가했습니다.
+- API contract, mobile routing, 관리자 심사 큐의 회귀 테스트와 [코드 리뷰 정책](https://coupler-developer.github.io/docs/policy/code-review-policy/)을 릴리스 확인 항목으로 사용했습니다.
 - 문제 분해와 구현에 AI-assisted development를 활용했지만, 요구사항 정의, 제품·기술 판단, 코드 리뷰, 테스트 기준, merge와 릴리스 결정은 개발총괄인 제가 직접 책임졌습니다.
 
 ## 관측 결과
 
-최초 가입 심사 도달 시 기록되는 Meta SDK CompleteRegistration(등록 완료) 이벤트가 개편 전 약 10건, 개편 후 2026.06.14 - 07.11에 약 100건으로 관측됐습니다.
+Meta SDK 최초 가입 심사 도달 이벤트(`CompleteRegistration`)는 개편 전 약 10건, 개편 후 2026.06.14 - 07.11에 약 100건으로 관측됐습니다.
 
 ## 관련 링크
 
 - [Google Play](https://play.google.com/store/apps/details?id=com.ritzy.fourhundred&pli=1)
 - [App Store](https://apps.apple.com/kr/app/id1645569179)
-- [개발 문서](https://github.com/coupler-developer/docs)
+- [개발 문서](https://coupler-developer.github.io/docs/)
 
 ## 기술
 
