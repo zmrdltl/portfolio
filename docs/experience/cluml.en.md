@@ -6,9 +6,9 @@
 
 I traced operational issues in a security-event analysis product suite to code-level causes and implemented fixes. Depending on the problem, I verified the result with reproduction and regression tests or a before-and-after operational check. The primary examples are a request-limiting concurrency fix and external configuration for a recurring Rust service setting.
 
-## Request-Limiting Concurrency in an AI Security Analysis Engine
+## Fixing a Request-Limiting Concurrency Bug in an AI Security Analysis Engine
 
-I narrowed a long-wait symptom observed on a customer demo server to a check-and-reserve race in the request-limiting logic.
+I separated a long-wait symptom observed on a customer demo server into two failure modes. This work addressed over-limit requests passing because of a check-and-reserve race; a fixed-window wait-cap issue was a separate failure mode.
 
 ```mermaid
 sequenceDiagram
@@ -36,9 +36,9 @@ sequenceDiagram
 
 **Implementation:** I changed the request-limiting logic to decide and immediately reserve against one shared state.
 
-**Validation and result:** I reproduced cases in which requests exceeding the limit by at least tenfold passed the check, then verified with regression tests that concurrent requests no longer over-reserved.
+**Validation and result:** Before the fix, I reproduced over-reservation in which the check passed at least ten times the allowed number of requests. After the fix, regression tests verified that the number passing under the same concurrency stayed at or below the limit.
 
-## External Configuration for a Rust Detection Threshold
+## Moving a Rust Detection Threshold to External Configuration
 
 **Problem:** A network-event detection threshold was fixed in code, so even a small adjustment required a code change, build, binary replacement, and service restart.
 
@@ -46,7 +46,7 @@ sequenceDiagram
 
 **Implementation:** I changed the Rust service to read the threshold from configuration, reducing recurring changes to configuration updates.
 
-**Validation and result:** I compared the before-and-after workflow using the same pcap replay and DB event check. For one recurring setting change, removing the code edit, build, and binary replacement reduced the operational change time by at least 30%.
+**Validation and result:** I compared the before-and-after workflow using the same pcap replay and DB event check. For one recurring setting change, removing the code edit, build, and binary replacement reduced the operational change time before pcap replay and the DB check by at least 30%.
 
 ## Additional Work
 
