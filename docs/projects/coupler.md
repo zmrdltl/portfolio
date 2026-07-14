@@ -7,7 +7,7 @@
 
 ## 개요
 
-현재 React Native 모바일 앱, API, 관리자 웹, DB의 개발과 운영을 총괄하고 있습니다. 기존 코드베이스를 2.0.0으로 전환하면서 가입·심사 흐름과 제품 개발 기준을 재구성했습니다.
+현재 React Native 모바일 앱, API, 관리자 웹, DB의 개발과 운영을 총괄하고 있습니다. 기존 코드베이스를 2.0.0으로 전환하면서 가입 신청을 단계형 심사 흐름으로 바꾸고, 앱·API·관리자 웹·DB가 같은 심사 상태를 따르도록 했습니다.
 
 ## 역할과 책임
 
@@ -64,6 +64,7 @@ API 응답 계약이 화면 분기와 접근 권한을 제공하고, 앱과 관�
 - [회원 심사 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
 - 관리자 웹을 TypeScript 기반으로 전환하고 자동 타입 검사와 JavaScript 재유입 방지 검사를 추가했습니다.
 - API contract, mobile routing, 관리자 심사 큐의 회귀 테스트와 [코드 리뷰 정책](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md)을 릴리스 확인 항목으로 사용했습니다.
+- 문제 분해와 구현에 AI-assisted development를 활용했지만, 요구사항 정의, 제품·기술 판단, 코드 리뷰, 테스트 기준, merge와 릴리스 결정은 개발총괄인 제가 직접 책임졌습니다.
 
 ## 관측 결과
 

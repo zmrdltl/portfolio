@@ -11,7 +11,7 @@ PLATFORM SOFTWARE ENGINEER
 - [보안 분석 제품의 Rust 서비스 개선](experience/cluml.md): 요청 제한 경합을 수정해 회귀 테스트로 고정하고, 반복 운영 설정을 외부화했습니다.
 - [No-code 플랫폼의 코드 생성과 데이터 이력](experience/tmaxcloud.md): 생성된 API의 배포 전 검증과 변경 이력 저장을 구현하고, 과거 시점 조회에 필요한 행 선택 방식을 정리했습니다.
 - [Rust SQL engine 오픈소스 기여](opensource/gluesql.md): GlueSQL의 `DISTINCT`를 query translation, executor 중복 제거, aggregate state와 회귀 테스트에 걸쳐 구현했습니다.
-- [모바일 소개팅 앱 개발총괄](projects/coupler.md): 단계형 가입·심사 흐름과 앱·API·관리자 웹·DB의 상태 계약을 재구성했습니다.
+- [모바일 소개팅 앱 개발총괄](projects/coupler.md): 가입 신청을 단계형 심사 흐름으로 바꾸고, 앱·API·관리자 웹·DB가 같은 심사 상태를 따르도록 했습니다.
 
 ## 기술
 

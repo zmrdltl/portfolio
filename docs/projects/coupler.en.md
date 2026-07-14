@@ -7,7 +7,7 @@
 
 ## Overview
 
-I now lead development and operations across the React Native mobile app, API, admin web, and database. While moving the existing codebase to version 2.0.0, I redesigned the signup-review flow and product engineering criteria.
+I now lead development and operations across the React Native mobile app, API, admin web, and database. While moving the existing codebase to version 2.0.0, I split signup into staged reviews and aligned the app, API, admin web, and database around the same review states.
 
 ## Role and Responsibilities
 
@@ -64,6 +64,7 @@ The API response contract supplies routing and access rights. The app and admin 
 - The [member review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/member-review-policy.md) defines submission and resubmission, separates signup from profile-edit reviews, and standardizes admin queue classification.
 - I migrated the admin web to TypeScript and added automated type checks and a guard against JavaScript reintroduction.
 - API contract, mobile routing, and admin queue regression tests, together with the [code review policy](https://github.com/coupler-developer/docs/blob/main/content/policy/code-review-policy.md), are part of release checks.
+- I used AI-assisted development for problem decomposition and implementation, while I remained directly responsible for requirements, product and technical judgment, code review, test criteria, merges, and release decisions.
 
 ## Observed Result
 
