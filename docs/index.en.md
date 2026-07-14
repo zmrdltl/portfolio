@@ -9,7 +9,7 @@ I am a Platform Software Engineer who verifies generated API responses and DB ef
 ## Representative Work
 
 - [Improving Rust services for a security-analysis product](experience/cluml.md): Fixed a request-limiting race with regression tests and externalized a recurring operational setting.
-- [Code generation and data history for a no-code platform](experience/tmaxcloud.md): Built pre-deployment verification and change-history storage for generated APIs, and defined point-in-time query criteria.
+- [Code generation and data history for a no-code platform](experience/tmaxcloud.md): Built pre-deployment verification and change-history storage for generated APIs, and documented how point-in-time reads select the valid history row.
 - [Open-source contributions to a Rust SQL engine](opensource/gluesql.md): Implemented GlueSQL `DISTINCT` across query translation, executor de-duplication, aggregate state, and regression tests.
 - [Engineering lead for a mobile dating app](projects/coupler.md): Redesigned staged signup reviews and the state contract across the app, API, admin web, and database.
 

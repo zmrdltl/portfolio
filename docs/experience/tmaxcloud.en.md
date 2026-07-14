@@ -4,11 +4,11 @@
 
 ## Overview
 
-On a Java/TypeScript no-code platform, I developed features for validating services built from UI definitions and managing the resulting SQL/DDL. My primary work covered pre-deployment API verification, data-change history storage, and point-in-time retrieval design; I also implemented specific parts of the SQL/DDL Generator and Entity Export/Import.
+On a Java/TypeScript no-code platform, I built pre-deployment verification for services generated from UI definitions and implemented data-change history storage. I documented how point-in-time reads should choose the valid history row for each primary key. I also added specific parts of the SQL/DDL Generator and Entity Export/Import.
 
 ## Service Code Verification
 
-**Problem:** A UI-defined service could only be checked against its real API response and DB effects after JAR creation and a separate deployment. Finding an invalid definition or request/response shape required repeating the build, deploy, and verify cycle.
+**Problem:** A UI-defined service could only be checked against its real API response and DB effects after JAR creation and a separate deployment. With roughly 200–300 services/APIs to verify, one build, deploy, and verify cycle took about 20 minutes, and finding an invalid definition or request/response shape required repeating it.
 
 ```mermaid
 flowchart TD
@@ -28,17 +28,17 @@ flowchart TD
 
 **Validation and result:** I checked request/response shapes, DB writes and reads, and missing links between service definitions and generated code before deployment. This made errors previously found after deployment visible during design and verification.
 
-## Data-Change History Storage and Point-in-Time Retrieval Design
+## Data-Change History Storage and Point-in-Time Read Design
 
-**Problem:** Generated CRUD applications retained current values. Showing a table's state, last editor, and past values at a selected point after updates or deletes required a separate storage and query design.
+**Problem:** Generated CRUD applications kept only current values. Showing earlier values and the last editor after an update or delete required separate history storage and a way to query it.
 
 ```mermaid
 flowchart TD
-  entity["Entity with History Enabled"]
+  entity["History Enabled"]
   ddl["DDL Generation\nSource Table + History Table"]
-  crud["CRUD Code\nStore Affected Row Data"]
-  history["History Table\nPK / Editor / Valid Period / Row Data"]
-  restore["Point-in-Time SQL\nSelect Valid Row per PK"]
+  crud["CRUD Code\nStore Row Before Update/Delete"]
+  history["History Table\nPrimary Key / Editor / Valid Period / Row Data"]
+  restore["Point-in-Time Read\nSelect Valid History Row per Primary Key"]
 
   entity --> ddl
   ddl --> crud
@@ -46,17 +46,17 @@ flowchart TD
   history --> restore
 ```
 
-**Decision:** I implemented the history table and CRUD write SQL against the entity's columns and primary key, then defined how point-in-time SQL should select valid rows from the same information. Instead of a DB trigger or procedure, the CRUD code—already carrying request-user context—explicitly stored the affected row data, keeping write and read rules in one code-generation path.
+**Decision:** I implemented the history table and CRUD write SQL against the entity's columns and primary key. For point-in-time reads, I defined how to choose the valid history row for each primary key. Instead of a DB trigger or procedure, I placed the write query in the CRUD code, which already carried request-user context, so it stored the row before an update or deletion together with the editor and valid period.
 
-**Implementation:** Deploying an entity with history enabled created both its source and history tables. I connected Freemarker templates and code-generation logic so CRUD service calls stored the affected row data with its primary key, editor, and valid period.
+**Implementation:** Deploying an entity with history enabled created both its source and history tables. I connected FreeMarker templates and code-generation logic so CRUD services stored the row before an update or deletion with its primary key, editor, and valid period.
 
-**Validation and result:** I checked that the source and history table DDL and CRUD write SQL reflected the same entity columns and primary key. I then defined how to select, by primary key, the stored row data valid at a target time.
+**Validation and result:** I checked that the source and history table DDL and CRUD write SQL reflected the same entity columns and primary key.
 
 ## Additional Work
 
 ### Entity Export/Import Data Copy
 
-I contributed to the DB schema and API for storing exported and imported entities between generated applications. I handled selected-attribute metadata, the export UI, and the connection between exporting and importing entities, while message synchronization and migration strategy remained follow-up areas.
+I contributed to the DB schema and API for storing exported and imported entities between generated applications. I designed the selected-attribute metadata and the connection between exporting and importing entities, and implemented the export UI. The MVP delivered initial data copying without message-synchronization implementation or a redeployment migration strategy for later export-schema changes.
 
 ### SQL/DDL Generator
 
@@ -68,4 +68,4 @@ I organized exception messages, error codes, SQL state, and stack traces into a 
 
 ## Technologies
 
-Java, TypeScript, React, WebSocket, Monaco Editor, Freemarker, Tibero, SQL generation, JUnit
+Java, TypeScript, React, WebSocket, Monaco Editor, FreeMarker, Tibero, SQL generation, JUnit
