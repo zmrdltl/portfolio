@@ -24,7 +24,7 @@ flowchart TD
 
 **Decision:** I built a WebSocket-based E2E test UI that called the generated API before deployment and checked JSON request/response shapes and DB writes and reads.
 
-**Implementation:** I validated the WebSocket URL and connection state, loaded the service list, and generated a JSON request template for each item. Users could edit a request in Monaco Editor, call the API, and inspect its response and DB effects.
+**Implementation:** I implemented WebSocket URL and connection validation, service-list loading, per-service JSON request templates, Monaco Editor request editing, API calls, response inspection, and database write/read checks.
 
 **Validation and result:** I checked request/response shapes, DB writes and reads, and missing links between service definitions and generated code before deployment. This made errors previously found after deployment visible during design and verification.
 
