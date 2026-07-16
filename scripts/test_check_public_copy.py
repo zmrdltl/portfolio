@@ -1391,6 +1391,24 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_defensive_coupler_ai_ownership_wording_is_rejected(self) -> None:
+        project_dir = self.docs_dir / "projects"
+        project_dir.mkdir()
+        (project_dir / "coupler.md").write_text(
+            (
+                "# Coupler\n\n"
+                "LLM을 구현 보조에 사용했지만 제품·기술 판단은 직접 책임졌습니다.\n"
+            ),
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "defensive Coupler AI-ownership wording" in finding
+                for finding in self.validate()
+            )
+        )
+
     def test_internal_preparation_wording_is_rejected(self) -> None:
         (self.docs_dir / "index.md").write_text(
             "# 소개\n\n이 대표 사례는 case study readiness 기준으로 정리했습니다.\n",

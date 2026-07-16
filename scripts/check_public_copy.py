@@ -504,6 +504,16 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
+        "defensive Coupler AI-ownership wording",
+        re.compile(
+            r"LLM[^.\n]{0,100}사용했지만[^.\n]{0,160}직접\s*책임|"
+            r"I\s+used\s+LLMs?[^.\n]{0,160}"
+            r"while\s+I\s+remained\s+directly\s+responsible",
+            re.IGNORECASE,
+        ),
+        paths=("projects/coupler.md", "projects/coupler.en.md"),
+    ),
+    PublicCopyPattern(
         "sensitive local or secret wording",
         re.compile(
             r"/Users/|localhost|\.env|credential|secret|token|password|"
