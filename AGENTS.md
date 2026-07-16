@@ -15,6 +15,19 @@ Do not recreate portfolio strategy, case selection, writing policy, review lense
 - Navigation is configured in `mkdocs.yml`.
 - Korean Markdown is the source language. When Korean public content changes, update the matching `*.en.md` file.
 
+## Public Wording Quality Gate
+
+Treat public portfolio wording as a reviewed interface, not free-form copy.
+
+- A heading must name the concrete subject and the work performed. Do not use an abstract noun such as `계약`, `경계`, `이관`, `전환`, `검토`, `설정`, `설계`, `개선`, `최적화`, `검증`, `동기화`, or `구현` without naming the API, data, dependency, screen, query, or other affected artifact.
+- A core claim must make the contribution relationship readable: who acted, what changed, and how the result was checked. Do not replace these with curator-facing abstractions.
+- A technology keyword must be traceable to a sentence on the same project page and to the external career-writing source. Do not add a keyword only to improve search coverage.
+- Quantitative wording must retain its comparison condition, contribution boundary, and causal limits.
+- Write Korean and English as two natural descriptions of the same fact. Do not preserve Korean word order or abstract nouns when they produce unnatural English.
+- When fixing a wording regression, add or update a public-copy test so the rejected wording cannot return silently.
+
+Before completing a public-copy change, inspect every changed heading, table cell, technology item, and quantitative sentence. Ask whether a reader can identify the subject without following another link.
+
 ## Verification
 
 Use these local checks after content or navigation changes:
