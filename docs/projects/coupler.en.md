@@ -81,7 +81,7 @@ flowchart LR
 
 The API response contract supplies routing and access rights. The app and admin web apply it to the user flow and review queue, while DB state, migrations, regression tests, and release checks are reviewed within the same change.
 
-## Implementation and Validation
+## Implementing the Signup and Review Flow and Verifying the Release
 
 - The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful API responses from screen-routing state so clients do not infer server state.
 - The [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) defines submission and resubmission, separates signup reviews from reviews triggered by settings changes, and standardizes admin queue classification.

@@ -29,7 +29,7 @@ flowchart TD
 
 **Validation and result:** Regression tests covered single and multiple columns, maps, schemaless rows, and aggregate `DISTINCT`, including `COUNT`. The feature and tests preserve the same meaning across SQL input, internal representation, and execution output.
 
-## Additional Implementation
+## Implementing the AST Query Interface, Parquet Storage, and CLI
 
 ### AST Query Interface
 

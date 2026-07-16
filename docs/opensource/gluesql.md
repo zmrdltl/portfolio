@@ -29,7 +29,7 @@ flowchart TD
 
 **검증과 결과:** 단일·복수 column, map과 schemaless row, `COUNT`를 포함한 aggregate `DISTINCT`를 회귀 테스트로 확인했습니다. SQL 입력, 내부 표현, 실행 결과가 같은 의미를 유지하도록 기능과 테스트를 함께 반영했습니다.
 
-## 추가 구현
+## AST Query Interface·Parquet Storage·CLI 구현
 
 ### AST Query Interface
 

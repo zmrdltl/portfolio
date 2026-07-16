@@ -81,7 +81,7 @@ flowchart LR
 
 API 응답 계약이 화면 분기와 접근 권한을 제공하고, 앱과 관리자 웹은 이를 각각 사용자 흐름과 심사 큐에 적용합니다. DB 상태와 마이그레이션, 회귀 테스트, 릴리스 확인 항목은 같은 변경 단위에서 점검합니다.
 
-## 구현과 검증
+## 가입·심사 흐름 구현과 릴리스 검증
 
 - [회원가입 응답 계약](https://coupler-developer.github.io/docs/policy/signup-response-contract/)을 기준으로 성공 응답과 화면 분기 상태를 분리하고, 앱이 서버 상태를 추측하지 않도록 했습니다.
 - [회원 심사 정책](https://coupler-developer.github.io/docs/policy/member-review-policy/)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
