@@ -25,7 +25,7 @@ flowchart TD
 
 **Decision:** `SELECT DISTINCT` removes duplicate result rows after projection, while aggregates such as `COUNT(DISTINCT ...)` track unique values in aggregate state. Unsupported `DISTINCT ON` syntax returns an explicit error instead of appearing to work.
 
-**Implementation:** I propagated parser output into the internal AST and query model, then connected executor deduplication, aggregate handling, and AST builder APIs. I also strengthened value equality, hashing, and map-key ordering so duplicate decisions remained deterministic.
+**Implementation:** I propagated parser output into the internal AST and query model, then connected executor deduplication, aggregate handling, and AST builder APIs. I also strengthened value equality, hashing, and map-key ordering so duplicate detection remained deterministic.
 
 **Validation and result:** Regression tests covered single and multiple columns, maps, schemaless rows, and aggregate `DISTINCT`, including `COUNT`. The feature and tests preserve the same meaning across SQL input, internal representation, and execution output.
 
@@ -49,7 +49,7 @@ As a GlueSQL reviewer and OSSCA mentor, I reviewed contributor pull requests for
 | 2022 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
 | 2021 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
 
-- [Award evidence](https://drive.google.com/drive/folders/1llwXz9RquWtRVH0ZQh2FZOLelAzmuBfO?usp=sharing)
+- Public award announcement: [2023 Encouragement Award](https://drive.google.com/file/d/1oK3BYXVzaAQec83pAjl00_FUHt9ZZN0b/view?usp=sharing)
 
 ## Related Links
 

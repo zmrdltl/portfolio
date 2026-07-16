@@ -54,7 +54,7 @@ stateDiagram-v2
   ReviewOpen --> FullReview: Submit
 ```
 
-The app opens submission, resubmission, and subsequent-review tabs from review state supplied by the server.
+The app uses the review state supplied by the server to show submission and resubmission screens and open follow-up review tabs.
 
 ## Responsibilities across App, API, and Admin
 
@@ -79,7 +79,7 @@ flowchart LR
   tests --> release
 ```
 
-The API response contract supplies routing and access rights. The app and admin web apply it to the user flow and review queue, while DB state, migrations, regression tests, and release checks are reviewed within the same change.
+The API response contract supplies routing and access rights. The app and admin web apply it to the user flow and review queue, while DB state, migrations, regression tests, and release checks are verified as part of the same change.
 
 ## Implementing the Signup and Review Flow and Verifying the Release
 

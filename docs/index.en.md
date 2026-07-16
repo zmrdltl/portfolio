@@ -13,7 +13,7 @@ I am a Platform Software Engineer who verifies generated API responses and datab
 | [ClumL · Rust Rate Limiting and Detection Thresholds](experience/cluml.md) | Fixed a request-limiting race and moved a network-event detection threshold to external configuration | Before: at least 10x the configured limit passed → after: at or below the limit |
 | [TmaxCloud · Generated API Verification](experience/tmaxcloud.md) | Built pre-deployment API verification and data-change history storage | Helped reduce the recurring design-to-verification cycle from about four weeks to about two |
 | [GlueSQL · Rust SQL Engine](opensource/gluesql.md) | Connected `DISTINCT` across translation, execution, aggregates, and tests | 50 merged pull requests · current reviewer |
-| [Coupler · Mobile App Engineering Lead](projects/coupler.md) | Split signup into review stages and made app screens and the admin review queue follow the review state returned by the API | Meta SDK event recorded upon reaching the initial signup review stage: observed about 10 times before → about 100 times after |
+| [Coupler · Mobile Dating App Engineering Lead](projects/coupler.md) | Split signup into review stages and made app screens and the admin review queue follow the review state returned by the API | Meta SDK event recorded upon reaching the initial signup review stage: observed about 10 times before → about 100 times after |
 
 ## Technologies by Project
 

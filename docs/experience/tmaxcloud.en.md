@@ -4,7 +4,7 @@
 
 ## Overview
 
-On a Java/TypeScript no-code platform, I built pre-deployment verification for Java service code and SQL/DDL generated from UI definitions. I implemented data-change history storage and defined how point-in-time reads should choose the valid history row for each primary key. The entity export/import feature let a Studio user export an entity, import it into another generated application, and use the imported entity in service definitions. It copied selected attribute data at import time and synchronized later changes to those attributes through a message broker. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. I also helped separate SQL generation into a library imported directly by the backend.
+On a Java/TypeScript no-code platform, I built pre-deployment verification for Java service code and SQL/DDL generated from UI definitions. I implemented history storage for rows before updates and deletions in generated CRUD applications and defined how point-in-time reads select the valid history row for each primary key. The entity export/import feature lets a Studio user export an entity, import it into another generated application, and use the imported entity in service definitions. It copies selected-attribute data at import time and synchronizes later changes to those attributes through a message broker. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. I also helped separate SQL generation into a backend library.
 
 ## Service Code Verification
 
@@ -56,15 +56,15 @@ flowchart TD
 
 ### Entity Export/Import and Selected-Attribute Synchronization
 
-Studio needed to export an entity, import it into another generated application, use the imported entity in service definitions, and synchronize changes to selected attributes through a message broker when connected services changed data. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. The overall feature included initial copying of selected attribute data and subsequent change synchronization, but I did not implement the message-synchronization service itself or the redeployment migration strategy for later schema changes.
+Studio users can export an entity, import it into another generated application, and use the imported entity in service definitions. At import time, the feature copies selected attribute data; when a connected service later changes data, it synchronizes changes to those attributes through a message broker. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. The message-synchronization service and the redeployment migration strategy for later schema changes were separate areas of work.
 
 ### SQL Generation Library
 
 I helped separate SQL generation into a library imported directly by the backend. I wrote JUnit tests for JSON-input SQL generation and added JaCoCo coverage configuration so the generation logic could be verified independently.
 
-### ErrorLogger-Based Exception Formatting
+### Standardizing Exception Log Output
 
-I implemented ErrorLogger formatting for exception messages, error codes, SQL state, and stack traces, and visually separated terminal errors from general logs.
+I standardized exception log output for messages, error codes, SQL states, and stack traces, and visually distinguished error logs from general terminal output.
 
 ## Technologies
 

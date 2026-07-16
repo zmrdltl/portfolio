@@ -49,7 +49,7 @@ GlueSQL 리뷰어와 OSSCA 멘토로 기여자 PR의 오류 처리, edge case, �
 | 2022 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
 | 2021 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
 
-- [수상 증빙](https://drive.google.com/drive/folders/1llwXz9RquWtRVH0ZQh2FZOLelAzmuBfO?usp=sharing)
+- 공개 수상 발표 자료: [2023 장려상](https://drive.google.com/file/d/1oK3BYXVzaAQec83pAjl00_FUHt9ZZN0b/view?usp=sharing)
 
 ## 관련 링크
 

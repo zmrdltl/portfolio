@@ -52,7 +52,7 @@ sequenceDiagram
 
 **Implementation:** I changed the request-limiting logic to decide and immediately reserve against one shared state.
 
-**Validation and result:** Before the fix, I reproduced over-reservation that let at least ten times the configured number of requests pass. After the fix, regression tests verified that the number passing under the same concurrency stayed at or below the limit.
+**Validation and result:** Before the fix, I reproduced over-reservation that allowed at least ten times as many requests as configured through the limiter. After the fix, regression tests confirmed that the limiter allowed no more requests than configured under the same concurrency load.
 
 ## Moving a Network-Event Detection Threshold to External Configuration
 
