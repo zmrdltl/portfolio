@@ -14,23 +14,47 @@ I now lead development and operations across the React Native mobile app, API, a
 - Own QA, code review, merges, releases, deployment, and rollback.
 - Keep policy, flows, architecture, DB-change verification procedures, and deployment and rollback rules in the [public engineering documentation](https://coupler-developer.github.io/docs/) and tie them to release criteria.
 
-## Problem
+## Signup Flow Redesign
 
 The previous signup application asked for about 30 fields at once, creating a large burden before the first review request. If the server response, app screens, and admin queue inferred review state independently, submission, resubmission, approval, and rejection behavior could diverge.
 
-## Signup and Review Flow
-
 ```mermaid
 flowchart LR
-  submit["Submit basic information and required profile"] --> initial["Initial signup review"]
-  initial -->|Approved| next["Open subsequent reviews"]
-  initial -->|Returned| reapply["Edit and resubmit"]
-  reapply --> initial
-  next --> associate["Associate-member review"]
-  next --> full["Full-member review"]
+  subgraph before["Before"]
+    direction TB
+    all_fields["Enter about 30 fields at once"] --> first_request["Request initial review"]
+  end
+
+  subgraph after["After"]
+    direction TB
+    essentials["Basic information and required profile"] --> initial_review["Initial signup review"]
+    initial_review --> later_reviews["Associate and full-member reviews"]
+  end
 ```
 
-The initial application now focuses on basic information and the required profile. After initial signup-review approval, associate and full-member reviews can be submitted in parallel or completed by moving between tabs.
+I reduced the initial application to basic information and the required profile, then separated subsequent reviews so they could proceed independently after approval.
+
+## Signup and Review State Transitions
+
+```mermaid
+stateDiagram-v2
+  state "Submit basic information and required profile" as Submitted
+  state "Initial signup review" as InitialReview
+  state "Edit and resubmit" as Reapply
+  state "Open subsequent reviews" as ReviewOpen
+  state "Associate-member review" as AssociateReview
+  state "Full-member review" as FullReview
+
+  [*] --> Submitted
+  Submitted --> InitialReview: Request review
+  InitialReview --> Reapply: Returned
+  Reapply --> InitialReview: Resubmit
+  InitialReview --> ReviewOpen: Approved
+  ReviewOpen --> AssociateReview: Submit
+  ReviewOpen --> FullReview: Submit
+```
+
+The app opens submission, resubmission, and subsequent-review tabs from review state supplied by the server.
 
 ## App / API / Admin Responsibility Boundaries
 
@@ -63,7 +87,6 @@ The API response contract supplies routing and access rights. The app and admin 
 - The [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) defines submission and resubmission, separates signup from profile-edit reviews, and standardizes admin queue classification.
 - I migrated the admin web from JavaScript to TypeScript and added CI checks for type errors and JavaScript reintroduction.
 - API contract, mobile routing, and admin queue regression tests, together with the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), are part of release checks.
-- I used LLMs to support problem decomposition and implementation, while I remained directly responsible for requirements, product and technical judgment, code review, test criteria, merges, and release decisions.
 
 ## Observed Result
 

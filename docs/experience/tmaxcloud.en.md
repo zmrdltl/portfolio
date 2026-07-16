@@ -4,7 +4,7 @@
 
 ## Overview
 
-On a Java/TypeScript no-code platform, I built pre-deployment verification for services generated from UI definitions and implemented data-change history storage. I defined how point-in-time reads should choose the valid history row for each primary key. I also added specific parts of the SQL/DDL Generator and Entity Export/Import.
+On a Java/TypeScript no-code platform, I built pre-deployment verification for Java service code and SQL/DDL generated from UI definitions. I implemented data-change history storage and defined how point-in-time reads should choose the valid history row for each primary key. I also added specific parts of the SQL/DDL Generator and Entity Export/Import.
 
 ## Service Code Verification
 
@@ -26,7 +26,7 @@ flowchart TD
 
 **Implementation:** I implemented WebSocket URL and connection validation, service-list loading, per-service JSON request templates, Monaco Editor request editing, API calls, response inspection, and database write/read checks.
 
-**Validation and result:** I checked request/response shapes, DB writes and reads, and missing links between service definitions and generated code before deployment. This made errors previously found after deployment visible during design and verification.
+**Validation and result:** I moved request/response, DB write/read, and definition-to-code linkage checks before deployment. At the time, this helped reduce the recurring design-to-verification cycle from about four weeks to about two.
 
 ## Data-Change History Storage and Point-in-Time Read Design
 

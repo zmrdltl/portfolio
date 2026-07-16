@@ -8,7 +8,23 @@
 
 ## AI 보안 분석 엔진 요청 제한 로직의 동시성 문제
 
-고객사 데모 서버에서 관찰된 장시간 대기 증상을 두 실패 모드로 분리했습니다. 이 작업에서는 확인-예약 경합으로 허용치 초과 요청이 통과하는 문제를 다뤘고, 고정 시간창의 대기 상한 문제는 별도 실패 모드로 분리했습니다.
+고객사 데모 서버의 장시간 대기 증상을 분석해, 허용치보다 많은 요청을 통과시키는 확인-예약 경합을 원인 중 하나로 분리하고 수정했습니다. 고정 시간창의 대기 상한 문제는 별도 실패 모드로 구분했습니다.
+
+```mermaid
+flowchart LR
+  ui["보안 분석 UI"]
+  api["보안 분석 API"]
+  limiter["요청 제한기"]
+  capacity["예약/용량 상태"]
+  worker["분석 작업 실행"]
+
+  ui --> api
+  api --> limiter
+  limiter --> capacity
+  limiter --> worker
+```
+
+분석 요청은 API에서 요청 제한기의 용량 확인과 예약 기록을 통과해야 작업 실행으로 이어집니다.
 
 ```mermaid
 sequenceDiagram
@@ -46,6 +62,23 @@ sequenceDiagram
 
 **구현:** Rust 서비스가 판정값을 외부 설정에서 읽도록 바꿔 반복 변경 절차를 설정 수정 중심으로 단순화했습니다.
 
+```mermaid
+flowchart LR
+  subgraph before["변경 전"]
+    direction TB
+    edit["코드 수정"] --> build["빌드"]
+    build --> replace["바이너리 교체"]
+    replace --> restart_before["서비스 재시작"]
+    restart_before --> verify_before["pcap 재생 / DB 확인"]
+  end
+
+  subgraph after["변경 후"]
+    direction TB
+    config["설정 수정"] --> restart_after["서비스 재시작"]
+    restart_after --> verify_after["pcap 재생 / DB 확인"]
+  end
+```
+
 **검증과 결과:** 동일한 pcap 재생과 DB 이벤트 확인을 기준으로 변경 전후 절차를 비교했습니다. 반복 설정 변경 1회에서 코드 수정, 빌드, 바이너리 교체를 제거해 pcap 재생과 DB 확인 전까지의 운영 변경 작업 시간을 30% 이상 줄였습니다.
 
 ## 추가 작업
@@ -54,9 +87,9 @@ sequenceDiagram
 
 **문제:** 컴파일 성공만으로는 의존성 전환 뒤에도 timestamp 변환과 화면 표시가 유지되는지 확인하기 어려웠습니다.
 
-**구현과 판단:** MITRE·clustering timestamp helper의 Chrono 동작을 테스트로 먼저 고정하고, Jiff 전환과 기존 의존성 정리를 단계별 변경으로 나눴습니다.
+**구현과 판단:** MITRE·clustering timestamp 변환 모듈의 Chrono 동작을 테스트로 먼저 고정하고, Jiff 전환과 기존 의존성 정리를 단계별 변경으로 나눴습니다.
 
-**검증과 결과:** 각 단계의 테스트, 영향받는 화면, feature별 동작, server compatibility, 변경 전후 화면을 대조했습니다. 해당 helper를 Jiff 기반으로 전환하고 그 모듈의 Chrono 의존성을 제거했습니다.
+**검증과 결과:** 각 단계의 테스트, 영향받는 화면, 기능별 동작, 서버 호환성, 변경 전후 화면을 대조했습니다. 해당 시간 변환 모듈을 Jiff 기반으로 전환하고 Chrono 의존성을 제거했습니다.
 
 ### 탐지 화면·리포트 검토
 

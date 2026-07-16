@@ -56,8 +56,6 @@ plugins:
             경력: Work
             요약: Summary
             티맥스클라우드: TmaxCloud
-            오픈소스: Open Source
-            프로젝트: Projects
 
 nav:
   - 소개: index.md
@@ -65,8 +63,6 @@ nav:
       - 요약: experience/index.md
       - ClumL: experience/cluml.md
       - 티맥스클라우드: experience/tmaxcloud.md
-  - 오픈소스:
-      - GlueSQL: opensource/gluesql.md
-  - 프로젝트:
-      - Coupler: projects/coupler.md
+  - GlueSQL: opensource/gluesql.md
+  - Coupler: projects/coupler.md
   - 원칙: engineering-principles.md

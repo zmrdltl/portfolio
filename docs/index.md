@@ -4,14 +4,16 @@ PLATFORM SOFTWARE ENGINEER
 
 ## 요약
 
-생성 API의 응답과 DB 반영을 배포 전에 검증하고, Rust 동시성 문제를 수정하며, 제품 변경을 회귀 테스트와 릴리스 기준에 연결해 온 Platform Software Engineer입니다.
+생성된 API의 응답과 DB 반영을 배포 전에 검증하고, Rust 동시성 문제를 수정하며, 제품 변경을 회귀 테스트와 릴리스 기준에 연결해 온 Platform Software Engineer입니다.
 
 ## 대표 작업
 
-- [보안 분석 제품의 Rust 서비스 개선](experience/cluml.md): 요청 제한 경합을 수정해 회귀 테스트로 고정하고, 반복 운영 설정을 외부화했습니다.
-- [No-code 플랫폼의 코드 생성과 데이터 이력](experience/tmaxcloud.md): 생성된 API의 배포 전 검증과 변경 이력 저장을 구현하고, 과거 시점 조회에 필요한 유효 이력 행 선택 기준을 정리했습니다.
-- [Rust 기반 SQL 엔진 오픈소스 기여](opensource/gluesql.md): GlueSQL의 `DISTINCT`를 query translation, executor 중복 제거, aggregate state와 회귀 테스트에 걸쳐 구현했습니다.
-- [모바일 소개팅 앱 개발총괄](projects/coupler.md): 가입 신청을 단계형 심사 흐름으로 바꾸고, 앱·API·관리자 웹·DB가 같은 심사 상태를 따르도록 했습니다.
+| 대표 작업 | 핵심 변경 | 검증·결과 |
+| --- | --- | --- |
+| [ClumL · Rust 서비스 정확성](experience/cluml.md) | 요청 제한 경합 수정, 반복 운영 설정 외부화 | 수정 전 허용치의 10배 이상 통과 재현 → 수정 후 허용치 이하 |
+| [티맥스클라우드 · 생성 API 검증](experience/tmaxcloud.md) | API 배포 전 검증, 데이터 변경 이력 구현 | 설계·검증 주기 약 4주 → 2주 수준 |
+| [GlueSQL · Rust SQL 엔진](opensource/gluesql.md) | `DISTINCT`를 SQL 변환·실행·집계·테스트에 연결 | 병합 PR 50건 · 현재 리뷰어 |
+| [Coupler · 모바일 앱 개발총괄](projects/coupler.md) | 가입 신청을 단계형 심사와 서버 상태 계약 중심으로 개편 | Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건 → 개편 후 약 100건 관측 |
 
 ## 기술
 

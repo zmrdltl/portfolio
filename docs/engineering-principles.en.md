@@ -2,6 +2,8 @@
 
 I define the problem and completion criteria before optimizing implementation speed, then keep code, documentation, tests, and review aligned to those criteria.
 
+I use AI tools for problem decomposition and implementation support while retaining direct responsibility for requirements, technical decisions, code review, test criteria, and release decisions.
+
 ## Core Principles
 
 ### 1. Define the Problem and Boundaries First

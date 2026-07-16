@@ -8,7 +8,23 @@ I traced operational issues in a security-event analysis product suite to code-l
 
 ## Fixing a Request-Limiting Concurrency Bug in an AI Security Analysis Engine
 
-I separated a long-wait symptom observed on a customer demo server into two failure modes. This work addressed over-limit requests passing because of a check-and-reserve race; a fixed-window wait-cap issue was a separate failure mode.
+I analyzed a long-wait incident on a customer demo server, isolated a check-and-reserve race that allowed more requests than the configured limit to pass, and fixed it. I treated the maximum wait imposed by the fixed window as a separate failure mode.
+
+```mermaid
+flowchart LR
+  ui["Security Analysis UI"]
+  api["Security Analysis API"]
+  limiter["Request Limiter"]
+  capacity["Reservation/Capacity State"]
+  worker["Analysis Job Execution"]
+
+  ui --> api
+  api --> limiter
+  limiter --> capacity
+  limiter --> worker
+```
+
+An analysis request reaches job execution only after the API passes it through the limiter's capacity check and reservation update.
 
 ```mermaid
 sequenceDiagram
@@ -46,6 +62,23 @@ sequenceDiagram
 
 **Implementation:** I changed the Rust service to read the threshold from configuration, reducing recurring changes to configuration updates.
 
+```mermaid
+flowchart LR
+  subgraph before["Before"]
+    direction TB
+    edit["Edit code"] --> build["Build"]
+    build --> replace["Replace binary"]
+    replace --> restart_before["Restart service"]
+    restart_before --> verify_before["Replay pcap / Check DB"]
+  end
+
+  subgraph after["After"]
+    direction TB
+    config["Edit configuration"] --> restart_after["Restart service"]
+    restart_after --> verify_after["Replay pcap / Check DB"]
+  end
+```
+
 **Validation and result:** I compared the before-and-after workflow using the same pcap replay and DB event check. For one recurring setting change, removing the code edit, build, and binary replacement reduced the operational change time before pcap replay and the DB check by at least 30%.
 
 ## Additional Work
@@ -54,9 +87,9 @@ sequenceDiagram
 
 **Problem:** A successful compile did not prove that timestamp conversion and visible UI output remained unchanged after the dependency migration.
 
-**Implementation and decision:** I first fixed the existing Chrono behavior in tests for the MITRE and clustering timestamp helpers, then split the Jiff migration and old-dependency cleanup into separate stages.
+**Implementation and decision:** I first captured the existing Chrono behavior in tests for the MITRE and clustering timestamp-conversion helpers, then split the Jiff migration and old-dependency cleanup into separate stages.
 
-**Validation and result:** I compared tests at each stage, affected screens, feature-specific behavior, server compatibility, and before-and-after screenshots. The helpers were migrated to Jiff and the module's Chrono dependency was removed.
+**Validation and result:** I compared stage-level tests, affected screens, feature behavior, server compatibility, and before-and-after screenshots. I migrated the timestamp-conversion helpers to Jiff and removed the module's Chrono dependency.
 
 ### Detection Screen and Report Review
 

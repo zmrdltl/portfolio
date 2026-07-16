@@ -8,10 +8,12 @@ I am a Platform Software Engineer who verifies generated API responses and DB ef
 
 ## Representative Work
 
-- [Improving Rust services for a security-analysis product](experience/cluml.md): Fixed a request-limiting race with regression tests and externalized a recurring operational setting.
-- [Code generation and data history for a no-code platform](experience/tmaxcloud.md): Built pre-deployment verification and change-history storage for generated APIs, and defined how point-in-time reads select the valid history row.
-- [Open-source contributions to a Rust SQL engine](opensource/gluesql.md): Implemented GlueSQL `DISTINCT` across query translation, executor de-duplication, aggregate state, and regression tests.
-- [Engineering lead for a mobile dating app](projects/coupler.md): Split signup into staged reviews and aligned the app, API, admin web, and database around the same review states.
+| Representative Work | Core Change | Validation or Result |
+| --- | --- | --- |
+| [ClumL · Rust Service Correctness](experience/cluml.md) | Fixed a request-limiting race and externalized an operational setting | Before: at least 10x the configured limit passed → after: at or below the limit |
+| [TmaxCloud · Generated API Verification](experience/tmaxcloud.md) | Built pre-deployment API verification and data-change history storage | Design-to-verification cycle: about four weeks → about two |
+| [GlueSQL · Rust SQL Engine](opensource/gluesql.md) | Connected `DISTINCT` across translation, execution, aggregates, and tests | 50 merged pull requests · current reviewer |
+| [Coupler · Mobile App Engineering Lead](projects/coupler.md) | Reworked signup around staged reviews and a server-owned state contract | Meta SDK first signup review event: observed about 10 times before → about 100 times after |
 
 ## Technologies
 
