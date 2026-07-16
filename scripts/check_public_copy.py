@@ -37,11 +37,342 @@ class PublicLineRequirement:
         return self.paths is None or relative_path in self.paths
 
 
+@dataclass(frozen=True)
+class PublicParagraphRequirement:
+    name: str
+    required_patterns: tuple[re.Pattern[str], ...]
+    forbidden_patterns: tuple[re.Pattern[str], ...] = ()
+
+
 COUPLER_PUBLIC_PATHS = (
     "index.md",
     "index.en.md",
     "projects/coupler.md",
     "projects/coupler.en.md",
+)
+
+TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS = (
+    "experience/tmaxcloud.md",
+    "experience/tmaxcloud.en.md",
+)
+
+TMAXCLOUD_ENTITY_EXPORT_IMPORT_HEADINGS = {
+    "experience/tmaxcloud.md": re.compile(
+        r"(?=.*엔티티)"
+        r"(?=.*내보내기(?:·|\s*(?:와|및)\s*)가져오기)"
+        r"(?=.*(?:선택\s+속성|데이터\s+변경|동기화)).+"
+    ),
+    "experience/tmaxcloud.en.md": re.compile(
+        r"(?=.*Entity\s+Export(?:/|\s+and\s+)Import)"
+        r"(?=.*(?:Selected[- ]Attribute|Data|Change))"
+        r"(?=.*Synchronization).+",
+        re.IGNORECASE,
+    ),
+}
+
+TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_HEADINGS = {
+    "experience/tmaxcloud.md": re.compile(r"개요"),
+    "experience/tmaxcloud.en.md": re.compile(r"Overview", re.IGNORECASE),
+}
+
+TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_REQUIREMENTS = {
+    "experience/tmaxcloud.md": PublicParagraphRequirement(
+        "overview loses entity export/import flow or contribution boundaries",
+        (
+            re.compile(r"(?:Studio|제품\s+UI)", re.IGNORECASE),
+            re.compile(
+                r"엔티티\s+내보내기(?:·|\s*(?:와|및)\s*)가져오기",
+                re.IGNORECASE,
+            ),
+            re.compile(r"엔티티를\s+내보내", re.IGNORECASE),
+            re.compile(
+                r"(?:다른|두\s+번째)\s+(?:생성\s+)?앱으로\s+"
+                r"가져(?:오|와)",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"(?:가져온|가져와)\s+엔티티를?\s+서비스\s+정의에\s+사용|"
+                r"가져와\s+서비스\s+정의에\s+사용",
+                re.IGNORECASE,
+            ),
+            re.compile(r"선택\s+속성\s+데이터", re.IGNORECASE),
+            re.compile(r"복사", re.IGNORECASE),
+            re.compile(r"(?:이후|후속)", re.IGNORECASE),
+            re.compile(r"(?:해당\s+)?속성의\s+변경", re.IGNORECASE),
+            re.compile(r"동기화", re.IGNORECASE),
+            re.compile(r"메시지\s+브로커", re.IGNORECASE),
+            re.compile(
+                r"(?:^|[.!?]\s+)"
+                r"(?:(?:저는|제가|본인은)\s+)?"
+                r"(?:(?:내보낸·가져온\s+엔티티|"
+                r"내보낸\s+엔티티와\s+가져온\s+엔티티)"
+                r"\s+정보를\s+저장하는\s+)?"
+                r"DB\s+스키마[^.\n]{0,100}API\s+개발에\s+"
+                r"참여(?:하고|했으며|했습니다)",
+                re.IGNORECASE,
+            ),
+            re.compile(r"선택\s+속성\s+메타데이터", re.IGNORECASE),
+            re.compile(
+                r"메시지\s+브로커[^.\n]{0,160}"
+                r"(?:내보내기·가져오기\s+)?엔티티\s+연결\s+구조를\s+"
+                r"설계(?:하고|했으며|했습니다)",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"내보내기\s+화면을\s+구현(?:했으며|했습니다)",
+                re.IGNORECASE,
+            ),
+        ),
+        (
+            re.compile(
+                r"(?:선택\s+속성[^.\n]{0,120})?"
+                r"(?:데이터\s+복사[^.\n]{0,100}변경\s+동기화|"
+                r"변경\s+동기화)(?:를|을)\s*(?:직접\s+)?"
+                r"(?:구현|개발|구축|담당)",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"(?:팀|팀원|동료|담당\s+엔지니어|프로젝트\s+구성원|"
+                r"구성원|개발\s+담당자|다른\s+엔지니어|다른\s+개발자)"
+                r"(?:이|가)",
+                re.IGNORECASE,
+            ),
+        ),
+    ),
+    "experience/tmaxcloud.en.md": PublicParagraphRequirement(
+        "overview loses entity export/import flow or contribution boundaries",
+        (
+            re.compile(r"(?:Studio|product\s+UI)", re.IGNORECASE),
+            re.compile(
+                r"entity\s+export(?:/|\s+and\s+)import",
+                re.IGNORECASE,
+            ),
+            re.compile(r"export\s+an?\s+entit", re.IGNORECASE),
+            re.compile(
+                r"import\s+it\s+into\s+(?:another|a\s+second)"
+                r"\s+(?:generated\s+)?app(?:lication)?",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"imported\s+entit(?:y|ies)\s+in\s+service\s+definitions",
+                re.IGNORECASE,
+            ),
+            re.compile(r"selected[- ]attribute\s+data", re.IGNORECASE),
+            re.compile(r"(?:at\s+import\s+time|initial(?:ly)?)", re.IGNORECASE),
+            re.compile(r"cop(?:y|ied|ies|ying)", re.IGNORECASE),
+            re.compile(
+                r"synchroniz[^.]{0,100}(?:later|subsequent)\s+changes",
+                re.IGNORECASE,
+            ),
+            re.compile(r"message\s+broker", re.IGNORECASE),
+            re.compile(
+                r"(?:"
+                r"I\s+contributed[^.]{0,120}DB\s+schema[^.]{0,50}API"
+                r"[^.]{0,120}designed\s+selected[- ]attribute\s+metadata"
+                r"[^.]{0,160}(?:message-broker|broker)-mediated\s+linkage"
+                r"[^.]{0,120}exported\s+and\s+imported\s+entities"
+                r"[^.]{0,120}and\s+implemented\s+the\s+export\s+UI"
+                r"|"
+                r"(?=.*I\s+contributed[^.]{0,120}DB\s+schema[^.]{0,50}API)"
+                r"(?=.*I\s+designed\s+selected[- ]attribute\s+metadata"
+                r"[^.]{0,160}(?:message-broker|broker)-mediated\s+linkage"
+                r"[^.]{0,120}exported\s+and\s+imported\s+entities)"
+                r"(?=.*I\s+implemented\s+the\s+export\s+UI).+"
+                r")",
+                re.IGNORECASE,
+            ),
+        ),
+        (
+            re.compile(
+                r"I\s+(?:directly\s+)?"
+                r"(?:implemented|built|developed|owned)[^.]{0,180}"
+                r"(?:entity\s+export(?:/|\s+and\s+)import|"
+                r"selected[- ]attribute[^.]{0,80}(?:copy|synchroniz)|"
+                r"synchronization\s+of\s+(?:later|subsequent)\s+changes)",
+                re.IGNORECASE,
+            ),
+        ),
+    ),
+}
+
+TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS = {
+    "experience/tmaxcloud.md": (
+        PublicParagraphRequirement(
+            "missing entity export/import service-definition and synchronization flow",
+            (
+                re.compile(r"(?:Studio|제품\s+UI)", re.IGNORECASE),
+                re.compile(r"엔티티를\s+내보내", re.IGNORECASE),
+                re.compile(
+                    r"(?:다른|두\s+번째)\s+(?:생성\s+)?앱으로\s+가져오",
+                    re.IGNORECASE,
+                ),
+                re.compile(
+                    r"가져온\s+엔티티를\s+서비스\s+정의에\s+사용",
+                    re.IGNORECASE,
+                ),
+                re.compile(r"선택(?:한)?\s+속성", re.IGNORECASE),
+                re.compile(r"(?:데이터\s+)?변경", re.IGNORECASE),
+                re.compile(r"동기화", re.IGNORECASE),
+                re.compile(r"메시지\s+브로커", re.IGNORECASE),
+            ),
+        ),
+        PublicParagraphRequirement(
+            "missing direct contribution relationships",
+            (
+                re.compile(
+                    r"(?:^|[.!?]\s+)"
+                    r"(?:(?:저는|제가|본인은)\s+)?"
+                    r"(?:(?:내보낸·가져온\s+엔티티|"
+                    r"내보낸\s+엔티티와\s+가져온\s+엔티티)"
+                    r"\s+정보를\s+저장하는\s+)?"
+                    r"DB\s+스키마[^.\n]{0,100}API\s+개발에\s+"
+                    r"참여(?:하고|했으며|했습니다)",
+                    re.IGNORECASE,
+                ),
+                re.compile(r"선택\s+속성\s+메타데이터", re.IGNORECASE),
+                re.compile(r"메시지\s+브로커", re.IGNORECASE),
+                re.compile(
+                    r"(?:내보내기·가져오기\s+)?엔티티\s+연결\s+구조를\s+"
+                    r"설계(?:하고|했으며|했습니다)",
+                    re.IGNORECASE,
+                ),
+                re.compile(
+                    r"내보내기\s+화면을\s+구현(?:했으며|했습니다)",
+                    re.IGNORECASE,
+                ),
+            ),
+            (
+                re.compile(
+                    r"(?:팀|팀원|동료|담당\s+엔지니어|프로젝트\s+구성원|"
+                    r"구성원|개발\s+담당자|다른\s+엔지니어|다른\s+개발자)"
+                    r"(?:이|가)",
+                    re.IGNORECASE,
+                ),
+                re.compile(r"(?:참여|설계|구현)하지\s+않", re.IGNORECASE),
+            ),
+        ),
+        PublicParagraphRequirement(
+            "missing synchronization and migration exclusions",
+            (
+                re.compile(r"메시지\s+동기화\s+서비스", re.IGNORECASE),
+                re.compile(
+                    r"(?:자체\s+구현|직접\s+구현)[^.]{0,100}"
+                    r"(?:맡지|담당하지|제외|별도)",
+                    re.IGNORECASE,
+                ),
+                re.compile(r"재배포\s+마이그레이션\s+전략", re.IGNORECASE),
+                re.compile(
+                    r"마이그레이션\s+전략[^.]{0,100}"
+                    r"(?:맡지|담당하지|제외|별도)",
+                    re.IGNORECASE,
+                ),
+            ),
+        ),
+    ),
+    "experience/tmaxcloud.en.md": (
+        PublicParagraphRequirement(
+            "missing entity export/import service-definition and synchronization flow",
+            (
+                re.compile(r"(?:Studio|product\s+UI)", re.IGNORECASE),
+                re.compile(r"export\s+an?\s+entit", re.IGNORECASE),
+                re.compile(
+                    r"import\s+it\s+into\s+(?:another|a\s+second)"
+                    r"\s+(?:generated\s+)?app(?:lication)?",
+                    re.IGNORECASE,
+                ),
+                re.compile(
+                    r"imported\s+entit(?:y|ies)\s+in\s+service\s+definitions",
+                    re.IGNORECASE,
+                ),
+                re.compile(r"selected\s+attributes?", re.IGNORECASE),
+                re.compile(r"chang", re.IGNORECASE),
+                re.compile(r"synchroniz", re.IGNORECASE),
+                re.compile(r"message\s+broker", re.IGNORECASE),
+            ),
+        ),
+        PublicParagraphRequirement(
+            "missing direct contribution relationships",
+            (
+                re.compile(
+                    r"(?:"
+                    r"I\s+contributed[^.]{0,120}DB\s+schema[^.]{0,50}API"
+                    r"[^.]{0,120}designed\s+selected[- ]attribute\s+metadata"
+                    r"[^.]{0,160}(?:message-broker|broker)-mediated\s+linkage"
+                    r"[^.]{0,120}exported\s+and\s+imported\s+entities"
+                    r"[^.]{0,120}and\s+implemented\s+the\s+export\s+UI"
+                    r"|"
+                    r"(?=.*I\s+contributed[^.]{0,120}DB\s+schema[^.]{0,50}API)"
+                    r"(?=.*I\s+designed\s+selected[- ]attribute\s+metadata"
+                    r"[^.]{0,160}(?:message-broker|broker)-mediated\s+linkage"
+                    r"[^.]{0,120}exported\s+and\s+imported\s+entities)"
+                    r"(?=.*I\s+implemented\s+the\s+export\s+UI).+"
+                    r")",
+                    re.IGNORECASE,
+                ),
+            ),
+        ),
+        PublicParagraphRequirement(
+            "missing synchronization and migration exclusions",
+            (
+                re.compile(
+                    r"I\s+did\s+not\s+(?:implement|build|develop|own)"
+                    r"[^.]{0,100}message-synchronization\s+service",
+                    re.IGNORECASE,
+                ),
+                re.compile(
+                    r"I\s+did\s+not[^.]{0,220}"
+                    r"redeployment\s+migration\s+strategy",
+                    re.IGNORECASE,
+                ),
+            ),
+        ),
+    ),
+}
+
+TMAXCLOUD_ENTITY_EXPORT_IMPORT_FORBIDDEN_PATTERNS = (
+    PublicCopyPattern(
+        "entity export/import reduced to initial-copy-only wording",
+        re.compile(
+            r"초기\s+데이터\s+복사(?:만|까지만)|"
+            r"초기\s+복사(?:만|까지만)|"
+            r"initial\s+(?:data\s+)?copying\s+only",
+            re.IGNORECASE,
+        ),
+        paths=TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS,
+    ),
+    PublicCopyPattern(
+        "entity export/import expanded to application-wide synchronization",
+        re.compile(
+            r"앱\s+전체\s+데이터|모든\s+앱\s+데이터|"
+            r"전체\s+엔티티|모든\s+필드|"
+            r"application-wide\s+data|all\s+application\s+data|"
+            r"entire\s+entit(?:y|ies)|all\s+fields|full\s+application\s+state",
+            re.IGNORECASE,
+        ),
+        paths=TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS,
+    ),
+    PublicCopyPattern(
+        "message-synchronization service implementation overclaim",
+        re.compile(
+            r"메시지\s+동기화\s+서비스를\s+(?:직접\s+)?"
+            r"(?:구현|개발|구축|담당)(?:했|했습니다)|"
+            r"I\s+(?:directly\s+)?(?:implemented|built|developed|owned)"
+            r"\s+the\s+message-synchronization\s+service",
+            re.IGNORECASE,
+        ),
+        paths=TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS,
+    ),
+    PublicCopyPattern(
+        "redeployment migration-strategy overclaim",
+        re.compile(
+            r"재배포[^.\n]{0,80}마이그레이션\s+전략을\s+"
+            r"(?:설계|구현|완성)(?:했|했습니다)|"
+            r"I\s+(?:designed|implemented|completed|owned)"
+            r"[^.\n]{0,100}redeployment\s+migration\s+strategy",
+            re.IGNORECASE,
+        ),
+        paths=TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS,
+    ),
 )
 
 COUPLER_APPROXIMATE_COMPARISON = (
@@ -116,7 +447,11 @@ COUPLER_PARAGRAPH_REQUIREMENTS = (
         re.compile(COUPLER_APPROXIMATE_COMPARISON, re.IGNORECASE),
         re.compile(
             r"(?=.*Meta\s+SDK)"
-            r"(?=.*(?:최초\s+가입\s+심사|first\s+signup\s+review))"
+            r"(?=.*(?:"
+            r"최초\s+가입\s+심사[^.\n]{0,30}(?:도달|기록)|"
+            r"recorded\s+upon\s+reaching\s+the\s+"
+            r"(?:first|initial)\s+signup\s+review"
+            r"))"
             r"(?=.*(?:관측|\bobserved\b))",
             re.IGNORECASE,
         ),
@@ -129,7 +464,7 @@ COUPLER_PARAGRAPH_REQUIREMENTS = (
             r"^(?:"
             r"Meta SDK 최초 가입 심사 도달 이벤트:\s*"
             r"개편 전 약 10건,\s*개편 후 약 100건 관측|"
-            r"Meta SDK first signup review event:\s*"
+            r"Meta SDK event recorded upon reaching the first signup review:\s*"
             r"observed about 10 times before the redesign and "
             r"about 100 times after\."
             r")$",
@@ -207,6 +542,55 @@ PUBLIC_COPY_PATTERNS = [
             r"Operating\s+criteria\s+for\s+the\s+personal\s+product\s+Coupler",
             re.IGNORECASE,
         ),
+    ),
+    PublicCopyPattern(
+        "ambiguous Coupler server-ownership wording",
+        re.compile(r"\bserver-owned\s+state\s+contract\b", re.IGNORECASE),
+        paths=("index.en.md", "projects/coupler.en.md"),
+    ),
+    PublicCopyPattern(
+        "ambiguous Coupler outsourced-maintenance wording",
+        re.compile(r"\binitially\s+outsourced\s+maintenance\b", re.IGNORECASE),
+        paths=("projects/coupler.en.md",),
+    ),
+    PublicCopyPattern(
+        "Coupler review-scope terminology drift",
+        re.compile(r"\bprofile-edit\s+reviews?\b", re.IGNORECASE),
+        paths=("projects/coupler.en.md",),
+    ),
+    PublicCopyPattern(
+        "engineering-principle semantic inversion",
+        re.compile(
+            r"\bI\s+fix\s+core\s+behavior[^.\n]{0,120}\bin\s+tests\b",
+            re.IGNORECASE,
+        ),
+        paths=("engineering-principles.en.md",),
+    ),
+    PublicCopyPattern(
+        "overbroad ClumL time-conversion module wording",
+        re.compile(
+            r"시간\s+변환\s+모듈|time[- ]conversion\s+module",
+            re.IGNORECASE,
+        ),
+        paths=("experience/cluml.md", "experience/cluml.en.md"),
+    ),
+    PublicCopyPattern(
+        "vague TmaxCloud exception-output heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(예외\s+출력\s+정리|Exception\s+Output\s+Formatting)\s*$",
+            re.IGNORECASE,
+        ),
+        paths=("experience/tmaxcloud.md", "experience/tmaxcloud.en.md"),
+    ),
+    PublicCopyPattern(
+        "GlueSQL award split into two awards",
+        re.compile(
+            r"(?:장려상|최우수상)\s*·\s*정보통신산업진흥원장상|"
+            r"(?:Encouragement|Top\s+Excellence)\s+Award\s*·\s*"
+            r"NIPA\s+President\s+Award",
+            re.IGNORECASE,
+        ),
+        paths=("opensource/gluesql.md", "opensource/gluesql.en.md"),
     ),
     PublicCopyPattern(
         "abbreviated-year Coupler Korean portfolio period wording",
@@ -600,6 +984,111 @@ def normalized_markdown_paragraphs(text: str) -> list[tuple[int, str]]:
     return paragraphs
 
 
+def extract_markdown_section(
+    text: str,
+    heading_pattern: re.Pattern[str],
+) -> tuple[int, str] | None:
+    lines = text.splitlines()
+    section_start: int | None = None
+    section_level: int | None = None
+
+    for index, line in enumerate(lines):
+        heading_match = re.match(r"^(#{1,6})[ \t]+(.+?)[ \t]*$", line)
+        if heading_match is None:
+            continue
+
+        level = len(heading_match.group(1))
+        title = heading_match.group(2).strip()
+        if section_start is None:
+            if heading_pattern.fullmatch(title):
+                section_start = index
+                section_level = level
+            continue
+
+        if section_level is not None and level <= section_level:
+            section_lines = lines[section_start:index]
+            return section_start + 1, "\n".join(section_lines)
+
+    if section_start is None:
+        return None
+
+    return section_start + 1, "\n".join(lines[section_start:])
+
+
+def paragraph_satisfies_requirement(
+    paragraph: str,
+    requirement: PublicParagraphRequirement,
+) -> bool:
+    return all(
+        pattern.search(paragraph)
+        for pattern in requirement.required_patterns
+    ) and not any(
+        pattern.search(paragraph)
+        for pattern in requirement.forbidden_patterns
+    )
+
+
+def collect_tmaxcloud_entity_export_import_findings(
+    relative_path: str,
+    text: str,
+) -> list[str]:
+    if relative_path not in TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS:
+        return []
+
+    heading_pattern = TMAXCLOUD_ENTITY_EXPORT_IMPORT_HEADINGS[relative_path]
+    section = extract_markdown_section(text, heading_pattern)
+    if section is None:
+        return [
+            f"{relative_path}:1: missing entity export/import synchronization section."
+        ]
+
+    line_number, section_text = section
+    paragraphs = normalized_markdown_paragraphs(section_text)
+    findings: list[str] = []
+    for copy_pattern in TMAXCLOUD_ENTITY_EXPORT_IMPORT_FORBIDDEN_PATTERNS:
+        if copy_pattern.pattern.search(text):
+            findings.append(
+                f"{relative_path}:{line_number}: "
+                f"{copy_pattern.name}: {section_text}"
+            )
+
+    overview_heading_pattern = (
+        TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_HEADINGS[relative_path]
+    )
+    overview = extract_markdown_section(text, overview_heading_pattern)
+    if overview is None:
+        findings.append(
+            f"{relative_path}:1: missing Overview section for entity export/import."
+        )
+    else:
+        overview_line_number, overview_text = overview
+        overview_requirement = (
+            TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_REQUIREMENTS[relative_path]
+        )
+        overview_paragraphs = normalized_markdown_paragraphs(overview_text)
+        if not any(
+            paragraph_satisfies_requirement(paragraph, overview_requirement)
+            for _, paragraph in overview_paragraphs
+        ):
+            findings.append(
+                f"{relative_path}:{overview_line_number}: "
+                f"{overview_requirement.name}: {overview_text}"
+            )
+
+    for requirement in TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS[relative_path]:
+        if any(
+            paragraph_satisfies_requirement(paragraph, requirement)
+            for _, paragraph in paragraphs
+        ):
+            continue
+        findings.append(
+            f"{relative_path}:{line_number}: "
+            f"{requirement.name}: {section_text}"
+        )
+
+    return findings
+
+
 def collect_coupler_paragraph_findings(
     relative_path: str,
     text: str,
@@ -663,6 +1152,9 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
                 break
 
         findings.extend(collect_coupler_paragraph_findings(relative_path, text))
+        findings.extend(
+            collect_tmaxcloud_entity_export_import_findings(relative_path, text)
+        )
 
     findings.extend(collect_abbreviation_findings(docs_dir))
     return findings

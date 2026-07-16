@@ -26,6 +26,57 @@ class PublicCopyCheckTests(unittest.TestCase):
         filename = "coupler.en.md" if english else "coupler.md"
         (projects_dir / filename).write_text(text, encoding="utf-8")
 
+    def write_tmaxcloud_page(self, text: str, *, english: bool = False) -> None:
+        experience_dir = self.docs_dir / "experience"
+        experience_dir.mkdir(exist_ok=True)
+        filename = "tmaxcloud.en.md" if english else "tmaxcloud.md"
+        (experience_dir / filename).write_text(text, encoding="utf-8")
+
+    def korean_entity_export_import_section(self) -> str:
+        return (
+            "# 티맥스클라우드\n\n"
+            "## 개요\n\n"
+            "엔티티 내보내기·가져오기 기능은 Studio에서 엔티티를 내보내 "
+            "다른 생성 앱으로 가져와 서비스 정의에 사용하고, 가져오기 "
+            "시점에는 선택 속성 데이터를 복사한 뒤 이후 해당 속성의 변경을 "
+            "메시지 브로커를 통해 동기화했습니다. 내보낸·가져온 엔티티 "
+            "정보를 저장하는 DB 스키마·API 개발에 참여하고, 선택 속성 "
+            "메타데이터와 메시지 브로커를 거치는 엔티티 연결 구조를 "
+            "설계했으며, 내보내기 화면을 구현했습니다.\n\n"
+            "### 엔티티 내보내기·가져오기와 선택 속성 동기화\n\n"
+            "Studio에서 엔티티를 내보내 다른 생성 앱으로 가져오고, "
+            "가져온 엔티티를 서비스 정의에 사용하며, 연결된 서비스에서 "
+            "데이터 변경이 발생하면 선택한 속성의 변경을 메시지 브로커를 "
+            "통해 동기화했습니다. 내보낸 엔티티와 가져온 엔티티 정보를 "
+            "저장하는 DB 스키마와 API 개발에 참여하고, 선택 속성 "
+            "메타데이터와 메시지 브로커를 거치는 내보내기·가져오기 "
+            "엔티티 연결 구조를 설계했으며, 내보내기 화면을 구현했습니다. "
+            "메시지 동기화 서비스 자체 구현과 스키마 변경 후 재배포 "
+            "마이그레이션 전략은 맡지 않았습니다.\n"
+        )
+
+    def english_entity_export_import_section(self) -> str:
+        return (
+            "# TmaxCloud\n\n"
+            "## Overview\n\n"
+            "The entity export/import feature let a Studio user export an entity, "
+            "import it into another generated application, and use the imported "
+            "entity in service definitions. It copied selected attribute data at "
+            "import time and synchronized later changes to those attributes through "
+            "a message broker. I contributed to the DB schema and API, designed "
+            "selected-attribute metadata and broker-mediated linkage between "
+            "exported and imported entities, and implemented the export UI.\n\n"
+            "### Entity Export/Import and Selected-Attribute Synchronization\n\n"
+            "Studio needed to export an entity, import it into another generated "
+            "application, use the imported entity in service definitions, and "
+            "synchronize changes to selected attributes through a message broker "
+            "when connected services changed data. I contributed to the DB schema "
+            "and API, designed selected-attribute metadata and broker-mediated "
+            "linkage between exported and imported entities, and implemented the "
+            "export UI. I did not implement the message-synchronization service "
+            "itself or the redeployment migration strategy.\n"
+        )
+
     def test_clean_public_copy_passes(self) -> None:
         (self.docs_dir / "index.md").write_text(
             "# 소개\n\n문제 해결 과정과 검증 방법을 정리했습니다.\n",
@@ -62,8 +113,9 @@ class PublicCopyCheckTests(unittest.TestCase):
             (
                 True,
                 "# Coupler\n\n"
-                "Meta SDK first signup review event: observed about 10 times before "
-                "the redesign and about 100 times after.\n",
+                "Meta SDK event recorded upon reaching the first signup review: "
+                "observed about 10 times before the redesign and about 100 times "
+                "after.\n",
             ),
         )
 
@@ -145,9 +197,9 @@ class PublicCopyCheckTests(unittest.TestCase):
     ) -> None:
         self.write_coupler_page(
             "# Coupler\n\n"
-            "The Meta SDK CompleteRegistration event, recorded when a person reached "
-            "the first signup review, was observed at roughly 10 events before the "
-            "signup/review-flow redesign and roughly 100 afterward.\n",
+            "The Meta SDK event recorded upon reaching the first signup review was "
+            "observed at roughly 10 events before the signup/review-flow redesign "
+            "and roughly 100 afterward.\n",
             english=True,
         )
 
@@ -580,6 +632,58 @@ class PublicCopyCheckTests(unittest.TestCase):
                 for finding in self.validate()
             )
         )
+
+    def test_semantic_regression_wording_is_rejected(self) -> None:
+        samples = (
+            (
+                "index.en.md",
+                "Reworked signup around a server-owned state contract.\n",
+                "ambiguous Coupler server-ownership wording",
+            ),
+            (
+                "projects/coupler.en.md",
+                "- Classification: Independent project, initially outsourced maintenance\n",
+                "ambiguous Coupler outsourced-maintenance wording",
+            ),
+            (
+                "projects/coupler.en.md",
+                "The policy separates signup from profile-edit reviews.\n",
+                "Coupler review-scope terminology drift",
+            ),
+            (
+                "engineering-principles.en.md",
+                "I fix core behavior and exceptional paths in tests.\n",
+                "engineering-principle semantic inversion",
+            ),
+            (
+                "experience/cluml.md",
+                "MITRE 화면의 시간 변환 모듈을 Jiff로 전환했습니다.\n",
+                "overbroad ClumL time-conversion module wording",
+            ),
+            (
+                "experience/tmaxcloud.en.md",
+                "### Exception Output Formatting\n",
+                "vague TmaxCloud exception-output heading",
+            ),
+            (
+                "opensource/gluesql.en.md",
+                "Encouragement Award · NIPA President Award\n",
+                "GlueSQL award split into two awards",
+            ),
+        )
+
+        for relative_path, sample, expected_finding in samples:
+            with self.subTest(relative_path=relative_path):
+                path = self.docs_dir / relative_path
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(sample, encoding="utf-8")
+                self.assertTrue(
+                    any(
+                        expected_finding in finding
+                        for finding in self.validate()
+                    )
+                )
+                path.unlink()
 
     def test_unverified_coupler_conversion_and_cost_metrics_are_rejected(self) -> None:
         claims = (
@@ -1146,6 +1250,312 @@ class PublicCopyCheckTests(unittest.TestCase):
                 for finding in self.validate()
             )
         )
+
+    def test_korean_entity_export_import_semantics_pass(self) -> None:
+        self.write_tmaxcloud_page(self.korean_entity_export_import_section())
+
+        self.assertEqual(self.validate(), [])
+
+    def test_english_entity_export_import_semantics_pass(self) -> None:
+        self.write_tmaxcloud_page(
+            self.english_entity_export_import_section(),
+            english=True,
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_entity_export_import_initial_copy_only_is_rejected(self) -> None:
+        page = self.korean_entity_export_import_section().replace(
+            "Studio에서 엔티티를 내보내 다른 생성 앱으로 가져오고, "
+            "가져온 엔티티를 서비스 정의에 사용하며, 연결된 서비스에서 "
+            "데이터 변경이 발생하면 선택한 속성의 변경을 메시지 브로커를 "
+            "통해 동기화했습니다.",
+            "가져오기 시점의 초기 데이터 복사만 구현했습니다.",
+        )
+        self.write_tmaxcloud_page(page)
+
+        self.assertTrue(
+            any(
+                "entity export/import reduced to initial-copy-only wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_missing_service_definition_use_is_rejected(
+        self,
+    ) -> None:
+        page = self.korean_entity_export_import_section().replace(
+            "가져온 엔티티를 서비스 정의에 사용하며, ",
+            "",
+        )
+        self.write_tmaxcloud_page(page)
+
+        self.assertTrue(
+            any(
+                "service-definition and synchronization flow" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_missing_broker_linkage_is_rejected(self) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "broker-mediated linkage",
+            "linkage",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "missing direct contribution relationships" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_application_wide_scope_is_rejected(self) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "changes to selected attributes",
+            "application-wide data changes",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "expanded to application-wide synchronization" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_sync_service_overclaim_is_rejected(self) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "I did not implement the message-synchronization service itself",
+            "I implemented the message-synchronization service",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "message-synchronization service implementation overclaim" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_export_ui_negation_is_rejected(self) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "I did not implement the message-synchronization service itself",
+            "I did not implement the export UI. "
+            "I did not implement the message-synchronization service itself",
+        ).replace(
+            "and implemented the export UI.",
+            ".",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "missing direct contribution relationships" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_korean_direct_contribution_negation_is_rejected(
+        self,
+    ) -> None:
+        page = self.korean_entity_export_import_section().replace(
+            "API 개발에 참여하고",
+            "API 개발에 참여하지 않았고",
+        ).replace(
+            "연결 구조를 설계했으며",
+            "연결 구조를 설계하지 않았으며",
+        ).replace(
+            "내보내기 화면을 구현했습니다",
+            "내보내기 화면을 구현하지 않았습니다",
+        )
+        self.write_tmaxcloud_page(page)
+
+        self.assertTrue(
+            any(
+                "missing direct contribution relationships" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_third_party_contribution_is_rejected(self) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "I contributed to the DB schema and API, designed selected-attribute "
+            "metadata and broker-mediated linkage between exported and imported "
+            "entities, and implemented the export UI.",
+            "The team contributed to the DB schema and API. Another engineer "
+            "designed selected-attribute metadata and broker-mediated linkage "
+            "between exported and imported entities and implemented the export UI.",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "missing direct contribution relationships" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_korean_third_party_contribution_is_rejected(
+        self,
+    ) -> None:
+        page = self.korean_entity_export_import_section().replace(
+            "내보낸 엔티티와 가져온 엔티티 정보를 저장하는 DB 스키마와 "
+            "API 개발에 참여하고, 선택 속성 메타데이터와 메시지 브로커를 "
+            "거치는 내보내기·가져오기 엔티티 연결 구조를 설계했으며, "
+            "내보내기 화면을 구현했습니다.",
+            "팀이 내보낸 엔티티와 가져온 엔티티 정보를 저장하는 DB 스키마와 "
+            "API 개발에 참여하고, 다른 엔지니어가 선택 속성 메타데이터와 "
+            "메시지 브로커를 거치는 내보내기·가져오기 엔티티 연결 구조를 "
+            "설계했으며, 내보내기 화면을 구현했습니다.",
+        )
+        self.write_tmaxcloud_page(page)
+
+        self.assertTrue(
+            any(
+                "missing direct contribution relationships" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_korean_multisentence_contribution_passes(
+        self,
+    ) -> None:
+        page = self.korean_entity_export_import_section().replace(
+            "내보낸 엔티티와 가져온 엔티티 정보를 저장하는 DB 스키마와 "
+            "API 개발에 참여하고, 선택 속성 메타데이터와 메시지 브로커를 "
+            "거치는 내보내기·가져오기 엔티티 연결 구조를 설계했으며, "
+            "내보내기 화면을 구현했습니다.",
+            "내보낸 엔티티와 가져온 엔티티 정보를 저장하는 DB 스키마와 "
+            "API 개발에 참여했습니다. 선택 속성 메타데이터와 메시지 "
+            "브로커를 거치는 내보내기·가져오기 엔티티 연결 구조를 "
+            "설계했습니다. 내보내기 화면을 구현했습니다.",
+        )
+        self.write_tmaxcloud_page(page)
+
+        self.assertEqual(self.validate(), [])
+
+    def test_entity_export_import_overview_scope_regression_is_rejected(
+        self,
+    ) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "The entity export/import feature let a Studio user export an entity, "
+            "import it into another generated application, and use the imported "
+            "entity in service definitions. It copied selected attribute data at "
+            "import time and synchronized later changes to those attributes through "
+            "a message broker.",
+            "The entity export/import feature synchronized application-wide data.",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        findings = self.validate()
+        self.assertTrue(
+            any(
+                "expanded to application-wide synchronization" in finding
+                for finding in findings
+            )
+        )
+        self.assertTrue(
+            any(
+                "overview loses entity export/import flow or contribution boundaries"
+                in finding
+                for finding in findings
+            )
+        )
+
+    def test_entity_export_import_overview_service_definition_is_required(
+        self,
+    ) -> None:
+        page = self.english_entity_export_import_section().replace(
+            ", and use the imported entity in service definitions. It copied",
+            ". It copied",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "overview loses entity export/import flow or contribution boundaries"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_overview_ownership_overclaim_is_rejected(
+        self,
+    ) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "It copied selected attribute data at import time and synchronized "
+            "later changes to those attributes through a message broker.",
+            "I implemented copying of selected attribute data at import time and "
+            "synchronization of later changes through a message broker.",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "overview loses entity export/import flow or contribution boundaries"
+                in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_korean_role_subject_is_rejected(self) -> None:
+        page = self.korean_entity_export_import_section().replace(
+            "내보낸 엔티티와 가져온 엔티티 정보를 저장하는 DB 스키마와 "
+            "API 개발에 참여하고, 선택 속성 메타데이터와 메시지 브로커를 "
+            "거치는 내보내기·가져오기 엔티티 연결 구조를 설계했으며, "
+            "내보내기 화면을 구현했습니다.",
+            "담당 엔지니어가 내보낸 엔티티와 가져온 엔티티 정보를 저장하는 "
+            "DB 스키마와 API 개발에 참여하고, 선택 속성 메타데이터와 메시지 "
+            "브로커를 거치는 내보내기·가져오기 엔티티 연결 구조를 "
+            "설계했으며, 내보내기 화면을 구현했습니다.",
+        )
+        self.write_tmaxcloud_page(page)
+
+        self.assertTrue(
+            any(
+                "missing direct contribution relationships" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_migration_overclaim_is_rejected(self) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "I did not implement the message-synchronization service "
+            "itself or the redeployment migration strategy.",
+            "I did not implement the message-synchronization service itself. "
+            "I implemented the redeployment migration strategy.",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertTrue(
+            any(
+                "redeployment migration-strategy overclaim" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_entity_export_import_paraphrase_passes(self) -> None:
+        page = self.english_entity_export_import_section().replace(
+            "Studio needed to export an entity, import it into another generated "
+            "application,",
+            "The product UI needed to export an entity, import it into a second app,",
+        ).replace(
+            "### Entity Export/Import and Selected-Attribute Synchronization",
+            "### Entity Export and Import with Selected Attribute Change Synchronization",
+        )
+        self.write_tmaxcloud_page(page, english=True)
+
+        self.assertEqual(self.validate(), [])
+
+    def test_entity_export_import_contract_does_not_apply_to_other_pages(self) -> None:
+        (self.docs_dir / "index.md").write_text(
+            "# 소개\n\n엔티티 초기 데이터 복사를 검토했습니다.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
 
     def test_public_cau_abbreviation_is_rejected_even_when_explained(self) -> None:
         (self.docs_dir / "experience.md").write_text(
