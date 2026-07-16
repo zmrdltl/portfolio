@@ -2,11 +2,11 @@
 
 - Contribution period: Jul 2024 - Present
 - Type: Mobile dating app
-- Classification: Independent project, initially outsourced maintenance
+- Classification: Independent project, started as contracted maintenance
 
 ## Overview
 
-I now lead development and operations across the React Native mobile app, API, admin web, and database. While moving the existing codebase to version 2.0.0, I implemented signup and review state transitions and reworked the database structure so the app, API, and admin web use the same review states.
+I now lead development and operations across the React Native mobile app, Express API, React admin web, and MySQL database. While moving the existing codebase to version 2.0.0, I implemented signup and review state transitions and reworked the database structure so the app, API, and admin web use the same review states.
 
 ## Role and Responsibilities
 
@@ -84,13 +84,13 @@ The API response contract supplies routing and access rights. The app and admin 
 ## Implementation and Validation
 
 - The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful API responses from screen-routing state so clients do not infer server state.
-- The [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) defines submission and resubmission, separates signup from profile-edit reviews, and standardizes admin queue classification.
-- I migrated the admin web from JavaScript to TypeScript and added CI checks for type errors and JavaScript reintroduction.
+- The [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) defines submission and resubmission, separates signup reviews from reviews triggered by settings changes, and standardizes admin queue classification.
+- I migrated the admin web from JavaScript to TypeScript and added GitHub Actions CI checks for type errors and JavaScript reintroduction.
 - API contract, mobile routing, and admin queue regression tests, together with the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), are part of release checks.
 
 ## Observed Result
 
-Meta SDK first signup review event: observed about 10 times before the redesign and about 100 times after.
+Meta SDK event recorded upon reaching the first signup review: observed about 10 times before the redesign and about 100 times after.
 
 ## Related Links
 
@@ -100,4 +100,4 @@ Meta SDK first signup review event: observed about 10 times before the redesign 
 
 ## Technologies
 
-React Native, TypeScript, Express, MySQL
+React Native, React, TypeScript, Express, MySQL, API contracts, state-transition design, database migrations, GitHub Actions

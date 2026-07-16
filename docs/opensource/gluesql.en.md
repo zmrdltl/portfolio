@@ -5,11 +5,11 @@
 
 ## Overview
 
-I have implemented SQL features, AST/query interfaces, storage, and regression tests for GlueSQL, a Rust SQL database engine. I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) and currently contribute to maintenance as a reviewer.
+I have implemented SQL features, AST/query interfaces, and storage paths for GlueSQL, a Rust SQL database engine, and added regression tests. I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) and currently contribute to maintenance as a reviewer.
 
 ## DISTINCT Implementation
 
-I fixed a path where `SELECT DISTINCT` could behave like a regular `SELECT` by carrying its meaning from SQL translation through execution.
+I fixed a code path that let `SELECT DISTINCT` behave like a regular `SELECT` by carrying its meaning from SQL translation through execution.
 
 ```mermaid
 flowchart TD
@@ -45,17 +45,17 @@ As a GlueSQL reviewer and OSSCA mentor, I reviewed contributor pull requests for
 
 | Year | Program | Award |
 | --- | --- | --- |
-| 2023 | Open Source Contribution Academy | NIPA President's Encouragement Award |
-| 2022 | Open Source Contribution Academy | NIPA President's Top Excellence Award |
-| 2021 | Open Source Contribution Academy | NIPA President's Top Excellence Award |
+| 2023 | Open Source Contribution Academy | NIPA President Award (Encouragement) |
+| 2022 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
+| 2021 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
 
 - [Award evidence](https://drive.google.com/drive/folders/1llwXz9RquWtRVH0ZQh2FZOLelAzmuBfO?usp=sharing)
-- [Completion and activity evidence](https://drive.google.com/drive/folders/1xQb6YpfgiYz59uKkaK0rvNL82mQ_6Nqn)
 
 ## Related Links
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
 - Representative implementations: [DISTINCT operations](https://github.com/gluesql/gluesql/pull/1710), [Parquet storage read/write](https://github.com/gluesql/gluesql/pull/1269)
+- Representative reviews: [REPLACE function](https://github.com/gluesql/gluesql/pull/1266), [GREATEST function](https://github.com/gluesql/gluesql/pull/1312), [SLICE function](https://github.com/gluesql/gluesql/pull/1340)
 - External ecosystem contributions: [DataFusion SQL Parser logical XOR](https://github.com/apache/datafusion-sqlparser-rs/pull/357), [BigDecimal `get_scale`](https://github.com/akubera/bigdecimal-rs/pull/116)
 - GlueSQL project technical articles: [Breaking the Boundary between SQL and NoSQL Databases](https://gluesql.org/blog/breaking-the-boundary-between-sql-and-nosql), [Revolutionizing Databases by Unifying Query Interfaces](https://gluesql.org/blog/revolutionizing-databases-by-unifying-query-interfaces)
 

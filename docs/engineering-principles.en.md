@@ -6,17 +6,17 @@ I use AI tools for problem decomposition and implementation support while retain
 
 ## Core Principles
 
-### 1. Define the Problem and Boundaries First
+### 1. Separate Symptoms into Failure Modes and Ownership Boundaries
 
-I examine why a feature is needed, the user flow, and operational policy before separating the problem from non-goals. Clear success criteria and ownership boundaries keep implementation and review focused on the same outcome, with problem definition before tool selection.
+I do not reduce a slow or failing path to one assumed cause. I separate concurrency races, fixed-window waits, API contracts, and database changes into distinct failure modes, then define direct ownership and non-goals before implementation.
 
-### 2. Make Completion Verifiable
+### 2. Turn Completion Criteria into Executable Contracts
 
-I fix core behavior and exceptional paths in tests, then check high-risk areas such as API contracts, data shapes, and compatibility separately. Incorrect changes should surface in automated checks or a documented reproduction path.
+A successful response is not enough. I lock down API response shapes, database writes and reads, state transitions, and exceptional paths with tests and reproduction procedures so incorrect changes surface before deployment.
 
-### 3. Review and Deliver the Whole Change
+### 3. Split Migrations into Baseline, Transition, and Cleanup
 
-I review documentation, state contracts, migrations, user flows, deployment, and rollback criteria along with the code diff. I release only after checking that any new complexity is necessary for the problem.
+I first capture existing behavior in baseline tests, transition to the new implementation, and then remove old dependencies and temporary comparison code. I review documentation, state contracts, migrations, user flows, deployment, and rollback criteria as part of the same change.
 
 ## Workflow
 
@@ -33,6 +33,6 @@ Understand the domain and requirements
 
 | Principle | Work Examples |
 | --- | --- |
-| Problem and boundaries | [ClumL](experience/cluml.md) |
-| Verifiable completion | [TmaxCloud](experience/tmaxcloud.md), [GlueSQL](opensource/gluesql.md) |
-| Review and delivery | [Coupler](projects/coupler.md) |
+| Failure modes and ownership boundaries | [ClumL](experience/cluml.md) |
+| Executable completion contracts | [TmaxCloud](experience/tmaxcloud.md), [GlueSQL](opensource/gluesql.md), [Coupler](projects/coupler.md) |
+| Baseline-driven migrations | [ClumL](experience/cluml.md) |

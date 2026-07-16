@@ -5,7 +5,7 @@
 
 ## 개요
 
-Rust 기반 SQL 엔진 GlueSQL에서 SQL 기능, AST/query interface, storage를 구현하고 회귀 테스트를 추가했습니다. [`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했으며, 현재 리뷰어로 유지보수에 기여하고 있습니다.
+Rust 기반 SQL 엔진 GlueSQL에서 SQL 기능, AST/쿼리 인터페이스, 스토리지 경로를 구현하고 회귀 테스트를 추가했습니다. [`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했으며, 현재 리뷰어로 유지보수에 기여하고 있습니다.
 
 ## DISTINCT 구현
 
@@ -45,17 +45,17 @@ GlueSQL 리뷰어와 OSSCA 멘토로 기여자 PR의 오류 처리, edge case, �
 
 | 연도 | 대회/프로그램 | 수상 |
 | --- | --- | --- |
-| 2023 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상 장려상 |
-| 2022 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상 최우수상 |
-| 2021 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상 최우수상 |
+| 2023 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(장려상) |
+| 2022 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
+| 2021 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
 
 - [수상 증빙](https://drive.google.com/drive/folders/1llwXz9RquWtRVH0ZQh2FZOLelAzmuBfO?usp=sharing)
-- [수료·활동 증빙](https://drive.google.com/drive/folders/1xQb6YpfgiYz59uKkaK0rvNL82mQ_6Nqn)
 
 ## 관련 링크
 
 - [GlueSQL repository](https://github.com/gluesql/gluesql)
 - 대표 구현: [DISTINCT operations](https://github.com/gluesql/gluesql/pull/1710), [Parquet storage read/write](https://github.com/gluesql/gluesql/pull/1269)
+- 대표 리뷰: [REPLACE 함수](https://github.com/gluesql/gluesql/pull/1266), [GREATEST 함수](https://github.com/gluesql/gluesql/pull/1312), [SLICE 함수](https://github.com/gluesql/gluesql/pull/1340)
 - 외부 생태계 기여: [DataFusion SQL Parser logical XOR](https://github.com/apache/datafusion-sqlparser-rs/pull/357), [BigDecimal `get_scale`](https://github.com/akubera/bigdecimal-rs/pull/116)
 - GlueSQL 프로젝트 기술 글: [Breaking the Boundary between SQL and NoSQL Databases](https://gluesql.org/blog/breaking-the-boundary-between-sql-and-nosql), [Revolutionizing Databases by Unifying Query Interfaces](https://gluesql.org/blog/revolutionizing-databases-by-unifying-query-interfaces)
 

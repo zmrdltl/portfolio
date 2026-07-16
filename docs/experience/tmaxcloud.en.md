@@ -4,11 +4,11 @@
 
 ## Overview
 
-On a Java/TypeScript no-code platform, I built pre-deployment verification for Java service code and SQL/DDL generated from UI definitions. I implemented data-change history storage and defined how point-in-time reads should choose the valid history row for each primary key. I also added specific parts of the SQL/DDL Generator and Entity Export/Import.
+On a Java/TypeScript no-code platform, I built pre-deployment verification for Java service code and SQL/DDL generated from UI definitions. I implemented data-change history storage and defined how point-in-time reads should choose the valid history row for each primary key. The entity export/import feature let a Studio user export an entity, import it into another generated application, and use the imported entity in service definitions. It copied selected attribute data at import time and synchronized later changes to those attributes through a message broker. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. I also helped separate SQL generation into a library imported directly by the backend.
 
 ## Service Code Verification
 
-**Problem:** A UI-defined service could only be checked against its real API response and DB effects after JAR creation and a separate deployment. With roughly 200–300 services/APIs to verify, one build, deploy, and verify cycle took about 20 minutes, and finding an invalid definition or request/response shape required repeating it.
+**Problem:** A UI-defined service could only be checked against its real API response and database writes and reads after JAR creation and a separate deployment. With roughly 200–300 services/APIs to verify, one build, deploy, and verify cycle took about 20 minutes, and finding an invalid definition or request/response shape required repeating it.
 
 ```mermaid
 flowchart TD
@@ -22,7 +22,7 @@ flowchart TD
   tester --> validation
 ```
 
-**Decision:** I built a WebSocket-based E2E test UI that called the generated API before deployment and checked JSON request/response shapes and DB writes and reads.
+**Decision:** I built a React and WebSocket-based E2E test UI that called the generated API before deployment and checked JSON request/response shapes and DB writes and reads.
 
 **Implementation:** I implemented WebSocket URL and connection validation, service-list loading, per-service JSON request templates, Monaco Editor request editing, API calls, response inspection, and database write/read checks.
 
@@ -46,7 +46,7 @@ flowchart TD
   history --> restore
 ```
 
-**Decision:** I implemented the history table and CRUD write SQL against the entity's columns and primary key. For point-in-time reads, I defined how to choose the valid history row for each primary key. Instead of a DB trigger or procedure, I placed the write query in the CRUD code, which already carried request-user context, so it stored the row before an update or deletion together with the editor and valid period.
+**Decision:** I implemented the history table and CRUD write SQL against the entity's columns and primary key. For point-in-time reads, I defined how to choose the valid history row for each primary key. Instead of a Tibero DB trigger or procedure, I placed the write query in the CRUD code, which already carried the requesting user's identity, so it stored the row before an update or deletion together with the editor and valid period.
 
 **Implementation:** Deploying an entity with history enabled created both its source and history tables. I connected FreeMarker templates and code-generation logic so CRUD services stored the row before an update or deletion with its primary key, editor, and valid period.
 
@@ -54,18 +54,18 @@ flowchart TD
 
 ## Additional Work
 
-### Entity Export/Import Data Copy
+### Entity Export/Import and Selected-Attribute Synchronization
 
-I contributed to the DB schema and API for storing exported and imported entities between generated applications. I designed the selected-attribute metadata and the connection between exporting and importing entities, and implemented the export UI. The MVP delivered initial data copying without message-synchronization implementation or a redeployment migration strategy for later export-schema changes.
+Studio needed to export an entity, import it into another generated application, use the imported entity in service definitions, and synchronize changes to selected attributes through a message broker when connected services changed data. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. The overall feature included initial copying of selected attribute data and subsequent change synchronization, but I did not implement the message-synchronization service itself or the redeployment migration strategy for later schema changes.
 
-### SQL/DDL Generator
+### SQL Generation Library
 
-I helped separate SQL-generation responsibility into a library imported by the backend. JSON-input SQL tests and coverage checks made the generation logic independently verifiable.
+I helped separate SQL generation into a library imported directly by the backend. I wrote JUnit tests for JSON-input SQL generation and added JaCoCo coverage configuration so the generation logic could be verified independently.
 
-### Exception Output Formatting
+### ErrorLogger-Based Exception Formatting
 
-I organized exception messages, error codes, SQL state, and stack traces into a consistent format, and visually separated terminal errors from general logs.
+I implemented ErrorLogger formatting for exception messages, error codes, SQL state, and stack traces, and visually separated terminal errors from general logs.
 
 ## Technologies
 
-Java, TypeScript, React, WebSocket, Monaco Editor, FreeMarker, Tibero, SQL generation, JUnit
+Java, TypeScript, React, WebSocket, Monaco Editor, FreeMarker, Tibero, SQL/DDL generation, JUnit, JaCoCo

@@ -2,11 +2,11 @@
 
 - 참여 기간: 2024.07 - 현재
 - 유형: 모바일 소개팅 앱
-- 구분: 개인 프로젝트(외주 유지보수로 시작)
+- 구분: 외주 유지보수로 시작한 개인 프로젝트
 
 ## 개요
 
-현재 React Native 모바일 앱, API, 관리자 웹, DB의 개발과 운영을 총괄하고 있습니다. 기존 코드베이스를 2.0.0으로 전환하면서 가입·심사 상태 전이 로직을 구현하고 DB 구조를 재구성해 앱·API·관리자 웹이 같은 심사 상태를 사용하도록 했습니다.
+현재 React Native 모바일 앱, Express API, React 관리자 웹, MySQL DB의 개발과 운영을 총괄하고 있습니다. 기존 코드베이스를 2.0.0으로 전환하면서 가입·심사 상태 전이 로직을 구현하고 DB 구조를 재구성해 앱·API·관리자 웹이 같은 심사 상태를 사용하도록 했습니다.
 
 ## 역할과 책임
 
@@ -85,7 +85,7 @@ API 응답 계약이 화면 분기와 접근 권한을 제공하고, 앱과 관�
 
 - [회원가입 응답 계약](https://coupler-developer.github.io/docs/policy/signup-response-contract/)을 기준으로 성공 응답과 화면 분기 상태를 분리하고, 앱이 서버 상태를 추측하지 않도록 했습니다.
 - [회원 심사 정책](https://coupler-developer.github.io/docs/policy/member-review-policy/)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
-- 관리자 웹의 JavaScript 코드를 TypeScript로 마이그레이션하고, CI에 typecheck와 JavaScript 재유입 방지 검사를 추가했습니다.
+- 관리자 웹의 JavaScript 코드를 TypeScript로 마이그레이션하고, GitHub Actions CI에 typecheck와 JavaScript 재유입 방지 검사를 추가했습니다.
 - API 응답 계약, 모바일 화면 분기, 관리자 심사 큐의 회귀 테스트와 [코드 리뷰 정책](https://coupler-developer.github.io/docs/policy/code-review-policy/)을 릴리스 확인 항목으로 사용했습니다.
 
 ## 관측 결과
@@ -100,4 +100,4 @@ Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후
 
 ## 기술
 
-React Native, TypeScript, Express, MySQL
+React Native, React, TypeScript, Express, MySQL, API 계약, 상태 전이 설계, DB 마이그레이션, GitHub Actions

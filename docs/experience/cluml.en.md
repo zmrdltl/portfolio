@@ -8,7 +8,7 @@ I traced operational issues in a security-event analysis product suite to code-l
 
 ## Fixing a Request-Limiting Concurrency Bug in an AI Security Analysis Engine
 
-I analyzed a long-wait incident on a customer demo server, isolated a check-and-reserve race that allowed more requests than the configured limit to pass, and fixed it. I treated the maximum wait imposed by the fixed window as a separate failure mode.
+I analyzed requests that remained pending for an extended time on a customer demo server, isolated a check-and-reserve race that allowed more requests than the configured limit to pass, and fixed it. I treated the maximum wait imposed by the fixed window as a separate failure mode.
 
 ```mermaid
 flowchart LR
@@ -52,7 +52,7 @@ sequenceDiagram
 
 **Implementation:** I changed the request-limiting logic to decide and immediately reserve against one shared state.
 
-**Validation and result:** Before the fix, I reproduced over-reservation in which the check passed at least ten times the allowed number of requests. After the fix, regression tests verified that the number passing under the same concurrency stayed at or below the limit.
+**Validation and result:** Before the fix, I reproduced over-reservation that let at least ten times the configured number of requests pass. After the fix, regression tests verified that the number passing under the same concurrency stayed at or below the limit.
 
 ## Moving a Rust Detection Threshold to External Configuration
 
@@ -87,14 +87,14 @@ flowchart LR
 
 **Problem:** A successful compile did not prove that timestamp conversion and visible UI output remained unchanged after the dependency migration.
 
-**Implementation and decision:** I first captured the existing Chrono behavior in tests for the MITRE and clustering timestamp-conversion helpers, then split the Jiff migration and old-dependency cleanup into separate stages.
+**Implementation and decision:** I first captured the existing Chrono behavior in tests for the timestamp helpers used by the MITRE and clustering views, then separated the Jiff migration from the old-dependency cleanup.
 
-**Validation and result:** I compared stage-level tests, affected screens, feature behavior, server compatibility, and before-and-after screenshots. I migrated the timestamp-conversion helpers to Jiff and removed the module's Chrono dependency.
+**Validation and result:** I compared stage-level tests, affected screens, feature behavior, server compatibility, and before-and-after screenshots. I migrated those timestamp helpers to Jiff and removed their Chrono dependency.
 
 ### Detection Screen and Report Review
 
-I separated the report's first-event-time query from customer-list loading, then reviewed a lightweight query and incremental rendering approach for the data each screen needed. For DHCP options, I compared the GraphQL/API field, formatter, raw event, detection list, and detail view to confirm that the API change reached visible output.
+I separated the report's first-event-time query from customer-list loading, then reviewed a lightweight, report-specific customer query and incremental rendering for the customer list. For DHCP options, I compared the GraphQL API's `options` field, formatting logic, raw event, detection list, and detail view to confirm that the API change reached the rendered output.
 
 ## Technologies
 
-Rust, GraphQL
+Rust, concurrency control, rate limiting, configuration management, GraphQL, pcap replay, regression testing, Chrono/Jiff dependency migration
