@@ -76,6 +76,29 @@ class PortfolioContractCheckTests(unittest.TestCase):
 
         self.assertEqual(self.validate(), [])
 
+    def test_expected_representative_work_table_passes(self) -> None:
+        self.write_home(
+            "\n".join(
+                [
+                    "# 포트폴리오",
+                    "",
+                    "## 대표 작업",
+                    "",
+                    "| 대표 작업 | 핵심 변경 | 검증·결과 |",
+                    "| --- | --- | --- |",
+                    "| [ClumL](experience/cluml.md) | 설명 | 결과 |",
+                    "| [TmaxCloud](experience/tmaxcloud.md) | 설명 | 결과 |",
+                    "| [GlueSQL](opensource/gluesql.md) | 설명 | 결과 |",
+                    "| [Coupler](projects/coupler.md) | 설명 | 결과 |",
+                    "",
+                    "## 다음",
+                    "",
+                ]
+            )
+        )
+
+        self.assertEqual(self.validate(), [])
+
     def test_supporting_only_home_item_fails(self) -> None:
         self.write_home(
             "\n".join(

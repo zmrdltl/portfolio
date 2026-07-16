@@ -20,6 +20,9 @@ except ModuleNotFoundError as error:
 
 HEADING_PATTERN = re.compile(r"^(#{1,6})[ \t]+(.+?)[ \t]*$")
 MARKDOWN_LINK_PATTERN = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+TABLE_SEPARATOR_PATTERN = re.compile(
+    r"^\|\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)+\|$"
+)
 
 
 @dataclass(frozen=True)
@@ -77,12 +80,19 @@ def extract_representative_links(path: Path, heading: str) -> tuple[list[str], l
     links: list[str] = []
     for offset, line in enumerate(section_lines, start=1):
         stripped = line.strip()
-        if not stripped.startswith("- "):
+        is_list_item = stripped.startswith("- ")
+        is_table_row = (
+            stripped.startswith("|")
+            and stripped.endswith("|")
+            and not TABLE_SEPARATOR_PATTERN.match(stripped)
+        )
+        if not is_list_item and not is_table_row:
             continue
 
         link_match = MARKDOWN_LINK_PATTERN.search(stripped)
         if not link_match:
-            errors.append(f"{path}:{offset}: Representative item has no link.")
+            if is_list_item:
+                errors.append(f"{path}:{offset}: Representative item has no link.")
             continue
 
         links.append(normalize_link(link_match.group(1)))
