@@ -51,22 +51,19 @@ class PublicCopyCheckTests(unittest.TestCase):
                 (self.docs_dir / "index.md").write_text(sample, encoding="utf-8")
                 self.assertTrue(self.validate())
 
-    def test_multiline_qualified_coupler_observations_pass(self) -> None:
+    def test_canonical_coupler_observations_pass(self) -> None:
         pages = (
             (
                 False,
                 "# Coupler\n\n"
-                "최초 가입 심사 도달 시\n"
-                "기록되는 Meta SDK CompleteRegistration(등록 완료) 이벤트가\n"
-                "회원가입·심사 흐름 개편 전 약 10건에서\n"
-                "개편 후 약 100건으로 관측됐습니다.\n",
+                "Meta SDK 최초 가입 심사 도달 이벤트: "
+                "개편 전 약 10건, 개편 후 약 100건 관측\n",
             ),
             (
                 True,
                 "# Coupler\n\n"
-                "The Meta SDK CompleteRegistration event, recorded when a person\n"
-                "reached the first signup review, was observed at roughly 10 events\n"
-                "before the signup/review-flow redesign and roughly 100 afterward.\n",
+                "Meta SDK first signup review event: observed about 10 times before "
+                "the redesign and about 100 times after.\n",
             ),
         )
 
@@ -87,7 +84,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertEqual(self.validate(), [])
 
-    def test_qualified_korean_coupler_complete_registration_observation_passes(
+    def test_non_canonical_korean_coupler_observation_is_rejected(
         self,
     ) -> None:
         self.write_coupler_page(
@@ -97,9 +94,53 @@ class PublicCopyCheckTests(unittest.TestCase):
             "개편 전 약 10건에서 개편 후 약 100건으로 관측됐습니다.\n",
         )
 
+        self.assertTrue(
+            any(
+                "non-canonical Coupler observation wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_korean_coupler_full_year_period_passes(self) -> None:
+        self.write_coupler_page(
+            "# Coupler\n\n- 참여 기간: 2024.07 - 현재\n"
+        )
+
         self.assertEqual(self.validate(), [])
 
-    def test_qualified_english_coupler_complete_registration_observation_passes(
+    def test_korean_coupler_abbreviated_year_period_is_rejected(self) -> None:
+        samples = ("- 참여 기간: 24.07 - 현재\n",)
+
+        for sample in samples:
+            with self.subTest(sample=sample):
+                self.write_coupler_page(f"# Coupler\n\n{sample}")
+                self.assertTrue(
+                    any(
+                        "abbreviated-year Coupler Korean portfolio period wording"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_redundant_coupler_phase_metadata_is_rejected(self) -> None:
+        pages = (
+            (False, "- 참여 단계: 2024.07 초기 기여\n"),
+            (True, "- Phases: Initial contribution, Jul 2024\n"),
+        )
+
+        for english, metadata in pages:
+            with self.subTest(english=english):
+                self.write_coupler_page(
+                    f"# Coupler\n\n{metadata}", english=english
+                )
+                self.assertTrue(
+                    any(
+                        "redundant Coupler phase metadata" in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_non_canonical_english_coupler_observation_is_rejected(
         self,
     ) -> None:
         self.write_coupler_page(
@@ -110,7 +151,12 @@ class PublicCopyCheckTests(unittest.TestCase):
             english=True,
         )
 
-        self.assertEqual(self.validate(), [])
+        self.assertTrue(
+            any(
+                "non-canonical Coupler observation wording" in finding
+                for finding in self.validate()
+            )
+        )
 
     def test_korean_coupler_complete_registration_growth_wording_is_rejected(
         self,
@@ -209,7 +255,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                "unqualified Coupler Meta SDK observation"
                 in finding
                 for finding in self.validate()
             )
@@ -242,7 +288,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                "unqualified Coupler Meta SDK observation"
                 in finding
                 for finding in self.validate()
             )
@@ -260,7 +306,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                "unqualified Coupler Meta SDK observation"
                 in finding
                 for finding in self.validate()
             )
@@ -277,7 +323,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                "unqualified Coupler Meta SDK observation"
                 in finding
                 for finding in self.validate()
             )
@@ -295,7 +341,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "unqualified Coupler Meta SDK CompleteRegistration observation"
+                "unqualified Coupler Meta SDK observation"
                 in finding
                 for finding in self.validate()
             )

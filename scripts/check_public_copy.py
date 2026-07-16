@@ -112,16 +112,30 @@ COUPLER_PARAGRAPH_PATTERNS = (
 
 COUPLER_PARAGRAPH_REQUIREMENTS = (
     PublicLineRequirement(
-        "unqualified Coupler Meta SDK CompleteRegistration observation",
+        "unqualified Coupler Meta SDK observation",
         re.compile(COUPLER_APPROXIMATE_COMPARISON, re.IGNORECASE),
         re.compile(
             r"(?=.*Meta\s+SDK)"
-            r"(?=.*(?:CompleteRegistration|등록\s*완료))"
             r"(?=.*(?:최초\s+가입\s+심사|first\s+signup\s+review))"
             r"(?=.*(?:관측|\bobserved\b))",
             re.IGNORECASE,
         ),
         paths=COUPLER_PUBLIC_PATHS,
+    ),
+    PublicLineRequirement(
+        "non-canonical Coupler observation wording",
+        re.compile(COUPLER_APPROXIMATE_COMPARISON, re.IGNORECASE),
+        re.compile(
+            r"^(?:"
+            r"Meta SDK 최초 가입 심사 도달 이벤트:\s*"
+            r"개편 전 약 10건,\s*개편 후 약 100건 관측|"
+            r"Meta SDK first signup review event:\s*"
+            r"observed about 10 times before the redesign and "
+            r"about 100 times after\."
+            r")$",
+            re.IGNORECASE,
+        ),
+        paths=("projects/coupler.md", "projects/coupler.en.md"),
     ),
 )
 
@@ -193,6 +207,16 @@ PUBLIC_COPY_PATTERNS = [
             r"Operating\s+criteria\s+for\s+the\s+personal\s+product\s+Coupler",
             re.IGNORECASE,
         ),
+    ),
+    PublicCopyPattern(
+        "abbreviated-year Coupler Korean portfolio period wording",
+        re.compile(r"^\s*-\s*참여\s*기간:.*(?<!\d)\d{2}\.\d{2}(?!\.\d)"),
+        paths=("projects/coupler.md",),
+    ),
+    PublicCopyPattern(
+        "redundant Coupler phase metadata",
+        re.compile(r"^\s*-\s*(?:참여\s*단계|Phases)\s*:", re.IGNORECASE),
+        paths=("projects/coupler.md", "projects/coupler.en.md"),
     ),
     PublicCopyPattern(
         "opaque bundled-flow wording",
@@ -584,6 +608,8 @@ def collect_coupler_paragraph_findings(
                 break
 
         for requirement in COUPLER_PARAGRAPH_REQUIREMENTS:
+            if not requirement.applies_to(relative_path):
+                continue
             if not requirement.trigger_pattern.search(paragraph):
                 continue
             if requirement.required_pattern.search(paragraph):

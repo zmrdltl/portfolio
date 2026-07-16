@@ -1,9 +1,8 @@
 # Coupler
 
-- Contribution period: Jul 2025 - Present
+- Contribution period: Jul 2024 - Present
 - Type: Mobile dating app
 - Classification: Independent project, initially outsourced maintenance
-- Phases: Maintenance, Jul-Nov 2025 · Engineering Lead, Nov 2025-Present
 
 ## Overview
 
@@ -13,7 +12,7 @@ I now lead development and operations across the React Native mobile app, API, a
 
 - Translate product decisions into the app, API, admin web, DB schema, and migrations.
 - Own QA, code review, merges, releases, deployment, and rollback.
-- Document policy, flows, architecture, DB-change verification procedures, and deployment and rollback rules in the [public engineering documentation](https://coupler-developer.github.io/docs/).
+- Keep policy, flows, architecture, DB-change verification procedures, and deployment and rollback rules in the [public engineering documentation](https://coupler-developer.github.io/docs/) and tie them to release criteria.
 
 ## Problem
 
@@ -64,11 +63,11 @@ The API response contract supplies routing and access rights. The app and admin 
 - The [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) defines submission and resubmission, separates signup from profile-edit reviews, and standardizes admin queue classification.
 - I migrated the admin web from JavaScript to TypeScript and added CI checks for type errors and JavaScript reintroduction.
 - API contract, mobile routing, and admin queue regression tests, together with the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), are part of release checks.
-- I used AI-assisted development for problem decomposition and implementation, while I remained directly responsible for requirements, product and technical judgment, code review, test criteria, merges, and release decisions.
+- I used LLMs to support problem decomposition and implementation, while I remained directly responsible for requirements, product and technical judgment, code review, test criteria, merges, and release decisions.
 
 ## Observed Result
 
-The Meta SDK first signup review event (`CompleteRegistration`) was observed about 10 times before the redesign and about 100 times from June 14 to July 11, 2026, after it.
+Meta SDK first signup review event: observed about 10 times before the redesign and about 100 times after.
 
 ## Related Links
 

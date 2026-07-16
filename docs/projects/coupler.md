@@ -1,9 +1,8 @@
 # Coupler
 
-- 참여 기간: 2025.07 - Present
+- 참여 기간: 2024.07 - 현재
 - 유형: 모바일 소개팅 앱
 - 구분: 개인 프로젝트(외주 유지보수로 시작)
-- 참여 단계: 2025.07 - 2025.11 유지보수 · 2025.11 - Present 개발총괄
 
 ## 개요
 
@@ -13,7 +12,7 @@
 
 - 기획 결정을 앱, API, 관리자 웹, DB schema와 migration에 반영합니다.
 - QA, 코드 리뷰, merge, 릴리스, 배포·롤백을 책임집니다.
-- 정책·플로우·아키텍처, DB 변경 검증 절차, 배포·롤백 기준을 [공개 개발 문서](https://coupler-developer.github.io/docs/)로 문서화합니다.
+- 정책·플로우·아키텍처, DB 변경 검증 절차, 배포·롤백 기준을 [공개 개발 문서](https://coupler-developer.github.io/docs/)로 정리하고 릴리스 기준에 연결합니다.
 
 ## 문제
 
@@ -64,11 +63,11 @@ API 응답 계약이 화면 분기와 접근 권한을 제공하고, 앱과 관�
 - [회원 심사 정책](https://coupler-developer.github.io/docs/policy/member-review-policy/)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
 - 관리자 웹의 JavaScript 코드를 TypeScript로 마이그레이션하고, CI에 typecheck와 JavaScript 재유입 방지 검사를 추가했습니다.
 - API contract, mobile routing, 관리자 심사 큐의 회귀 테스트와 [코드 리뷰 정책](https://coupler-developer.github.io/docs/policy/code-review-policy/)을 릴리스 확인 항목으로 사용했습니다.
-- 문제 분해와 구현에 AI-assisted development를 활용했지만, 요구사항 정의, 제품·기술 판단, 코드 리뷰, 테스트 기준, merge와 릴리스 결정은 개발총괄인 제가 직접 책임졌습니다.
+- LLM을 문제 분해와 구현 보조에 사용했지만, 요구사항 정의, 제품·기술 판단, 코드 리뷰, 테스트 기준, merge와 릴리스 결정은 개발총괄로 직접 책임졌습니다.
 
 ## 관측 결과
 
-Meta SDK 최초 가입 심사 도달 이벤트(`CompleteRegistration`)는 개편 전 약 10건, 개편 후 2026.06.14 - 07.11에 약 100건으로 관측됐습니다.
+Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후 약 100건 관측
 
 ## 관련 링크
 
