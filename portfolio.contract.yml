@@ -21,7 +21,7 @@ homepage:
           - Rust
           - 동시성 제어
           - 요청 제한
-          - 설정 관리
+          - 네트워크 이벤트 탐지 임계값 외부 설정
           - GraphQL
           - 회귀 테스트
           - Chrono/Jiff
@@ -48,8 +48,8 @@ homepage:
           - TypeScript
           - Express
           - MySQL
-          - API 계약
-          - 상태 전이 설계
+          - API 응답 설계
+          - 가입·심사 상태 관리
           - GitHub Actions
     - path: docs/index.en.md
       heading: Technologies by Project
@@ -58,7 +58,7 @@ homepage:
           - Rust
           - concurrency control
           - rate limiting
-          - configuration management
+          - external configuration for a network-event detection threshold
           - GraphQL
           - regression testing
           - Chrono/Jiff
@@ -85,6 +85,6 @@ homepage:
           - TypeScript
           - Express
           - MySQL
-          - API contracts
-          - state-transition design
+          - API response design
+          - signup/review state management
           - GitHub Actions

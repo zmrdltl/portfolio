@@ -464,7 +464,7 @@ COUPLER_PARAGRAPH_REQUIREMENTS = (
             r"^(?:"
             r"Meta SDK 최초 가입 심사 도달 이벤트:\s*"
             r"개편 전 약 10건,\s*개편 후 약 100건 관측|"
-            r"Meta SDK event recorded upon reaching the first signup review:\s*"
+            r"Meta SDK event recorded upon reaching the initial signup review stage:\s*"
             r"observed about 10 times before the redesign and "
             r"about 100 times after\."
             r")$",
@@ -544,9 +544,18 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
-        "ambiguous Coupler server-ownership wording",
-        re.compile(r"\bserver-owned\s+state\s+contract\b", re.IGNORECASE),
-        paths=("index.en.md", "projects/coupler.en.md"),
+        "ambiguous Coupler state-contract wording",
+        re.compile(
+            r"\bserver-(?:owned|driven)\s+(?:review-)?state\s+contract\b|"
+            r"서버\s+응답\s+기반\s+심사\s+상태\s+계약",
+            re.IGNORECASE,
+        ),
+        paths=(
+            "index.md",
+            "index.en.md",
+            "projects/coupler.md",
+            "projects/coupler.en.md",
+        ),
     ),
     PublicCopyPattern(
         "ambiguous Coupler outsourced-maintenance wording",
@@ -565,6 +574,73 @@ PUBLIC_COPY_PATTERNS = [
             re.IGNORECASE,
         ),
         paths=("engineering-principles.en.md",),
+    ),
+    PublicCopyPattern(
+        "abstract engineering-principle wording",
+        re.compile(
+            r"현상을\s+실패\s+모드와\s+책임\s+경계로\s+나눕니다|"
+            r"완료\s+조건을\s+실행\s+가능한\s+계약으로\s+만듭니다|"
+            r"이관은\s+기준선[·,\s]+전환[·,\s]+정리로\s+나눕니다|"
+            r"Separate\s+Symptoms\s+into\s+Failure\s+Modes\s+and\s+"
+            r"Ownership\s+Boundaries|"
+            r"Turn\s+Completion\s+Criteria\s+into\s+Executable\s+Contracts|"
+            r"Split\s+Migrations\s+into\s+Baseline,\s+Transition,\s+and\s+Cleanup|"
+            r"Separate\s+Symptoms\s+from\s+Causes\s+and\s+Define\s+the\s+Change|"
+            r"\bwait\s+policies\b|\boutside\s+the\s+task\b",
+            re.IGNORECASE,
+        ),
+        paths=("engineering-principles.md", "engineering-principles.en.md"),
+    ),
+    PublicCopyPattern(
+        "abstract Coupler responsibility-boundary heading",
+        re.compile(
+            r"^\s*#{1,6}\s+(?:"
+            r"App\s*/\s*API\s*/\s*Admin\s+책임\s+경계|"
+            r"App\s*/\s*API\s*/\s*Admin\s+Responsibility\s+Boundaries"
+            r")\s*$",
+            re.IGNORECASE,
+        ),
+        paths=("projects/coupler.md", "projects/coupler.en.md"),
+    ),
+    PublicCopyPattern(
+        "vague ClumL operational-setting wording",
+        re.compile(
+            r"반복\s+운영\s+설정\s+외부화|"
+            r"externalized\s+an\s+operational\s+setting",
+            re.IGNORECASE,
+        ),
+        paths=("index.md", "index.en.md", "experience/cluml.md", "experience/cluml.en.md"),
+    ),
+    PublicCopyPattern(
+        "vague ClumL detection-threshold wording",
+        re.compile(
+            r"탐지\s+판정값|"
+            r"Rust\s+요청\s+제한·운영\s+설정|"
+            r"탐지\s+화면·리포트\s+검토|"
+            r"Detection\s+Screen\s+and\s+Report\s+Review|"
+            r"network-event\s+detection-threshold\s+configuration",
+            re.IGNORECASE,
+        ),
+        paths=(
+            "index.md",
+            "index.en.md",
+            "experience/cluml.md",
+            "experience/cluml.en.md",
+        ),
+    ),
+    PublicCopyPattern(
+        "ambiguous Coupler routing or review-stage wording",
+        re.compile(
+            r"aligned\s+app/admin\s+routing\s+to\s+server\s+review\s+state|"
+            r"recorded\s+upon\s+reaching\s+the\s+first\s+signup\s+review\s*:",
+            re.IGNORECASE,
+        ),
+        paths=("index.en.md", "projects/coupler.en.md"),
+    ),
+    PublicCopyPattern(
+        "vague GlueSQL storage-path wording",
+        re.compile(r"스토리지\s+경로|storage\s+paths?", re.IGNORECASE),
+        paths=("opensource/gluesql.md", "opensource/gluesql.en.md"),
     ),
     PublicCopyPattern(
         "overbroad ClumL time-conversion module wording",

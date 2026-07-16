@@ -113,7 +113,8 @@ class PublicCopyCheckTests(unittest.TestCase):
             (
                 True,
                 "# Coupler\n\n"
-                "Meta SDK event recorded upon reaching the first signup review: "
+                "Meta SDK event recorded upon reaching the initial signup review "
+                "stage: "
                 "observed about 10 times before the redesign and about 100 times "
                 "after.\n",
             ),
@@ -637,8 +638,8 @@ class PublicCopyCheckTests(unittest.TestCase):
         samples = (
             (
                 "index.en.md",
-                "Reworked signup around a server-owned state contract.\n",
-                "ambiguous Coupler server-ownership wording",
+                "Reworked signup around a server-driven review-state contract.\n",
+                "ambiguous Coupler state-contract wording",
             ),
             (
                 "projects/coupler.en.md",
@@ -654,6 +655,46 @@ class PublicCopyCheckTests(unittest.TestCase):
                 "engineering-principles.en.md",
                 "I fix core behavior and exceptional paths in tests.\n",
                 "engineering-principle semantic inversion",
+            ),
+            (
+                "engineering-principles.md",
+                "### 3. 이관은 기준선·전환·정리로 나눕니다\n",
+                "abstract engineering-principle wording",
+            ),
+            (
+                "engineering-principles.en.md",
+                "### 1. Separate Symptoms from Causes and Define the Change\n",
+                "abstract engineering-principle wording",
+            ),
+            (
+                "projects/coupler.md",
+                "## App / API / Admin 책임 경계\n",
+                "abstract Coupler responsibility-boundary heading",
+            ),
+            (
+                "index.md",
+                "요청 제한 경합 수정, 반복 운영 설정 외부화\n",
+                "vague ClumL operational-setting wording",
+            ),
+            (
+                "experience/cluml.md",
+                "### 탐지 화면·리포트 검토\n",
+                "vague ClumL detection-threshold wording",
+            ),
+            (
+                "index.en.md",
+                "network-event detection-threshold configuration\n",
+                "vague ClumL detection-threshold wording",
+            ),
+            (
+                "index.en.md",
+                "Aligned app/admin routing to server review state.\n",
+                "ambiguous Coupler routing or review-stage wording",
+            ),
+            (
+                "opensource/gluesql.en.md",
+                "I implemented storage paths for GlueSQL.\n",
+                "vague GlueSQL storage-path wording",
             ),
             (
                 "experience/cluml.md",

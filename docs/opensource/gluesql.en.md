@@ -5,7 +5,7 @@
 
 ## Overview
 
-I have implemented SQL features, AST/query interfaces, and storage paths for GlueSQL, a Rust SQL database engine, and added regression tests. I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) and currently contribute to maintenance as a reviewer.
+I have implemented SQL features, AST/query interfaces, and storage integrations for GlueSQL, a Rust SQL database engine, and added regression tests. I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged) and currently contribute to maintenance as a reviewer.
 
 ## DISTINCT Implementation
 

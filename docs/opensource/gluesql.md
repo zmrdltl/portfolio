@@ -5,7 +5,7 @@
 
 ## 개요
 
-Rust 기반 SQL 엔진 GlueSQL에서 SQL 기능, AST/쿼리 인터페이스, 스토리지 경로를 구현하고 회귀 테스트를 추가했습니다. [`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했으며, 현재 리뷰어로 유지보수에 기여하고 있습니다.
+Rust 기반 SQL 엔진 GlueSQL에서 SQL 기능, AST/쿼리 인터페이스, 스토리지 연동을 구현하고 회귀 테스트를 추가했습니다. [`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했으며, 현재 리뷰어로 유지보수에 기여하고 있습니다.
 
 ## DISTINCT 구현
 

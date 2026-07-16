@@ -6,17 +6,17 @@ I use AI tools for problem decomposition and implementation support while retain
 
 ## Core Principles
 
-### 1. Separate Symptoms into Failure Modes and Ownership Boundaries
+### 1. Separate Symptoms from Causes and Set the Scope of the Fix
 
-I do not reduce a slow or failing path to one assumed cause. I separate concurrency races, fixed-window waits, API contracts, and database changes into distinct failure modes, then define direct ownership and non-goals before implementation.
+I do not assume that a slow or failing path has one cause. I inspect concurrency races, maximum waits imposed by fixed windows, API responses, and database changes separately, then state what I will fix and what I will leave unchanged.
 
-### 2. Turn Completion Criteria into Executable Contracts
+### 2. Make Completion Criteria Testable
 
-A successful response is not enough. I lock down API response shapes, database writes and reads, state transitions, and exceptional paths with tests and reproduction procedures so incorrect changes surface before deployment.
+A successful API response alone is not enough. I test response shapes, database writes and reads, screen routing, and error handling so regressions surface before deployment.
 
-### 3. Split Migrations into Baseline, Transition, and Cleanup
+### 3. Verify Existing Behavior before Replacing a Dependency
 
-I first capture existing behavior in baseline tests, transition to the new implementation, and then remove old dependencies and temporary comparison code. I review documentation, state contracts, migrations, user flows, deployment, and rollback criteria as part of the same change.
+Before replacing a library or internal implementation, I record existing behavior in tests. After switching to the new implementation, I remove the old dependency and temporary comparison code, then check affected screens, documentation, and deployment steps.
 
 ## Workflow
 
@@ -33,6 +33,6 @@ Understand the domain and requirements
 
 | Principle | Work Examples |
 | --- | --- |
-| Failure modes and ownership boundaries | [ClumL](experience/cluml.md) |
-| Executable completion contracts | [TmaxCloud](experience/tmaxcloud.md), [GlueSQL](opensource/gluesql.md), [Coupler](projects/coupler.md) |
-| Baseline-driven migrations | [ClumL](experience/cluml.md) |
+| Separating symptoms from causes and setting the scope of the fix | [ClumL](experience/cluml.md) |
+| Testable completion criteria | [TmaxCloud](experience/tmaxcloud.md), [GlueSQL](opensource/gluesql.md), [Coupler](projects/coupler.md) |
+| Replacing dependencies without changing behavior | [ClumL](experience/cluml.md) |

@@ -56,7 +56,7 @@ stateDiagram-v2
 
 The app opens submission, resubmission, and subsequent-review tabs from review state supplied by the server.
 
-## App / API / Admin Responsibility Boundaries
+## Responsibilities across App, API, and Admin
 
 ```mermaid
 flowchart LR
@@ -90,7 +90,7 @@ The API response contract supplies routing and access rights. The app and admin 
 
 ## Observed Result
 
-Meta SDK event recorded upon reaching the first signup review: observed about 10 times before the redesign and about 100 times after.
+Meta SDK event recorded upon reaching the initial signup review stage: observed about 10 times before the redesign and about 100 times after.
 
 ## Related Links
 
@@ -100,4 +100,4 @@ Meta SDK event recorded upon reaching the first signup review: observed about 10
 
 ## Technologies
 
-React Native, React, TypeScript, Express, MySQL, API contracts, state-transition design, database migrations, GitHub Actions
+React Native, React, TypeScript, Express, MySQL, API response design, signup/review state management, database migrations, GitHub Actions

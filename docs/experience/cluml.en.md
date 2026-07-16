@@ -4,11 +4,11 @@
 
 ## Overview
 
-I traced operational issues in a security-event analysis product suite to code-level causes and implemented fixes. Depending on the problem, I verified the result with reproduction and regression tests or a before-and-after operational check. The primary examples are a request-limiting concurrency fix and external configuration for a recurring Rust service setting.
+I traced operational issues in a security-event analysis product suite to code-level causes and implemented fixes. Depending on the problem, I verified the result with reproduction and regression tests or a before-and-after operational check. The primary examples are a request-limiting concurrency fix and moving a network-event detection threshold in a Rust service to external configuration.
 
 ## Fixing a Request-Limiting Concurrency Bug in an AI Security Analysis Engine
 
-I analyzed requests that remained pending for an extended time on a customer demo server, isolated a check-and-reserve race that allowed more requests than the configured limit to pass, and fixed it. I treated the maximum wait imposed by the fixed window as a separate failure mode.
+I analyzed requests that remained pending for an extended time on a customer demo server, isolated a check-and-reserve race that allowed more requests than the configured limit to pass, and fixed it. I treated the maximum wait caused by the fixed window as a separate cause.
 
 ```mermaid
 flowchart LR
@@ -54,7 +54,7 @@ sequenceDiagram
 
 **Validation and result:** Before the fix, I reproduced over-reservation that let at least ten times the configured number of requests pass. After the fix, regression tests verified that the number passing under the same concurrency stayed at or below the limit.
 
-## Moving a Rust Detection Threshold to External Configuration
+## Moving a Network-Event Detection Threshold to External Configuration
 
 **Problem:** A network-event detection threshold was fixed in code, so even a small adjustment required a code change, build, binary replacement, and service restart.
 
@@ -91,10 +91,10 @@ flowchart LR
 
 **Validation and result:** I compared stage-level tests, affected screens, feature behavior, server compatibility, and before-and-after screenshots. I migrated those timestamp helpers to Jiff and removed their Chrono dependency.
 
-### Detection Screen and Report Review
+### Report Query Scope and DHCP Option Display Validation
 
 I separated the report's first-event-time query from customer-list loading, then reviewed a lightweight, report-specific customer query and incremental rendering for the customer list. For DHCP options, I compared the GraphQL API's `options` field, formatting logic, raw event, detection list, and detail view to confirm that the API change reached the rendered output.
 
 ## Technologies
 
-Rust, concurrency control, rate limiting, configuration management, GraphQL, pcap replay, regression testing, Chrono/Jiff dependency migration
+Rust, concurrency control, rate limiting, external configuration for a network-event detection threshold, GraphQL, pcap replay, regression testing, Chrono/Jiff dependency migration

@@ -56,7 +56,7 @@ stateDiagram-v2
 
 앱은 서버가 제공하는 심사 상태에 따라 제출·재제출 화면과 후속 심사 탭을 엽니다.
 
-## App / API / Admin 책임 경계
+## 앱·API·관리자 웹의 역할
 
 ```mermaid
 flowchart LR
@@ -100,4 +100,4 @@ Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후
 
 ## 기술
 
-React Native, React, TypeScript, Express, MySQL, API 계약, 상태 전이 설계, DB 마이그레이션, GitHub Actions
+React Native, React, TypeScript, Express, MySQL, API 응답 설계, 가입·심사 상태 관리, DB 마이그레이션, GitHub Actions
