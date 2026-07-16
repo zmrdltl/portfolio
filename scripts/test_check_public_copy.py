@@ -692,6 +692,16 @@ class PublicCopyCheckTests(unittest.TestCase):
                 "ambiguous Coupler routing or review-stage wording",
             ),
             (
+                "index.md",
+                "[Coupler · 모바일 앱 개발총괄](projects/coupler.md)\n",
+                "generic Coupler home label",
+            ),
+            (
+                "index.en.md",
+                "[Coupler · Mobile App Engineering Lead](projects/coupler.md)\n",
+                "generic Coupler home label",
+            ),
+            (
                 "opensource/gluesql.en.md",
                 "I implemented storage paths for GlueSQL.\n",
                 "vague GlueSQL storage-path wording",
@@ -707,9 +717,41 @@ class PublicCopyCheckTests(unittest.TestCase):
                 "vague TmaxCloud exception-output heading",
             ),
             (
+                "experience/tmaxcloud.en.md",
+                "### ErrorLogger-Based Exception Formatting\n",
+                "internal TmaxCloud exception-logger identifier",
+            ),
+            (
                 "opensource/gluesql.en.md",
                 "Encouragement Award · NIPA President Award\n",
                 "GlueSQL award split into two awards",
+            ),
+            (
+                "opensource/gluesql.md",
+                "[수상 증빙](https://drive.google.com/drive/folders/"
+                "1llwXz9RquWtRVH0ZQh2FZOLelAzmuBfO?usp=sharing)\n",
+                "unsafe GlueSQL award-evidence folder",
+            ),
+            (
+                "experience/index.en.md",
+                "Fixed over-limit request passing.\n",
+                "unnatural English portfolio wording",
+            ),
+            (
+                "experience/cluml.en.md",
+                "Regression tests verified the number passing.\n",
+                "unnatural English portfolio wording",
+            ),
+            (
+                "opensource/gluesql.en.md",
+                "Duplicate decisions remained deterministic.\n",
+                "unnatural English portfolio wording",
+            ),
+            (
+                "projects/coupler.en.md",
+                "The app opens submission, resubmission, and subsequent-review "
+                "tabs from review state supplied by the server.\n",
+                "unnatural English portfolio wording",
             ),
         )
 
@@ -809,7 +851,7 @@ class PublicCopyCheckTests(unittest.TestCase):
             "### 리포트 조회 범위·DHCP 옵션 표시 검증\n\n"
             "## Moving a Network-Event Detection Threshold to External "
             "Configuration\n\n"
-            "### ErrorLogger-Based Exception Formatting\n\n"
+            "### Standardizing Exception Log Output\n\n"
             "## Review, Mentoring, and Awards\n\n"
             "```markdown\n"
             "## Operational Settings\n\n"
@@ -1412,6 +1454,25 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertEqual(self.validate(), [])
 
+    def test_entity_export_import_separate_work_wording_passes(self) -> None:
+        korean_page = self.korean_entity_export_import_section().replace(
+            "메시지 동기화 서비스 자체 구현과 스키마 변경 후 재배포 "
+            "마이그레이션 전략은 맡지 않았습니다.",
+            "메시지 동기화 서비스 구현과 스키마 변경 후 재배포 "
+            "마이그레이션 전략은 별도 작업 영역이었습니다.",
+        )
+        self.write_tmaxcloud_page(korean_page)
+        self.assertEqual(self.validate(), [])
+
+        english_page = self.english_entity_export_import_section().replace(
+            "I did not implement the message-synchronization service "
+            "itself or the redeployment migration strategy.",
+            "The message-synchronization service itself and the redeployment "
+            "migration strategy were separate areas of work.",
+        )
+        self.write_tmaxcloud_page(english_page, english=True)
+        self.assertEqual(self.validate(), [])
+
     def test_entity_export_import_initial_copy_only_is_rejected(self) -> None:
         page = self.korean_entity_export_import_section().replace(
             "Studio에서 엔티티를 내보내 다른 생성 앱으로 가져오고, "
@@ -1799,30 +1860,38 @@ class PublicCopyCheckTests(unittest.TestCase):
         )
 
     def test_defensive_direct_scope_wording_is_rejected(self) -> None:
-        (self.docs_dir / "experience.md").write_text(
-            "# 경험\n\n제가 맡은 범위는 Export client page입니다.\n",
-            encoding="utf-8",
-        )
-
-        self.assertTrue(
-            any(
-                "defensive direct-scope wording" in finding
-                for finding in self.validate()
-            )
-        )
+        for wording in (
+            "제가 맡은 범위는 Export client page입니다.",
+            "메시지 동기화 서비스는 제 담당 범위에 포함되지 않았습니다.",
+        ):
+            with self.subTest(wording=wording):
+                (self.docs_dir / "experience.md").write_text(
+                    f"# 경험\n\n{wording}\n",
+                    encoding="utf-8",
+                )
+                self.assertTrue(
+                    any(
+                        "defensive direct-scope wording" in finding
+                        for finding in self.validate()
+                    )
+                )
 
     def test_english_defensive_direct_scope_wording_is_rejected(self) -> None:
-        (self.docs_dir / "experience.en.md").write_text(
-            "# Work\n\nThe import page is outside my direct scope.\n",
-            encoding="utf-8",
-        )
-
-        self.assertTrue(
-            any(
-                "defensive direct-scope wording" in finding
-                for finding in self.validate()
-            )
-        )
+        for wording in (
+            "The import page is outside my direct scope.",
+            "The migration strategy was outside my scope.",
+        ):
+            with self.subTest(wording=wording):
+                (self.docs_dir / "experience.en.md").write_text(
+                    f"# Work\n\n{wording}\n",
+                    encoding="utf-8",
+                )
+                self.assertTrue(
+                    any(
+                        "defensive direct-scope wording" in finding
+                        for finding in self.validate()
+                    )
+                )
 
     def test_opaque_working_criteria_wording_is_rejected(self) -> None:
         (self.docs_dir / "experience.md").write_text(

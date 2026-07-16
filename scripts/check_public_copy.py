@@ -486,14 +486,15 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS = {
             (
                 re.compile(r"메시지\s+동기화\s+서비스", re.IGNORECASE),
                 re.compile(
-                    r"(?:자체\s+구현|직접\s+구현)[^.]{0,100}"
-                    r"(?:맡지|담당하지|제외|별도)",
+                    r"메시지\s+동기화\s+서비스(?:\s+자체)?\s+구현"
+                    r"[^.]{0,100}"
+                    r"(?:맡지|담당하지|제외|별도|포함되지)",
                     re.IGNORECASE,
                 ),
                 re.compile(r"재배포\s+마이그레이션\s+전략", re.IGNORECASE),
                 re.compile(
                     r"마이그레이션\s+전략[^.]{0,100}"
-                    r"(?:맡지|담당하지|제외|별도)",
+                    r"(?:맡지|담당하지|제외|별도|포함되지)",
                     re.IGNORECASE,
                 ),
             ),
@@ -545,13 +546,21 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS = {
             "missing synchronization and migration exclusions",
             (
                 re.compile(
+                    r"(?:"
                     r"I\s+did\s+not\s+(?:implement|build|develop|own)"
-                    r"[^.]{0,100}message-synchronization\s+service",
+                    r"[^.]{0,100}message-synchronization\s+service|"
+                    r"message-synchronization\s+service[^.]{0,180}"
+                    r"separate\s+(?:areas?|work)"
+                    r")",
                     re.IGNORECASE,
                 ),
                 re.compile(
+                    r"(?:"
                     r"I\s+did\s+not[^.]{0,220}"
-                    r"redeployment\s+migration\s+strategy",
+                    r"redeployment\s+migration\s+strategy|"
+                    r"redeployment\s+migration\s+strategy[^.]{0,180}"
+                    r"separate\s+(?:areas?|work)"
+                    r")",
                     re.IGNORECASE,
                 ),
             ),
@@ -774,6 +783,15 @@ PUBLIC_COPY_PATTERNS = [
         ),
     ),
     PublicCopyPattern(
+        "generic Coupler home label",
+        re.compile(
+            r"Coupler\s*·\s*모바일\s+앱\s+개발총괄|"
+            r"Coupler\s*·\s*Mobile\s+App\s+Engineering\s+Lead",
+            re.IGNORECASE,
+        ),
+        paths=("index.md", "index.en.md"),
+    ),
+    PublicCopyPattern(
         "ambiguous Coupler state-contract wording",
         re.compile(
             r"\bserver-(?:owned|driven)\s+(?:review-)?state\s+contract\b|"
@@ -887,6 +905,37 @@ PUBLIC_COPY_PATTERNS = [
             re.IGNORECASE,
         ),
         paths=("experience/tmaxcloud.md", "experience/tmaxcloud.en.md"),
+    ),
+    PublicCopyPattern(
+        "internal TmaxCloud exception-logger identifier",
+        re.compile(r"\bErrorLogger\b", re.IGNORECASE),
+        paths=("experience/tmaxcloud.md", "experience/tmaxcloud.en.md"),
+    ),
+    PublicCopyPattern(
+        "unsafe GlueSQL award-evidence folder",
+        re.compile(
+            r"drive\.google\.com/drive/folders/"
+            r"1llwXz9RquWtRVH0ZQh2FZOLelAzmuBfO",
+            re.IGNORECASE,
+        ),
+        paths=("opensource/gluesql.md", "opensource/gluesql.en.md"),
+    ),
+    PublicCopyPattern(
+        "unnatural English portfolio wording",
+        re.compile(
+            r"Fixed\s+over-limit\s+request\s+passing|"
+            r"\bthe\s+number\s+passing\b|"
+            r"\bduplicate\s+decisions\b|"
+            r"opens\s+submission,\s+resubmission,\s+and\s+"
+            r"subsequent-review\s+tabs\s+from",
+            re.IGNORECASE,
+        ),
+        paths=(
+            "experience/index.en.md",
+            "experience/cluml.en.md",
+            "opensource/gluesql.en.md",
+            "projects/coupler.en.md",
+        ),
     ),
     PublicCopyPattern(
         "GlueSQL award split into two awards",
@@ -1141,8 +1190,9 @@ PUBLIC_COPY_PATTERNS = [
     PublicCopyPattern(
         "defensive direct-scope wording",
         re.compile(
-            r"제가\s*맡은\s*범위|직접\s*담당한\s*범위가\s*아닙니다|"
-            r"\bdirect\s+scope\b|outside\s+my\s+direct\s+scope",
+            r"제가\s*맡은\s*범위|제\s*담당\s*범위|"
+            r"직접\s*담당한\s*범위가\s*아닙니다|"
+            r"\bdirect\s+scope\b|outside\s+my\s+(?:direct\s+)?scope",
             re.IGNORECASE,
         ),
     ),
