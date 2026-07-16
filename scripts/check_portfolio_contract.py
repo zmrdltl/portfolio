@@ -100,6 +100,40 @@ def extract_representative_links(path: Path, heading: str) -> tuple[list[str], l
     return links, errors
 
 
+def extract_technology_rows(
+    path: Path,
+    heading: str,
+) -> tuple[dict[str, str], list[str]]:
+    section_lines, error = extract_section_lines(path, heading)
+    if error:
+        return {}, [
+            error.replace(
+                "Missing homepage representative heading",
+                "Missing homepage technology-mapping heading",
+            )
+        ]
+
+    rows: dict[str, str] = {}
+    for line in section_lines:
+        stripped = line.strip()
+        if (
+            not stripped.startswith("|")
+            or not stripped.endswith("|")
+            or TABLE_SEPARATOR_PATTERN.match(stripped)
+        ):
+            continue
+
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if len(cells) < 2:
+            continue
+        project, technologies = cells[0], " | ".join(cells[1:])
+        if project.casefold() in {"작업", "project"}:
+            continue
+        rows[project] = technologies
+
+    return rows, []
+
+
 def validate_contract(
     contract_path: Path,
 ) -> tuple[list[str], ContractSummary]:
@@ -119,6 +153,7 @@ def validate_contract(
     required_links = representative_work.get("required_links")
     max_items = representative_work.get("max_items")
     supporting_only_links = homepage.get("supporting_only_links", [])
+    technology_mapping = homepage.get("technology_mapping", [])
 
     errors: list[str] = []
     if not isinstance(pages, list) or not pages:
@@ -137,6 +172,9 @@ def validate_contract(
     ):
         errors.append("Contract supporting_only_links must be a list of strings.")
         supporting_only_links = []
+    if not isinstance(technology_mapping, list):
+        errors.append("Contract technology_mapping must be a list.")
+        technology_mapping = []
 
     total_items = 0
     supporting_only_set = set(supporting_only_links)
@@ -178,6 +216,63 @@ def validate_contract(
                 f"{page_path}: Supporting-only links cannot appear as "
                 f"Representative Work: {blocked_links}."
             )
+
+    for mapping in technology_mapping:
+        if not isinstance(mapping, dict):
+            errors.append("Each technology mapping entry must be a mapping.")
+            continue
+
+        page_path_value = mapping.get("path")
+        heading = mapping.get("heading")
+        required_rows = mapping.get("rows")
+        if (
+            not isinstance(page_path_value, str)
+            or not isinstance(heading, str)
+            or not isinstance(required_rows, dict)
+        ):
+            errors.append(
+                "Technology mapping entries must define path, heading, and rows."
+            )
+            continue
+
+        page_path = Path(page_path_value)
+        if not page_path.exists():
+            errors.append(f"Technology mapping page does not exist: {page_path}.")
+            continue
+
+        rows, row_errors = extract_technology_rows(page_path, heading)
+        errors.extend(row_errors)
+
+        for project, required_keywords in required_rows.items():
+            if not isinstance(project, str) or not isinstance(
+                required_keywords, list
+            ) or not all(
+                isinstance(keyword, str) for keyword in required_keywords
+            ):
+                errors.append(
+                    f"{page_path}: Technology row requirements must map a "
+                    "project name to a list of strings."
+                )
+                continue
+
+            technologies = rows.get(project)
+            if technologies is None:
+                errors.append(
+                    f"{page_path}: Missing technology mapping row for {project}."
+                )
+                continue
+
+            normalized_technologies = technologies.casefold()
+            missing_keywords = [
+                keyword
+                for keyword in required_keywords
+                if keyword.casefold() not in normalized_technologies
+            ]
+            if missing_keywords:
+                errors.append(
+                    f"{page_path}: Technology mapping for {project} is missing "
+                    f"{missing_keywords}."
+                )
 
     return errors, ContractSummary(len(pages), total_items)
 

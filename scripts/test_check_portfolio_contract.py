@@ -33,6 +33,16 @@ class PortfolioContractCheckTests(unittest.TestCase):
                     "      - experience/tmaxcloud.md",
                     "      - opensource/gluesql.md",
                     "      - projects/coupler.md",
+                    "  technology_mapping:",
+                    "    - path: index.md",
+                    "      heading: 작업별 기술",
+                    "      rows:",
+                    "        ClumL:",
+                    "          - Rust",
+                    "          - 동시성 제어",
+                    "        TmaxCloud:",
+                    "          - Java",
+                    "          - WebSocket",
                     "  supporting_only_links:",
                     "    - activities/index.md",
                     "",
@@ -52,8 +62,25 @@ class PortfolioContractCheckTests(unittest.TestCase):
         finally:
             os.chdir(current)
 
-    def write_home(self, body: str) -> None:
-        (self.root / "index.md").write_text(body, encoding="utf-8")
+    def write_home(self, body: str, *, include_technology_mapping: bool = True) -> None:
+        technology_mapping = ""
+        if include_technology_mapping:
+            technology_mapping = "\n".join(
+                [
+                    "",
+                    "## 작업별 기술",
+                    "",
+                    "| 작업 | 기술 |",
+                    "| --- | --- |",
+                    "| ClumL | Rust, 동시성 제어 |",
+                    "| TmaxCloud | Java, WebSocket |",
+                    "",
+                ]
+            )
+        (self.root / "index.md").write_text(
+            body + technology_mapping,
+            encoding="utf-8",
+        )
 
     def test_expected_representative_work_passes(self) -> None:
         self.write_home(
@@ -140,6 +167,63 @@ class PortfolioContractCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any("Representative links must be" in finding for finding in self.validate())
+        )
+
+    def test_missing_technology_mapping_fails(self) -> None:
+        self.write_home(
+            "\n".join(
+                [
+                    "# 포트폴리오",
+                    "",
+                    "## 대표 작업",
+                    "",
+                    "- [ClumL](experience/cluml.md): 설명",
+                    "- [TmaxCloud](experience/tmaxcloud.md): 설명",
+                    "- [GlueSQL](opensource/gluesql.md): 설명",
+                    "- [Coupler](projects/coupler.md): 설명",
+                    "",
+                ]
+            ),
+            include_technology_mapping=False,
+        )
+
+        self.assertTrue(
+            any(
+                "Missing homepage technology-mapping heading" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_missing_project_technology_keyword_fails(self) -> None:
+        self.write_home(
+            "\n".join(
+                [
+                    "# 포트폴리오",
+                    "",
+                    "## 대표 작업",
+                    "",
+                    "- [ClumL](experience/cluml.md): 설명",
+                    "- [TmaxCloud](experience/tmaxcloud.md): 설명",
+                    "- [GlueSQL](opensource/gluesql.md): 설명",
+                    "- [Coupler](projects/coupler.md): 설명",
+                    "",
+                    "## 작업별 기술",
+                    "",
+                    "| 작업 | 기술 |",
+                    "| --- | --- |",
+                    "| ClumL | Rust |",
+                    "| TmaxCloud | Java, WebSocket |",
+                    "",
+                ]
+            ),
+            include_technology_mapping=False,
+        )
+
+        self.assertTrue(
+            any(
+                "Technology mapping for ClumL is missing" in finding
+                for finding in self.validate()
+            )
         )
 
 

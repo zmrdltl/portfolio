@@ -13,3 +13,78 @@ homepage:
       - experience/tmaxcloud.md
       - opensource/gluesql.md
       - projects/coupler.md
+  technology_mapping:
+    - path: docs/index.md
+      heading: 작업별 기술
+      rows:
+        ClumL:
+          - Rust
+          - 동시성 제어
+          - 요청 제한
+          - 설정 관리
+          - GraphQL
+          - 회귀 테스트
+          - Chrono/Jiff
+        티맥스클라우드:
+          - Java
+          - TypeScript
+          - React
+          - WebSocket
+          - Monaco Editor
+          - FreeMarker
+          - Tibero
+          - JUnit
+          - JaCoCo
+        GlueSQL:
+          - Rust
+          - SQL 엔진 내부 구조
+          - parser/AST
+          - 집계 함수
+          - Parquet storage
+          - 코드 리뷰
+        Coupler:
+          - React Native
+          - React
+          - TypeScript
+          - Express
+          - MySQL
+          - API 계약
+          - 상태 전이 설계
+          - GitHub Actions
+    - path: docs/index.en.md
+      heading: Technologies by Project
+      rows:
+        ClumL:
+          - Rust
+          - concurrency control
+          - rate limiting
+          - configuration management
+          - GraphQL
+          - regression testing
+          - Chrono/Jiff
+        TmaxCloud:
+          - Java
+          - TypeScript
+          - React
+          - WebSocket
+          - Monaco Editor
+          - FreeMarker
+          - Tibero
+          - JUnit
+          - JaCoCo
+        GlueSQL:
+          - Rust
+          - SQL engine internals
+          - parser/AST
+          - aggregate functions
+          - Parquet storage
+          - code review
+        Coupler:
+          - React Native
+          - React
+          - TypeScript
+          - Express
+          - MySQL
+          - API contracts
+          - state-transition design
+          - GitHub Actions
