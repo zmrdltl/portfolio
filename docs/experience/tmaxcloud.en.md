@@ -4,7 +4,7 @@
 
 ## Overview
 
-On a Java/TypeScript no-code platform, I built pre-deployment verification for services generated from UI definitions and implemented data-change history storage. I documented how point-in-time reads should choose the valid history row for each primary key. I also added specific parts of the SQL/DDL Generator and Entity Export/Import.
+On a Java/TypeScript no-code platform, I built pre-deployment verification for services generated from UI definitions and implemented data-change history storage. I defined how point-in-time reads should choose the valid history row for each primary key. I also added specific parts of the SQL/DDL Generator and Entity Export/Import.
 
 ## Service Code Verification
 

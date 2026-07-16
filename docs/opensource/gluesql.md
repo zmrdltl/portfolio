@@ -1,11 +1,11 @@
 # GlueSQL
 
 - 유형: 오픈소스 기여
-- 기간: 2021.06 - Present
+- 기간: 2021.06 - 현재
 
 ## 개요
 
-Rust 기반 SQL database engine GlueSQL에서 SQL 기능, AST/query interface, storage를 구현하고 회귀 테스트를 추가했습니다. [`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했으며, 현재 reviewer로 유지보수에 기여하고 있습니다.
+Rust 기반 SQL 엔진 GlueSQL에서 SQL 기능, AST/query interface, storage를 구현하고 회귀 테스트를 추가했습니다. [`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했으며, 현재 리뷰어로 유지보수에 기여하고 있습니다.
 
 ## DISTINCT 구현
 
@@ -41,7 +41,7 @@ Parquet storage를 GlueSQL storage trait와 SQL 실행 경로에 연결하고 fi
 
 ## 리뷰·멘토링·수상
 
-GlueSQL reviewer와 OSSCA mentor로 contributor PR의 error handling, edge case, test coverage, code organization을 검토했습니다. Rust 프로젝트 기본 흐름, GlueSQL 구조, storage와 AST builder, 함수 구현 방향을 안내했습니다.
+GlueSQL 리뷰어와 OSSCA 멘토로 기여자 PR의 오류 처리, edge case, 테스트 커버리지, 코드 구조를 검토했습니다. Rust 프로젝트 기본 흐름, GlueSQL 구조, storage와 AST builder, 함수 구현 방향을 안내했습니다.
 
 | 연도 | 대회/프로그램 | 수상 |
 | --- | --- | --- |

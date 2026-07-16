@@ -4,7 +4,7 @@
 
 ## 개요
 
-Java/TypeScript 기반 No-code 플랫폼에서 UI 정의로부터 생성된 서비스와 SQL/DDL을 검증·관리하는 기능을 개발했습니다. 생성된 서비스의 배포 전 검증과 데이터 변경 이력 저장을 구현하고, 과거 시점 조회에 사용할 행 선택 방식은 문서화했습니다. SQL/DDL Generator와 Entity Export/Import의 일부 기능도 추가했습니다.
+Java/TypeScript 기반 No-code 플랫폼에서 UI 정의로부터 생성된 서비스와 SQL/DDL을 검증·관리하는 기능을 개발했습니다. 생성된 서비스의 배포 전 검증과 데이터 변경 이력 저장을 구현하고, 과거 시점 조회에 필요한 유효 이력 행 선택 기준을 정리했습니다. SQL/DDL Generator와 Entity Export/Import의 일부 기능도 추가했습니다.
 
 ## 서비스 코드 생성 검증
 
@@ -64,7 +64,7 @@ SQL 생성 책임을 backend에서 import할 수 있는 library로 분리하는 
 
 ### 예외 출력 정리
 
-예외 message, error code, SQL state, stack trace를 한 형식으로 정리하고 terminal의 오류 log를 일반 log와 시각적으로 구분했습니다.
+예외 메시지, 오류 코드, SQL state, stack trace를 한 형식으로 정리하고 터미널 오류 로그를 일반 로그와 시각적으로 구분했습니다.
 
 ## 기술
 
