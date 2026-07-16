@@ -726,6 +726,113 @@ class PublicCopyCheckTests(unittest.TestCase):
                 )
                 path.unlink()
 
+    def test_abstract_headings_require_a_concrete_subject(self) -> None:
+        samples = (
+            "# 운영 설정\n",
+            "## 책임 경계\n",
+            "## 역할 경계\n",
+            "## 실패 모드와 책임 경계\n",
+            "## 기준선 전환 정리\n",
+            "## 실행 가능한 계약\n",
+            "## 계약 개선\n",
+            "## Contract Improvements\n",
+            "## New Contract\n",
+            "## Additional Implementation\n",
+            "## 추가 구현\n",
+            "## Implementation Details\n",
+            "## Verification Results\n",
+            "## Optimization Approach\n",
+            "## Contract Testing\n",
+            "## Implementation Summary\n",
+            "## Verification Overview\n",
+            "## 데이터 이관\n",
+            "## 데이터 마이그레이션\n",
+            "## 리뷰\n",
+            "## 구조 개선\n",
+            "## 성능 최적화\n",
+            "## 검증\n",
+            "## 데이터 동기화\n",
+            "### 구조 검토\n",
+            "### 운영 설정\n",
+            "## Ownership Boundaries\n",
+            "## Role Boundaries\n",
+            "## Boundaries\n",
+            "## Failure Modes and Responsibility Boundaries\n",
+            "## Baseline Transition Cleanup\n",
+            "## Executable Contracts\n",
+            "## Migration Strategy\n",
+            "## Migration Strategies\n",
+            "## Implementation Strategy\n",
+            "### Architecture Review\n",
+            "#### Architecture Reviews\n",
+            "##### Reviewing Architecture\n",
+            "### Operational Configuration\n",
+            "## Rapid Contracts\n",
+            "## Specific Configuration\n",
+            "## Statement Review\n",
+            "[운영 설정](https://example.com)\n------------------------------\n",
+            "## 운영 설정 {#details}\n",
+            "Operational Settings\n---------------------\n",
+            "> ## Operational Settings\n",
+            "- ## Operational Settings\n",
+        )
+
+        for sample in samples:
+            with self.subTest(sample=sample):
+                (self.docs_dir / "clarity.md").write_text(
+                    f"# Portfolio\n\n{sample}",
+                    encoding="utf-8",
+                )
+                self.assertTrue(
+                    any("heading" in finding for finding in self.validate())
+                )
+
+    def test_headings_with_concrete_subjects_pass(self) -> None:
+        page = (
+            "# Portfolio\n\n"
+            "## API 응답 계약\n\n"
+            "## 데이터 변경 이력 저장과 과거 시점 조회 설계\n\n"
+            "## Chrono에서 Jiff로 시간 처리 의존성 전환\n\n"
+            "## Database Schema Migration\n\n"
+            "## Chrono/Jiff Compatibility Review\n\n"
+            "## WebSocket Configuration\n\n"
+            "## UI Design\n\n"
+            "## Redis Cache Configuration\n\n"
+            "## Search Index Design\n\n"
+            "## OAuth Callback Review\n\n"
+            "## Design System Review\n\n"
+            "## Design System Configuration\n\n"
+            "## System Architecture Review\n\n"
+            "## Data Architecture Review\n\n"
+            "## Data Contract Testing\n\n"
+            "## API Implementation Strategy\n\n"
+            "### 리포트 조회 범위·DHCP 옵션 표시 검증\n\n"
+            "## Moving a Network-Event Detection Threshold to External "
+            "Configuration\n\n"
+            "### ErrorLogger-Based Exception Formatting\n\n"
+            "## Review, Mentoring, and Awards\n\n"
+            "```markdown\n"
+            "## Operational Settings\n\n"
+            "Architecture Review\n"
+            "-------------------\n"
+            "```\n\n"
+            "<!--\n"
+            "## Operational Settings\n"
+            "-->\n\n"
+            "<pre>\n"
+            "## Operational Settings\n"
+            "</pre>\n\n"
+            "<details>\n"
+            "## Operational Settings\n"
+            "</details>\n\n"
+            "<div>\n"
+            "## Operational Settings\n"
+            "</div>\n"
+        )
+        (self.docs_dir / "clarity.md").write_text(page, encoding="utf-8")
+
+        self.assertEqual(self.validate(), [])
+
     def test_unverified_coupler_conversion_and_cost_metrics_are_rejected(self) -> None:
         claims = (
             "전환율이 개선됐습니다.",

@@ -44,6 +44,236 @@ class PublicParagraphRequirement:
     forbidden_patterns: tuple[re.Pattern[str], ...] = ()
 
 
+@dataclass(frozen=True)
+class PublicHeadingRequirement:
+    name: str
+    trigger_pattern: re.Pattern[str]
+
+
+PUBLIC_HEADING_EXEMPTIONS = (
+    re.compile(r"리뷰·멘토링·수상", re.IGNORECASE),
+    re.compile(r"Review,\s+Mentoring,\s+and\s+Awards", re.IGNORECASE),
+)
+
+PUBLIC_HEADING_COMPOSITE_ARTIFACTS = (
+    re.compile(
+        r"\b(?:Data\s+Contract|Design\s+System|"
+        r"(?:Data|System)\s+Architecture)\b",
+        re.IGNORECASE,
+    ),
+)
+
+PUBLIC_HEADING_RAW_HTML_TAGS = (
+    "blockquote",
+    "details",
+    "div",
+    "pre",
+    "script",
+    "section",
+    "style",
+    "table",
+    "textarea",
+)
+
+PUBLIC_HEADING_WEAK_SUBJECTS = {
+    "abstract",
+    "additional",
+    "architecture",
+    "baseline",
+    "basic",
+    "better",
+    "common",
+    "concept",
+    "data",
+    "detail",
+    "effective",
+    "executable",
+    "failure",
+    "general",
+    "generic",
+    "improved",
+    "efficiency",
+    "mode",
+    "new",
+    "operational",
+    "operation",
+    "overview",
+    "ownership",
+    "performance",
+    "quality",
+    "rapid",
+    "result",
+    "revised",
+    "responsibility",
+    "role",
+    "specific",
+    "stability",
+    "statement",
+    "strategy",
+    "structure",
+    "summary",
+    "system",
+    "testing",
+    "valid",
+    "approach",
+    "개념",
+    "개요",
+    "경우",
+    "구조",
+    "기본",
+    "기준선",
+    "데이터",
+    "결과",
+    "모드",
+    "방식",
+    "범위",
+    "성능",
+    "상세",
+    "세부",
+    "실패",
+    "실행",
+    "안정성",
+    "역할",
+    "운영",
+    "유효",
+    "일반",
+    "접근",
+    "전략",
+    "책임",
+    "테스트",
+    "추가",
+    "품질",
+    "요약",
+    "시험",
+    "효율",
+}
+
+PUBLIC_HEADING_FILLER_WORDS = {
+    "a",
+    "an",
+    "and",
+    "based",
+    "external",
+    "for",
+    "from",
+    "in",
+    "into",
+    "moving",
+    "of",
+    "on",
+    "the",
+    "to",
+    "using",
+    "via",
+    "with",
+    "without",
+    "가능한",
+    "기반",
+    "대한",
+    "외부",
+    "위한",
+}
+
+PUBLIC_HEADING_REQUIREMENTS = (
+    PublicHeadingRequirement(
+        "abstract boundary heading without a concrete subject",
+        re.compile(
+            r"경계|\bboundar(?:y|ies)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "abstract contract heading without a concrete subject",
+        re.compile(r"계약|\bcontracts?\b", re.IGNORECASE),
+    ),
+    PublicHeadingRequirement(
+        "migration heading without a concrete subject",
+        re.compile(
+            r"이관|전환|마이그레이션|"
+            r"\bmigrat(?:e|es|ed|ing|ion|ions)\b|"
+            r"\btransition(?:s|ed|ing)?\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "review heading without the reviewed artifact",
+        re.compile(
+            r"검토|리뷰|\breview(?:s|ed|ing)?\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "configuration heading without the configured subject",
+        re.compile(
+            r"설정|\bconfigur(?:e|es|ed|ing|ation|ations)\b|"
+            r"\bsettings?\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "design heading without the designed artifact",
+        re.compile(r"설계|\bdesign(?:s|ed|ing)?\b", re.IGNORECASE),
+    ),
+    PublicHeadingRequirement(
+        "cleanup or formatting heading without the affected artifact",
+        re.compile(
+            r"정리|\bclean(?:up|ups|ed|ing)\b|"
+            r"\bformat(?:s|ted|ting)?\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "improvement heading without the improved artifact",
+        re.compile(
+            r"개선(?:된|한|하기)?|강화(?:된|한|하기)?|"
+            r"고도화(?:된|한|하기)?|향상(?:된|한|하기)?|"
+            r"\bimprov(?:e|es|ed|ing|ement|ements)\b|"
+            r"\benhanc(?:e|es|ed|ing|ement|ements)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "optimization heading without the optimized artifact",
+        re.compile(
+            r"최적화(?:된|한|하기)?|"
+            r"\boptimiz(?:e|es|ed|ing|ation|ations)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "verification heading without the verified artifact",
+        re.compile(
+            r"검증|확인|\bverif(?:y|ies|ied|ying|ication|ications)\b|"
+            r"\bvalidat(?:e|es|ed|ing|ion|ions)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "synchronization heading without the synchronized artifact",
+        re.compile(
+            r"동기화|"
+            r"\bsynchroniz(?:e|es|ed|ing|ation|ations)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "implementation heading without the implemented artifact",
+        re.compile(
+            r"구현|"
+            r"\bimplement(?:s|ed|ing|ation|ations)?\b",
+            re.IGNORECASE,
+        ),
+    ),
+    PublicHeadingRequirement(
+        "testing heading without the tested artifact",
+        re.compile(
+            r"테스트|시험|\btests?\b|\btesting\b",
+            re.IGNORECASE,
+        ),
+    ),
+)
+
+
 COUPLER_PUBLIC_PATHS = (
     "index.md",
     "index.en.md",
@@ -1104,6 +1334,217 @@ def paragraph_satisfies_requirement(
     )
 
 
+def collect_heading_clarity_findings(
+    relative_path: str,
+    text: str,
+) -> list[str]:
+    def strip_korean_particle(token: str) -> str:
+        for suffix in (
+            "으로부터",
+            "에서",
+            "에게",
+            "으로",
+            "로",
+            "과",
+            "와",
+            "의",
+            "을",
+            "를",
+            "이",
+            "가",
+            "은",
+            "는",
+            "도",
+        ):
+            if token.endswith(suffix) and len(token) > len(suffix):
+                candidate = token[: -len(suffix)]
+                if (
+                    candidate in PUBLIC_HEADING_WEAK_SUBJECTS
+                    or candidate in PUBLIC_HEADING_FILLER_WORDS
+                ):
+                    return candidate
+        return token
+
+    def has_concrete_subject(heading: str) -> bool:
+        subject = re.sub(r"\s*\{[^{}\n]*\}\s*$", "", heading)
+        subject = re.sub(
+            r"!?\[([^\]\n]*)\]\([^)\n]*\)",
+            r"\1",
+            subject,
+        )
+        subject = re.sub(
+            r"!?\[([^\]\n]*)\]\[[^\]\n]*\]",
+            r"\1",
+            subject,
+        )
+        for index, artifact_pattern in enumerate(
+            PUBLIC_HEADING_COMPOSITE_ARTIFACTS,
+            start=1,
+        ):
+            subject = artifact_pattern.sub(
+                f"ConcreteCompositeArtifact{index}",
+                subject,
+            )
+        for abstract_requirement in PUBLIC_HEADING_REQUIREMENTS:
+            subject = abstract_requirement.trigger_pattern.sub(" ", subject)
+        tokens = re.findall(r"[A-Za-z][A-Za-z0-9.+#/-]*|[가-힣]+", subject)
+        for raw_token in tokens:
+            token = strip_korean_particle(raw_token)
+            normalized = token.casefold()
+            if normalized in PUBLIC_HEADING_FILLER_WORDS:
+                continue
+            if normalized in PUBLIC_HEADING_WEAK_SUBJECTS:
+                continue
+            singular_candidates = ()
+            if normalized.endswith("ies"):
+                singular_candidates += (normalized[:-3] + "y",)
+            if normalized.endswith("s"):
+                singular_candidates += (normalized[:-1],)
+            if any(
+                candidate in PUBLIC_HEADING_WEAK_SUBJECTS
+                for candidate in singular_candidates
+            ):
+                continue
+            return True
+        return False
+
+    lines = text.splitlines()
+    fenced_lines: set[int] = set()
+    active_fence_character: str | None = None
+    active_fence_length = 0
+    for line_number, line in enumerate(lines, start=1):
+        fence_match = re.match(r"^[ \t]{0,3}(`{3,}|~{3,})(.*)$", line)
+        if active_fence_character is None:
+            if fence_match is None:
+                continue
+            marker = fence_match.group(1)
+            active_fence_character = marker[0]
+            active_fence_length = len(marker)
+            fenced_lines.add(line_number)
+            continue
+
+        fenced_lines.add(line_number)
+        if re.fullmatch(
+            rf"[ \t]{{0,3}}{re.escape(active_fence_character)}"
+            rf"{{{active_fence_length},}}[ \t]*",
+            line,
+        ):
+            active_fence_character = None
+            active_fence_length = 0
+
+    raw_html_lines: set[int] = set()
+    active_raw_html_tag: str | None = None
+    raw_html_tag_pattern = "|".join(
+        re.escape(tag)
+        for tag in PUBLIC_HEADING_RAW_HTML_TAGS
+    )
+    for line_number, line in enumerate(lines, start=1):
+        if line_number in fenced_lines:
+            continue
+        if active_raw_html_tag is None:
+            raw_html_match = re.match(
+                r"^[ \t]{0,3}<"
+                rf"({raw_html_tag_pattern})(?:[ \t>]|$)",
+                line,
+                re.IGNORECASE,
+            )
+            if raw_html_match is None:
+                continue
+            active_raw_html_tag = raw_html_match.group(1)
+
+        raw_html_lines.add(line_number)
+        if re.search(
+            rf"</{re.escape(active_raw_html_tag)}[ \t]*>",
+            line,
+            re.IGNORECASE,
+        ):
+            active_raw_html_tag = None
+
+    visible_lines = lines.copy()
+    inside_html_comment = False
+    for line_number, line in enumerate(lines, start=1):
+        if line_number in fenced_lines or line_number in raw_html_lines:
+            continue
+
+        visible_parts: list[str] = []
+        position = 0
+        while position < len(line):
+            if inside_html_comment:
+                comment_end = line.find("-->", position)
+                if comment_end == -1:
+                    position = len(line)
+                    continue
+                inside_html_comment = False
+                position = comment_end + 3
+                continue
+
+            comment_start = line.find("<!--", position)
+            if comment_start == -1:
+                visible_parts.append(line[position:])
+                break
+            visible_parts.append(line[position:comment_start])
+            inside_html_comment = True
+            position = comment_start + 4
+
+        visible_lines[line_number - 1] = "".join(visible_parts)
+
+    def strip_container_prefix(line: str) -> str:
+        remaining = line
+        while True:
+            container_match = re.match(
+                r"^[ \t]{0,3}(?:>[ \t]?|(?:[-+*]|\d+[.)])[ \t]+)",
+                remaining,
+            )
+            if container_match is None:
+                return remaining
+            remaining = remaining[container_match.end():]
+
+    displayed_lines = [
+        strip_container_prefix(line)
+        for line in visible_lines
+    ]
+
+    headings: list[tuple[int, str]] = []
+    for line_number, line in enumerate(displayed_lines, start=1):
+        if line_number in fenced_lines or line_number in raw_html_lines:
+            continue
+        atx_match = re.match(
+            r"^[ \t]{0,3}#{1,6}[ \t]+(.+?)[ \t]*#*[ \t]*$",
+            line,
+        )
+        if atx_match is not None:
+            headings.append((line_number, atx_match.group(1).strip()))
+            continue
+        if (
+            line_number >= 2
+            and line_number - 1 not in fenced_lines
+            and line_number - 1 not in raw_html_lines
+            and re.fullmatch(r"[ \t]{0,3}(?:=+|-+)[ \t]*", line)
+            and displayed_lines[line_number - 2].strip()
+        ):
+            headings.append(
+                (line_number - 1, displayed_lines[line_number - 2].strip())
+            )
+
+    findings: list[str] = []
+    for line_number, heading in headings:
+        if any(pattern.fullmatch(heading) for pattern in PUBLIC_HEADING_EXEMPTIONS):
+            continue
+
+        for requirement in PUBLIC_HEADING_REQUIREMENTS:
+            if not requirement.trigger_pattern.search(heading):
+                continue
+            if has_concrete_subject(heading):
+                continue
+            findings.append(
+                f"{relative_path}:{line_number}: "
+                f"{requirement.name}: {heading}"
+            )
+            break
+
+    return findings
+
+
 def collect_tmaxcloud_entity_export_import_findings(
     relative_path: str,
     text: str,
@@ -1231,6 +1672,7 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
         findings.extend(
             collect_tmaxcloud_entity_export_import_findings(relative_path, text)
         )
+        findings.extend(collect_heading_clarity_findings(relative_path, text))
 
     findings.extend(collect_abbreviation_findings(docs_dir))
     return findings
