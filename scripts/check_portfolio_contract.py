@@ -20,15 +20,19 @@ except ModuleNotFoundError as error:
 
 HEADING_PATTERN = re.compile(r"^(#{1,6})[ \t]+(.+?)[ \t]*$")
 MARKDOWN_LINK_PATTERN = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
-TABLE_SEPARATOR_PATTERN = re.compile(
-    r"^\|\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)+\|$"
-)
+INLINE_CODE_PATTERN = re.compile(r"`([^`]+)`")
 
 
 @dataclass(frozen=True)
 class ContractSummary:
     checked_pages: int
     representative_items: int
+
+
+@dataclass(frozen=True)
+class RepresentativeRecord:
+    link: str
+    lines: tuple[str, ...]
 
 
 def read_contract(contract_path: Path) -> dict[str, Any]:
@@ -71,72 +75,224 @@ def extract_section_lines(path: Path, heading: str) -> tuple[list[str], str | No
     return section_lines, None
 
 
-def extract_representative_links(path: Path, heading: str) -> tuple[list[str], list[str]]:
+def extract_representative_records(
+    path: Path,
+    heading: str,
+) -> tuple[list[RepresentativeRecord], list[str]]:
     section_lines, error = extract_section_lines(path, heading)
     if error:
         return [], [error]
 
+    records: list[RepresentativeRecord] = []
+    current_link: str | None = None
+    current_lines: list[str] = []
     errors: list[str] = []
-    links: list[str] = []
-    for offset, line in enumerate(section_lines, start=1):
-        stripped = line.strip()
-        is_list_item = stripped.startswith("- ")
-        is_table_row = (
-            stripped.startswith("|")
-            and stripped.endswith("|")
-            and not TABLE_SEPARATOR_PATTERN.match(stripped)
-        )
-        if not is_list_item and not is_table_row:
-            continue
 
-        link_match = MARKDOWN_LINK_PATTERN.search(stripped)
-        if not link_match:
-            if is_list_item:
-                errors.append(f"{path}:{offset}: Representative item has no link.")
-            continue
-
-        links.append(normalize_link(link_match.group(1)))
-
-    return links, errors
-
-
-def extract_technology_rows(
-    path: Path,
-    heading: str,
-) -> tuple[dict[str, str], list[str]]:
-    section_lines, error = extract_section_lines(path, heading)
-    if error:
-        return {}, [
-            error.replace(
-                "Missing homepage representative heading",
-                "Missing homepage technology-mapping heading",
+    def flush() -> None:
+        nonlocal current_link, current_lines
+        if current_link is not None:
+            records.append(
+                RepresentativeRecord(current_link, tuple(current_lines))
             )
-        ]
+        current_link = None
+        current_lines = []
 
-    rows: dict[str, str] = {}
     for line in section_lines:
-        stripped = line.strip()
+        heading_match = HEADING_PATTERN.match(line)
+        if heading_match and len(heading_match.group(1)) == 3:
+            flush()
+            link_match = MARKDOWN_LINK_PATTERN.search(heading_match.group(2))
+            if link_match is None:
+                errors.append(f"{path}: Representative heading has no link: {line}")
+                continue
+            current_link = normalize_link(link_match.group(1))
+            continue
+        if current_link is not None:
+            current_lines.append(line)
+
+    flush()
+    return records, errors
+
+
+def extract_field_values(lines: tuple[str, ...], label: str) -> list[str]:
+    pattern = re.compile(
+        rf"^\s*\*\*{re.escape(label)}:\*\*\s*(.+?)\s*$",
+        re.IGNORECASE,
+    )
+    return [match.group(1) for line in lines if (match := pattern.match(line))]
+
+
+def missing_terms(value: str, required_terms: list[str]) -> list[str]:
+    normalized = value.casefold()
+    return [term for term in required_terms if term.casefold() not in normalized]
+
+
+def validate_page_records(
+    page_path: Path,
+    page: dict[str, Any],
+    required_links: list[str],
+    exact_items: int,
+) -> tuple[list[str], int]:
+    errors: list[str] = []
+    heading = page.get("representative_heading")
+    labels = page.get("field_labels")
+    record_contracts = page.get("records")
+    if not isinstance(heading, str) or not isinstance(labels, dict) or not isinstance(
+        record_contracts, dict
+    ):
+        return [
+            f"{page_path}: Homepage page must define representative_heading, "
+            "field_labels, and records."
+        ], 0
+
+    required_fields = ("type_period", "role", "change", "proof", "technologies")
+    if any(not isinstance(labels.get(field), str) for field in required_fields):
+        return [f"{page_path}: field_labels must define {list(required_fields)}."], 0
+
+    records, record_errors = extract_representative_records(page_path, heading)
+    errors.extend(record_errors)
+    links = [record.link for record in records]
+    if len(records) != exact_items:
+        errors.append(
+            f"{page_path}: Representative Work must have exactly {exact_items} "
+            f"records, found {len(records)}."
+        )
+    if links != required_links:
+        errors.append(
+            f"{page_path}: Representative links must be {required_links}, found {links}."
+        )
+
+    record_by_link = {record.link: record for record in records}
+    for link in required_links:
+        record = record_by_link.get(link)
+        contract = record_contracts.get(link)
+        if record is None:
+            continue
+        if not isinstance(contract, dict):
+            errors.append(f"{page_path}: Missing record contract for {link}.")
+            continue
+
+        for field in required_fields:
+            label = labels[field]
+            values = extract_field_values(record.lines, label)
+            if len(values) != 1:
+                errors.append(
+                    f"{page_path}: {link} must have exactly one `{label}` field; "
+                    f"found {len(values)}."
+                )
+                continue
+
+            value = values[0]
+            if field == "technologies":
+                tags = INLINE_CODE_PATTERN.findall(value)
+                expected_tags = contract.get("technologies")
+                if not isinstance(expected_tags, list) or not all(
+                    isinstance(tag, str) for tag in expected_tags
+                ):
+                    errors.append(
+                        f"{page_path}: {link} technologies contract must be a list."
+                    )
+                    continue
+                if not 2 <= len(tags) <= 3:
+                    errors.append(
+                        f"{page_path}: {link} must expose 2-3 technology tags; "
+                        f"found {tags}."
+                    )
+                if tags != expected_tags:
+                    errors.append(
+                        f"{page_path}: {link} technology tags must be "
+                        f"{expected_tags}, found {tags}."
+                    )
+                visible_without_tags = INLINE_CODE_PATTERN.sub("", value)
+                if visible_without_tags.replace("·", "").strip():
+                    errors.append(
+                        f"{page_path}: {link} technology field must contain only tags."
+                    )
+                continue
+
+            required_terms = contract.get(field)
+            if not isinstance(required_terms, list) or not all(
+                isinstance(term, str) for term in required_terms
+            ):
+                errors.append(
+                    f"{page_path}: {link} `{field}` contract must be a list of terms."
+                )
+                continue
+            missing = missing_terms(value, required_terms)
+            if missing:
+                errors.append(
+                    f"{page_path}: {link} `{label}` is missing {missing}."
+                )
+
+    forbidden_headings = page.get("forbidden_headings", [])
+    if not isinstance(forbidden_headings, list) or not all(
+        isinstance(item, str) for item in forbidden_headings
+    ):
+        errors.append(f"{page_path}: forbidden_headings must be a list of strings.")
+    else:
+        page_headings = {
+            match.group(2).strip().casefold()
+            for line in page_path.read_text(encoding="utf-8").splitlines()
+            if (match := HEADING_PATTERN.match(line))
+        }
+        for forbidden in forbidden_headings:
+            if forbidden.casefold() in page_headings:
+                errors.append(
+                    f"{page_path}: Forbidden duplicate-summary heading: {forbidden}."
+                )
+
+    return errors, len(records)
+
+
+def validate_content_coverage(entries: Any) -> tuple[list[str], int]:
+    if not isinstance(entries, list):
+        return ["Contract content_coverage must be a list."], 0
+
+    errors: list[str] = []
+    checked = 0
+    for entry in entries:
+        if not isinstance(entry, dict):
+            errors.append("Each content_coverage entry must be a mapping.")
+            continue
+        path_value = entry.get("path")
+        required_terms = entry.get("required_terms")
+        forbidden_headings = entry.get("forbidden_headings", [])
         if (
-            not stripped.startswith("|")
-            or not stripped.endswith("|")
-            or TABLE_SEPARATOR_PATTERN.match(stripped)
+            not isinstance(path_value, str)
+            or not isinstance(required_terms, list)
+            or not all(isinstance(term, str) for term in required_terms)
+            or not isinstance(forbidden_headings, list)
+            or not all(isinstance(item, str) for item in forbidden_headings)
         ):
+            errors.append(
+                "Content coverage entries must define path, required_terms, "
+                "and optional forbidden_headings as strings."
+            )
             continue
 
-        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
-        if len(cells) < 2:
+        path = Path(path_value)
+        if not path.exists():
+            errors.append(f"Content coverage page does not exist: {path}.")
             continue
-        project, technologies = cells[0], " | ".join(cells[1:])
-        if project.casefold() in {"작업", "project"}:
-            continue
-        rows[project] = technologies
+        checked += 1
+        text = path.read_text(encoding="utf-8")
+        missing = missing_terms(text, required_terms)
+        if missing:
+            errors.append(f"{path}: Required content coverage is missing {missing}.")
 
-    return rows, []
+        headings = {
+            match.group(2).strip().casefold()
+            for line in text.splitlines()
+            if (match := HEADING_PATTERN.match(line))
+        }
+        for forbidden in forbidden_headings:
+            if forbidden.casefold() in headings:
+                errors.append(f"{path}: Forbidden standalone heading: {forbidden}.")
+
+    return errors, checked
 
 
-def validate_contract(
-    contract_path: Path,
-) -> tuple[list[str], ContractSummary]:
+def validate_contract(contract_path: Path) -> tuple[list[str], ContractSummary]:
     contract = read_contract(contract_path)
     if not contract:
         return [f"Unable to read portfolio contract: {contract_path}."], ContractSummary(0, 0)
@@ -146,135 +302,49 @@ def validate_contract(
         return ["Contract must define `homepage`."], ContractSummary(0, 0)
 
     representative_work = homepage.get("representative_work")
-    if not isinstance(representative_work, dict):
-        return ["Contract must define `homepage.representative_work`."], ContractSummary(0, 0)
-
     pages = homepage.get("pages")
-    required_links = representative_work.get("required_links")
-    max_items = representative_work.get("max_items")
-    supporting_only_links = homepage.get("supporting_only_links", [])
-    technology_mapping = homepage.get("technology_mapping", [])
+    if not isinstance(representative_work, dict) or not isinstance(pages, list):
+        return [
+            "Contract must define homepage.pages and homepage.representative_work."
+        ], ContractSummary(0, 0)
 
-    errors: list[str] = []
-    if not isinstance(pages, list) or not pages:
-        errors.append("Contract must define at least one homepage page.")
-        pages = []
+    required_links = representative_work.get("required_links")
+    exact_items = representative_work.get("exact_items")
     if not isinstance(required_links, list) or not all(
         isinstance(link, str) for link in required_links
     ):
-        errors.append("Contract required_links must be a list of strings.")
         required_links = []
-    if not isinstance(max_items, int) or max_items < 1:
-        errors.append("Contract max_items must be a positive integer.")
-        max_items = 0
-    if not isinstance(supporting_only_links, list) or not all(
-        isinstance(link, str) for link in supporting_only_links
-    ):
-        errors.append("Contract supporting_only_links must be a list of strings.")
-        supporting_only_links = []
-    if not isinstance(technology_mapping, list):
-        errors.append("Contract technology_mapping must be a list.")
-        technology_mapping = []
+    if not isinstance(exact_items, int) or exact_items < 1:
+        exact_items = 0
+
+    errors: list[str] = []
+    if not required_links:
+        errors.append("Contract required_links must be a non-empty list of strings.")
+    if exact_items < 1:
+        errors.append("Contract exact_items must be a positive integer.")
 
     total_items = 0
-    supporting_only_set = set(supporting_only_links)
+    checked_pages = 0
     for page in pages:
-        if not isinstance(page, dict):
-            errors.append("Each homepage page contract entry must be a mapping.")
+        if not isinstance(page, dict) or not isinstance(page.get("path"), str):
+            errors.append("Each homepage page contract entry must define a path.")
             continue
-
-        page_path_value = page.get("path")
-        heading = page.get("representative_heading")
-        if not isinstance(page_path_value, str) or not isinstance(heading, str):
-            errors.append("Homepage page entries must define path and representative_heading.")
-            continue
-
-        page_path = Path(page_path_value)
+        page_path = Path(page["path"])
         if not page_path.exists():
             errors.append(f"Homepage page does not exist: {page_path}.")
             continue
+        page_errors, item_count = validate_page_records(
+            page_path, page, required_links, exact_items
+        )
+        errors.extend(page_errors)
+        total_items += item_count
+        checked_pages += 1
 
-        links, link_errors = extract_representative_links(page_path, heading)
-        errors.extend(link_errors)
-        total_items += len(links)
-
-        if len(links) > max_items:
-            errors.append(
-                f"{page_path}: Representative Work has {len(links)} items; "
-                f"contract allows at most {max_items}."
-            )
-
-        if links != required_links:
-            errors.append(
-                f"{page_path}: Representative links must be "
-                f"{required_links}, found {links}."
-            )
-
-        blocked_links = [link for link in links if link in supporting_only_set]
-        if blocked_links:
-            errors.append(
-                f"{page_path}: Supporting-only links cannot appear as "
-                f"Representative Work: {blocked_links}."
-            )
-
-    for mapping in technology_mapping:
-        if not isinstance(mapping, dict):
-            errors.append("Each technology mapping entry must be a mapping.")
-            continue
-
-        page_path_value = mapping.get("path")
-        heading = mapping.get("heading")
-        required_rows = mapping.get("rows")
-        if (
-            not isinstance(page_path_value, str)
-            or not isinstance(heading, str)
-            or not isinstance(required_rows, dict)
-        ):
-            errors.append(
-                "Technology mapping entries must define path, heading, and rows."
-            )
-            continue
-
-        page_path = Path(page_path_value)
-        if not page_path.exists():
-            errors.append(f"Technology mapping page does not exist: {page_path}.")
-            continue
-
-        rows, row_errors = extract_technology_rows(page_path, heading)
-        errors.extend(row_errors)
-
-        for project, required_keywords in required_rows.items():
-            if not isinstance(project, str) or not isinstance(
-                required_keywords, list
-            ) or not all(
-                isinstance(keyword, str) for keyword in required_keywords
-            ):
-                errors.append(
-                    f"{page_path}: Technology row requirements must map a "
-                    "project name to a list of strings."
-                )
-                continue
-
-            technologies = rows.get(project)
-            if technologies is None:
-                errors.append(
-                    f"{page_path}: Missing technology mapping row for {project}."
-                )
-                continue
-
-            normalized_technologies = technologies.casefold()
-            missing_keywords = [
-                keyword
-                for keyword in required_keywords
-                if keyword.casefold() not in normalized_technologies
-            ]
-            if missing_keywords:
-                errors.append(
-                    f"{page_path}: Technology mapping for {project} is missing "
-                    f"{missing_keywords}."
-                )
-
-    return errors, ContractSummary(len(pages), total_items)
+    coverage_errors, coverage_pages = validate_content_coverage(
+        contract.get("content_coverage", [])
+    )
+    errors.extend(coverage_errors)
+    return errors, ContractSummary(checked_pages + coverage_pages, total_items)
 
 
 def parse_args() -> argparse.Namespace:

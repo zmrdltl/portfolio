@@ -1,90 +1,213 @@
-version: 1
+version: 2
 
 homepage:
-  pages:
-    - path: docs/index.md
-      representative_heading: 대표 작업
-    - path: docs/index.en.md
-      representative_heading: Representative Work
   representative_work:
-    max_items: 4
+    exact_items: 4
     required_links:
       - experience/cluml.md
       - experience/tmaxcloud.md
       - opensource/gluesql.md
       - projects/coupler.md
-  technology_mapping:
+  pages:
     - path: docs/index.md
-      heading: 작업별 기술
-      rows:
-        ClumL:
-          - Rust
-          - 동시성 제어
-          - 요청 제한
-          - 네트워크 이벤트 탐지 임계값 외부 설정
-          - GraphQL
-          - 회귀 테스트
-          - Chrono/Jiff
-        티맥스클라우드:
-          - Java
-          - TypeScript
-          - React
-          - WebSocket
-          - Monaco Editor
-          - FreeMarker
-          - Tibero
-          - JUnit
-          - JaCoCo
-        GlueSQL:
-          - Rust
-          - SQL 엔진 내부 구조
-          - parser/AST
-          - 집계 함수
-          - Parquet storage
-          - 코드 리뷰
-        Coupler:
-          - React Native
-          - React
-          - TypeScript
-          - Express
-          - MySQL
-          - API 응답 설계
-          - 가입·심사 상태 관리
-          - GitHub Actions
+      representative_heading: 대표 작업
+      field_labels:
+        type_period: 유형·기간
+        role: 역할
+        change: 핵심 변화
+        proof: 검증
+        technologies: 기술
+      forbidden_headings:
+        - 작업별 기술
+        - 주요 기술 영역
+        - 개발 운영 관점
+      records:
+        experience/cluml.md:
+          type_period: [정규 경력, "2025.03", "2026.07"]
+          role: [Rust, 문제 분석, 구현, 회귀 검증]
+          change: [동시 요청, 예약 전 상태, 경합]
+          proof: [같은 동시성 조건, 10배 이상, 허용치 이하]
+          technologies: [Rust, 동시성 제어, 회귀 테스트]
+        experience/tmaxcloud.md:
+          type_period: [정규 경력, "2021.10", "2024.11"]
+          role: [Java, TypeScript, 설계, 구현, 검증]
+          change: [React, WebSocket, 배포 전]
+          proof: [JSON 요청·응답, DB 쓰기·읽기, 배포 전]
+          technologies: [Java, WebSocket, Tibero]
+        opensource/gluesql.md:
+          type_period: [오픈소스 기여, "2021.06", 현재]
+          role: [Rust SQL 엔진, 직접 구현, 코드 리뷰]
+          change: [projection, aggregate state, DISTINCT]
+          proof: [복수 column, map, schemaless row, 회귀 테스트]
+          technologies: [Rust, parser/AST, SQL executor]
+        projects/coupler.md:
+          type_period: [개인 제품, "2024.07", 현재]
+          role: [React Native, Express API, React 관리자 웹, MySQL DB, 총괄]
+          change: [API, 접근 상태, 추론]
+          proof: [API 응답, 모바일 화면 분기, 관리자 심사 큐, 회귀 테스트]
+          technologies: [React Native, TypeScript, MySQL]
     - path: docs/index.en.md
-      heading: Technologies by Project
-      rows:
-        ClumL:
-          - Rust
-          - concurrency control
-          - rate limiting
-          - external configuration for a network-event detection threshold
-          - GraphQL
-          - regression testing
-          - Chrono/Jiff
-        TmaxCloud:
-          - Java
-          - TypeScript
-          - React
-          - WebSocket
-          - Monaco Editor
-          - FreeMarker
-          - Tibero
-          - JUnit
-          - JaCoCo
-        GlueSQL:
-          - Rust
-          - SQL engine internals
-          - parser/AST
-          - aggregate functions
-          - Parquet storage
-          - code review
-        Coupler:
-          - React Native
-          - React
-          - TypeScript
-          - Express
-          - MySQL
-          - API response design
-          - signup/review state management
-          - GitHub Actions
+      representative_heading: Representative Work
+      field_labels:
+        type_period: Type and period
+        role: Role
+        change: Core change
+        proof: Validation
+        technologies: Technologies
+      forbidden_headings:
+        - Technologies by Project
+        - Technical Focus Areas
+        - Engineering Operating Perspective
+      records:
+        experience/cluml.md:
+          type_period: [Full-time role, Mar 2025, Jul 2026]
+          role: [Rust backend, analysis, implementation, regression verification]
+          change: [concurrent requests, pre-reservation state, race]
+          proof: [same concurrency load, ten times, at or below the limit]
+          technologies: [Rust, concurrency control, regression testing]
+        experience/tmaxcloud.md:
+          type_period: [Full-time role, Oct 2021, Nov 2024]
+          role: [Java, TypeScript, design, implementation, verification]
+          change: [React, WebSocket, before deployment]
+          proof: [JSON requests and responses, database writes and reads, before]
+          technologies: [Java, WebSocket, Tibero]
+        opensource/gluesql.md:
+          type_period: [Open-source contribution, Jun 2021, Present]
+          role: [Rust SQL engine, Direct implementation, code review]
+          change: [projection-row, aggregate state, DISTINCT]
+          proof: [multiple columns, maps, schemaless rows, regression tests]
+          technologies: [Rust, parser/AST, SQL executor]
+        projects/coupler.md:
+          type_period: [Independent product, Jul 2024, Present]
+          role: [React Native app, Express API, React admin web, MySQL database, lead]
+          change: [API, access state, inferring]
+          proof: [API response, mobile routing, admin review-queue, regression tests]
+          technologies: [React Native, TypeScript, MySQL]
+
+content_coverage:
+  - path: docs/experience/cluml.md
+    search_terms: [ClumL, Rust, 요청 제한, 동시성, 외부 설정, GraphQL, 회귀 테스트, Chrono, Jiff]
+    required_terms:
+      - 문제와 진단
+      - 제약과 선택
+      - 검증과 결과
+      - Rust
+      - 동시성
+      - 요청 제한
+      - 네트워크 이벤트 탐지 임계값
+      - 외부 설정
+      - GraphQL
+      - 회귀 테스트
+      - Chrono
+      - Jiff
+    forbidden_headings: [기술]
+  - path: docs/experience/cluml.en.md
+    search_terms: [ClumL, Rust, request-limiting, concurrency, external configuration, GraphQL, regression tests, Chrono, Jiff]
+    required_terms:
+      - Problem and diagnosis
+      - Constraints and decision
+      - Validation and result
+      - Rust
+      - concurrency
+      - request-limiting
+      - network-event detection threshold
+      - external configuration
+      - GraphQL
+      - regression tests
+      - Chrono
+      - Jiff
+    forbidden_headings: [Technologies]
+  - path: docs/experience/tmaxcloud.md
+    search_terms: [티맥스클라우드, Java, TypeScript, React, WebSocket, Monaco Editor, FreeMarker, Tibero, JUnit, JaCoCo, SQL, DDL]
+    required_terms:
+      - 문제와 진단
+      - 제약과 선택
+      - 검증과 결과
+      - Java
+      - TypeScript
+      - React
+      - WebSocket
+      - Monaco Editor
+      - FreeMarker
+      - Tibero
+      - JUnit
+      - JaCoCo
+      - SQL
+      - DDL
+    forbidden_headings: [기술]
+  - path: docs/experience/tmaxcloud.en.md
+    search_terms: [TmaxCloud, Java, TypeScript, React, WebSocket, Monaco Editor, FreeMarker, Tibero, JUnit, JaCoCo, SQL, DDL]
+    required_terms:
+      - Problem and diagnosis
+      - Constraints and decision
+      - Validation and result
+      - Java
+      - TypeScript
+      - React
+      - WebSocket
+      - Monaco Editor
+      - FreeMarker
+      - Tibero
+      - JUnit
+      - JaCoCo
+      - SQL
+      - DDL
+    forbidden_headings: [Technologies]
+  - path: docs/opensource/gluesql.md
+    search_terms: [GlueSQL, Rust, DISTINCT, parser/AST, aggregate, Parquet storage, 코드 리뷰]
+    required_terms:
+      - 문제와 진단
+      - 제약과 선택
+      - 검증과 결과
+      - Rust
+      - SQL 엔진
+      - parser/AST
+      - aggregate
+      - Parquet storage
+      - 코드 리뷰
+      - 회귀 테스트
+    forbidden_headings: [기술]
+  - path: docs/opensource/gluesql.en.md
+    search_terms: [GlueSQL, Rust, DISTINCT, parser/AST, aggregate, Parquet storage, code review]
+    required_terms:
+      - Problem and diagnosis
+      - Constraints and decision
+      - Validation and result
+      - Rust
+      - SQL engine
+      - parser/AST
+      - aggregate
+      - Parquet storage
+      - code review
+      - regression tests
+    forbidden_headings: [Technologies]
+  - path: docs/projects/coupler.md
+    search_terms: [Coupler, React Native, React 관리자 웹, TypeScript, Express API, MySQL, API 응답, 심사 상태, GitHub Actions]
+    required_terms:
+      - 문제와 진단
+      - 제약과 선택
+      - 검증과 결과
+      - React Native
+      - React 관리자 웹
+      - TypeScript
+      - Express API
+      - MySQL
+      - API 응답
+      - 가입·심사 상태
+      - GitHub Actions
+    forbidden_headings: [기술]
+  - path: docs/projects/coupler.en.md
+    search_terms: [Coupler, React Native, React admin web, TypeScript, Express API, MySQL, API response, review state, GitHub Actions]
+    required_terms:
+      - Problem and diagnosis
+      - Constraints and decision
+      - Validation and result
+      - React Native
+      - React admin web
+      - TypeScript
+      - Express API
+      - MySQL
+      - API response
+      - signup and review state
+      - GitHub Actions
+    forbidden_headings: [Technologies]

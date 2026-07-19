@@ -134,6 +134,48 @@ class StructureCheckTests(unittest.TestCase):
 
         self.assertIn("Page missing from nav: extra.md.", self.validate())
 
+    def test_explicit_appendix_can_remain_off_nav(self) -> None:
+        (self.docs_dir / "appendix.md").write_text(
+            "---\nportfolio_role: appendix\n---\n\n# 부록\n",
+            encoding="utf-8",
+        )
+        (self.docs_dir / "appendix.en.md").write_text(
+            "---\nportfolio_role: appendix\n---\n\n# Appendix\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_valid_legacy_redirect_can_remain_off_nav(self) -> None:
+        redirect = (
+            "---\n"
+            "portfolio_role: legacy_redirect\n"
+            "redirect_to: ../\n"
+            "search:\n"
+            "  exclude: true\n"
+            "---\n\n"
+            '<meta http-equiv="refresh" content="0; url=../">\n\n'
+            "# Home\n\n[Continue](../)\n"
+        )
+        (self.docs_dir / "legacy.md").write_text(redirect, encoding="utf-8")
+        (self.docs_dir / "legacy.en.md").write_text(redirect, encoding="utf-8")
+
+        self.assertEqual(self.validate(), [])
+
+    def test_legacy_redirect_requires_search_exclusion(self) -> None:
+        redirect = (
+            "---\nportfolio_role: legacy_redirect\nredirect_to: ../\n---\n\n"
+            '<meta http-equiv="refresh" content="0; url=../">\n\n'
+            "# Home\n\n[Continue](../)\n"
+        )
+        (self.docs_dir / "legacy.md").write_text(redirect, encoding="utf-8")
+        (self.docs_dir / "legacy.en.md").write_text(redirect, encoding="utf-8")
+
+        self.assertIn(
+            "Legacy redirect must be excluded from search: legacy.md.",
+            self.validate(),
+        )
+
     def test_duplicated_english_nav_is_rejected(self) -> None:
         self.config_path.write_text(
             textwrap.dedent(

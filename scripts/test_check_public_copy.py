@@ -1665,15 +1665,8 @@ class PublicCopyCheckTests(unittest.TestCase):
                 for finding in findings
             )
         )
-        self.assertTrue(
-            any(
-                "overview loses entity export/import flow or contribution boundaries"
-                in finding
-                for finding in findings
-            )
-        )
 
-    def test_entity_export_import_overview_service_definition_is_required(
+    def test_entity_export_import_overview_can_stay_concise(
         self,
     ) -> None:
         page = self.english_entity_export_import_section().replace(
@@ -1682,13 +1675,7 @@ class PublicCopyCheckTests(unittest.TestCase):
         )
         self.write_tmaxcloud_page(page, english=True)
 
-        self.assertTrue(
-            any(
-                "overview loses entity export/import flow or contribution boundaries"
-                in finding
-                for finding in self.validate()
-            )
-        )
+        self.assertEqual(self.validate(), [])
 
     def test_entity_export_import_overview_ownership_overclaim_is_rejected(
         self,
@@ -1703,7 +1690,7 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertTrue(
             any(
-                "overview loses entity export/import flow or contribution boundaries"
+                "entity export/import copy or synchronization overclaim"
                 in finding
                 for finding in self.validate()
             )

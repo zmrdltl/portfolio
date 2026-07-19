@@ -602,6 +602,21 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_FORBIDDEN_PATTERNS = (
         paths=TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS,
     ),
     PublicCopyPattern(
+        "entity export/import copy or synchronization overclaim",
+        re.compile(
+            r"(?:선택\s+속성[^.\n]{0,120})?"
+            r"(?:데이터\s+복사[^.\n]{0,100}변경\s+동기화|"
+            r"변경\s+동기화)(?:를|을)\s*(?:직접\s+)?"
+            r"(?:구현|개발|구축|담당)|"
+            r"I\s+(?:directly\s+)?(?:implemented|built|developed|owned)"
+            r"[^.]{0,180}(?:selected[- ]attribute[^.]{0,100}"
+            r"(?:copy|synchroniz)|synchronization\s+of\s+"
+            r"(?:later|subsequent)\s+changes)",
+            re.IGNORECASE,
+        ),
+        paths=TMAXCLOUD_ENTITY_EXPORT_IMPORT_PATHS,
+    ),
+    PublicCopyPattern(
         "redeployment migration-strategy overclaim",
         re.compile(
             r"재배포[^.\n]{0,80}마이그레이션\s+전략을\s+"
@@ -1617,29 +1632,6 @@ def collect_tmaxcloud_entity_export_import_findings(
             findings.append(
                 f"{relative_path}:{line_number}: "
                 f"{copy_pattern.name}: {section_text}"
-            )
-
-    overview_heading_pattern = (
-        TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_HEADINGS[relative_path]
-    )
-    overview = extract_markdown_section(text, overview_heading_pattern)
-    if overview is None:
-        findings.append(
-            f"{relative_path}:1: missing Overview section for entity export/import."
-        )
-    else:
-        overview_line_number, overview_text = overview
-        overview_requirement = (
-            TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_REQUIREMENTS[relative_path]
-        )
-        overview_paragraphs = normalized_markdown_paragraphs(overview_text)
-        if not any(
-            paragraph_satisfies_requirement(paragraph, overview_requirement)
-            for _, paragraph in overview_paragraphs
-        ):
-            findings.append(
-                f"{relative_path}:{overview_line_number}: "
-                f"{overview_requirement.name}: {overview_text}"
             )
 
     for requirement in TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS[relative_path]:

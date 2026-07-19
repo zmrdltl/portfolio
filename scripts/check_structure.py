@@ -41,6 +41,13 @@ FORBIDDEN_STATIC_FILENAMES = {".DS_Store"}
 HANGUL_PATTERN = re.compile(r"[가-힣]")
 HEADING_PATTERN = re.compile(r"^(#{1,6})[ \t]+\S")
 FENCE_OPEN_PATTERN = re.compile(r"^[ \t]*(`{3,}|~{3,})")
+FRONT_MATTER_BOUNDARY = "---"
+ALLOWED_OFF_NAV_ROLES = {"appendix", "legacy_redirect"}
+META_REFRESH_PATTERN = re.compile(
+    r'<meta\s+http-equiv=["\']refresh["\']\s+content=["\']0;\s*url=\.\./["\']\s*/?>',
+    re.IGNORECASE,
+)
+FALLBACK_HOME_LINK_PATTERN = re.compile(r"\[[^\]]+\]\(\.\./\)")
 
 
 @dataclass(frozen=True)
@@ -158,6 +165,53 @@ def heading_outline(path: Path) -> list[int]:
     return outline
 
 
+def page_metadata(path: Path) -> dict[str, Any]:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if not lines or lines[0].strip() != FRONT_MATTER_BOUNDARY:
+        return {}
+
+    try:
+        closing_index = next(
+            index
+            for index, line in enumerate(lines[1:], start=1)
+            if line.strip() == FRONT_MATTER_BOUNDARY
+        )
+    except StopIteration:
+        return {}
+
+    try:
+        metadata = yaml.safe_load("\n".join(lines[1:closing_index]))
+    except yaml.YAMLError:
+        return {}
+    return metadata if isinstance(metadata, dict) else {}
+
+
+def validate_off_nav_page(path: Path, relative_path: str) -> list[str]:
+    metadata = page_metadata(path)
+    role = metadata.get("portfolio_role")
+    if role not in ALLOWED_OFF_NAV_ROLES:
+        return [f"Page missing from nav: {relative_path}."]
+    if role != "legacy_redirect":
+        return []
+
+    errors: list[str] = []
+    redirect_to = metadata.get("redirect_to")
+    search = metadata.get("search")
+    if redirect_to != "../":
+        errors.append(
+            f"Legacy redirect must target same-language home in one hop: {relative_path}."
+        )
+    if not isinstance(search, dict) or search.get("exclude") is not True:
+        errors.append(f"Legacy redirect must be excluded from search: {relative_path}.")
+
+    text = path.read_text(encoding="utf-8")
+    if META_REFRESH_PATTERN.search(text) is None:
+        errors.append(f"Legacy redirect is missing a one-hop meta refresh: {relative_path}.")
+    if FALLBACK_HOME_LINK_PATTERN.search(text) is None:
+        errors.append(f"Legacy redirect is missing a fallback home link: {relative_path}.")
+    return errors
+
+
 def validate_structure(
     docs_dir: Path, config_path: Path
 ) -> tuple[list[str], StructureSummary]:
@@ -198,6 +252,14 @@ def validate_structure(
                 f"{default_outline} != {english_page} {english_outline}."
             )
 
+        default_role = page_metadata(docs_dir / default_page).get("portfolio_role")
+        english_role = page_metadata(docs_dir / english_page).get("portfolio_role")
+        if default_role != english_role:
+            errors.append(
+                f"Portfolio role mismatch: {default_page} {default_role!r} != "
+                f"{english_page} {english_role!r}."
+            )
+
     for english_page in english_pages:
         default_page = english_page[: -len(ENGLISH_SUFFIX)] + MARKDOWN_SUFFIX
         if default_page not in default_pages:
@@ -223,7 +285,7 @@ def validate_structure(
     default_page_set = set(default_pages)
     nav_page_set = set(local_nav_paths)
     for path in sorted(default_page_set - nav_page_set):
-        errors.append(f"Page missing from nav: {path}.")
+        errors.extend(validate_off_nav_page(docs_dir / path, path))
     for path in sorted(nav_page_set - default_page_set):
         errors.append(f"Nav references an unknown default-language page: {path}.")
 
