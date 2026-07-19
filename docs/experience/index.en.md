@@ -1,6 +1,16 @@
-# Experience
+---
+portfolio_role: legacy_redirect
+redirect_to: ../
+search:
+  exclude: true
+hide:
+  - navigation
+  - toc
+---
 
-| Period and Organization | Responsibility Area | Representative Result |
-| --- | --- | --- |
-| Mar 2025 - Jul 2026 · [ClumL](cluml.md) | Rust backend fixes, external configuration for a network-event detection threshold, and regression verification | Prevented concurrent requests from exceeding the configured limit · reduced the operational change time for one recurring setting adjustment by at least 30% |
-| Oct 2021 - Nov 2024 · [TmaxCloud](tmaxcloud.md) | Service code and SQL generation, pre-deployment verification, and data-change history for a no-code platform | Helped reduce the recurring design-to-verification cycle for generated APIs from about four weeks to about two |
+# Continue to the Portfolio Home
+
+<!-- markdownlint-disable-next-line MD033 -->
+<meta http-equiv="refresh" content="0; url=../">
+
+[Continue to the portfolio home](../)

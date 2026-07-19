@@ -52,17 +52,13 @@ plugins:
             language: en
           nav_translations:
             소개: Overview
-            원칙: Principles
             경력: Work
-            요약: Summary
             티맥스클라우드: TmaxCloud
 
 nav:
   - 소개: index.md
   - 경력:
-      - 요약: experience/index.md
       - ClumL: experience/cluml.md
       - 티맥스클라우드: experience/tmaxcloud.md
   - GlueSQL: opensource/gluesql.md
   - Coupler: projects/coupler.md
-  - 원칙: engineering-principles.md

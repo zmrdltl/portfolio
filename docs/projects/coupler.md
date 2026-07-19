@@ -4,37 +4,19 @@
 - 유형: 모바일 소개팅 앱
 - 구분: 외주 유지보수로 시작한 개인 프로젝트
 
-## 개요
-
-현재 React Native 모바일 앱, Express API, React 관리자 웹, MySQL DB의 개발과 운영을 총괄하고 있습니다. 기존 코드베이스를 2.0.0으로 전환하면서 가입·심사 상태 전이 로직을 구현하고 DB 구조를 재구성해 앱·API·관리자 웹이 같은 심사 상태를 사용하도록 했습니다.
-
 ## 역할과 책임
+
+현재 React Native 모바일 앱, Express API, React 관리자 웹, MySQL DB의 개발과 운영을 총괄하고 있습니다.
 
 - 기획 결정을 앱, API, 관리자 웹, DB 스키마와 마이그레이션에 반영합니다.
 - QA, 코드 리뷰, 병합, 릴리스, 배포·롤백을 책임집니다.
 - 정책·플로우·아키텍처, DB 변경 검증 절차, 배포·롤백 기준을 [공개 개발 문서](https://coupler-developer.github.io/docs/)로 정리하고 릴리스 기준에 연결합니다.
 
-## 가입 흐름 개편
+## 가입·심사 상태를 하나의 서버 응답으로 통일
 
-기존 가입 신청은 약 30개 항목을 한 번에 입력해야 해 최초 심사 요청까지의 부담이 컸습니다. 심사 상태도 서버 응답, 앱 화면, 관리자 심사 큐가 각자 추론하면 제출·재제출·승인·반려 흐름이 어긋날 수 있었습니다.
+**문제와 진단:** 기존 가입 신청은 약 30개 항목을 한 번에 입력해야 해 최초 심사 요청까지의 부담이 컸습니다. 더 큰 정합성 위험은 앱 화면, API 결과 코드, 관리자 심사 큐가 제출·재제출·승인·반려 상태와 다음 화면을 각자 추론하면서 서로 다른 흐름을 만들 수 있다는 점이었습니다.
 
-```mermaid
-flowchart LR
-  subgraph before["개편 전"]
-    direction TB
-    all_fields["약 30개 항목 일괄 입력"] --> first_request["최초 심사 요청"]
-  end
-
-  subgraph after["개편 후"]
-    direction TB
-    essentials["기본정보·필수 프로필"] --> initial_review["최초 가입 심사"]
-    initial_review --> later_reviews["준회원·정회원 심사"]
-  end
-```
-
-최초 신청을 기본정보와 필수 프로필 중심으로 줄이고, 승인 뒤 후속 심사를 독립적으로 진행하도록 나눴습니다.
-
-## 가입·심사 상태 전이
+**제약과 선택:** 기존 React Native 앱, Express API, React 관리자 웹, MySQL 데이터와 마이그레이션을 함께 바꿔야 했습니다. 클라이언트별 조건문을 맞추는 대신 API가 접근 상태와 다음 행동을 반환하는 단일 기준이 되고, 앱과 관리자 웹은 유효한 서버 상태만 해석하도록 선택했습니다. 상태가 없거나 유효하지 않으면 화면을 임의로 열지 않는 방향으로 처리했습니다.
 
 ```mermaid
 stateDiagram-v2
@@ -54,50 +36,34 @@ stateDiagram-v2
   ReviewOpen --> FullReview: 제출
 ```
 
-앱은 서버가 제공하는 심사 상태에 따라 제출·재제출 화면과 후속 심사 탭을 엽니다.
-
-## 앱·API·관리자 웹의 역할
+**구현:** 기존 코드베이스를 2.0.0으로 전환하면서 최초 신청을 기본정보와 필수 프로필 중심으로 줄이고, 승인 뒤 준회원·정회원 심사를 독립적으로 진행하도록 상태 전이를 구현하고 DB 구조를 재구성했습니다. [회원가입 응답 계약](https://coupler-developer.github.io/docs/policy/signup-response-contract/)으로 성공 응답과 화면 분기 상태를 분리하고, [회원 심사 정책](https://coupler-developer.github.io/docs/policy/member-review-policy/)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
 
 ```mermaid
 flowchart LR
-  docs["개발 문서\n정책 / 플로우 / 아키텍처"]
-  api["API\n응답 계약 / 접근 권한"]
-  app["React Native App\n화면 분기 / 탭 접근"]
-  admin["Admin Web\n심사 큐 / 상세 처리"]
+  api["Express API\n접근 상태 / 다음 행동"]
+  app["React Native 앱\n화면 분기 / 탭 접근"]
+  admin["React 관리자 웹\n심사 큐 / 상세 처리"]
   db["MySQL\n상태 / 심사 행 / 마이그레이션"]
-  tests["검증\n응답 계약 / 화면 분기 / 심사 큐"]
-  release["릴리스\nQA / 배포·롤백"]
+  checks["릴리스 확인\n계약 / 화면 / 큐 회귀 테스트"]
 
-  docs --> api
+  db --> api
   api --> app
   api --> admin
-  api --> db
-  app --> tests
-  admin --> tests
-  api --> tests
-  db --> tests
-  tests --> release
+  app --> checks
+  admin --> checks
+  api --> checks
 ```
 
-API 응답 계약이 화면 분기와 접근 권한을 제공하고, 앱과 관리자 웹은 이를 각각 사용자 흐름과 심사 큐에 적용합니다. DB 상태와 마이그레이션, 회귀 테스트, 릴리스 확인 항목은 같은 변경 단위에서 점검합니다.
-
-## 가입·심사 흐름 구현과 릴리스 검증
-
-- [회원가입 응답 계약](https://coupler-developer.github.io/docs/policy/signup-response-contract/)을 기준으로 성공 응답과 화면 분기 상태를 분리하고, 앱이 서버 상태를 추측하지 않도록 했습니다.
-- [회원 심사 정책](https://coupler-developer.github.io/docs/policy/member-review-policy/)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
-- 관리자 웹의 JavaScript 코드를 TypeScript로 마이그레이션하고, GitHub Actions CI에 typecheck와 JavaScript 재유입 방지 검사를 추가했습니다.
-- API 응답 계약, 모바일 화면 분기, 관리자 심사 큐의 회귀 테스트와 [코드 리뷰 정책](https://coupler-developer.github.io/docs/policy/code-review-policy/)을 릴리스 확인 항목으로 사용했습니다.
+**검증과 결과:** API 응답 계약, 모바일 화면 분기, 관리자 심사 큐의 회귀 테스트를 같은 릴리스 확인 항목으로 운영했습니다. 관리자 웹은 JavaScript에서 TypeScript로 마이그레이션하고, GitHub Actions CI에 typecheck와 JavaScript 재유입 방지 검사를 추가했습니다. 변경은 [코드 리뷰 정책](https://coupler-developer.github.io/docs/policy/code-review-policy/)과 QA, 배포·롤백 절차로 확인했습니다.
 
 ## 관측 결과
 
 Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후 약 100건 관측
+
+이 값은 최초 가입 심사 단계에 도달할 때 기록된 이벤트 횟수입니다.
 
 ## 관련 링크
 
 - [Google Play](https://play.google.com/store/apps/details?id=com.ritzy.fourhundred&pli=1)
 - [App Store](https://apps.apple.com/kr/app/id1645569179)
 - [개발 문서](https://coupler-developer.github.io/docs/)
-
-## 기술
-
-React Native, React, TypeScript, Express, MySQL, API 응답 설계, 가입·심사 상태 관리, DB 마이그레이션, GitHub Actions

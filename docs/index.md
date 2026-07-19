@@ -4,25 +4,61 @@ PLATFORM SOFTWARE ENGINEER
 
 ## 요약
 
-생성된 API의 응답과 DB 쓰기·읽기를 배포 전에 검증하고, Rust 서비스의 동시성 오류를 수정하며, 제품 변경마다 회귀 테스트와 릴리스 확인 항목을 함께 관리해 온 Platform Software Engineer입니다.
+코드 생성 플랫폼, Rust 서비스, SQL 엔진, 모바일 제품에서 데이터·상태·동시성 문제를 다뤄 왔습니다. 증상과 원인을 나누고, 선택한 해결책을 구현한 뒤 API·DB·회귀 테스트·릴리스 확인으로 결과를 검증합니다.
 
 ## 대표 작업
 
-| 대표 작업 | 핵심 변경 | 검증·결과 |
-| --- | --- | --- |
-| [ClumL · Rust 요청 제한·탐지 임계값 설정](experience/cluml.md) | 요청 제한 경합 수정, 네트워크 이벤트 탐지 임계값을 외부 설정으로 분리 | 수정 전 허용치의 10배 이상 통과 재현 → 수정 후 허용치 이하 |
-| [티맥스클라우드 · 생성 API 검증](experience/tmaxcloud.md) | API 배포 전 검증, 데이터 변경 이력 구현 | 당시 반복 설계·검증 주기 약 4주 → 2주 수준 단축에 기여 |
-| [GlueSQL · Rust SQL 엔진](opensource/gluesql.md) | `DISTINCT`를 SQL 변환·실행·집계·테스트에 연결 | 병합 PR 50건 · 현재 리뷰어 |
-| [Coupler · 모바일 소개팅 앱 개발총괄](projects/coupler.md) | 가입 신청을 단계별 심사로 나누고 앱 화면·관리자 심사 큐가 API 심사 상태를 따르도록 통일 | Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건 → 개편 후 약 100건 관측 |
+### [ClumL · AI 보안 분석 엔진 요청 제한 동시성 수정](experience/cluml.md)
 
-## 작업별 기술
+**유형·기간:** 정규 경력 · 2025.03 - 2026.07
 
-| 작업 | 기술 |
-| --- | --- |
-| ClumL | Rust, 동시성 제어, 요청 제한, 네트워크 이벤트 탐지 임계값 외부 설정, GraphQL, 회귀 테스트, Chrono/Jiff |
-| 티맥스클라우드 | Java, TypeScript, React, WebSocket, Monaco Editor, FreeMarker, Tibero, SQL·DDL 생성, JUnit, JaCoCo |
-| GlueSQL | Rust, SQL 엔진 내부 구조, parser/AST, 집계 함수, Parquet storage, 코드 리뷰 |
-| Coupler | React Native, React, TypeScript, Express, MySQL, API 응답 설계, 가입·심사 상태 관리, GitHub Actions |
+**역할:** Rust 백엔드 문제 분석·구현 및 회귀 검증
+
+**핵심 변화:** 여러 동시 요청이 같은 예약 전 상태를 읽던 확인-예약 경합을 수정했습니다.
+
+**검증:** 같은 동시성 조건에서 허용치보다 10배 이상 통과하던 현상을 재현하고, 수정 후 허용치 이하로 유지됨을 확인했습니다.
+
+**기술:** `Rust` · `동시성 제어` · `회귀 테스트`
+
+### [티맥스클라우드 · 생성 API 배포 전 검증](experience/tmaxcloud.md)
+
+**유형·기간:** 정규 경력 · 2021.10 - 2024.11
+
+**역할:** Java·TypeScript 코드 생성 플랫폼 기능 설계·구현 및 검증
+
+**핵심 변화:** 생성된 API를 React·WebSocket 테스트 화면에서 호출해 배포 전에 확인하도록 바꿨습니다.
+
+**검증:** JSON 요청·응답과 DB 쓰기·읽기 결과를 실제 배포 전에 확인했습니다.
+
+**기술:** `Java` · `WebSocket` · `Tibero`
+
+### [GlueSQL · DISTINCT 실행 의미 구현](opensource/gluesql.md)
+
+**유형·기간:** 오픈소스 기여 · 2021.06 - 현재
+
+**역할:** Rust SQL 엔진 기능 직접 구현 및 기여자 코드 리뷰
+
+**핵심 변화:** projection 결과 row 중복 제거와 aggregate state의 중복 값 관리를 분리해 `DISTINCT` 의미를 실행 경로에 연결했습니다.
+
+**검증:** 단일·복수 column, map, schemaless row, aggregate `DISTINCT`를 회귀 테스트로 확인했습니다.
+
+**기술:** `Rust` · `parser/AST` · `SQL executor`
+
+### [Coupler · 모바일 소개팅 앱 개발총괄](projects/coupler.md)
+
+**유형·기간:** 개인 제품 · 2024.07 - 현재
+
+**역할:** React Native 앱·Express API·React 관리자 웹·MySQL DB의 개발 및 운영 총괄
+
+**핵심 변화:** 앱과 관리자 웹이 심사 상태를 각자 추론하지 않고 API가 반환한 접근 상태를 따르도록 통일했습니다.
+
+**검증:** API 응답, 모바일 화면 분기, 관리자 심사 큐의 회귀 테스트를 릴리스 확인 항목으로 운영했습니다.
+
+**기술:** `React Native` · `TypeScript` · `MySQL`
+
+## 더 보기
+
+[개발 원칙](engineering-principles.md)에서 문제 분해, 선택, 검증에 공통으로 적용하는 기준을 확인할 수 있습니다.
 
 ## 연락처
 

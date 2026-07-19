@@ -2,53 +2,50 @@
 
 - Period: Oct 2021 - Nov 2024
 
-## Overview
-
-On a Java/TypeScript no-code platform, I built pre-deployment verification for Java service code and SQL/DDL generated from UI definitions. I implemented history storage for rows before updates and deletions in generated CRUD applications and defined how point-in-time reads select the valid history row for each primary key. The entity export/import feature lets a Studio user export an entity, import it into another generated application, and use the imported entity in service definitions. It copies selected-attribute data at import time and synchronizes later changes to those attributes through a message broker. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. I also helped separate SQL generation into a backend library.
-
 ## Service Code Verification
 
-**Problem:** A UI-defined service could only be checked against its real API response and database writes and reads after JAR creation and a separate deployment. With roughly 200–300 services/APIs to verify, one build, deploy, and verify cycle took about 20 minutes, and finding an invalid definition or request/response shape required repeating it.
+**Problem and diagnosis:** A UI-defined service could only be checked against its real API response and database writes and reads after JAR creation and a separate deployment. With roughly 200–300 services and APIs to verify, one build, deploy, and verification cycle took about 20 minutes, and each invalid definition or request/response shape restarted the same delayed feedback loop.
+
+**Constraints and decision:** Verification had to cover real JSON requests, responses, and database state rather than mocks. I placed those checks in a React, TypeScript, and WebSocket test UI that runs before deployment.
 
 ```mermaid
 flowchart TD
-  ui["Product UI\nApp / Entity / Service Definition"]
-  generator["Code Generation\nSQL / DDL / Java"]
-  tester["E2E Test UI\nRequest Editing / WebSocket Call"]
-  validation["Pre-Deployment Check\nResponse / DB Write and Read"]
+  definition["UI Definition\nApp / Entity / Service"]
+  artifacts["Generated Artifacts\nJava / SQL / DDL"]
+  tester["Pre-Deployment Test UI\nJSON Editing / WebSocket Call"]
+  validation["Result Check\nAPI Response / DB Write and Read"]
 
-  ui --> generator
-  generator --> tester
+  definition --> artifacts
+  artifacts --> tester
   tester --> validation
 ```
 
-**Decision:** I built a React and WebSocket-based E2E test UI that called the generated API before deployment and checked JSON request/response shapes and DB writes and reads.
-
 **Implementation:** I implemented WebSocket URL and connection validation, service-list loading, per-service JSON request templates, Monaco Editor request editing, API calls, response inspection, and database write/read checks.
 
-**Validation and result:** I moved request/response, DB write/read, and definition-to-code linkage checks before deployment. At the time, this helped reduce the recurring design-to-verification cycle from about four weeks to about two.
+**Validation and result:** I found invalid request/response shapes and missing definition-to-code links without a separate deployment, while still checking actual database writes and reads. At the time, this helped reduce the recurring design-to-verification cycle from about four weeks to about two.
 
 ## Data-Change History Storage and Point-in-Time Read Design
 
-**Problem:** Generated CRUD applications kept only current values. Showing earlier values and the last editor after an update or delete required separate history storage and a way to query it.
+**Problem and diagnosis:** Generated CRUD applications kept only current values. Showing earlier values and the last editor after an update or deletion required storing the prior row, editor, and valid period under one consistent definition.
+
+**Constraints and decision:** A Tibero database trigger or procedure could see the changed row but did not naturally receive the requesting user's identity. I chose to generate the history write in CRUD code, which already carried that identity, and made the history-table DDL and point-in-time read use the same entity columns and primary key.
 
 ```mermaid
 flowchart TD
-  entity["History Enabled"]
-  ddl["DDL Generation\nSource Table + History Table"]
-  crud["CRUD Code\nStore Row Before Update/Delete"]
-  history["History Table\nPrimary Key / Editor / Valid Period / Row Data"]
-  restore["Point-in-Time Read\nSelect Valid History Row per Primary Key"]
+  entity["Entity Definition\nColumns / Primary Key / History Enabled"]
+  ddl["DDL Generation\nSource + History Tables"]
+  crud["CRUD Code Generation\nStore Row Before Update/Delete"]
+  history["History\nPrimary Key / Editor / Valid Period / Row Data"]
+  restore["Point-in-Time Read\nSelect Valid Row per Primary Key"]
 
   entity --> ddl
-  ddl --> crud
+  entity --> crud
+  ddl --> history
   crud --> history
   history --> restore
 ```
 
-**Decision:** I implemented the history table and CRUD write SQL against the entity's columns and primary key. For point-in-time reads, I defined how to choose the valid history row for each primary key. Instead of a Tibero DB trigger or procedure, I placed the write query in the CRUD code, which already carried the requesting user's identity, so it stored the row before an update or deletion together with the editor and valid period.
-
-**Implementation:** Deploying an entity with history enabled created both its source and history tables. I connected FreeMarker templates and code-generation logic so CRUD services stored the row before an update or deletion with its primary key, editor, and valid period.
+**Implementation:** I encoded the source/history-table DDL and the SQL that stores a row before an update or deletion in FreeMarker templates. I defined the point-in-time read SQL to select the valid row for each primary key.
 
 **Validation and result:** I checked that the source and history table DDL and CRUD write SQL reflected the same entity columns and primary key.
 
@@ -56,7 +53,9 @@ flowchart TD
 
 ### Entity Export/Import and Selected-Attribute Synchronization
 
-Studio users can export an entity, import it into another generated application, and use the imported entity in service definitions. At import time, the feature copies selected attribute data; when a connected service later changes data, it synchronizes changes to those attributes through a message broker. I contributed to the DB schema and API for storing exported and imported entity information, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. The message-synchronization service and the redeployment migration strategy for later schema changes were separate areas of work.
+Studio users can export an entity, import it into another generated application, and use the imported entity in service definitions. At import time, the feature copies data for selected attributes; when a connected service later changes data, it synchronizes changes to those attributes through a message broker.
+
+I contributed to the DB schema and API for storing exported and imported entity information. I designed selected-attribute metadata and broker-mediated linkage between exported and imported entities. I implemented the export UI. The message-synchronization service and the redeployment migration strategy for later schema changes were separate areas of work.
 
 ### SQL Generation Library
 
@@ -65,7 +64,3 @@ I helped separate SQL generation into a library imported directly by the backend
 ### Standardizing Exception Log Output
 
 I standardized exception log output for messages, error codes, SQL states, and stack traces, and visually distinguished error logs from general terminal output.
-
-## Technologies
-
-Java, TypeScript, React, WebSocket, Monaco Editor, FreeMarker, Tibero, SQL/DDL generation, JUnit, JaCoCo

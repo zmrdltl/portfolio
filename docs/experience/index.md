@@ -1,6 +1,16 @@
-# 경력
+---
+portfolio_role: legacy_redirect
+redirect_to: ../
+search:
+  exclude: true
+hide:
+  - navigation
+  - toc
+---
 
-| 기간·조직 | 책임 영역 | 대표 결과 |
-| --- | --- | --- |
-| 2025.03 - 2026.07 · [ClumL](cluml.md) | Rust 백엔드 오류 수정, 네트워크 이벤트 탐지 임계값 외부 설정과 회귀 검증 | 요청 제한 과다 통과 수정 · 반복 설정 변경 1회 기준 운영 작업 시간 30% 이상 단축 |
-| 2021.10 - 2024.11 · [티맥스클라우드](tmaxcloud.md) | 노코드 플랫폼의 서비스 코드·SQL 생성, 배포 전 검증과 데이터 변경 이력 | 생성된 API의 반복 설계·검증 주기를 약 4주에서 2주 수준으로 단축하는 데 기여 |
+# 포트폴리오 홈으로 이동
+
+<!-- markdownlint-disable-next-line MD033 -->
+<meta http-equiv="refresh" content="0; url=../">
+
+[포트폴리오 홈으로 이동](../)
