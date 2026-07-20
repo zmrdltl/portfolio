@@ -9,6 +9,7 @@ from scripts.check_structure import validate_structure
 
 
 VALID_CONFIG = """\
+site_name: 소개
 markdown_extensions:
   - pymdownx.superfences:
       custom_fences:
@@ -28,6 +29,7 @@ plugins:
         - locale: en
           name: English
           build: true
+          site_name: Overview
           nav_translations:
             소개: Overview
 """
@@ -57,6 +59,48 @@ class StructureCheckTests(unittest.TestCase):
 
     def test_valid_structure(self) -> None:
         self.assertEqual(self.validate(), [])
+
+    def test_english_site_name_must_match_home_h1(self) -> None:
+        self.config_path.write_text(
+            VALID_CONFIG.replace("site_name: Overview", "site_name: 소개 Overview"),
+            encoding="utf-8",
+        )
+
+        self.assertIn(
+            "English site_name must match the English home H1: "
+            "'소개 Overview' != 'Overview'.",
+            self.validate(),
+        )
+
+    def test_default_site_name_must_match_home_h1(self) -> None:
+        self.config_path.write_text(
+            VALID_CONFIG.replace("site_name: 소개", "site_name: 포트폴리오"),
+            encoding="utf-8",
+        )
+
+        self.assertIn(
+            "Default site_name must match the default home H1: "
+            "'포트폴리오' != '소개'.",
+            self.validate(),
+        )
+
+    def test_home_pages_must_have_level_one_headings(self) -> None:
+        pages = (
+            ("index.md", "## 요약\n", "Default home must contain a level-one heading."),
+            (
+                "index.en.md",
+                "## Summary\n",
+                "English home must contain a level-one heading.",
+            ),
+        )
+
+        for filename, contents, expected in pages:
+            with self.subTest(filename=filename):
+                path = self.docs_dir / filename
+                original = path.read_text(encoding="utf-8")
+                path.write_text(contents, encoding="utf-8")
+                self.assertIn(expected, self.validate())
+                path.write_text(original, encoding="utf-8")
 
     def test_macos_metadata_file_is_rejected(self) -> None:
         (self.docs_dir / ".DS_Store").write_bytes(b"local metadata")

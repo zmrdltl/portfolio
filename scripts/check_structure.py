@@ -40,6 +40,7 @@ MARKDOWN_SUFFIX = ".md"
 FORBIDDEN_STATIC_FILENAMES = {".DS_Store"}
 HANGUL_PATTERN = re.compile(r"[가-힣]")
 HEADING_PATTERN = re.compile(r"^(#{1,6})[ \t]+\S")
+LEVEL_ONE_HEADING_PATTERN = re.compile(r"^#[ \t]+(.+?)\s*$")
 FENCE_OPEN_PATTERN = re.compile(r"^[ \t]*(`{3,}|~{3,})")
 FRONT_MATTER_BOUNDARY = "---"
 ALLOWED_OFF_NAV_ROLES = {"appendix", "legacy_redirect"}
@@ -163,6 +164,39 @@ def heading_outline(path: Path) -> list[int]:
             outline.append(len(heading_match.group(1)))
 
     return outline
+
+
+def first_level_one_heading(path: Path) -> str | None:
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except FileNotFoundError:
+        return None
+
+    fence_character: str | None = None
+    fence_length = 0
+    for line in lines:
+        if fence_character is not None:
+            closing_marker = line.strip(" \t")
+            if (
+                closing_marker
+                and set(closing_marker) == {fence_character}
+                and len(closing_marker) >= fence_length
+            ):
+                fence_character = None
+                fence_length = 0
+            continue
+
+        fence_match = FENCE_OPEN_PATTERN.match(line)
+        if fence_match:
+            opening_marker = fence_match.group(1)
+            fence_character = opening_marker[0]
+            fence_length = len(opening_marker)
+            continue
+
+        match = LEVEL_ONE_HEADING_PATTERN.match(line)
+        if match:
+            return match.group(1).strip()
+    return None
 
 
 def page_metadata(path: Path) -> dict[str, Any]:
@@ -299,6 +333,16 @@ def validate_structure(
 
     korean = find_language(i18n_config, "ko")
     english = find_language(i18n_config, "en")
+    korean_home_heading = first_level_one_heading(docs_dir / "index.md")
+    korean_site_name = config.get("site_name")
+    if korean_home_heading is None:
+        errors.append("Default home must contain a level-one heading.")
+    elif korean_site_name != korean_home_heading:
+        errors.append(
+            "Default site_name must match the default home H1: "
+            f"{korean_site_name!r} != {korean_home_heading!r}."
+        )
+
     if korean is None or korean.get("default") is not True:
         errors.append("Korean locale must exist and remain the default language.")
     elif korean.get("build") is not True:
@@ -308,6 +352,16 @@ def validate_structure(
     else:
         if english.get("build") is not True:
             errors.append("English locale build must remain enabled.")
+
+        english_home_heading = first_level_one_heading(docs_dir / "index.en.md")
+        english_site_name = english.get("site_name")
+        if english_home_heading is None:
+            errors.append("English home must contain a level-one heading.")
+        elif english_site_name != english_home_heading:
+            errors.append(
+                "English site_name must match the English home H1: "
+                f"{english_site_name!r} != {english_home_heading!r}."
+            )
 
         if "nav" in english:
             errors.append(

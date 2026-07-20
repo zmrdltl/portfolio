@@ -50,6 +50,28 @@ class PublicHeadingRequirement:
     trigger_pattern: re.Pattern[str]
 
 
+@dataclass(frozen=True)
+class PublicUnsupportedOutcomeRule:
+    name: str
+    claim_patterns: tuple[re.Pattern[str], ...]
+
+    def matches(self, paragraph: str) -> bool:
+        return any(
+            pattern.search(paragraph)
+            for pattern in self.claim_patterns
+        )
+
+
+@dataclass(frozen=True)
+class PublicSectionOutcomePolicy:
+    container_heading_pattern: re.Pattern[str]
+    container_heading_level: int
+    heading_pattern: re.Pattern[str]
+    heading_level: int
+    content_pattern: re.Pattern[str]
+    unsupported_outcomes: tuple[PublicUnsupportedOutcomeRule, ...]
+
+
 PUBLIC_HEADING_EXEMPTIONS = (
     re.compile(r"리뷰·멘토링·수상", re.IGNORECASE),
     re.compile(r"Review,\s+Mentoring,\s+and\s+Awards", re.IGNORECASE),
@@ -703,7 +725,7 @@ COUPLER_PARAGRAPH_REQUIREMENTS = (
             r"(?=.*Meta\s+SDK)"
             r"(?=.*(?:"
             r"최초\s+가입\s+심사[^.\n]{0,30}(?:도달|기록)|"
-            r"recorded\s+upon\s+reaching\s+the\s+"
+            r"(?:recorded|event\s+count)\s+upon\s+reaching\s+the\s+"
             r"(?:first|initial)\s+signup\s+review"
             r"))"
             r"(?=.*(?:관측|\bobserved\b))",
@@ -718,9 +740,9 @@ COUPLER_PARAGRAPH_REQUIREMENTS = (
             r"^(?:"
             r"Meta SDK 최초 가입 심사 도달 이벤트:\s*"
             r"개편 전 약 10건,\s*개편 후 약 100건 관측|"
-            r"Meta SDK event recorded upon reaching the initial signup review stage:\s*"
-            r"observed about 10 times before the redesign and "
-            r"about 100 times after\."
+            r"Observed Meta SDK event count upon reaching the initial "
+            r"signup review stage:\s*about 10 before the redesign and "
+            r"about 100 after\."
             r")$",
             re.IGNORECASE,
         ),
@@ -728,8 +750,166 @@ COUPLER_PARAGRAPH_REQUIREMENTS = (
     ),
 )
 
+COUPLER_TYPESCRIPT_CONTENT_PATTERN = re.compile(
+    r"\b(?:TypeScript|TSX|JavaScript|JSX|typecheck)\b|allowJs",
+    re.IGNORECASE,
+)
+
+COUPLER_TYPESCRIPT_UNSUPPORTED_OUTCOMES = (
+    PublicUnsupportedOutcomeRule(
+        "unsupported Coupler TypeScript error outcome claim",
+        (
+            re.compile(
+                r"(?:"
+                r"(?:오류|장애)\s*(?:율|률|수|건수)"
+                r"(?:이|가|은|는|을|를)?[^.!?\n]{0,48}"
+                r"(?:감소|줄(?:었|였|어들)|낮아|낮췄|개선|"
+                r"사라(?:졌|진)|없어(?:졌|진)|제거(?:했|됐|되))|"
+                r"(?:오류|장애)(?:가|는|도)[^.!?\n]{0,48}"
+                r"(?:감소|줄(?:었|였|어들)|낮아|낮췄|개선|"
+                r"사라(?:졌|진)|없어(?:졌|진)|제거(?:했|됐|되))|"
+                r"(?:오류|장애)를\s*"
+                r"(?:(?:약|대략|크게|많이|현저히|대폭|절반(?:으로)?|"
+                r"\d+(?:\.\d+)?%?)\s*){0,4}"
+                r"(?:감소|줄(?:였|어들)|낮췄|사라지게|없애|제거)|"
+                r"(?:감소한|줄어든|낮아진|개선된|사라진|없어진|제거된)"
+                r"\s*(?:런타임\s*)?(?:오류|장애)"
+                r"(?:\s*(?:율|률|수|건수))?"
+                r")",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"(?:"
+                r"(?:"
+                r"\b(?:error|failure)\s+(?:rate|count)\b|"
+                r"\b(?:the\s+)?number\s+of\s+"
+                r"(?:runtime\s+)?(?:errors?|failures?)\b"
+                r")"
+                r"(?!\s+(?:handling|processing|calculation|logic|reporting))"
+                r"[^.!?\n]{0,40}"
+                r"(?:decreas\w*|reduc\w*|drop\w*|declin\w*|\bcut\b|halv\w*|"
+                r"\bfell\b|\bfallen\b|\bwent\s+down\b|lower\w*|"
+                r"improv\w*|eliminat\w*|(?:near(?:ly)?|almost)\s+zero)|"
+                r"\b(?:runtime\s+)?(?:errors?|failures?)\b\s+"
+                r"(?:(?:was|were|is|are|has\s+been|have\s+been|had\s+been)\s+)?"
+                r"(?:(?:\d+(?:\.\d+)?%|significantly|substantially|"
+                r"materially|sharply|greatly)\s+){0,3}"
+                r"(?:decreas\w*|reduc\w*|drop\w*|declin\w*|\bcut\b|halv\w*|"
+                r"\bfell\b|\bfallen\b|\bwent\s+down\b|lower\w*|"
+                r"eliminat\w*|(?:near(?:ly)?|almost)\s+zero)|"
+                r"(?:decreas\w*|reduc\w*|lower\w*|eliminat\w*|"
+                r"\bcut\b|halv\w*)\s+"
+                r"(?:(?:\d+(?:\.\d+)?%|significantly|substantially|"
+                r"materially|sharply|greatly)\s+of\s+)?"
+                r"(?:the\s+)?(?:"
+                r"(?:runtime\s+)?(?:errors?|failures?)|"
+                r"(?:error|failure)\s+(?:rate|count)|"
+                r"number\s+of\s+(?:runtime\s+)?(?:errors?|failures?)"
+                r")(?!\s+(?:handling|processing|calculation|logic|reporting))|"
+                r"improv\w*\s+(?:the\s+)?"
+                r"(?:error|failure)\s+(?:rate|count)\b"
+                r"(?!\s+(?:handling|processing|calculation|logic|reporting))|"
+                r"\bfewer\s+(?:runtime\s+)?(?:errors?|failures?)\b"
+                r")",
+                re.IGNORECASE,
+            ),
+        ),
+    ),
+    PublicUnsupportedOutcomeRule(
+        "unsupported Coupler TypeScript response-performance outcome claim",
+        (
+            re.compile(
+                r"(?:"
+                r"(?:응답\s*(?:속도|시간|지연)|지연\s*시간)"
+                r"(?:이|가|은|는|도)[^.!?\n]{0,48}"
+                r"(?:감소|줄(?:었|어들)|낮아|개선|단축|빨라|짧아)|"
+                r"(?:응답\s*(?:속도|시간|지연)|지연\s*시간)"
+                r"(?:을|를)\s*"
+                r"(?:(?:약|대략|크게|많이|현저히|대폭|절반(?:으로)?|"
+                r"\d+(?:\.\d+)?%?)\s*){0,4}"
+                r"(?:감소|줄(?:였|어들)|낮췄|단축|빠르게|짧게)|"
+                r"응답(?:을|를)\s*"
+                r"(?:(?:약|대략|크게|많이|현저히|대폭|더|"
+                r"\d+(?:\.\d+)?%?)\s*){0,4}"
+                r"(?:빠르게|빨리)\s*(?:했|만들)|"
+                r"응답(?:이|가|은|는|도)[^.!?\n]{0,32}(?:빨라|빠르게)|"
+                r"(?:감소한|줄어든|낮아진|개선된|단축된|빨라진|짧아진)"
+                r"\s*(?:응답\s*(?:속도|시간|지연)|지연\s*시간)"
+                r"(?!\s*(?:처리|계산|파싱|로직))|"
+                r"(?:빨라진|빠른)\s*응답(?!\s*(?:처리|계산|파싱|로직))"
+                r")",
+                re.IGNORECASE,
+            ),
+            re.compile(
+                r"(?:"
+                r"\b(?:response\s+(?:speed|times?|latency)|latency)\b\s+"
+                r"(?:(?:was|were|is|are|has\s+been|have\s+been|had\s+been|"
+                r"became|become)\s+)?"
+                r"(?:(?:\d+(?:\.\d+)?%|significantly|substantially|"
+                r"materially|sharply)\s+){0,3}"
+                r"(?:decreas\w*|reduc\w*|drop\w*|declin\w*|\bcut\b|halv\w*|"
+                r"\bfell\b|\bfallen\b|\bwent\s+down\b|lower\w*|"
+                r"improv\w*|\bfaster\b|\bshorter\b|"
+                r"(?:near(?:ly)?|almost)\s+zero)|"
+                r"(?:decreas\w*|reduc\w*|lower\w*|improv\w*|"
+                r"\bcut\b|halv\w*)\s+"
+                r"(?:the\s+)?(?:response\s+(?:speed|times?|latency)|latency)\b"
+                r"(?!\s+(?:handling|processing|calculation|parsing|logic))|"
+                r"(?:\d+(?:\.\d+)?%\s+)?(?:faster|shorter|lower)\s+"
+                r"(?:response\s+(?:speed|times?|latency)|latency)\b"
+                r"(?!\s+(?:handling|processing|calculation|parsing|logic))|"
+                r"\b(?:API\s+)?responses?\b\s+"
+                r"(?:(?:was|were|is|are|has\s+been|have\s+been|had\s+been|"
+                r"became|become)\s+)?"
+                r"(?:(?:\d+(?:\.\d+)?%|significantly|substantially|"
+                r"materially|noticeably)\s+)?"
+                r"(?:faster|quicker)\b|"
+                r"\b(?:faster|quicker)\s+(?:API\s+)?responses?\b"
+                r")",
+                re.IGNORECASE,
+            ),
+        ),
+    ),
+)
+
+COUPLER_TYPESCRIPT_SECTION_POLICIES = {
+    "projects/coupler.md": PublicSectionOutcomePolicy(
+        re.compile(r"추가 작업", re.IGNORECASE),
+        2,
+        re.compile(
+            r"관리자 웹을 TypeScript로 전환하고 "
+            r"JavaScript 재유입을 CI로 차단",
+            re.IGNORECASE,
+        ),
+        3,
+        COUPLER_TYPESCRIPT_CONTENT_PATTERN,
+        COUPLER_TYPESCRIPT_UNSUPPORTED_OUTCOMES,
+    ),
+    "projects/coupler.en.md": PublicSectionOutcomePolicy(
+        re.compile(r"Additional Work", re.IGNORECASE),
+        2,
+        re.compile(
+            r"Migrating the Admin Web to TypeScript and Preventing "
+            r"JavaScript Reintroduction in CI",
+            re.IGNORECASE,
+        ),
+        3,
+        COUPLER_TYPESCRIPT_CONTENT_PATTERN,
+        COUPLER_TYPESCRIPT_UNSUPPORTED_OUTCOMES,
+    ),
+}
+
 
 PUBLIC_COPY_PATTERNS = [
+    PublicCopyPattern(
+        "unnatural GlueSQL duplicate-state wording",
+        re.compile(
+            r"Duplication\s+is\s+defined\s+against\s+different\s+state\s+"
+            r"in\s+projection\s+and\s+aggregate\s+execution",
+            re.IGNORECASE,
+        ),
+        paths=("opensource/gluesql.en.md",),
+    ),
     PublicCopyPattern(
         "verbose rationale heading",
         re.compile(r"^\s*\*\*왜 이 해결 방법인지:\*\*", re.IGNORECASE),
@@ -1358,6 +1538,7 @@ def normalized_markdown_paragraphs(text: str) -> list[tuple[int, str]]:
 def extract_markdown_section(
     text: str,
     heading_pattern: re.Pattern[str],
+    heading_level: int | None = None,
 ) -> tuple[int, str] | None:
     lines = text.splitlines()
     section_start: int | None = None
@@ -1371,7 +1552,9 @@ def extract_markdown_section(
         level = len(heading_match.group(1))
         title = heading_match.group(2).strip()
         if section_start is None:
-            if heading_pattern.fullmatch(title):
+            if heading_pattern.fullmatch(title) and (
+                heading_level is None or level == heading_level
+            ):
                 section_start = index
                 section_level = level
             continue
@@ -1682,6 +1865,88 @@ def collect_coupler_paragraph_findings(
     return findings
 
 
+def collect_coupler_typescript_section_findings(
+    relative_path: str,
+    text: str,
+) -> list[str]:
+    policy = COUPLER_TYPESCRIPT_SECTION_POLICIES.get(relative_path)
+    if policy is None:
+        return []
+
+    container = extract_markdown_section(
+        text,
+        policy.container_heading_pattern,
+        policy.container_heading_level,
+    )
+    if container is None:
+        misplaced_container = extract_markdown_section(
+            text,
+            policy.container_heading_pattern,
+        )
+        orphaned_section = extract_markdown_section(
+            text,
+            policy.heading_pattern,
+        )
+        content_match = policy.content_pattern.search(text)
+        if misplaced_container is not None:
+            finding_line = misplaced_container[0]
+        elif orphaned_section is not None:
+            finding_line = orphaned_section[0]
+        elif content_match is not None:
+            finding_line = text.count("\n", 0, content_match.start()) + 1
+        else:
+            finding_line = 1
+        return [
+            f"{relative_path}:{finding_line}: missing or misleveled "
+            "Coupler Additional Work container section."
+        ]
+
+    container_line, container_text = container
+    section = extract_markdown_section(
+        container_text,
+        policy.heading_pattern,
+        policy.heading_level,
+    )
+    if section is None:
+        return [
+            f"{relative_path}:{container_line}: missing or misleveled "
+            "Coupler TypeScript supporting-work section."
+        ]
+
+    nested_section_line, section_text = section
+    section_line = container_line + nested_section_line - 1
+    section_paragraphs = normalized_markdown_paragraphs(section_text)
+    body_paragraphs = [
+        (paragraph_line, paragraph)
+        for paragraph_line, paragraph in section_paragraphs
+        if not re.match(r"^#{1,6}\s", paragraph)
+    ]
+    findings: list[str] = []
+    for paragraph_line, paragraph in body_paragraphs:
+        for outcome_rule in policy.unsupported_outcomes:
+            if not outcome_rule.matches(paragraph):
+                continue
+            findings.append(
+                f"{relative_path}:{section_line + paragraph_line - 1}: "
+                f"{outcome_rule.name}: {paragraph}"
+            )
+            break
+
+    if findings:
+        return findings
+
+    if not any(
+        policy.content_pattern.search(paragraph)
+        for _, paragraph in body_paragraphs
+    ):
+        return [
+            f"{relative_path}:{section_line}: missing Coupler TypeScript "
+            "supporting-work content."
+        ]
+
+    return findings
+
+
 def collect_public_copy_findings(docs_dir: Path) -> list[str]:
     findings: list[str] = []
     for path in sorted(docs_dir.rglob("*.md")):
@@ -1711,6 +1976,9 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
                 break
 
         findings.extend(collect_coupler_paragraph_findings(relative_path, text))
+        findings.extend(
+            collect_coupler_typescript_section_findings(relative_path, text)
+        )
         findings.extend(
             collect_tmaxcloud_entity_export_import_findings(relative_path, text)
         )

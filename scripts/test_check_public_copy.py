@@ -26,6 +26,37 @@ class PublicCopyCheckTests(unittest.TestCase):
         filename = "coupler.en.md" if english else "coupler.md"
         (projects_dir / filename).write_text(text, encoding="utf-8")
 
+    def coupler_typescript_page(self, body: str, *, english: bool = False) -> str:
+        if english:
+            return (
+                "# Coupler\n\n## Additional Work\n\n"
+                "### Migrating the Admin Web to TypeScript and Preventing "
+                "JavaScript Reintroduction in CI\n\n"
+                f"{body}\n"
+            )
+        return (
+            "# Coupler\n\n## 추가 작업\n\n"
+            "### 관리자 웹을 TypeScript로 전환하고 JavaScript 재유입을 CI로 차단\n\n"
+            f"{body}\n"
+        )
+
+    def coupler_page_with_typescript_contract(
+        self,
+        text: str,
+        *,
+        english: bool = False,
+    ) -> str:
+        body = (
+            "Type checks and the JavaScript migration guard run in CI."
+            if english
+            else "타입 검사와 JavaScript 재유입 방지 검사를 CI에서 실행합니다."
+        )
+        _, contract = self.coupler_typescript_page(
+            body,
+            english=english,
+        ).split("\n\n", 1)
+        return f"{text.rstrip()}\n\n{contract}"
+
     def write_tmaxcloud_page(self, text: str, *, english: bool = False) -> None:
         experience_dir = self.docs_dir / "experience"
         experience_dir.mkdir(exist_ok=True)
@@ -113,17 +144,352 @@ class PublicCopyCheckTests(unittest.TestCase):
             (
                 True,
                 "# Coupler\n\n"
-                "Meta SDK event recorded upon reaching the initial signup review "
-                "stage: "
-                "observed about 10 times before the redesign and about 100 times "
-                "after.\n",
+                "Observed Meta SDK event count upon reaching the initial signup "
+                "review stage: about 10 before the redesign and about 100 after.\n",
+            ),
+        )
+
+        for english, page in pages:
+            with self.subTest(english=english):
+                self.write_coupler_page(
+                    self.coupler_page_with_typescript_contract(
+                        page,
+                        english=english,
+                    ),
+                    english=english,
+                )
+                self.assertEqual(self.validate(), [])
+
+    def test_unnatural_gluesql_duplicate_state_wording_is_rejected(self) -> None:
+        opensource_dir = self.docs_dir / "opensource"
+        opensource_dir.mkdir()
+        (opensource_dir / "gluesql.en.md").write_text(
+            "# GlueSQL\n\n"
+            "Duplication is defined against different state in projection and "
+            "aggregate execution.\n",
+            encoding="utf-8",
+        )
+
+        self.assertTrue(
+            any(
+                "unnatural GlueSQL duplicate-state wording" in finding
+                for finding in self.validate()
+            )
+        )
+
+    def test_coupler_typescript_section_without_measured_outcomes_passes(self) -> None:
+        pages = (
+            (
+                False,
+                "런타임 화면 오류와 다국어 키 누락을 전환 과정에서 함께 "
+                "정리하고 typecheck와 JavaScript 재유입 방지 검사를 추가했습니다.",
+            ),
+            (
+                False,
+                "TypeScript 전환 중 오류를 처리하는 로직과 응답 시간 처리 "
+                "로직을 개선했습니다.",
+            ),
+            (
+                False,
+                "TypeScript 전환 중 오류를 처리하는 로직과 응답 시간을 "
+                "계산하는 로직을 줄였습니다.",
+            ),
+            (
+                True,
+                "I addressed runtime rendering errors and missing locale keys "
+                "during the migration, then added type checks and a JavaScript "
+                "migration guard.",
+            ),
+            (
+                True,
+                "During the TypeScript migration, I improved error handling and "
+                "response time processing.",
+            ),
+        )
+
+        for english, body in pages:
+            with self.subTest(english=english):
+                self.write_coupler_page(
+                    self.coupler_typescript_page(body, english=english),
+                    english=english,
+                )
+                self.assertEqual(self.validate(), [])
+
+    def test_coupler_typescript_outcome_claim_variants_are_rejected(self) -> None:
+        claims = (
+            (
+                False,
+                "TypeScript 전환으로 오류율이 90% 감소했습니다.\n",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환 후 런타임 오류가 크게 줄었습니다.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환으로 오류를 90% 줄였습니다.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환으로 오류를 대폭 줄였습니다.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환으로 오류를 절반으로 줄였습니다.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환으로 응답 시간이 30% 줄었습니다.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                False,
+                "전환 뒤 응답 속도가 빨라졌습니다.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환으로 응답 시간을 30% 단축했습니다.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환으로 응답을 빠르게 했습니다.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "The TypeScript migration reduced the error rate by 90%.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "Runtime errors fell after the migration.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "The migration made response time 30% shorter.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "Response latency decreased after the migration.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "The error count dropped after the migration.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "The migration improved the error rate.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "The migration cut the error count by 90%.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "The migration halved the error count.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "The migration produced fewer runtime errors.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "The migration eliminated 90% of runtime errors.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "The migration reduced the number of runtime errors by 90%.",
+                "unsupported Coupler TypeScript error outcome claim",
+            ),
+            (
+                True,
+                "Response time went down after the migration.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "The migration reduced response time by 30%.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "The migration cut response time by 30%.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "The migration halved response time.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "API responses became faster after the migration.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                True,
+                "The migration made API responses 30% faster.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+            (
+                False,
+                "TypeScript 전환 뒤 응답이 빨라졌습니다.",
+                "unsupported Coupler TypeScript response-performance outcome claim",
+            ),
+        )
+
+        for english, claim, expected in claims:
+            with self.subTest(english=english, claim=claim):
+                self.write_coupler_page(
+                    self.coupler_typescript_page(claim, english=english),
+                    english=english,
+                )
+                self.assertTrue(
+                    any(expected in finding for finding in self.validate())
+                )
+
+    def test_coupler_typescript_policy_stops_at_the_next_sibling_heading(self) -> None:
+        pages = (
+            (
+                False,
+                self.coupler_typescript_page(
+                    "TypeScript 전환 과정에서 런타임 화면 오류를 함께 정리했습니다."
+                )
+                + "\n### 별도 응답 캐시 작업\n\n"
+                "측정 결과 응답 시간이 30% 줄었습니다.\n",
+            ),
+            (
+                True,
+                self.coupler_typescript_page(
+                    "I addressed runtime rendering errors during the TypeScript "
+                    "migration.",
+                    english=True,
+                )
+                + "\n### Separate Response Cache Work\n\n"
+                "Measured response time was 30% shorter.\n",
             ),
         )
 
         for english, page in pages:
             with self.subTest(english=english):
                 self.write_coupler_page(page, english=english)
-                self.assertEqual(self.validate(), [])
+                self.assertFalse(
+                    any(
+                        "Coupler TypeScript" in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_coupler_typescript_policy_requires_container_h2_and_case_h3(self) -> None:
+        pages = (
+            (
+                False,
+                "# Coupler\n\n### 추가 작업\n\n"
+                "#### 관리자 웹을 TypeScript로 전환하고 JavaScript 재유입을 CI로 차단\n\n"
+                "TypeScript 전환으로 오류율이 감소했습니다.\n",
+                "missing or misleveled Coupler Additional Work container section",
+            ),
+            (
+                True,
+                "# Coupler\n\n### Additional Work\n\n"
+                "#### Migrating the Admin Web to TypeScript and Preventing "
+                "JavaScript Reintroduction in CI\n\n"
+                "The migration reduced the error rate.\n",
+                "missing or misleveled Coupler Additional Work container section",
+            ),
+            (
+                False,
+                "# Coupler\n\n## 다른 작업\n\n"
+                "### 관리자 웹 TypeScript 전환\n\n"
+                "TypeScript 전환으로 오류율이 90% 감소했습니다.\n",
+                "missing or misleveled Coupler Additional Work container section",
+            ),
+            (
+                True,
+                "# Coupler\n\n## Other Work\n\n"
+                "### Admin Web TypeScript Migration\n\n"
+                "The migration reduced the error rate by 90%.\n",
+                "missing or misleveled Coupler Additional Work container section",
+            ),
+            (
+                False,
+                "# Coupler\n\n## 추가 작업\n\n"
+                "#### 관리자 웹을 TypeScript로 전환하고 JavaScript 재유입을 CI로 차단\n\n"
+                "TypeScript 전환으로 오류율이 감소했습니다.\n",
+                "missing or misleveled Coupler TypeScript supporting-work section",
+            ),
+            (
+                True,
+                "# Coupler\n\n## Additional Work\n\n"
+                "## Migrating the Admin Web to TypeScript and Preventing "
+                "JavaScript Reintroduction in CI\n\n"
+                "The migration reduced the error rate.\n",
+                "missing or misleveled Coupler TypeScript supporting-work section",
+            ),
+        )
+
+        for english, page, expected in pages:
+            with self.subTest(english=english, expected=expected):
+                self.write_coupler_page(page, english=english)
+                self.assertTrue(
+                    any(
+                        expected in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_coupler_typescript_policy_rejects_full_section_deletion(self) -> None:
+        for english in (False, True):
+            with self.subTest(english=english):
+                self.write_coupler_page("# Coupler\n", english=english)
+                self.assertTrue(
+                    any(
+                        "missing or misleveled Coupler Additional Work "
+                        "container section" in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_coupler_typescript_policy_rejects_missing_body_contract(self) -> None:
+        pages = (
+            (False, self.coupler_typescript_page("")),
+            (True, self.coupler_typescript_page("", english=True)),
+            (False, self.coupler_typescript_page("문서 링크를 정리했습니다.")),
+            (
+                True,
+                self.coupler_typescript_page(
+                    "I reorganized the documentation links.",
+                    english=True,
+                ),
+            ),
+        )
+
+        for english, page in pages:
+            with self.subTest(english=english, page=page):
+                self.write_coupler_page(page, english=english)
+                self.assertTrue(
+                    any(
+                        "missing Coupler TypeScript supporting-work content"
+                        in finding
+                        for finding in self.validate()
+                    )
+                )
 
     def test_unrelated_growth_in_another_list_item_does_not_taint_metric(self) -> None:
         (self.docs_dir / "index.md").write_text(
@@ -156,7 +522,9 @@ class PublicCopyCheckTests(unittest.TestCase):
 
     def test_korean_coupler_full_year_period_passes(self) -> None:
         self.write_coupler_page(
-            "# Coupler\n\n- 참여 기간: 2024.07 - 현재\n"
+            self.coupler_page_with_typescript_contract(
+                "# Coupler\n\n- 참여 기간: 2024.07 - 현재\n"
+            )
         )
 
         self.assertEqual(self.validate(), [])
@@ -591,9 +959,11 @@ class PublicCopyCheckTests(unittest.TestCase):
 
     def test_unrelated_rounded_ten_and_hundred_values_pass(self) -> None:
         self.write_coupler_page(
-            "# Coupler\n\n"
-            "월간 계획에는 약 10개의 화면과 회귀 테스트 약 100개가 있습니다. "
-            "이벤트 문서는 40개이고 참고 포트는 1100입니다.\n",
+            self.coupler_page_with_typescript_contract(
+                "# Coupler\n\n"
+                "월간 계획에는 약 10개의 화면과 회귀 테스트 약 100개가 있습니다. "
+                "이벤트 문서는 40개이고 참고 포트는 1100입니다.\n"
+            ),
         )
         (self.docs_dir / "analytics.md").write_text(
             "# Analytics\n\n"
