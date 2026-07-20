@@ -32,6 +32,9 @@ markdown_extensions:
 extra_javascript:
   - assets/javascripts/mermaid.min.js
 
+extra_css:
+  - assets/stylesheets/extra.css
+
 plugins:
   - search
   - i18n:
@@ -46,7 +49,7 @@ plugins:
         - locale: en
           name: English
           build: true
-          site_name: Kim Minsik Technical Portfolio
+          site_name: Minsik Kim Technical Portfolio
           site_description: Software Engineer technical context and public links portfolio
           theme:
             language: en

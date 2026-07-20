@@ -5,7 +5,7 @@
 
 ## Implementing DISTINCT Execution Semantics
 
-**Problem and diagnosis:** `SELECT DISTINCT` syntax information did not reach GlueSQL's Rust SQL engine executor, so the query produced the same result as a regular `SELECT`. Duplication is defined against different state in projection and aggregate execution.
+**Problem and diagnosis:** `SELECT DISTINCT` syntax information did not reach GlueSQL's Rust SQL engine executor, so the query produced the same result as a regular `SELECT`. Projection and aggregate execution identify duplicates at different state boundaries.
 
 **Constraints and decision:** I had to leave non-`DISTINCT` results unchanged and remove duplicates only at the two state boundaries where final values are produced. Unsupported `DISTINCT ON` returns an explicit error.
 

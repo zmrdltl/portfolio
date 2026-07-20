@@ -1,0 +1,30 @@
+/* Preserve Mermaid label readability without widening the page itself. */
+.md-typeset .diagram-scroll-hint {
+  display: none;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .md-typeset .diagram-scroll-hint {
+    color: var(--md-default-fg-color--light);
+    display: block;
+    font-size: 0.75rem;
+    margin: 0.5rem 0 0.25rem;
+  }
+
+  .md-typeset .mermaid.diagram-scroll {
+    -webkit-overflow-scrolling: touch;
+    margin-inline: -0.4rem;
+    overflow-x: auto;
+    padding: 0 0.4rem 0.5rem;
+    overscroll-behavior-inline: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .md-typeset .mermaid.diagram-scroll svg {
+    display: block;
+    height: auto;
+    margin: 0;
+    max-width: none;
+    min-width: 40rem;
+  }
+}

@@ -39,7 +39,7 @@ stateDiagram-v2
 **Implementation:** While moving the existing codebase to version 2.0.0, I reduced the initial application to basic information and the required profile, implemented state transitions that allow associate- and full-member reviews to proceed independently after approval, and reworked the database structure. The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful responses from screen-routing state, while the [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) aligns submission and resubmission, signup versus settings-change reviews, and admin queue classification.
 
 ```mermaid
-flowchart LR
+flowchart TB
   api["Express API\nAccess State / Next Action"]
   app["React Native App\nScreen Routing / Tab Access"]
   admin["React Admin Web\nReview Queue / Detail Actions"]
@@ -54,13 +54,23 @@ flowchart LR
   api --> checks
 ```
 
-**Validation and result:** I kept API response-contract, mobile-routing, and admin review-queue regression tests in the same release checklist. I also migrated the admin web from JavaScript to TypeScript and added GitHub Actions CI checks for type errors and JavaScript reintroduction. Changes go through the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), QA, and deployment and rollback procedures.
+**Validation and result:** I kept API response-contract, mobile-routing, and admin review-queue regression tests in the same release checklist. Changes go through the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), QA, and deployment and rollback procedures.
 
-## Observed Result
+## Meta SDK Events Observed Before and After the Signup Review Redesign
 
-Meta SDK event recorded upon reaching the initial signup review stage: observed about 10 times before the redesign and about 100 times after.
+Observed Meta SDK event count upon reaching the initial signup review stage: about 10 before the redesign and about 100 after.
 
 This value counts events recorded when the initial signup review stage was reached.
+
+## Additional Work
+
+### Migrating the Admin Web to TypeScript and Preventing JavaScript Reintroduction in CI
+
+**Problem and diagnosis:** Because the admin screens, stores, and locale resources were written in JavaScript and JSX, expected value shapes and response contracts were not visible in types. Loose casts, missing locale keys, and runtime rendering errors therefore had to be addressed together during the migration.
+
+**Constraints and decision:** I migrated the existing admin application incrementally to TypeScript and TSX, then made `allowJs: false` and type checking ongoing constraints rather than treating file conversion as a one-time task.
+
+**Implementation and validation:** I converted the admin web's JavaScript and JSX code to TypeScript and TSX. GitHub Actions CI runs type checks and fails the migration guard if JavaScript or JSX returns under `src` or loose double casts are reintroduced.
 
 ## Related Links
 

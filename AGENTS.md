@@ -8,6 +8,7 @@ Keep this file limited to local repository facts and local verification commands
 Before writing, reviewing, or restructuring portfolio content, use the external career-writing source configured for this workspace.
 If that source is unavailable, stop and ask the user for the portfolio writing context.
 Do not recreate portfolio strategy, case selection, writing policy, review lenses, or public content boundary rules in this repository.
+Before completing any portfolio modification, use that external source's policy-synchronization gate and report whether the external policy source required an update. Keep the decision criteria in the external source rather than copying them here.
 
 ## Local Repository Facts
 
@@ -17,16 +18,9 @@ Do not recreate portfolio strategy, case selection, writing policy, review lense
 
 ## Public Wording Quality Gate
 
-Treat public portfolio wording as a reviewed interface, not free-form copy.
-
-- A heading must name the concrete subject and the work performed. Do not use an abstract noun such as `계약`, `경계`, `이관`, `전환`, `검토`, `설정`, `설계`, `개선`, `최적화`, `검증`, `동기화`, or `구현` without naming the API, data, dependency, screen, query, or other affected artifact.
-- A core claim must make the contribution relationship readable: who acted, what changed, and how the result was checked. Do not replace these with curator-facing abstractions.
-- A technology keyword must be traceable to a sentence on the same project page and to the external career-writing source. Do not add a keyword only to improve search coverage.
-- Quantitative wording must retain its comparison condition, contribution boundary, and causal limits.
-- Write Korean and English as two natural descriptions of the same fact. Do not preserve Korean word order or abstract nouns when they produce unnatural English.
-- When fixing a wording regression, add or update a public-copy test so the rejected wording cannot return silently.
-
-Before completing a public-copy change, inspect every changed heading, table cell, technology item, and quantitative sentence. Ask whether a reader can identify the subject without following another link.
+Use the external career-writing source's public wording and verification contracts.
+The checks under `scripts/` and their unit tests are local enforcement adapters, not the source of portfolio writing policy.
+When a durable wording rule changes, update its external owner first and then align the local check and regression test.
 
 ## Verification
 
@@ -39,6 +33,8 @@ Use these local checks after content or navigation changes:
 - `pnpm run check:public-copy`
 - `.venv/bin/python scripts/check_structure.py`
 - `.venv/bin/mkdocs build --strict`
+
+When a table, diagram, navigation element, grid, or layout changes, also inspect the rendered result at a narrow mobile viewport and a desktop viewport using the external policy's render acceptance criteria.
 
 When validation behavior changes, also run the matching unit test:
 

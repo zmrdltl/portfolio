@@ -6,8 +6,10 @@
 
 **Problem and diagnosis:** I analyzed requests that remained pending for an extended time on a customer demo server and isolated a check-and-reserve race in which concurrent requests read the same pre-reservation state and exceeded the configured limit. I treated the maximum wait imposed by the fixed window as a separate cause.
 
+**Constraints and decision:** The capacity check and reservation update had to be atomic against one current state, but holding the lock while waiting would block other requests. I kept only the check and reservation in the same lock section and released the lock before waiting.
+
 ```mermaid
-flowchart LR
+flowchart TB
   ui["Security Analysis UI"]
   api["Security Analysis API"]
   limiter["Request Limiter"]
@@ -20,7 +22,10 @@ flowchart LR
   limiter --> worker
 ```
 
-```mermaid
+On mobile, scroll horizontally to view the full sequence diagram.
+{ .diagram-scroll-hint }
+
+```mermaid { .diagram-scroll }
 sequenceDiagram
   participant A as Request A
   participant B as Request B
@@ -39,8 +44,6 @@ sequenceDiagram
   L->>S: Record reservation
   Note over L,S: Requests reading the same state can exceed the limit
 ```
-
-**Constraints and decision:** The capacity check and reservation update had to be atomic against one current state, but holding the lock while waiting would block other requests. I kept only the check and reservation in the same lock section and released the lock before waiting.
 
 **Implementation:** I changed the request-limiting logic to decide and immediately reserve against one shared state.
 
