@@ -1451,8 +1451,16 @@ PUBLIC_COPY_PATTERNS = [
     PublicCopyPattern(
         "sensitive local or secret wording",
         re.compile(
-            r"/Users/|localhost|\.env|credential|secret|token|password|"
-            r"production host|DB endpoint",
+            r"/Users/|localhost|\.env|production host|DB endpoint|"
+            r"(?<![A-Za-z0-9])[\"'`]?(?:[A-Za-z0-9]+[_-])*"
+            r"(?:api[ _-]?(?:key|token)|access[ _-]?(?:key|token)|"
+            r"refresh[ _-]?token|auth(?:entication|orization)?[ _-]?token|"
+            r"private[ _-]?key|token|password|secret|credentials?)"
+            r"(?:[_-][A-Za-z0-9]+)*[\"'`]?"
+            r"(?![A-Za-z0-9])\s*(?::|=)\s*"
+            r"[\"'`]?[A-Za-z0-9._~+/=-]{4,}|"
+            r"(?<![A-Za-z0-9])[\"'`]?Authorization[\"'`]?"
+            r"\s*(?::|=)\s*[\"'`]?Bearer\s+[A-Za-z0-9._~+/=-]{8,}",
             re.IGNORECASE,
         ),
     ),

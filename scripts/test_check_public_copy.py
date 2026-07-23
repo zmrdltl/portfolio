@@ -2475,6 +2475,46 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_technical_token_budget_wording_is_allowed(self) -> None:
+        (self.docs_dir / "experience.en.md").write_text(
+            "# Experience\n\n"
+            "The limiter checks the per-minute token limit and pending token "
+            "reservations before each outbound LLM API call.\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_secret_values_in_token_context_are_rejected(self) -> None:
+        samples = (
+            "access token: example-token-value-1234",
+            "refresh_token=example-refresh-token",
+            "token=example-token-value",
+            "Authorization: Bearer exampleBearerToken123",
+            "password = example-password",
+            "OPENAI_API_KEY=sk-example-1234",
+            "DATABASE_PASSWORD: example-password",
+            "AWS_ACCESS_KEY_ID=example-access-key",
+            "AWS_SECRET_ACCESS_KEY=example-secret-value",
+            "DJANGO_SECRET_KEY=example-secret-value",
+            '"token": "example-token-value"',
+            '"private_key": "example-private-key-value"',
+            '"Authorization": "Bearer exampleBearerToken123"',
+        )
+
+        for sample in samples:
+            with self.subTest(sample=sample):
+                (self.docs_dir / "index.md").write_text(
+                    f"# 소개\n\n{sample}\n",
+                    encoding="utf-8",
+                )
+                self.assertTrue(
+                    any(
+                        "sensitive local or secret wording" in finding
+                        for finding in self.validate()
+                    )
+                )
+
 
 if __name__ == "__main__":
     unittest.main()
