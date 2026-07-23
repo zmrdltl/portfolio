@@ -31,8 +31,8 @@ homepage:
         experience/tmaxcloud.md:
           type_period: [정규 경력, "2021.10", "2024.11"]
           role: [Java, TypeScript, 설계, 구현, 검증]
-          change: [React, WebSocket, 배포 전]
-          proof: [JSON 요청·응답, DB 쓰기·읽기, 배포 전]
+          change: [UI에서 정의한 서비스, Java API·SQL, JAR, 배포하지 않고, 응답, DB 반영, 구현]
+          proof: [서비스 정의, 요청·응답 형식, DB 반영 오류, 약 20분, 빌드·배포·확인 절차 없이]
           technologies: [Java, WebSocket, Tibero]
         opensource/gluesql.md:
           type_period: [오픈소스 기여, "2021.06", 현재]
@@ -68,8 +68,8 @@ homepage:
         experience/tmaxcloud.md:
           type_period: [Full-time role, Oct 2021, Nov 2024]
           role: [Java, TypeScript, design, implementation, verification]
-          change: [React, WebSocket, before deployment]
-          proof: [JSON requests and responses, database writes and reads, before]
+          change: [UI-defined services, Java APIs, SQL, JAR, before deployment]
+          proof: [service definitions, request/response shapes, database writes, 20-minute, build, deployment, verification cycle]
           technologies: [Java, WebSocket, Tibero]
         opensource/gluesql.md:
           type_period: [Open-source contribution, Jun 2021, Present]

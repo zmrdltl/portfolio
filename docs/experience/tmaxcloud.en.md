@@ -2,9 +2,9 @@
 
 - Period: Oct 2021 - Nov 2024
 
-## Service Code Verification
+## Pre-Deployment API Testing for a Code-Generation Platform
 
-**Problem and diagnosis:** A UI-defined service could only be checked against its real API response and database writes and reads after JAR creation and a separate deployment. With roughly 200–300 services and APIs to verify, one build, deploy, and verification cycle took about 20 minutes, and each invalid definition or request/response shape restarted the same delayed feedback loop.
+**Problem and diagnosis:** Users defined entities and service logic in the UI, and the platform generated Java APIs, SQL, and a JAR. The generated APIs could only be checked against real responses and database writes and reads after a separate deployment and container startup. With roughly 200–300 services and APIs to verify, one build, deploy, and verification cycle took about 20 minutes, and each invalid definition or request/response shape restarted the same delayed feedback loop.
 
 **Constraints and decision:** Verification had to cover real JSON requests, responses, and database state rather than mocks. I placed those checks in a React, TypeScript, and WebSocket test UI that runs before deployment.
 
@@ -20,11 +20,11 @@ flowchart TD
   tester --> validation
 ```
 
-**Implementation:** I implemented WebSocket URL and connection validation, service-list loading, per-service JSON request templates, Monaco Editor request editing, API calls, response inspection, and database write/read checks.
+**Implementation:** I built a React and TypeScript test UI where users selected a service, edited its JSON request in Monaco Editor, and called the generated API. The UI sent calls over WebSocket, while a supporting Java REST API and database schema connected the response to real database writes and reads.
 
-**Validation and result:** I found invalid request/response shapes and missing definition-to-code links without a separate deployment, while still checking actual database writes and reads. At the time, this helped reduce the recurring design-to-verification cycle from about four weeks to about two.
+**Validation and result:** I found invalid request/response shapes and missing definition-to-code links without a separate deployment, while still checking actual database writes and reads. Each such check no longer required repeating the roughly 20-minute build, deployment, and verification cycle.
 
-## Data-Change History Storage and Point-in-Time Read Design
+## Data-Change History and Historical Table Reconstruction
 
 **Problem and diagnosis:** Generated CRUD applications kept only current values. Showing earlier values and the last editor after an update or deletion required storing the prior row, editor, and valid period under one consistent definition.
 
@@ -36,7 +36,7 @@ flowchart TD
   ddl["DDL Generation\nSource + History Tables"]
   crud["CRUD Code Generation\nStore Row Before Update/Delete"]
   history["History\nPrimary Key / Editor / Valid Period / Row Data"]
-  restore["Point-in-Time Read\nSelect Valid Row per Primary Key"]
+  restore["Requested-Date Reconstruction\nRow Value / Last Editor"]
 
   entity --> ddl
   entity --> crud
@@ -45,9 +45,9 @@ flowchart TD
   history --> restore
 ```
 
-**Implementation:** I encoded the source/history-table DDL and the SQL that stores a row before an update or deletion in FreeMarker templates. I defined the point-in-time read SQL to select the valid row for each primary key.
+**Implementation:** I encoded the source/history-table DDL and the SQL that stores a row before an update or deletion in FreeMarker templates. I also wrote a query that combines current and historical data to reconstruct each row as of a requested date and return its last editor.
 
-**Validation and result:** I checked that the source and history table DDL and CRUD write SQL reflected the same entity columns and primary key.
+**Result:** The CRUD code produced by the platform stores the prior row, editor, and deletion state in the history table. Given a date, the query selects the row version valid on that date and returns the historical table state and last editor.
 
 ## Additional Work
 

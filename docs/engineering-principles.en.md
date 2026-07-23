@@ -14,7 +14,7 @@ I do not assume that a slow or failing path has one cause. As in the [ClumL outb
 
 ### 2. Make Completion Criteria Testable
 
-A successful API response alone is not enough. I check response shapes, database writes and reads, screen routing, and error handling. The [TmaxCloud pre-deployment API check](experience/tmaxcloud.md), [GlueSQL regression tests](opensource/gluesql.md), and [Coupler release checks](projects/coupler.md) apply this principle.
+A successful API response alone is not enough. I check response shapes, database writes and reads, screen routing, and error handling. The [TmaxCloud pre-deployment testing for generated APIs](experience/tmaxcloud.md), [GlueSQL regression tests](opensource/gluesql.md), and [Coupler release checks](projects/coupler.md) apply this principle.
 
 ### 3. Capture Existing Behavior before Replacing an Implementation
 

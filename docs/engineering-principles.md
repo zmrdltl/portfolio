@@ -14,7 +14,7 @@ portfolio_role: appendix
 
 ### 2. 완료 조건을 테스트할 수 있게 만듭니다
 
-API 성공 여부만 보지 않고 응답 형태, DB 쓰기·읽기, 화면 분기, 예외 처리를 확인합니다. [티맥스클라우드의 배포 전 API 검증](experience/tmaxcloud.md), [GlueSQL 회귀 테스트](opensource/gluesql.md), [Coupler 릴리스 확인](projects/coupler.md)이 이 기준을 적용한 작업입니다.
+API 성공 여부만 보지 않고 응답 형태, DB 쓰기·읽기, 화면 분기, 예외 처리를 확인합니다. [티맥스클라우드의 배포 전 생성 API 테스트 기능](experience/tmaxcloud.md), [GlueSQL 회귀 테스트](opensource/gluesql.md), [Coupler 릴리스 확인](projects/coupler.md)이 이 원칙을 적용한 작업입니다.
 
 ### 3. 교체 전에 기존 동작을 고정합니다
 
