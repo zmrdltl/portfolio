@@ -64,6 +64,37 @@ Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후
 
 ## 추가 작업
 
+### DB를 원본으로 둔 1:1 실시간 채팅 전달과 누락 복구
+
+**문제와 진단:** 모바일 네트워크에서는 메시지 저장 성공 뒤 응답이 끊기거나, HTTP 응답과 송신자 WebSocket 이벤트가 겹치거나, 연결이 끊긴 동안 상대 메시지를 놓칠 수 있습니다. 재시도를 그대로 새 요청으로 처리하면 같은 메시지와 알림이 중복되고, WebSocket 수신만 신뢰하면 화면과 DB가 달라질 수 있었습니다.
+
+**제약과 선택:** 메시지 전송은 HTTP 명령으로 DB에 먼저 저장하고, WebSocket은 서버가 확정한 메시지의 실시간 상태 전달을 담당하도록 책임을 분리했습니다. 클라이언트가 만든 `client_message_id`를 송신자 범위의 고유 키로 저장해 같은 요청을 안전하게 재시도하고, DB가 부여한 메시지 ID를 정렬·cursor·중복 병합의 기준으로 사용했습니다.
+
+```mermaid
+flowchart TB
+  send["송신자 앱<br/>HTTP POST + client_message_id"]
+  api["Express API<br/>HTTP 명령 / cursor 조회"]
+  canonical["MySQL<br/>DB ID가 확정된 메시지"]
+  response["canonical HTTP 응답"]
+  page["before_id cursor page"]
+  realtime["WebSocket<br/>self / peer event"]
+  merge["모바일<br/>DB ID 기준 병합"]
+  recovery["재연결<br/>최신 page부터 복구"]
+  peer["상대방 앱"]
+
+  send -->|멱등 저장| api --> canonical
+  canonical --> response --> merge
+  canonical --> realtime
+  recovery --> api
+  canonical --> page --> merge
+  realtime --> merge
+  realtime --> peer
+```
+
+**구현과 검증:** 동일한 송신자와 `client_message_id`의 같은 payload가 다시 오면 최초 메시지를 반환하고 WebSocket과 알림을 다시 발행하지 않으며, 다른 payload로 키를 재사용하면 충돌로 거부합니다. 모바일은 HTTP 응답과 송·수신 WebSocket 이벤트를 DB 메시지 ID로 병합하고, 재연결이나 화면 복귀 때 최신 HTTP 페이지부터 이전 동기화 경계를 만날 때까지 `before_id` cursor를 따라가며 누락분을 합칩니다. 메시지 저장·중복 요청·payload 충돌·cursor 페이지와 모바일 재연결 병합을 회귀 테스트로 확인했습니다.
+
+**확장 고려:** 현재 WebSocket fan-out은 단일 API 프로세스의 연결 집합을 사용합니다. 다중 인스턴스로 확장할 때는 인스턴스 간 이벤트 broker와 DB 저장 뒤 전달을 이어갈 outbox를 함께 도입할 수 있도록, 화면 복구의 원본은 HTTP와 DB에 유지했습니다.
+
 ### 관리자 웹을 TypeScript로 전환하고 JavaScript 재유입을 CI로 차단
 
 **문제와 진단:** 관리자 화면, 상태 저장소, 다국어 리소스가 JavaScript와 JSX로 작성되어 값의 형태와 응답 계약이 타입에 드러나지 않았습니다. 그 결과 느슨한 캐스트, 다국어 키 누락, 런타임 화면 오류를 전환 과정에서 함께 정리해야 했습니다.

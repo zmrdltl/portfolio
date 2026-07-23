@@ -64,6 +64,37 @@ This value counts events recorded when the initial signup review stage was reach
 
 ## Additional Work
 
+### Recovering Missing Messages in Real-Time Chat for One-to-One Conversations
+
+**Problem and diagnosis:** On mobile networks, a response can be lost after a message is persisted, an HTTP response can overlap with the sender's WebSocket event, and peer messages can be missed while the connection is down. Treating every retry as a new command would duplicate messages and notifications, while trusting WebSocket delivery alone could leave the screen inconsistent with the database.
+
+**Constraints and decision:** I made message sending an HTTP command that persists to the database first and assigned WebSocket the separate responsibility of distributing server-confirmed real-time state. A client-generated `client_message_id` is stored as a sender-scoped unique key for safe retries, while the database-assigned message ID is the ordering, cursor, and deduplication key.
+
+```mermaid
+flowchart TB
+  send["Sender App<br/>HTTP POST + client_message_id"]
+  api["Express API<br/>HTTP command / cursor query"]
+  canonical["MySQL<br/>Message with confirmed database ID"]
+  response["Canonical HTTP response"]
+  page["before_id cursor page"]
+  realtime["WebSocket<br/>Self / peer event"]
+  merge["Mobile App<br/>Merge by database ID"]
+  recovery["Reconnect<br/>Recover from the latest page"]
+  peer["Peer App"]
+
+  send -->|Idempotent persistence| api --> canonical
+  canonical --> response --> merge
+  canonical --> realtime
+  recovery --> api
+  canonical --> page --> merge
+  realtime --> merge
+  realtime --> peer
+```
+
+**Implementation and validation:** When the same sender retries the same payload with the same `client_message_id`, the API returns the original message without publishing another WebSocket event or notification. Reusing the key with a different payload is rejected as a conflict. The mobile app merges the HTTP response and sender/peer WebSocket events by the database message ID. After reconnect or screen focus, it walks backward from the latest HTTP page with a `before_id` cursor until it reaches the previous synchronization boundary, merging any missing messages. Regression tests cover persistence, duplicate requests, payload conflicts, cursor pages, and mobile reconnect merging.
+
+**Scaling consideration:** WebSocket fan-out currently uses the connection set of a single API process. To prepare for an event broker and an outbox when moving to multiple instances, the screen-recovery source remains the HTTP API and database.
+
 ### Migrating the Admin Web to TypeScript and Preventing JavaScript Reintroduction in CI
 
 **Problem and diagnosis:** Because the admin screens, stores, and locale resources were written in JavaScript and JSX, expected value shapes and response contracts were not visible in types. Loose casts, missing locale keys, and runtime rendering errors therefore had to be addressed together during the migration.

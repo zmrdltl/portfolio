@@ -182,7 +182,7 @@ content_coverage:
       - regression tests
     forbidden_headings: [Technologies]
   - path: docs/projects/coupler.md
-    search_terms: [Coupler, React Native, React 관리자 웹, TypeScript, Express API, MySQL, API 응답, 심사 상태, GitHub Actions]
+    search_terms: [Coupler, React Native, React 관리자 웹, TypeScript, Express API, MySQL, API 응답, 심사 상태, GitHub Actions, 실시간 채팅, WebSocket, client_message_id, before_id]
     required_terms:
       - 문제와 진단
       - 제약과 선택
@@ -195,9 +195,20 @@ content_coverage:
       - API 응답
       - 가입·심사 상태
       - GitHub Actions
+      - 실시간 채팅
+      - WebSocket
+      - client_message_id
+      - before_id
+      - DB에 먼저 저장
+      - 송신자 범위의 고유 키
+      - 최초 메시지를 반환
+      - 다른 payload로 키를 재사용하면 충돌로 거부
+      - DB 메시지 ID로 병합
+      - 단일 API 프로세스
+      - outbox
     forbidden_headings: [기술]
   - path: docs/projects/coupler.en.md
-    search_terms: [Coupler, React Native, React admin web, TypeScript, Express API, MySQL, API response, review state, GitHub Actions]
+    search_terms: [Coupler, React Native, React admin web, TypeScript, Express API, MySQL, API response, review state, GitHub Actions, real-time chat, WebSocket, client_message_id, before_id]
     required_terms:
       - Problem and diagnosis
       - Constraints and decision
@@ -210,4 +221,15 @@ content_coverage:
       - API response
       - signup and review state
       - GitHub Actions
+      - real-time
+      - WebSocket
+      - client_message_id
+      - before_id
+      - persists to the database first
+      - sender-scoped unique key
+      - returns the original message
+      - different payload is rejected as a conflict
+      - database message ID
+      - single API process
+      - outbox
     forbidden_headings: [Technologies]
