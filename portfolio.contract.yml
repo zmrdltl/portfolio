@@ -25,7 +25,7 @@ homepage:
         experience/cluml.md:
           type_period: [정규 경력, "2025.03", "2026.07"]
           role: [Rust, 문제 분석, 구현, 회귀 검증]
-          change: [동시 요청, 예약 전 상태, 경합]
+          change: [LLM API 호출, 예약 전 상태, 경합]
           proof: [같은 동시성 조건, 10배 이상, 허용치 이하]
           technologies: [Rust, 동시성 제어, 회귀 테스트]
         experience/tmaxcloud.md:
@@ -62,7 +62,7 @@ homepage:
         experience/cluml.md:
           type_period: [Full-time role, Mar 2025, Jul 2026]
           role: [Rust backend, analysis, implementation, regression verification]
-          change: [concurrent requests, pre-reservation state, race]
+          change: [LLM API calls, pre-reservation state, race]
           proof: [same concurrency load, ten times, at or below the limit]
           technologies: [Rust, concurrency control, regression testing]
         experience/tmaxcloud.md:
@@ -86,14 +86,17 @@ homepage:
 
 content_coverage:
   - path: docs/experience/cluml.md
-    search_terms: [ClumL, Rust, 요청 제한, 동시성, 외부 설정, GraphQL, 회귀 테스트, Chrono, Jiff]
+    search_terms: [ClumL, Rust, 외부 LLM API, 호출량 제어, 토큰 예약, 동시성, 외부 설정, GraphQL, 회귀 테스트, Chrono, Jiff]
     required_terms:
       - 문제와 진단
       - 제약과 선택
       - 검증과 결과
       - Rust
       - 동시성
-      - 요청 제한
+      - 외부 LLM API
+      - 호출량 제어
+      - 토큰 예약
+      - 수정 전 실패 흐름
       - 네트워크 이벤트 탐지 임계값
       - 외부 설정
       - GraphQL
@@ -102,14 +105,17 @@ content_coverage:
       - Jiff
     forbidden_headings: [기술]
   - path: docs/experience/cluml.en.md
-    search_terms: [ClumL, Rust, request-limiting, concurrency, external configuration, GraphQL, regression tests, Chrono, Jiff]
+    search_terms: [ClumL, Rust, Outbound LLM API, Rate Limiting, token reservation, concurrency, external configuration, GraphQL, regression tests, Chrono, Jiff]
     required_terms:
       - Problem and diagnosis
       - Constraints and decision
       - Validation and result
       - Rust
       - concurrency
-      - request-limiting
+      - Outbound LLM API
+      - Rate Limiting
+      - token reservation
+      - Failure flow before the fix
       - network-event detection threshold
       - external configuration
       - GraphQL

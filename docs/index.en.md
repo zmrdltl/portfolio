@@ -8,15 +8,15 @@ I have worked on data, state, and concurrency problems across code-generation pl
 
 ## Representative Work
 
-### [ClumL · Request-Limiting Concurrency Fix for an AI Security Analysis Engine](experience/cluml.md)
+### [ClumL · Outbound LLM API Rate-Limiting Concurrency Fix](experience/cluml.md)
 
 **Type and period:** Full-time role · Mar 2025 - Jul 2026
 
 **Role:** Rust backend problem analysis, implementation, and regression verification
 
-**Core change:** Fixed a check-and-reserve race in which concurrent requests read the same pre-reservation state.
+**Core change:** Fixed a check-and-reserve race in which concurrent LLM API calls read the same pre-reservation state.
 
-**Validation:** Reproduced at least ten times the configured limit passing under the same concurrency load, then confirmed the fixed path stayed at or below the limit.
+**Validation:** Under the same concurrency load, reproduced LLM API calls passing at more than ten times the effective concurrency limit, then confirmed the fixed path stayed at or below the limit.
 
 **Technologies:** `Rust` · `concurrency control` · `regression testing`
 

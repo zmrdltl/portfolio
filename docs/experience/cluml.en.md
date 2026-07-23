@@ -2,34 +2,38 @@
 
 - Period: Mar 2025 - Jul 2026
 
-## Fixing a Request-Limiting Concurrency Bug in an AI Security Analysis Engine
+## Fixing a Concurrency Bug in Outbound LLM API Rate Limiting
 
-**Problem and diagnosis:** I analyzed requests that remained pending for an extended time on a customer demo server and isolated a check-and-reserve race in which concurrent requests read the same pre-reservation state and exceeded the configured limit. I treated the maximum wait imposed by the fixed window as a separate cause.
+**Problem and diagnosis:** I analyzed outbound LLM API calls from an AI security analysis engine that remained pending for an extended time on a customer demo server. I isolated a check-and-reserve race in which concurrent calls read the same pre-reservation state, causing both the in-flight call count and pending token reservations to exceed their limits. I treated the maximum wait imposed by the fixed window as a separate cause.
 
-**Constraints and decision:** The capacity check and reservation update had to be atomic against one current state, but holding the lock while waiting would block other requests. I kept only the check and reservation in the same lock section and released the lock before waiting.
+**Constraints and decision:** The in-flight call count and estimated token reservation had to be checked against one current state, but holding the lock while waiting would block other calls. I kept only the check and reservation in the same lock section and released the lock before waiting.
 
 ```mermaid
 flowchart TB
   ui["Security Analysis UI"]
   api["Security Analysis API"]
-  limiter["Request Limiter"]
-  capacity["Reservation/Capacity State"]
   worker["Analysis Job Execution"]
+  limiter["LLM API Rate Limiter"]
+  capacity["Reservation/Capacity State"]
+  llm["External LLM API"]
 
   ui --> api
-  api --> limiter
+  api --> worker
+  worker --> limiter
   limiter --> capacity
-  limiter --> worker
+  limiter --> llm
 ```
+
+**Failure flow before the fix:** Capacity checks and reservation updates ran in separate lock sections, allowing concurrent calls to read the same pre-reservation state.
 
 On mobile, scroll horizontally to view the full sequence diagram.
 { .diagram-scroll-hint }
 
 ```mermaid { .diagram-scroll }
 sequenceDiagram
-  participant A as Request A
-  participant B as Request B
-  participant L as Request Limiter
+  participant A as LLM API Call A
+  participant B as LLM API Call B
+  participant L as LLM API Rate Limiter
   participant S as Reservation/Capacity State
 
   A->>L: Check capacity
@@ -38,16 +42,16 @@ sequenceDiagram
   B->>L: Check capacity
   L->>S: Read the same state
   S-->>L: Capacity available
-  A->>L: Request reservation
+  A->>L: Reserve capacity
   L->>S: Record reservation
-  B->>L: Request reservation
+  B->>L: Reserve capacity
   L->>S: Record reservation
-  Note over L,S: Requests reading the same state can exceed the limit
+  Note over L,S: LLM API calls reading the same state can exceed the limit
 ```
 
-**Implementation:** I changed the request-limiting logic to decide and immediately reserve against one shared state.
+**Implementation:** I changed the outbound LLM API rate limiter to check one shared state and immediately reserve an in-flight slot and estimated tokens.
 
-**Validation and result:** Before the fix, I reproduced over-reservation that allowed at least ten times as many requests as configured through the limiter. After the fix, regression tests confirmed that the limiter allowed no more requests than configured under the same concurrency load.
+**Validation and result:** Before the fix, I reproduced over-reservation in which the in-flight call count and pending token reservations each reached at least ten times their respective limits. After the fix, regression tests confirmed that both values stayed within their respective limits under the same concurrency load.
 
 ## Moving a Network-Event Detection Threshold to External Configuration
 

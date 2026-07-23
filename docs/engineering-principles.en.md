@@ -10,7 +10,7 @@ I define the problem and completion criteria before optimizing implementation sp
 
 ### 1. Separate Symptoms from Causes and Set the Scope of the Fix
 
-I do not assume that a slow or failing path has one cause. As in the [ClumL request-limiting fix](experience/cluml.md), which separated a concurrency race from fixed-window waiting, I isolate causes before deciding what to change and what to leave unchanged.
+I do not assume that a slow or failing path has one cause. As in the [ClumL outbound LLM API rate-limiting fix](experience/cluml.md), which separated a concurrency race from fixed-window waiting, I isolate causes before deciding what to change and what to leave unchanged.
 
 ### 2. Make Completion Criteria Testable
 
