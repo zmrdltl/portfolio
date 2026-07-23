@@ -116,6 +116,60 @@ class PublicCopyCheckTests(unittest.TestCase):
 
         self.assertEqual(self.validate(), [])
 
+    def test_context_free_tmaxcloud_test_component_wording_is_rejected(self) -> None:
+        samples = (
+            "## API 통합 테스트 환경 구현\n",
+            "React·WebSocket E2E 페이지와 Java REST API를 구현했습니다.\n",
+            "## API Integration Test Environment\n",
+            "I built a WebSocket E2E page and Java REST API.\n",
+        )
+
+        for sample in samples:
+            with self.subTest(sample=sample):
+                for path in (
+                    self.docs_dir / "experience" / "tmaxcloud.md",
+                    self.docs_dir / "experience" / "tmaxcloud.en.md",
+                ):
+                    path.unlink(missing_ok=True)
+                self.write_tmaxcloud_page(
+                    f"# TmaxCloud\n\n{sample}",
+                    english="Integration" in sample or "I built" in sample,
+                )
+                self.assertTrue(
+                    any(
+                        "context-free TmaxCloud test-component wording" in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_unverified_tmaxcloud_cycle_reduction_metric_is_rejected(self) -> None:
+        samples = (
+            ("반복 설계·검증 주기를 약 4주에서 2주로 줄였습니다.\n", False),
+            (
+                "The design-to-verification cycle fell from four weeks "
+                "to about two.\n",
+                True,
+            ),
+        )
+
+        for sample, english in samples:
+            with self.subTest(sample=sample):
+                for path in (
+                    self.docs_dir / "experience" / "tmaxcloud.md",
+                    self.docs_dir / "experience" / "tmaxcloud.en.md",
+                ):
+                    path.unlink(missing_ok=True)
+                self.write_tmaxcloud_page(
+                    f"# TmaxCloud\n\n{sample}",
+                    english=english,
+                )
+                self.assertTrue(
+                    any(
+                        "unverified TmaxCloud cycle-reduction metric" in finding
+                        for finding in self.validate()
+                    )
+                )
+
     def test_curator_facing_review_wording_is_rejected(self) -> None:
         samples = (
             "## 대표 작업으로 보는 이유\n",

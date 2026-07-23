@@ -1102,6 +1102,35 @@ PUBLIC_COPY_PATTERNS = [
         paths=("experience/tmaxcloud.md", "experience/tmaxcloud.en.md"),
     ),
     PublicCopyPattern(
+        "context-free TmaxCloud test-component wording",
+        re.compile(
+            r"WebSocket(?:\s+기반)?\s+E2E\s*(?:페이지|page)|"
+            r"^\s*#{1,6}\s+(?:API\s+통합\s+테스트\s+환경(?:\s+구현)?|"
+            r"API\s+Integration\s+Test\s+Environment)\s*$",
+            re.IGNORECASE,
+        ),
+        paths=(
+            "index.md",
+            "index.en.md",
+            "experience/tmaxcloud.md",
+            "experience/tmaxcloud.en.md",
+        ),
+    ),
+    PublicCopyPattern(
+        "unverified TmaxCloud cycle-reduction metric",
+        re.compile(
+            r"4주(?:에서|에서\s+약)?\s*2주|"
+            r"four\s+weeks[^.\n]{0,80}(?:about\s+)?two",
+            re.IGNORECASE,
+        ),
+        paths=(
+            "index.md",
+            "index.en.md",
+            "experience/tmaxcloud.md",
+            "experience/tmaxcloud.en.md",
+        ),
+    ),
+    PublicCopyPattern(
         "internal TmaxCloud exception-logger identifier",
         re.compile(r"\bErrorLogger\b", re.IGNORECASE),
         paths=("experience/tmaxcloud.md", "experience/tmaxcloud.en.md"),
