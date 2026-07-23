@@ -69,7 +69,7 @@ homepage:
           type_period: [Full-time role, Oct 2021, Nov 2024]
           role: [Java, TypeScript, design, implementation, verification]
           change: [UI-defined services, Java APIs, SQL, JAR, before deployment]
-          proof: [service definitions, request/response shapes, database writes, 20-minute, build, deployment, verification cycle]
+          proof: [service definitions, request/response shapes, database-write errors, 20-minute, build, deployment, verification cycle]
           technologies: [Java, WebSocket, Tibero]
         opensource/gluesql.md:
           type_period: [Open-source contribution, Jun 2021, Present]

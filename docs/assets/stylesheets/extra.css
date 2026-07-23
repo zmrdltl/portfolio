@@ -1,3 +1,9 @@
+/* Prefer natural word boundaries in headings, with a fallback for long tokens. */
+.md-typeset :is(h1, h2, h3) {
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
 /* Preserve Mermaid label readability without widening the page itself. */
 .md-typeset .diagram-scroll-hint {
   display: none;

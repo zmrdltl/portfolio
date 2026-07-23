@@ -28,7 +28,7 @@ I have worked on data, state, and concurrency problems across code-generation pl
 
 **Core change:** Added a feature to a platform that turns UI-defined services into Java APIs, SQL, and a JAR, allowing those APIs to be called and checked against database state before deployment.
 
-**Validation:** Invalid service definitions, request/response shapes, and database writes could be found without repeating the roughly 20-minute build, deployment, and verification cycle.
+**Validation:** Invalid service definitions, request/response shapes, and database-write errors could be found without repeating the roughly 20-minute build, deployment, and verification cycle.
 
 **Technologies:** `Java` · `WebSocket` · `Tibero`
 
