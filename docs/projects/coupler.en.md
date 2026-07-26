@@ -38,33 +38,59 @@ stateDiagram-v2
 
 **Implementation:** While moving the existing codebase to version 2.0.0, I reduced the initial application to basic information and the required profile, implemented state transitions that allow associate- and full-member reviews to proceed independently after approval, and reworked the database structure. The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful responses from screen-routing state, while the [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) aligns submission and resubmission, signup versus settings-change reviews, and admin queue classification.
 
-```mermaid
-flowchart TB
-  api["Express API\nAccess State / Next Action"]
-  app["React Native App\nScreen Routing / Tab Access"]
-  admin["React Admin Web\nReview Queue / Detail Actions"]
-  db["MySQL\nState / Review Rows / Migration"]
-  checks["Release Checks\nContract / Screen / Queue Regression"]
-
-  db --> api
-  api --> app
-  api --> admin
-  app --> checks
-  admin --> checks
-  api --> checks
-```
-
 **Validation and result:** I kept API response-contract, mobile-routing, and admin review-queue regression tests in the same release checklist. Changes go through the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), QA, and deployment and rollback procedures.
-
-## Meta SDK Events Observed Before and After the Signup Review Redesign
 
 Observed Meta SDK event count upon reaching the initial signup review stage: about 10 before the redesign and about 100 after.
 
 This value counts events recorded when the initial signup review stage was reached.
 
+## Connecting N-to-N Group Meetings as One Operational Lifecycle
+
+**Problem and diagnosis:** A group meeting involving several members and an operator is more than a scheduling screen. Recruitment, application, operator approval, confirmed participation, chat access, completion, and review eligibility change at different times. If each screen and API inferred those states independently, a canceled application could reappear, chat could open before confirmation, or writing could remain available after the meeting ended.
+
+**Constraints and decision:** I had to add the feature within the existing app, API, admin web, and database while aligning operator management of events and participants with member application, reapplication, leaving, chat, and reviews. I separated the event and application lifecycles under server-owned state, initialized group chat only when the event was confirmed for the first time, and derived chat availability and completion from server time.
+
+```mermaid
+flowchart TB
+  subgraph event["Event lifecycle"]
+    draft["DRAFT"]
+    open["OPEN"]
+    confirmed["CONFIRMED<br/>Initialize chat on first entry"]
+    finished["FINISHED<br/>Event start + 24 hours"]
+    canceled["CANCELED"]
+    deleted["DELETED"]
+    draft -->|Publish| open
+    open <-->|Confirm / reopen| confirmed
+    open --> canceled
+    confirmed --> canceled
+    draft --> deleted
+    open -->|Active event with initialized chat| finished
+    confirmed -->|Event start + 24 hours| finished
+  end
+
+  subgraph application["Application lifecycle"]
+    applied["APPLIED"]
+    approved["APPROVED"]
+    appCanceled["CANCELED"]
+    left["LEFT"]
+    applied -->|Approve participation| approved
+    approved -->|Operator cancellation| appCanceled
+    approved -->|Participant leaves| left
+    appCanceled -->|Reapply| applied
+  end
+
+  finished ~~~ applied
+```
+
+**Implementation:** I implemented meeting, application, participant, chat, and review state in the API and database, then connected admin workflows for creation, publication, approval and cancellation, participants, reviews, and reports. A teammate built parts of the initial mobile list, detail, and chat UI; I connected application state, real-time message merging, read state, notification markers, reapplication, reporting, and reviews to that collaborative mobile flow. Group messages are persisted through REST and received as server-confirmed events over WebSocket.
+
+**Validation and result:** Event publication, confirmation, reopening, and completion, along with application, approval, leaving, reapplication, and review transitions, are release criteria together with API, admin-web, and mobile regressions. Chat opens at 1:00 p.m. on the previous calendar day and becomes read-only 24 hours after the event start. I documented the lifecycle in the [group meeting system documentation](https://coupler-developer.github.io/docs/architecture/group-meeting-system/) and released it in the v2.3.0 scope.
+
 ## Additional Work
 
-### Recovering Missing Messages in Real-Time Chat for One-to-One Conversations
+### Three Real-Time Chat Surfaces and One-to-One Gap Recovery
+
+I connected real-time messages and unread-count updates across curator chat, one-to-one matching chat, and N-to-N group chat. All three keep the database and HTTP reads as the durable source while WebSocket distributes confirmed state to connected clients. The idempotent retry and cursor-recovery design below applies specifically to one-to-one matching chat.
 
 **Problem and diagnosis:** On mobile networks, a response can be lost after a message is persisted, an HTTP response can overlap with the sender's WebSocket event, and peer messages can be missed while the connection is down. Treating every retry as a new command would duplicate messages and notifications, while trusting WebSocket delivery alone could leave the screen inconsistent with the database.
 
@@ -94,6 +120,12 @@ flowchart TB
 **Implementation and validation:** When the same sender retries the same payload with the same `client_message_id`, the API returns the original message without publishing another WebSocket event or notification. Reusing the key with a different payload is rejected as a conflict. The mobile app merges the HTTP response and sender/peer WebSocket events by the database message ID. After reconnect or screen focus, it walks backward from the latest HTTP page with a `before_id` cursor until it reaches the previous synchronization boundary, merging any missing messages. Regression tests cover persistence, duplicate requests, payload conflicts, cursor pages, and mobile reconnect merging.
 
 **Scaling consideration:** WebSocket fan-out currently uses the connection set of a single API process. To prepare for an event broker and an outbox when moving to multiple instances, the screen-recovery source remains the HTTP API and database.
+
+### An Interruptible Database Migration Runner and Recovery Criteria
+
+**Problem and decision:** An operational database change must prevent several unsafe states together: schema changes without a migration record, partially applied steps, and an older API continuing to write against the new schema. I fixed the target migrations and order in an immutable plan with checksums, then required writer and external-effect fencing, drain, backup, and preconditions before mutation.
+
+**Implementation and validation:** I implemented an interruptible runner that records each migration, its postcondition, and a durable ledger. If interrupted, it keeps the fence in place and resumes or recovers only after confirming the same plan. In development, I confirmed that the related schema change had been applied and its postcondition had succeeded, but the postcheck ledger record was missing; the runner repaired only that ledger gap. The v2.3.0 production migrations predated this runner, so I did not retroactively claim that the new runner executed them; instead, I closed that state by revalidating the live catalog, ledger gaps, postconditions, and schema fingerprint. These rules are maintained in the [database migration policy](https://coupler-developer.github.io/docs/policy/db-migration-gate-policy/).
 
 ### Migrating the Admin Web to TypeScript and Preventing JavaScript Reintroduction in CI
 
