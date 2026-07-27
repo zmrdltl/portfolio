@@ -5,8 +5,13 @@ Keep this file limited to local repository facts and local verification commands
 
 ## External Context
 
-Before writing, reviewing, or restructuring portfolio content, use the external career-writing source configured for this workspace.
-If that source is unavailable, stop and ask the user for the portfolio writing context.
+Repository-local inspection may report observations from the current public files,
+navigation, wording, and checks without external context.
+Before recommending changes to portfolio strategy, case selection, page structure,
+public wording, or factual claims, use the external career-writing source configured
+for this workspace. If it is unavailable, stop at repository observations and state
+the missing verification instead of presenting a recommendation.
+
 Do not recreate portfolio strategy, case selection, writing policy, review lenses, or public content boundary rules in this repository.
 Before completing any portfolio modification, use that external source's policy-synchronization gate and report whether the external policy source required an update. Keep the decision criteria in the external source rather than copying them here.
 
