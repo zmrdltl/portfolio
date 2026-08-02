@@ -84,7 +84,7 @@ flowchart TB
 
 **Implementation:** I implemented meeting, application, participant, chat, and review state in the API and database, then connected admin workflows for creation, publication, approval and cancellation, participants, reviews, and reports. A teammate built parts of the initial mobile list, detail, and chat UI; I connected application state, real-time message merging, read state, notification markers, reapplication, reporting, and reviews to that collaborative mobile flow. Group messages are persisted through REST and received as server-confirmed events over WebSocket.
 
-**Validation and result:** Event publication, confirmation, reopening, and completion, along with application, approval, leaving, reapplication, and review transitions, are release criteria together with API, admin-web, and mobile regressions. Chat opens at 1:00 p.m. on the previous calendar day and becomes read-only 24 hours after the event start. I documented the lifecycle in the [group meeting system documentation](https://coupler-developer.github.io/docs/architecture/group-meeting-system/) and released it in the v2.3.0 scope.
+**Validation and result:** Event publication, confirmation, reopening, and completion, along with application, approval, leaving, reapplication, and review transitions, are release criteria together with API, admin-web, and mobile regressions. Chat opens at 1:00 p.m. on the calendar day before the currently scheduled event start and becomes read-only 24 hours after that start time. I documented the lifecycle in the [group meeting system documentation](https://coupler-developer.github.io/docs/architecture/group-meeting-system/) and released it in the v2.3.0 scope.
 
 ## Additional Work
 

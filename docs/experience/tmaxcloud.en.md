@@ -47,7 +47,7 @@ flowchart TD
 
 **Implementation:** I encoded the source/history-table DDL and the SQL that stores a row before an update or deletion in FreeMarker templates. I also wrote a query that combines current and historical data to reconstruct each row as of a requested date and return its last editor.
 
-**Result:** The CRUD code produced by the platform stores the prior row, editor, and deletion state in the history table. Given a date, the query selects the row version valid on that date and returns the historical table state and last editor.
+**Validation and result:** Using example data, I confirmed that the history table captured values before updates and deletions together with the editor and deletion state. I also confirmed that, for a requested date, the query selected the valid history row for each primary key and returned the table state and last editor as of that date.
 
 ## Additional Work
 
