@@ -20,6 +20,7 @@ Before completing any portfolio modification, use that external source's policy-
 - Public pages live under `docs/`.
 - Navigation is configured in `mkdocs.yml`.
 - Korean Markdown is the source language. When Korean public content changes, update the matching `*.en.md` file.
+- Use `diagram-design` for new diagrams.
 
 ## Public Wording Quality Gate
 
