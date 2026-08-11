@@ -46,41 +46,25 @@ This value counts events recorded when the initial signup review stage was reach
 
 ## Connecting N-to-N Group Meetings as One Operational Lifecycle
 
-**Problem and diagnosis:** A group meeting involving several members and an operator is more than a scheduling screen. Recruitment, application, operator approval, confirmed participation, chat access, completion, and review eligibility change at different times. If each screen and API inferred those states independently, a canceled application could reappear, chat could open before confirmation, or writing could remain available after the meeting ended.
+**Problem and diagnosis:** A group meeting involving several members and an operator is more than a scheduling screen. Recruitment, application, event confirmation, participant approval, chat access, completion, and review eligibility change at different times. If each screen and API inferred those states independently, a canceled application could reappear, chat could open before event confirmation, or writing could remain available after the meeting ended.
 
 **Constraints and decision:** I had to add the feature within the existing app, API, admin web, and database while aligning operator management of events and participants with member application, reapplication, leaving, chat, and reviews. I separated the event and application lifecycles under server-owned state, initialized group chat only when the event was confirmed for the first time, and derived chat availability and completion from server time.
 
-```mermaid
-flowchart TB
-  subgraph event["Event lifecycle"]
-    draft["DRAFT"]
-    open["OPEN"]
-    confirmed["CONFIRMED<br/>Initialize chat on first entry"]
-    finished["FINISHED<br/>Event start + 24 hours"]
-    canceled["CANCELED"]
-    deleted["DELETED"]
-    draft -->|Publish| open
-    open <-->|Confirm / reopen| confirmed
-    open --> canceled
-    confirmed --> canceled
-    draft --> deleted
-    open -->|Active event with initialized chat| finished
-    confirmed -->|Event start + 24 hours| finished
-  end
+### Event lifecycle
 
-  subgraph application["Application lifecycle"]
-    applied["APPLIED"]
-    approved["APPROVED"]
-    appCanceled["CANCELED"]
-    left["LEFT"]
-    applied -->|Approve participation| approved
-    approved -->|Operator cancellation| appCanceled
-    approved -->|Participant leaves| left
-    appCanceled -->|Reapply| applied
-  end
+Scroll horizontally to inspect the full lifecycle.
+{ .diagram-scroll-hint }
 
-  finished ~~~ applied
-```
+![A draft event is published for recruitment, moves between open and event-confirmed states, and then finishes. Draft events can be deleted, while open or confirmed events can be canceled. Group chat is initialized once when the event first becomes confirmed.](../assets/diagrams/coupler-event-lifecycle.en.svg)
+{ .editorial-diagram-scroll tabindex="0" aria-label="Group meeting event lifecycle diagram" }
+
+### Participant application lifecycle
+
+Scroll horizontally to inspect the full lifecycle.
+{ .diagram-scroll-hint }
+
+![After an operator approves participation, the application moves to approved status. The operator can then cancel it or the participant can leave, and a canceled application can be submitted again.](../assets/diagrams/coupler-application-lifecycle.en.svg)
+{ .editorial-diagram-scroll tabindex="0" aria-label="Group meeting participant application lifecycle diagram" }
 
 **Implementation:** I implemented meeting, application, participant, chat, and review state in the API and database, then connected admin workflows for creation, publication, approval and cancellation, participants, reviews, and reports. A teammate built parts of the initial mobile list, detail, and chat UI; I connected application state, real-time message merging, read state, notification markers, reapplication, reporting, and reviews to that collaborative mobile flow. Group messages are persisted through REST and received as server-confirmed events over WebSocket.
 

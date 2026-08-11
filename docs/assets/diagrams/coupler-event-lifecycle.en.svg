@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="448" viewBox="0 0 800 448" role="img" aria-labelledby="title desc">
+  <title id="title">Coupler group meeting event lifecycle</title>
+  <desc id="desc">A draft event is published for recruitment, moves between open and event-confirmed states, and then finishes. Draft events can be deleted, while open or confirmed events can be canceled. Group chat is initialized once when the event first becomes confirmed, and an active event with initialized chat finishes 24 hours after the event starts.</desc>
+  <defs>
+    <style><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap');
+
+      svg {
+        --paper: #f5f5f5;
+        --ink: #2d3142;
+        --muted: #4f5d75;
+        --soft: #7a8399;
+        --accent: #4051b5;
+        --accent-tint: rgba(64, 81, 181, 0.08);
+        --link: #2e5aa8;
+      }
+
+      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", sans-serif; }
+      .connector { fill: none; stroke: var(--muted); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.2; }
+      .connector-accent { stroke: var(--accent); }
+      .connector-secondary { stroke-dasharray: 4 4; stroke-width: 0.8; }
+      .state { fill: #fff; stroke: var(--ink); stroke-width: 1; }
+      .state-accent { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.2; }
+      .state-terminal { fill: rgba(45, 49, 66, 0.05); stroke: var(--muted); }
+      .state-name { fill: var(--ink); font-size: 12px; font-weight: 600; text-anchor: middle; }
+      .state-code,
+      .state-note,
+      .transition-label { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .state-code { fill: var(--muted); font-size: 8px; font-weight: 500; letter-spacing: 0.08em; text-anchor: middle; }
+      .state-note { fill: var(--accent); font-size: 8px; font-weight: 500; text-anchor: middle; }
+      .transition-label { fill: var(--muted); font-size: 8px; font-weight: 500; letter-spacing: 0.06em; text-anchor: middle; }
+      .transition-label-accent { fill: var(--accent); }
+      .label-mask { fill: var(--paper); }
+      .start { fill: var(--ink); }
+      .arrow-default { fill: var(--muted); }
+      .arrow-accent { fill: var(--accent); }
+      .arrow-link { fill: var(--link); }
+    ]]></style>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow-default" points="0 0, 8 3, 0 6"/>
+    </marker>
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
+    </marker>
+    <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow-link" points="0 0, 8 3, 0 6"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="448" fill="var(--paper)"/>
+
+  <!-- Transitions first, then masks, then states. -->
+  <line class="connector" x1="40" y1="112" x2="64" y2="112" marker-end="url(#arrow)"/>
+  <line class="connector" x1="224" y1="112" x2="320" y2="112" marker-end="url(#arrow)"/>
+  <line class="connector connector-accent" x1="480" y1="96" x2="576" y2="96" marker-end="url(#arrow-accent)"/>
+  <line class="connector connector-secondary" x1="576" y1="128" x2="480" y2="128" marker-end="url(#arrow)"/>
+  <line class="connector" x1="144" y1="160" x2="144" y2="288" marker-end="url(#arrow)"/>
+  <line class="connector" x1="372" y1="160" x2="372" y2="288" marker-end="url(#arrow)"/>
+  <line class="connector" x1="656" y1="160" x2="656" y2="288" marker-end="url(#arrow)"/>
+  <path class="connector" d="M 428 160 V 236 Q 428 244 436 244 H 600 Q 608 244 608 252 V 288" marker-end="url(#arrow)"/>
+  <path class="connector" d="M 736 112 H 768 Q 776 112 776 120 V 408 Q 776 416 768 416 H 408 Q 400 416 400 408 V 384" marker-end="url(#arrow)"/>
+
+  <rect class="label-mask" x="240" y="88" width="64" height="16" rx="4"/>
+  <text class="transition-label" x="272" y="100">PUBLISH</text>
+  <rect class="label-mask" x="496" y="72" width="64" height="16" rx="4"/>
+  <text class="transition-label transition-label-accent" x="528" y="84">CONFIRM</text>
+  <rect class="label-mask" x="496" y="104" width="64" height="16" rx="4"/>
+  <text class="transition-label" x="528" y="116">REOPEN</text>
+  <rect class="label-mask" x="152" y="208" width="56" height="16" rx="4"/>
+  <text class="transition-label" x="180" y="220">DELETE</text>
+  <rect class="label-mask" x="260" y="204" width="104" height="28" rx="4"/>
+  <text class="transition-label" x="312" y="216">CHAT</text>
+  <text class="transition-label" x="312" y="228">INITIALIZED</text>
+  <rect class="label-mask" x="664" y="208" width="64" height="16" rx="4"/>
+  <text class="transition-label" x="696" y="220">CANCEL</text>
+  <rect class="label-mask" x="488" y="220" width="64" height="16" rx="4"/>
+  <text class="transition-label" x="520" y="232">CANCEL</text>
+  <rect class="label-mask" x="508" y="392" width="96" height="16" rx="4"/>
+  <text class="transition-label" x="556" y="404">START + 24H</text>
+
+  <circle class="start" cx="32" cy="112" r="6"/>
+
+  <rect class="state" x="64" y="64" width="160" height="96" rx="8"/>
+  <text class="state-name" x="144" y="104">Draft</text>
+  <text class="state-code" x="144" y="128">DRAFT</text>
+
+  <rect class="state" x="320" y="64" width="160" height="96" rx="8"/>
+  <text class="state-name" x="400" y="104">Recruiting</text>
+  <text class="state-code" x="400" y="128">OPEN</text>
+
+  <rect class="state state-accent" x="576" y="64" width="160" height="96" rx="8"/>
+  <text class="state-name" x="656" y="88">Event confirmed</text>
+  <text class="state-code" x="656" y="108">CONFIRMED</text>
+  <text class="state-note" x="656" y="128">FIRST ENTRY</text>
+  <text class="state-note" x="656" y="140">INIT CHAT</text>
+
+  <rect class="state state-terminal" x="64" y="288" width="160" height="96" rx="8"/>
+  <text class="state-name" x="144" y="328">Deleted</text>
+  <text class="state-code" x="144" y="352">DELETED</text>
+
+  <rect class="state state-terminal" x="320" y="288" width="160" height="96" rx="8"/>
+  <text class="state-name" x="400" y="328">Finished</text>
+  <text class="state-code" x="400" y="352">FINISHED</text>
+
+  <rect class="state state-terminal" x="576" y="288" width="160" height="96" rx="8"/>
+  <text class="state-name" x="656" y="328">Event canceled</text>
+  <text class="state-code" x="656" y="352">CANCELED</text>
+</svg>

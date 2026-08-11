@@ -4,9 +4,29 @@
   word-break: keep-all;
 }
 
-/* Preserve Mermaid label readability without widening the page itself. */
+/* Preserve diagram label readability without widening the page itself. */
 .md-typeset .diagram-scroll-hint {
   display: none;
+}
+
+.md-typeset .editorial-diagram-scroll {
+  background: #fafafa;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  margin: 0.5rem 0 2rem;
+  padding: 0.5rem;
+}
+
+.md-typeset .editorial-diagram-scroll:focus-visible {
+  outline: 0.15rem solid var(--md-accent-fg-color);
+  outline-offset: 0.1rem;
+}
+
+.md-typeset .editorial-diagram-scroll img {
+  display: block;
+  height: auto;
+  margin: 0;
+  width: 100%;
 }
 
 @media screen and (max-width: 44.984375em) {
@@ -30,6 +50,20 @@
     display: block;
     height: auto;
     margin: 0;
+    max-width: none;
+    min-width: 40rem;
+  }
+
+  .md-typeset .editorial-diagram-scroll {
+    -webkit-overflow-scrolling: touch;
+    margin-inline: -0.4rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding: 0.4rem 0.4rem 0.65rem;
+    scrollbar-gutter: stable;
+  }
+
+  .md-typeset .editorial-diagram-scroll img {
     max-width: none;
     min-width: 40rem;
   }

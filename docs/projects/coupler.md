@@ -46,41 +46,25 @@ Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후
 
 ## N:N 그룹미팅을 하나의 운영 생명주기로 연결
 
-**문제와 진단:** 여러 회원과 운영자가 함께 움직이는 그룹미팅은 모집 상태, 신청 상태, 운영자 승인, 참가 확정, 채팅 접근, 종료, 후기 자격이 서로 다른 시점에 바뀝니다. 각 화면과 API가 이를 따로 추론하면 취소한 신청이 되살아나거나, 참가 확정 전에 채팅이 열리거나, 종료 뒤에도 쓰기가 가능한 상태 불일치가 생길 수 있었습니다.
+**문제와 진단:** 여러 회원과 운영자가 함께 움직이는 그룹미팅은 모집 상태, 신청 상태, 행사 확정, 참가 승인, 채팅 접근, 종료, 후기 자격이 서로 다른 시점에 바뀝니다. 각 화면과 API가 이를 따로 추론하면 취소한 신청이 되살아나거나, 행사 확정 전에 채팅이 열리거나, 종료 뒤에도 쓰기가 가능한 상태 불일치가 생길 수 있었습니다.
 
 **제약과 선택:** 기존 앱·API·관리자 웹·DB 안에서 기능을 추가하면서 운영자의 행사·참가자 관리와 사용자의 신청·재신청·나가기·채팅·후기를 함께 맞춰야 했습니다. 행사와 신청의 상태 흐름을 분리해 서버가 소유하고, 행사를 처음 확정할 때만 그룹 채팅을 만들며, 채팅 가능 시간과 종료 상태도 서버 시간으로 계산하도록 선택했습니다.
 
-```mermaid
-flowchart TB
-  subgraph event["행사 생명주기"]
-    draft["DRAFT"]
-    open["OPEN"]
-    confirmed["CONFIRMED<br/>첫 진입에서 채팅 초기화"]
-    finished["FINISHED<br/>행사 시작 + 24시간"]
-    canceled["CANCELED"]
-    deleted["DELETED"]
-    draft -->|공개| open
-    open <-->|확정 / 재개방| confirmed
-    open --> canceled
-    confirmed --> canceled
-    draft --> deleted
-    open -->|채팅이 초기화된 활성 행사| finished
-    confirmed -->|행사 시작 + 24시간| finished
-  end
+### 행사 생명주기
 
-  subgraph application["신청 생명주기"]
-    applied["APPLIED"]
-    approved["APPROVED"]
-    appCanceled["CANCELED"]
-    left["LEFT"]
-    applied -->|참가 승인| approved
-    approved -->|운영자 확정 취소| appCanceled
-    approved -->|참가자 나가기| left
-    appCanceled -->|재신청| applied
-  end
+도식을 좌우로 스크롤해 전체 상태를 확인할 수 있습니다.
+{ .diagram-scroll-hint }
 
-  finished ~~~ applied
-```
+![작성 중인 행사를 공개해 모집하고 행사 확정과 재개방을 거쳐 종료합니다. 작성 중에는 삭제할 수 있고 모집 중이나 확정 상태에서는 행사 취소로 끝낼 수 있습니다. 행사가 처음 확정될 때 그룹 채팅을 한 번 초기화합니다.](../assets/diagrams/coupler-event-lifecycle.ko.svg)
+{ .editorial-diagram-scroll tabindex="0" aria-label="그룹미팅 행사 생명주기 도식" }
+
+### 참가 신청 생명주기
+
+도식을 좌우로 스크롤해 전체 상태를 확인할 수 있습니다.
+{ .diagram-scroll-hint }
+
+![참가 신청을 승인하면 참가 상태가 됩니다. 승인 뒤 운영자가 신청을 취소하거나 참가자가 나갈 수 있고, 운영자 취소 뒤에는 다시 신청할 수 있습니다.](../assets/diagrams/coupler-application-lifecycle.ko.svg)
+{ .editorial-diagram-scroll tabindex="0" aria-label="그룹미팅 참가 신청 생명주기 도식" }
 
 **구현:** API와 DB에 미팅·신청·참가·채팅·후기 상태를 구현하고, 관리자 웹에 생성·공개, 신청 승인·취소, 참가자·후기·신고를 처리하는 운영 화면을 연결했습니다. 팀원이 먼저 구성한 모바일 목록·상세·채팅 UI에는 신청 상태, 실시간 메시지 병합, 읽음 상태, 알림 표시, 재신청, 신고·후기 동작을 연결했습니다. 그룹 메시지는 REST로 저장하고 WebSocket으로 확정 메시지를 수신하도록 책임을 나눴습니다.
 
