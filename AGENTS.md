@@ -52,7 +52,10 @@ For `AGENTS.md`-only changes, Markdown lint is enough unless the change affects 
 
 ## Publishing
 
-- `main` is the reviewed source branch. GitHub Pages deployment is manual.
+- `main` is the reviewed source branch and the default delivery path. Commit and push directly to `main` unless the user explicitly requests another workflow.
+- Do not create a topic branch or pull request unless the user explicitly asks for one.
+- Keep `main` history linear; do not introduce merge commits.
+- GitHub Pages deployment is manual.
 - Use `pnpm` as declared by `packageManager`.
 - Deploy only when the user explicitly asks to publish the current reviewed public content.
 - Configure hooks with `pnpm run setup:githooks` in local clones that publish this repository.
