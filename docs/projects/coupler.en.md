@@ -18,23 +18,11 @@ I now lead development and operations across the React Native mobile app, Expres
 
 **Constraints and decision:** The change had to span the existing React Native app, Express API, React admin web, MySQL data, and migrations. Instead of matching client-specific conditionals, I made the API the single source that returns access state and the next action, while the app and admin web interpret only valid server states. Missing or invalid state does not open a screen by inference.
 
-```mermaid
-stateDiagram-v2
-  state "Submit basic information and required profile" as Submitted
-  state "Initial signup review" as InitialReview
-  state "Edit and resubmit" as Reapply
-  state "Open subsequent reviews" as ReviewOpen
-  state "Associate-member review" as AssociateReview
-  state "Full-member review" as FullReview
+Scroll horizontally to inspect the full flow.
+{ .diagram-scroll-hint }
 
-  [*] --> Submitted
-  Submitted --> InitialReview: Request review
-  InitialReview --> Reapply: Returned
-  Reapply --> InitialReview: Resubmit
-  InitialReview --> ReviewOpen: Approved
-  ReviewOpen --> AssociateReview: Submit
-  ReviewOpen --> FullReview: Submit
-```
+![After basic information and the required profile are submitted, initial signup review can return the application for editing and resubmission or approve it so associate- and full-member reviews can proceed independently.](../assets/diagrams/coupler-signup-review.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="Coupler signup and member-review state diagram" }
 
 **Implementation:** While moving the existing codebase to version 2.0.0, I reduced the initial application to basic information and the required profile, implemented state transitions that allow associate- and full-member reviews to proceed independently after approval, and reworked the database structure. The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful responses from screen-routing state, while the [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) aligns submission and resubmission, signup versus settings-change reviews, and admin queue classification.
 
@@ -56,7 +44,7 @@ Scroll horizontally to inspect the full lifecycle.
 { .diagram-scroll-hint }
 
 ![A draft event is published for recruitment, moves between open and event-confirmed states, and then finishes. Draft events can be deleted, while open or confirmed events can be canceled. Group chat is initialized once when the event first becomes confirmed.](../assets/diagrams/coupler-event-lifecycle.en.svg)
-{ .editorial-diagram-scroll tabindex="0" aria-label="Group meeting event lifecycle diagram" }
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="Group meeting event lifecycle diagram" }
 
 ### Participant application lifecycle
 
@@ -64,7 +52,7 @@ Scroll horizontally to inspect the full lifecycle.
 { .diagram-scroll-hint }
 
 ![After an operator approves participation, the application moves to approved status. The operator can then cancel it or the participant can leave, and a canceled application can be submitted again.](../assets/diagrams/coupler-application-lifecycle.en.svg)
-{ .editorial-diagram-scroll tabindex="0" aria-label="Group meeting participant application lifecycle diagram" }
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="Group meeting participant application lifecycle diagram" }
 
 **Implementation:** I implemented meeting, application, participant, chat, and review state in the API and database, then connected admin workflows for creation, publication, approval and cancellation, participants, reviews, and reports. A teammate built parts of the initial mobile list, detail, and chat UI; I connected application state, real-time message merging, read state, notification markers, reapplication, reporting, and reviews to that collaborative mobile flow. Group messages are persisted through REST and received as server-confirmed events over WebSocket.
 
@@ -80,26 +68,11 @@ I connected real-time messages and unread-count updates across curator chat, one
 
 **Constraints and decision:** I made message sending an HTTP command that persists to the database first and assigned WebSocket the separate responsibility of distributing server-confirmed real-time state. A client-generated `client_message_id` is stored as a sender-scoped unique key for safe retries, while the database-assigned message ID is the ordering, cursor, and deduplication key.
 
-```mermaid
-flowchart TB
-  send["Sender App<br/>HTTP POST + client_message_id"]
-  api["Express API<br/>HTTP command / cursor query"]
-  canonical["MySQL<br/>Message with confirmed database ID"]
-  response["Canonical HTTP response"]
-  page["before_id cursor page"]
-  realtime["WebSocket<br/>Self / peer event"]
-  merge["Mobile App<br/>Merge by database ID"]
-  recovery["Reconnect<br/>Recover from the latest page"]
-  peer["Peer App"]
+Scroll horizontally to inspect the full flow.
+{ .diagram-scroll-hint }
 
-  send -->|Idempotent persistence| api --> canonical
-  canonical --> response --> merge
-  canonical --> realtime
-  recovery --> api
-  canonical --> page --> merge
-  realtime --> merge
-  realtime --> peer
-```
+![The sender app issues an idempotent HTTP command that the API persists to MySQL first. The confirmed message then travels through the HTTP response, cursor pages, and WebSocket; mobile merges by database message ID and recovers gaps through HTTP after reconnecting.](../assets/diagrams/coupler-chat-delivery.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="Coupler one-to-one chat persistence, real-time delivery, and reconnect recovery diagram" }
 
 **Implementation and validation:** When the same sender retries the same payload with the same `client_message_id`, the API returns the original message without publishing another WebSocket event or notification. Reusing the key with a different payload is rejected as a conflict. The mobile app merges the HTTP response and sender/peer WebSocket events by the database message ID. After reconnect or screen focus, it walks backward from the latest HTTP page with a `before_id` cursor until it reaches the previous synchronization boundary, merging any missing messages. Regression tests cover persistence, duplicate requests, payload conflicts, cursor pages, and mobile reconnect merging.
 

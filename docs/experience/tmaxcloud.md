@@ -8,17 +8,11 @@
 
 **제약과 선택:** 검증은 mock이 아니라 실제 JSON 요청·응답과 DB 상태를 포함해야 했습니다. 이 경계를 React·TypeScript·WebSocket 기반 테스트 화면에 배치해 배포 전에 확인하도록 선택했습니다.
 
-```mermaid
-flowchart TD
-  definition["UI 정의\n앱 / 엔티티 / 서비스"]
-  artifacts["생성 산출물\nJava / SQL / DDL"]
-  tester["배포 전 테스트 화면\nJSON 편집 / WebSocket 호출"]
-  validation["결과 확인\nAPI 응답 / DB 쓰기·읽기"]
+도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
+{ .diagram-scroll-hint }
 
-  definition --> artifacts
-  artifacts --> tester
-  tester --> validation
-```
+![앱·엔티티·서비스 UI 정의에서 Java·SQL·DDL을 생성하고, 배포 전 테스트 화면에서 JSON 요청과 WebSocket 호출을 거쳐 API 응답과 DB 쓰기·읽기를 확인합니다.](../assets/diagrams/tmaxcloud-predeploy-api-test.ko.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud 생성 API 배포 전 테스트 흐름 도식" }
 
 **구현:** 서비스 목록에서 대상을 고르고 Monaco Editor에서 JSON 요청을 편집해 생성된 API를 호출하는 React·TypeScript 테스트 화면을 구현했습니다. 화면의 호출은 WebSocket으로 처리하고, 이를 지원하는 Java REST API와 DB 스키마를 만들어 응답 확인과 실제 DB 쓰기·읽기를 한 흐름으로 연결했습니다.
 
@@ -30,20 +24,11 @@ flowchart TD
 
 **제약과 선택:** Tibero DB 트리거나 프로시저는 변경 행을 볼 수 있지만 요청 사용자 정보까지 자연스럽게 전달받지 못했습니다. 요청 사용자 정보를 이미 가진 CRUD 코드에 저장 SQL을 생성하고, 이력 테이블 DDL과 과거 시점 조회가 같은 엔티티 열·기본 키 정의를 따르도록 선택했습니다.
 
-```mermaid
-flowchart TD
-  entity["엔티티 정의\n열 / 기본 키 / 이력 사용"]
-  ddl["DDL 생성\n원본 + 이력 테이블"]
-  crud["CRUD 코드 생성\n수정·삭제 전 행 저장"]
-  history["이력\n기본 키 / 수정자 / 유효 기간 / 행 데이터"]
-  restore["지정 날짜 상태 복원\n행별 당시 값 / 변경자 선택"]
+도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
+{ .diagram-scroll-hint }
 
-  entity --> ddl
-  entity --> crud
-  ddl --> history
-  crud --> history
-  history --> restore
-```
+![하나의 엔티티 정의에서 원본·이력 테이블 DDL과 CRUD 저장 코드를 생성하고, 두 경로가 남긴 이력으로 지정 날짜의 행 값과 변경자를 복원합니다.](../assets/diagrams/tmaxcloud-table-history.ko.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud 데이터 변경 이력과 지정 날짜 복원 도식" }
 
 **구현:** FreeMarker 템플릿에 원본·이력 테이블 DDL과 수정·삭제 전 행을 저장하는 SQL을 반영했습니다. 원본·이력 데이터를 조합해 지정한 날짜 기준으로 각 행의 당시 값을 복원하고 마지막 변경자를 반환하는 조회 SQL도 작성했습니다.
 

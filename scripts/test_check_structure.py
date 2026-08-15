@@ -5,17 +5,13 @@ import tempfile
 import textwrap
 import unittest
 
-from scripts.check_structure import validate_structure
+from scripts.check_structure import read_config, validate_structure
 
 
 VALID_CONFIG = """\
 site_name: 소개
 markdown_extensions:
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.superfences
 nav:
   - 소개: index.md
 plugins:
@@ -59,6 +55,29 @@ class StructureCheckTests(unittest.TestCase):
 
     def test_valid_structure(self) -> None:
         self.assertEqual(self.validate(), [])
+
+    def test_python_name_tags_are_loaded_without_importing_callbacks(self) -> None:
+        self.config_path.write_text(
+            textwrap.dedent(
+                """\
+                markdown_extensions:
+                  - pymdownx.superfences:
+                      custom_fences:
+                        - name: annotated-code
+                          class: annotated-code
+                          format: !!python/name:example.format_callback
+                """
+            ),
+            encoding="utf-8",
+        )
+
+        config = read_config(self.config_path)
+
+        self.assertEqual(
+            config["markdown_extensions"][0]["pymdownx.superfences"]
+            ["custom_fences"][0]["format"],
+            "example.format_callback",
+        )
 
     def test_english_site_name_must_match_home_h1(self) -> None:
         self.config_path.write_text(

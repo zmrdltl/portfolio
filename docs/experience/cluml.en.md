@@ -8,46 +8,19 @@
 
 **Constraints and decision:** The in-flight call count and estimated token reservation had to be checked against one current state, but holding the lock while waiting would block other calls. I kept only the check and reservation in the same lock section and released the lock before waiting.
 
-```mermaid
-flowchart TB
-  ui["Security Analysis UI"]
-  api["Security Analysis API"]
-  worker["Analysis Job Execution"]
-  limiter["LLM API Rate Limiter"]
-  capacity["Reservation/Capacity State"]
-  llm["External LLM API"]
+Scroll horizontally to inspect the full flow.
+{ .diagram-scroll-hint }
 
-  ui --> api
-  api --> worker
-  worker --> limiter
-  limiter --> capacity
-  limiter --> llm
-```
+![A request moves from the security analysis UI through the API and analysis job to the rate limiter, which checks reservation and capacity state before calling the external LLM API.](../assets/diagrams/cluml-rate-limit-components.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL outbound LLM API rate-limiting component diagram" }
 
 **Failure flow before the fix:** Capacity checks and reservation updates ran in separate lock sections, allowing concurrent calls to read the same pre-reservation state.
 
-On mobile, scroll horizontally to view the full sequence diagram.
+Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
 
-```mermaid { .diagram-scroll }
-sequenceDiagram
-  participant A as LLM API Call A
-  participant B as LLM API Call B
-  participant L as LLM API Rate Limiter
-  participant S as Reservation/Capacity State
-
-  A->>L: Check capacity
-  L->>S: Read pre-reservation state
-  S-->>L: Capacity available
-  B->>L: Check capacity
-  L->>S: Read the same state
-  S-->>L: Capacity available
-  A->>L: Reserve capacity
-  L->>S: Record reservation
-  B->>L: Reserve capacity
-  L->>S: Record reservation
-  Note over L,S: LLM API calls reading the same state can exceed the limit
-```
+![Concurrent calls A and B read the same pre-reservation state, both pass the capacity check, and then record reservations that can exceed the limit.](../assets/diagrams/cluml-rate-limit-race.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL pre-fix rate-limiter race sequence diagram" }
 
 **Implementation:** I changed the outbound LLM API rate limiter to check one shared state and immediately reserve an in-flight slot and estimated tokens.
 

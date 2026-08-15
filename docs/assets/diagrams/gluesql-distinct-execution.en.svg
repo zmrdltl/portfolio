@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="472" viewBox="0 0 960 472" role="img" aria-labelledby="title desc">
+  <title id="title">GlueSQL DISTINCT Execution Boundaries</title>
+  <desc id="desc">DISTINCT information moves through translation, parser, and AST into execution, where duplicates are removed either after SELECT projection or from aggregate inputs before both paths join regression tests.</desc>
+  <defs>
+    <style><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap');
+      svg {
+        --paper: #f5f5f5;
+        --paper-2: #fafafa;
+        --ink: #2d3142;
+        --muted: #4f5d75;
+        --soft: #667085;
+        --rule: rgba(45, 49, 66, 0.12);
+        --rule-solid: #bfc0c0;
+        --accent: #4051b5;
+        --accent-tint: rgba(64, 81, 181, 0.08);
+        --link: #2e5aa8;
+      }
+      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; }
+      .connector { fill: none; stroke: var(--muted); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
+      .connector-accent { stroke: var(--accent); stroke-width: 1.6; }
+      .connector-secondary { stroke-dasharray: 5 5; stroke-width: 1.1; }
+      .node { fill: var(--paper-2); stroke: var(--rule-solid); stroke-width: 1; }
+      .node-accent { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
+      .node-terminal { fill: rgba(45, 49, 66, 0.05); }
+      .node-title { fill: var(--ink); font-size: 13px; font-weight: 600; }
+      .node-meta, .edge-label, .callout-kicker { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .node-meta { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.035em; }
+      .edge-label { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.025em; }
+      .edge-label-accent { fill: var(--accent); }
+      .label-mask { fill: var(--paper); }
+      .lifeline { stroke: var(--rule-solid); stroke-dasharray: 4 6; stroke-width: 1; }
+      .decision { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
+      .start { fill: var(--ink); }
+      .callout { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1; }
+      .callout-kicker { fill: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; }
+      .callout-text { fill: var(--ink); font-size: 11px; font-weight: 500; }
+      .arrow { fill: var(--muted); }
+      .arrow-accent { fill: var(--accent); }
+    ]]></style>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow" points="0 0, 8 3, 0 6"/>
+    </marker>
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
+    </marker>
+  </defs>
+  <rect width="960" height="472" fill="var(--paper)"/>
+  <g aria-hidden="true">
+    <path class="connector" d="M 168 220 H 200" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 384 220 H 412" marker-end="url(#arrow)"/>
+    <path class="connector connector-accent" d="M 500 164 V 120 Q 500 112 508 112 H 608" marker-end="url(#arrow-accent)"/>
+    <path class="connector connector-accent" d="M 500 276 V 352 Q 500 360 508 360 H 608" marker-end="url(#arrow-accent)"/>
+    <path class="connector" d="M 768 112 H 776 Q 784 112 784 120 V 196 Q 784 204 792 204" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 768 360 H 776 Q 784 360 784 352 V 244 Q 784 236 792 236" marker-end="url(#arrow)"/>
+<rect class="label-mask" x="516" y="84" width="108" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="570" y="101" text-anchor="middle">SELECT DISTINCT</text>
+<rect class="label-mask" x="500" y="320" width="132" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="566" y="337" text-anchor="middle">AGG DISTINCT</text>
+    <rect class="node" x="24" y="176" width="144" height="88" rx="8"/>
+<text class="node-title" x="96" y="206" text-anchor="middle">SQL Input</text>
+<text class="node-meta" x="96" y="230" text-anchor="middle">DISTINCT</text>
+    <rect class="node" x="208" y="172" width="176" height="96" rx="8"/>
+<text class="node-title" x="296" y="202" text-anchor="middle">Query Model</text>
+<text class="node-meta" x="296" y="226" text-anchor="middle">TRANSLATION · PARSER · AST</text>
+    <path class="decision" d="M 500 164 L 580 220 L 500 276 L 420 220 Z"/>
+    <text class="node-title" x="500" y="216" text-anchor="middle">Execution</text>
+<text class="node-title" x="500" y="234" text-anchor="middle">Path</text>
+    <rect class="node" x="616" y="68" width="152" height="88" rx="8"/>
+<text class="node-title" x="692" y="98" text-anchor="middle">After SELECT</text>
+<text class="node-title" x="692" y="116" text-anchor="middle">Projection</text>
+<text class="node-meta" x="692" y="140" text-anchor="middle">DEDUPLICATE RESULT ROWS</text>
+    <rect class="node" x="616" y="316" width="152" height="88" rx="8"/>
+<text class="node-title" x="692" y="346" text-anchor="middle">After Aggregate</text>
+<text class="node-title" x="692" y="364" text-anchor="middle">Input Collection</text>
+<text class="node-meta" x="692" y="388" text-anchor="middle">DEDUPLICATE ARGUMENTS</text>
+    <rect class="node" x="800" y="176" width="136" height="88" rx="8"/>
+<text class="node-title" x="868" y="206" text-anchor="middle">Regression</text>
+<text class="node-title" x="868" y="224" text-anchor="middle">Tests</text>
+<text class="node-meta" x="868" y="248" text-anchor="middle">SELECT · AGGREGATE</text>
+
+  </g>
+</svg>

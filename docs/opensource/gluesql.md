@@ -9,15 +9,11 @@
 
 **제약과 선택:** `DISTINCT`가 아닌 기존 실행 결과는 바꾸지 않으면서, 최종 값이 만들어지는 두 상태 경계에서만 중복을 제거해야 했습니다. 지원하지 않는 `DISTINCT ON`은 명시적 오류로 처리했습니다.
 
-```mermaid
-flowchart TD
-  sql["SQL 입력\nDISTINCT"] --> model["translation / parser / AST"]
-  model --> kind{"실행 경로"}
-  kind -->|SELECT DISTINCT| projection["projection 뒤\n결과 row 중복 제거"]
-  kind -->|aggregate DISTINCT| aggregate["aggregate state에서\n입력 값 중복 관리"]
-  projection --> tests["회귀 테스트"]
-  aggregate --> tests
-```
+도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
+{ .diagram-scroll-hint }
+
+![DISTINCT SQL 정보가 parser와 AST를 거쳐 query model에 전달되고, 실행 경로에 따라 projection 결과 행 또는 aggregate 입력 값을 중복 제거한 뒤 회귀 테스트로 확인합니다.](../assets/diagrams/gluesql-distinct-execution.ko.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="GlueSQL DISTINCT 실행 의미 흐름 도식" }
 
 **구현:** parser/AST 결과를 query model에 전달하고, SQL executor의 row 중복 제거와 aggregate 처리, AST Builder API까지 연결했습니다. 값의 equality/hash와 map key order도 중복 판정이 흔들리지 않도록 보강했습니다.
 

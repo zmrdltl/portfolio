@@ -37,23 +37,6 @@
     margin: 0.5rem 0 0.25rem;
   }
 
-  .md-typeset .mermaid.diagram-scroll {
-    -webkit-overflow-scrolling: touch;
-    margin-inline: -0.4rem;
-    overflow-x: auto;
-    padding: 0 0.4rem 0.5rem;
-    overscroll-behavior-inline: contain;
-    scrollbar-gutter: stable;
-  }
-
-  .md-typeset .mermaid.diagram-scroll svg {
-    display: block;
-    height: auto;
-    margin: 0;
-    max-width: none;
-    min-width: 40rem;
-  }
-
   .md-typeset .editorial-diagram-scroll {
     -webkit-overflow-scrolling: touch;
     margin-inline: -0.4rem;

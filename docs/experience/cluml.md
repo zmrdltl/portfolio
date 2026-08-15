@@ -8,46 +8,19 @@
 
 **제약과 선택:** 외부 LLM API 호출의 동시 처리 수와 예상 토큰 예약량은 하나의 최신 상태를 기준으로 확인해야 했지만, 대기하는 동안 잠금을 잡으면 다른 호출 처리까지 막을 수 있었습니다. 용량 확인과 예약만 같은 잠금 구간에서 처리하고, 대기는 잠금을 해제한 뒤 수행하도록 선택했습니다.
 
-```mermaid
-flowchart TB
-  ui["보안 분석 UI"]
-  api["보안 분석 API"]
-  worker["분석 작업 실행"]
-  limiter["LLM API 호출량 제어"]
-  capacity["예약/용량 상태"]
-  llm["외부 LLM API"]
+도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
+{ .diagram-scroll-hint }
 
-  ui --> api
-  api --> worker
-  worker --> limiter
-  limiter --> capacity
-  limiter --> llm
-```
+![보안 분석 UI 요청이 API와 분석 작업을 거쳐 호출량 제어기로 전달되고, 제어기가 예약·용량 상태를 확인한 뒤 외부 LLM API를 호출합니다.](../assets/diagrams/cluml-rate-limit-components.ko.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL 외부 LLM API 호출량 제어 구성 도식" }
 
 **수정 전 실패 흐름:** 용량 확인과 예약 기록이 서로 다른 잠금 구간에서 처리되어, 동시 호출이 같은 예약 전 상태를 볼 수 있었습니다.
 
-모바일에서는 시퀀스 도식을 좌우로 스크롤할 수 있습니다.
+도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
 { .diagram-scroll-hint }
 
-```mermaid { .diagram-scroll }
-sequenceDiagram
-  participant A as LLM API 호출 A
-  participant B as LLM API 호출 B
-  participant L as 호출량 제어 로직
-  participant S as 예약/용량 상태
-
-  A->>L: 용량 확인
-  L->>S: 예약 전 상태 읽기
-  S-->>L: 통과 가능
-  B->>L: 용량 확인
-  L->>S: 같은 예약 전 상태 읽기
-  S-->>L: 통과 가능
-  A->>L: 용량 예약
-  L->>S: 예약 기록
-  B->>L: 용량 예약
-  L->>S: 예약 기록
-  Note over L,S: 같은 상태를 본 LLM API 호출이 함께 통과해 허용치를 넘길 수 있음
-```
+![동시 호출 A와 B가 같은 예약 전 상태를 읽고 모두 통과한 뒤 각각 예약을 기록해 허용치를 넘길 수 있는 수정 전 경합 흐름입니다.](../assets/diagrams/cluml-rate-limit-race.ko.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL 호출량 제어 수정 전 경합 시퀀스 도식" }
 
 **구현:** 외부 LLM API 호출량 제어 로직이 하나의 예약 상태에서 통과 여부를 확인하고, 즉시 동시 호출 슬롯과 예상 토큰을 예약하도록 수정했습니다.
 

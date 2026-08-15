@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="896" height="376" viewBox="0 0 896 376" role="img" aria-labelledby="title desc">
+  <title id="title">ClumL Outbound LLM API Call Path</title>
+  <desc id="desc">A security-analysis request moves from the UI through the API and analysis job to the rate limiter, which checks reservation capacity before calling the external LLM API.</desc>
+  <defs>
+    <style><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap');
+      svg {
+        --paper: #f5f5f5;
+        --paper-2: #fafafa;
+        --ink: #2d3142;
+        --muted: #4f5d75;
+        --soft: #667085;
+        --rule: rgba(45, 49, 66, 0.12);
+        --rule-solid: #bfc0c0;
+        --accent: #4051b5;
+        --accent-tint: rgba(64, 81, 181, 0.08);
+        --link: #2e5aa8;
+      }
+      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; }
+      .connector { fill: none; stroke: var(--muted); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
+      .connector-accent { stroke: var(--accent); stroke-width: 1.6; }
+      .connector-secondary { stroke-dasharray: 5 5; stroke-width: 1.1; }
+      .node { fill: var(--paper-2); stroke: var(--rule-solid); stroke-width: 1; }
+      .node-accent { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
+      .node-terminal { fill: rgba(45, 49, 66, 0.05); }
+      .node-title { fill: var(--ink); font-size: 13px; font-weight: 600; }
+      .node-meta, .edge-label, .callout-kicker { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .node-meta { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.035em; }
+      .edge-label { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.025em; }
+      .edge-label-accent { fill: var(--accent); }
+      .label-mask { fill: var(--paper); }
+      .lifeline { stroke: var(--rule-solid); stroke-dasharray: 4 6; stroke-width: 1; }
+      .decision { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
+      .start { fill: var(--ink); }
+      .callout { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1; }
+      .callout-kicker { fill: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; }
+      .callout-text { fill: var(--ink); font-size: 11px; font-weight: 500; }
+      .arrow { fill: var(--muted); }
+      .arrow-accent { fill: var(--accent); }
+    ]]></style>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow" points="0 0, 8 3, 0 6"/>
+    </marker>
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
+    </marker>
+  </defs>
+  <rect width="896" height="376" fill="var(--paper)"/>
+  <g aria-hidden="true">
+    <path class="connector" d="M 168 180 H 200" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 344 180 H 376" marker-end="url(#arrow)"/>
+    <path class="connector connector-accent" d="M 520 180 H 552" marker-end="url(#arrow-accent)"/>
+    <path class="connector" d="M 712 164 H 716 Q 724 164 724 156 V 112 Q 724 104 732 104" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 712 196 H 716 Q 724 196 724 204 V 272 Q 724 280 732 280" marker-end="url(#arrow)"/>
+<rect class="label-mask" x="632" y="116" width="92" height="26" rx="4"/>
+<text class="edge-label" x="678" y="133" text-anchor="middle">CHECK · RESERVE</text>
+<rect class="label-mask" x="668" y="228" width="60" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="698" y="245" text-anchor="middle">CALL</text>
+    <rect class="node" x="32" y="140" width="136" height="80" rx="8"/>
+<text class="node-title" x="100" y="176" text-anchor="middle">Security</text>
+<text class="node-title" x="100" y="194" text-anchor="middle">Analysis UI</text>
+    <rect class="node" x="208" y="140" width="136" height="80" rx="8"/>
+<text class="node-title" x="276" y="176" text-anchor="middle">Security</text>
+<text class="node-title" x="276" y="194" text-anchor="middle">Analysis API</text>
+    <rect class="node" x="384" y="140" width="136" height="80" rx="8"/>
+<text class="node-title" x="452" y="176" text-anchor="middle">Analysis Job</text>
+<text class="node-title" x="452" y="194" text-anchor="middle">Execution</text>
+    <rect class="node node-accent" x="560" y="136" width="152" height="88" rx="8"/>
+<text class="node-title" x="636" y="166" text-anchor="middle">LLM API</text>
+<text class="node-title" x="636" y="184" text-anchor="middle">Rate Limiter</text>
+<text class="node-meta" x="636" y="208" text-anchor="middle">ATOMIC BOUNDARY</text>
+    <rect class="node" x="740" y="64" width="128" height="80" rx="8"/>
+<text class="node-title" x="804" y="100" text-anchor="middle">Reservation /</text>
+<text class="node-title" x="804" y="118" text-anchor="middle">Capacity State</text>
+    <rect class="node" x="740" y="240" width="128" height="80" rx="8"/>
+<text class="node-title" x="804" y="276" text-anchor="middle">External</text>
+<text class="node-title" x="804" y="294" text-anchor="middle">LLM API</text>
+
+  </g>
+</svg>

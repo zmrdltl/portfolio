@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" role="img" aria-labelledby="title desc">
+  <title id="title">TmaxCloud Data-Change History Structure</title>
+  <desc id="desc">One entity definition drives source/history DDL and CRUD history writes, which combine primary key, editor, valid period, and row data to reconstruct a requested-date state and last editor.</desc>
+  <defs>
+    <style><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap');
+      svg {
+        --paper: #f5f5f5;
+        --paper-2: #fafafa;
+        --ink: #2d3142;
+        --muted: #4f5d75;
+        --soft: #667085;
+        --rule: rgba(45, 49, 66, 0.12);
+        --rule-solid: #bfc0c0;
+        --accent: #4051b5;
+        --accent-tint: rgba(64, 81, 181, 0.08);
+        --link: #2e5aa8;
+      }
+      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; }
+      .connector { fill: none; stroke: var(--muted); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
+      .connector-accent { stroke: var(--accent); stroke-width: 1.6; }
+      .connector-secondary { stroke-dasharray: 5 5; stroke-width: 1.1; }
+      .node { fill: var(--paper-2); stroke: var(--rule-solid); stroke-width: 1; }
+      .node-accent { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
+      .node-terminal { fill: rgba(45, 49, 66, 0.05); }
+      .node-title { fill: var(--ink); font-size: 13px; font-weight: 600; }
+      .node-meta, .edge-label, .callout-kicker { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .node-meta { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.035em; }
+      .edge-label { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.025em; }
+      .edge-label-accent { fill: var(--accent); }
+      .label-mask { fill: var(--paper); }
+      .lifeline { stroke: var(--rule-solid); stroke-dasharray: 4 6; stroke-width: 1; }
+      .decision { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
+      .start { fill: var(--ink); }
+      .callout { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1; }
+      .callout-kicker { fill: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; }
+      .callout-text { fill: var(--ink); font-size: 11px; font-weight: 500; }
+      .arrow { fill: var(--muted); }
+      .arrow-accent { fill: var(--accent); }
+    ]]></style>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow" points="0 0, 8 3, 0 6"/>
+    </marker>
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
+    </marker>
+  </defs>
+  <rect width="960" height="400" fill="var(--paper)"/>
+  <g aria-hidden="true">
+    <path class="connector" d="M 200 188 H 216 Q 224 188 224 180 V 108 Q 224 100 232 100 H 248" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 200 212 H 216 Q 224 212 224 220 V 292 Q 224 300 232 300 H 248" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 424 100 H 456 Q 464 100 464 108 V 180 Q 464 188 472 188 H 504" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 424 300 H 456 Q 464 300 464 292 V 220 Q 464 212 472 212 H 504" marker-end="url(#arrow)"/>
+    <path class="connector connector-accent" d="M 696 200 H 752" marker-end="url(#arrow-accent)"/>
+<rect class="label-mask" x="200" y="124" width="104" height="26" rx="4"/>
+<text class="edge-label" x="252" y="141" text-anchor="middle">SHARED SCHEMA</text>
+<rect class="label-mask" x="408" y="252" width="104" height="26" rx="4"/>
+<text class="edge-label" x="460" y="269" text-anchor="middle">BEFORE CHANGE</text>
+<rect class="label-mask" x="668" y="160" width="112" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="724" y="177" text-anchor="middle">POINT-IN-TIME</text>
+    <rect class="node" x="32" y="152" width="168" height="96" rx="8"/>
+<text class="node-title" x="116" y="182" text-anchor="middle">Entity</text>
+<text class="node-title" x="116" y="200" text-anchor="middle">Definition</text>
+<text class="node-meta" x="116" y="224" text-anchor="middle">COLUMNS · PK · HISTORY</text>
+    <rect class="node" x="256" y="52" width="168" height="96" rx="8"/>
+<text class="node-title" x="340" y="82" text-anchor="middle">DDL</text>
+<text class="node-title" x="340" y="100" text-anchor="middle">Generation</text>
+<text class="node-meta" x="340" y="124" text-anchor="middle">SOURCE + HISTORY TABLES</text>
+    <rect class="node" x="256" y="252" width="168" height="96" rx="8"/>
+<text class="node-title" x="340" y="282" text-anchor="middle">CRUD Code</text>
+<text class="node-title" x="340" y="300" text-anchor="middle">Generation</text>
+<text class="node-meta" x="340" y="324" text-anchor="middle">STORE PREVIOUS ROW</text>
+    <rect class="node node-accent" x="512" y="148" width="184" height="104" rx="8"/>
+<text class="node-title" x="604" y="178" text-anchor="middle">Change</text>
+<text class="node-title" x="604" y="196" text-anchor="middle">History</text>
+<text class="node-meta" x="604" y="220" text-anchor="middle">PK · EDITOR · VALID PERIOD</text>
+<text class="node-meta" x="604" y="235" text-anchor="middle">ROW DATA</text>
+    <rect class="node" x="760" y="152" width="168" height="96" rx="8"/>
+<text class="node-title" x="844" y="182" text-anchor="middle">Requested-Date</text>
+<text class="node-title" x="844" y="200" text-anchor="middle">Reconstruction</text>
+<text class="node-meta" x="844" y="224" text-anchor="middle">ROW VALUE · LAST EDITOR</text>
+
+  </g>
+</svg>

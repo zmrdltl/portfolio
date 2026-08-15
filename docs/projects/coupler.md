@@ -18,23 +18,11 @@
 
 **제약과 선택:** 기존 React Native 앱, Express API, React 관리자 웹, MySQL 데이터와 마이그레이션을 함께 바꿔야 했습니다. 클라이언트별 조건문을 맞추는 대신 API가 접근 상태와 다음 행동을 반환하는 단일 기준이 되고, 앱과 관리자 웹은 유효한 서버 상태만 해석하도록 선택했습니다. 상태가 없거나 유효하지 않으면 화면을 임의로 열지 않는 방향으로 처리했습니다.
 
-```mermaid
-stateDiagram-v2
-  state "기본정보·필수 프로필 제출" as Submitted
-  state "최초 가입 심사" as InitialReview
-  state "수정·재제출" as Reapply
-  state "다음 심사 단계 개방" as ReviewOpen
-  state "준회원 심사" as AssociateReview
-  state "정회원 심사" as FullReview
+도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
+{ .diagram-scroll-hint }
 
-  [*] --> Submitted
-  Submitted --> InitialReview: 심사 요청
-  InitialReview --> Reapply: 반려
-  Reapply --> InitialReview: 재제출
-  InitialReview --> ReviewOpen: 승인
-  ReviewOpen --> AssociateReview: 제출
-  ReviewOpen --> FullReview: 제출
-```
+![기본정보와 필수 프로필 제출 뒤 최초 가입 심사를 거쳐 반려 시 수정·재제출하고, 승인 시 준회원과 정회원 심사를 독립적으로 진행하는 상태 흐름입니다.](../assets/diagrams/coupler-signup-review.ko.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="Coupler 가입과 회원 심사 상태 도식" }
 
 **구현:** 기존 코드베이스를 2.0.0으로 전환하면서 최초 신청을 기본정보와 필수 프로필 중심으로 줄이고, 승인 뒤 준회원·정회원 심사를 독립적으로 진행하도록 상태 전이를 구현하고 DB 구조를 재구성했습니다. [회원가입 응답 계약](https://coupler-developer.github.io/docs/policy/signup-response-contract/)으로 성공 응답과 화면 분기 상태를 분리하고, [회원 심사 정책](https://coupler-developer.github.io/docs/policy/member-review-policy/)으로 제출·재제출, 가입 심사와 설정 수정 심사, 관리자 대기 큐의 분류 기준을 통일했습니다.
 
@@ -56,7 +44,7 @@ Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후
 { .diagram-scroll-hint }
 
 ![작성 중인 행사를 공개해 모집하고 행사 확정과 재개방을 거쳐 종료합니다. 작성 중에는 삭제할 수 있고 모집 중이나 확정 상태에서는 행사 취소로 끝낼 수 있습니다. 행사가 처음 확정될 때 그룹 채팅을 한 번 초기화합니다.](../assets/diagrams/coupler-event-lifecycle.ko.svg)
-{ .editorial-diagram-scroll tabindex="0" aria-label="그룹미팅 행사 생명주기 도식" }
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="그룹미팅 행사 생명주기 도식" }
 
 ### 참가 신청 생명주기
 
@@ -64,7 +52,7 @@ Meta SDK 최초 가입 심사 도달 이벤트: 개편 전 약 10건, 개편 후
 { .diagram-scroll-hint }
 
 ![참가 신청을 승인하면 참가 상태가 됩니다. 승인 뒤 운영자가 신청을 취소하거나 참가자가 나갈 수 있고, 운영자 취소 뒤에는 다시 신청할 수 있습니다.](../assets/diagrams/coupler-application-lifecycle.ko.svg)
-{ .editorial-diagram-scroll tabindex="0" aria-label="그룹미팅 참가 신청 생명주기 도식" }
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="그룹미팅 참가 신청 생명주기 도식" }
 
 **구현:** API와 DB에 미팅·신청·참가·채팅·후기 상태를 구현하고, 관리자 웹에 생성·공개, 신청 승인·취소, 참가자·후기·신고를 처리하는 운영 화면을 연결했습니다. 팀원이 먼저 구성한 모바일 목록·상세·채팅 UI에는 신청 상태, 실시간 메시지 병합, 읽음 상태, 알림 표시, 재신청, 신고·후기 동작을 연결했습니다. 그룹 메시지는 REST로 저장하고 WebSocket으로 확정 메시지를 수신하도록 책임을 나눴습니다.
 
@@ -80,26 +68,11 @@ curator, 1:1 매칭, N:N 그룹 채팅에 실시간 메시지와 읽지 않은 �
 
 **제약과 선택:** 메시지 전송은 HTTP 명령으로 DB에 먼저 저장하고, WebSocket은 서버가 확정한 메시지의 실시간 상태 전달을 담당하도록 책임을 분리했습니다. 클라이언트가 만든 `client_message_id`를 송신자 범위의 고유 키로 저장해 같은 요청을 안전하게 재시도하고, DB가 부여한 메시지 ID를 정렬·cursor·중복 병합의 기준으로 사용했습니다.
 
-```mermaid
-flowchart TB
-  send["송신자 앱<br/>HTTP POST + client_message_id"]
-  api["Express API<br/>HTTP 명령 / cursor 조회"]
-  canonical["MySQL<br/>DB ID가 확정된 메시지"]
-  response["canonical HTTP 응답"]
-  page["before_id cursor page"]
-  realtime["WebSocket<br/>self / peer event"]
-  merge["모바일<br/>DB ID 기준 병합"]
-  recovery["재연결<br/>최신 page부터 복구"]
-  peer["상대방 앱"]
+도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
+{ .diagram-scroll-hint }
 
-  send -->|멱등 저장| api --> canonical
-  canonical --> response --> merge
-  canonical --> realtime
-  recovery --> api
-  canonical --> page --> merge
-  realtime --> merge
-  realtime --> peer
-```
+![송신자 앱의 멱등 HTTP 명령을 API가 MySQL에 먼저 저장하고, 확정된 메시지를 HTTP 응답·cursor page·WebSocket으로 전달합니다. 모바일은 DB 메시지 ID로 병합하고 재연결 시 HTTP cursor로 누락분을 복구합니다.](../assets/diagrams/coupler-chat-delivery.ko.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="Coupler 1대1 채팅 저장·실시간 전달·재연결 복구 도식" }
 
 **구현과 검증:** 동일한 송신자와 `client_message_id`의 같은 payload가 다시 오면 최초 메시지를 반환하고 WebSocket과 알림을 다시 발행하지 않으며, 다른 payload로 키를 재사용하면 충돌로 거부합니다. 모바일은 HTTP 응답과 송·수신 WebSocket 이벤트를 DB 메시지 ID로 병합하고, 재연결이나 화면 복귀 때 최신 HTTP 페이지부터 이전 동기화 경계를 만날 때까지 `before_id` cursor를 따라가며 누락분을 합칩니다. 메시지 저장·중복 요청·payload 충돌·cursor 페이지와 모바일 재연결 병합을 회귀 테스트로 확인했습니다.
 

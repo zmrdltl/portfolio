@@ -10,7 +10,7 @@
         --paper: #f5f5f5;
         --ink: #2d3142;
         --muted: #4f5d75;
-        --soft: #7a8399;
+        --soft: #667085;
         --accent: #4051b5;
         --accent-tint: rgba(64, 81, 181, 0.08);
         --link: #2e5aa8;

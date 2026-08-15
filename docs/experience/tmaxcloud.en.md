@@ -8,17 +8,11 @@
 
 **Constraints and decision:** Verification had to cover real JSON requests, responses, and database state rather than mocks. I placed those checks in a React, TypeScript, and WebSocket test UI that runs before deployment.
 
-```mermaid
-flowchart TD
-  definition["UI Definition\nApp / Entity / Service"]
-  artifacts["Generated Artifacts\nJava / SQL / DDL"]
-  tester["Pre-Deployment Test UI\nJSON Editing / WebSocket Call"]
-  validation["Result Check\nAPI Response / DB Write and Read"]
+Scroll horizontally to inspect the full flow.
+{ .diagram-scroll-hint }
 
-  definition --> artifacts
-  artifacts --> tester
-  tester --> validation
-```
+![App, entity, and service definitions generate Java, SQL, and DDL artifacts, which the pre-deployment test UI exercises with JSON and WebSocket calls before checking API responses and database writes and reads.](../assets/diagrams/tmaxcloud-predeploy-api-test.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud generated-API pre-deployment test flow diagram" }
 
 **Implementation:** I built a React and TypeScript test UI where users selected a service, edited its JSON request in Monaco Editor, and called the generated API. The UI sent calls over WebSocket, while a supporting Java REST API and database schema connected the response to real database writes and reads.
 
@@ -30,20 +24,11 @@ flowchart TD
 
 **Constraints and decision:** A Tibero database trigger or procedure could see the changed row but did not naturally receive the requesting user's identity. I chose to generate the history write in CRUD code, which already carried that identity, and made the history-table DDL and point-in-time read use the same entity columns and primary key.
 
-```mermaid
-flowchart TD
-  entity["Entity Definition\nColumns / Primary Key / History Enabled"]
-  ddl["DDL Generation\nSource + History Tables"]
-  crud["CRUD Code Generation\nStore Row Before Update/Delete"]
-  history["History\nPrimary Key / Editor / Valid Period / Row Data"]
-  restore["Requested-Date Reconstruction\nRow Value / Last Editor"]
+Scroll horizontally to inspect the full flow.
+{ .diagram-scroll-hint }
 
-  entity --> ddl
-  entity --> crud
-  ddl --> history
-  crud --> history
-  history --> restore
-```
+![One entity definition drives source and history table DDL plus CRUD history writes, and the resulting history reconstructs row values and the last editor for a requested date.](../assets/diagrams/tmaxcloud-table-history.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud data-change history and requested-date reconstruction diagram" }
 
 **Implementation:** I encoded the source/history-table DDL and the SQL that stores a row before an update or deletion in FreeMarker templates. I also wrote a query that combines current and historical data to reconstruct each row as of a requested date and return its last editor.
 

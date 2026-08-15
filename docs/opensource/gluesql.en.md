@@ -9,15 +9,11 @@
 
 **Constraints and decision:** I had to leave non-`DISTINCT` results unchanged and remove duplicates only at the two state boundaries where final values are produced. Unsupported `DISTINCT ON` returns an explicit error.
 
-```mermaid
-flowchart TD
-  sql["SQL Input\nDISTINCT"] --> model["translation / parser / AST"]
-  model --> kind{"Execution Path"}
-  kind -->|SELECT DISTINCT| projection["After projection\nDeduplicate result rows"]
-  kind -->|aggregate DISTINCT| aggregate["In aggregate state\nTrack unique inputs"]
-  projection --> tests["Regression tests"]
-  aggregate --> tests
-```
+Scroll horizontally to inspect the full flow.
+{ .diagram-scroll-hint }
+
+![DISTINCT syntax moves through the parser and AST into the query model, then the execution path deduplicates projected rows or aggregate inputs before regression tests verify the behavior.](../assets/diagrams/gluesql-distinct-execution.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="GlueSQL DISTINCT execution-semantics flow diagram" }
 
 **Implementation:** I propagated parser/AST output into the query model, then connected row deduplication and aggregate handling in the SQL executor with AST Builder APIs. I also strengthened value equality, hashing, and map-key ordering so duplicate detection remained deterministic.
 
