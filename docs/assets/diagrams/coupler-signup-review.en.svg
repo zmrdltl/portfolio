@@ -39,10 +39,10 @@
       .arrow { fill: var(--muted); }
       .arrow-accent { fill: var(--accent); }
     ]]></style>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow" points="0 0, 8 3, 0 6"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
     </marker>
   </defs>
@@ -55,18 +55,18 @@
     <path class="connector connector-accent" d="M 464 132 H 504" marker-end="url(#arrow-accent)"/>
     <path class="connector" d="M 688 116 H 716 Q 724 116 724 108 V 88 Q 724 80 732 80 H 744" marker-end="url(#arrow)"/>
     <path class="connector" d="M 688 148 H 716 Q 724 148 724 156 V 228 Q 724 236 732 236 H 744" marker-end="url(#arrow)"/>
-<rect class="label-mask" x="232" y="88" width="64" height="26" rx="4"/>
-<text class="edge-label" x="264" y="105" text-anchor="middle">REQUEST</text>
-    <rect class="label-mask" x="328" y="220" width="56" height="26" rx="4"/>
-<text class="edge-label" x="356" y="237" text-anchor="middle">RETURNED</text>
-    <rect class="label-mask" x="216" y="236" width="64" height="26" rx="4"/>
-<text class="edge-label" x="248" y="253" text-anchor="middle">RESUBMIT</text>
-    <rect class="label-mask" x="456" y="88" width="64" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="488" y="105" text-anchor="middle">APPROVED</text>
-    <rect class="label-mask" x="696" y="56" width="56" height="26" rx="4"/>
-<text class="edge-label" x="724" y="73" text-anchor="middle">SUBMIT</text>
-    <rect class="label-mask" x="696" y="200" width="56" height="26" rx="4"/>
-<text class="edge-label" x="724" y="217" text-anchor="middle">SUBMIT</text>
+<rect class="label-mask" x="232" y="100" width="64" height="26" rx="4"/>
+<text class="edge-label" x="264" y="117" text-anchor="middle">REQUEST</text>
+    <rect class="label-mask" x="312" y="220" width="56" height="26" rx="4"/>
+<text class="edge-label" x="340" y="237" text-anchor="middle">RETURNED</text>
+    <rect class="label-mask" x="192" y="236" width="64" height="26" rx="4"/>
+<text class="edge-label" x="224" y="253" text-anchor="middle">RESUBMIT</text>
+    <rect class="label-mask" x="456" y="100" width="64" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="488" y="117" text-anchor="middle">APPROVE</text>
+    <rect class="label-mask" x="680" y="46" width="56" height="26" rx="4"/>
+<text class="edge-label" x="708" y="63" text-anchor="middle">SUBMIT</text>
+    <rect class="label-mask" x="660" y="200" width="56" height="26" rx="4"/>
+<text class="edge-label" x="688" y="217" text-anchor="middle">SUBMIT</text>
     <circle class="start" cx="28" cy="132" r="7"/>
     <rect class="node" x="64" y="84" width="176" height="96" rx="8"/>
 <text class="node-title" x="152" y="114" text-anchor="middle">Submit Basic Info</text>

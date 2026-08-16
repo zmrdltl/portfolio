@@ -39,10 +39,10 @@
       .arrow { fill: var(--muted); }
       .arrow-accent { fill: var(--accent); }
     ]]></style>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow" points="0 0, 8 3, 0 6"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
     </marker>
   </defs>
@@ -58,20 +58,20 @@
     <path class="connector" d="M 620 456 V 432 Q 620 424 628 424 H 696 Q 704 424 704 416 V 344 Q 704 336 712 336 H 752" marker-end="url(#arrow)"/>
     <path class="connector" d="M 680 500 H 752" marker-end="url(#arrow)"/>
     <path class="connector" d="M 200 364 H 232 Q 240 364 240 356 V 160 Q 240 152 248 152 H 352 V 144" marker-end="url(#arrow)"/>
-<rect class="label-mask" x="208" y="52" width="84" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="250" y="69" text-anchor="middle">IDEMPOTENT</text>
-    <rect class="label-mask" x="448" y="52" width="72" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="484" y="69" text-anchor="middle">DURABLE</text>
-    <rect class="label-mask" x="548" y="144" width="56" height="26" rx="4"/>
-<text class="edge-label" x="576" y="161" text-anchor="middle">RESPONSE</text>
-    <rect class="label-mask" x="680" y="304" width="56" height="26" rx="4"/>
-<text class="edge-label" x="708" y="321" text-anchor="middle">QUERY</text>
-    <rect class="label-mask" x="436" y="332" width="100" height="26" rx="4"/>
-<text class="edge-label" x="486" y="349" text-anchor="middle">CONFIRMED EVENT</text>
-    <rect class="label-mask" x="204" y="220" width="64" height="26" rx="4"/>
-<text class="edge-label" x="236" y="237" text-anchor="middle">RECOVER</text>
-    <rect class="label-mask" x="688" y="252" width="56" height="26" rx="4"/>
-<text class="edge-label" x="716" y="269" text-anchor="middle">MERGE</text>
+<rect class="label-mask" x="204" y="60" width="64" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="236" y="77" text-anchor="middle">IDEMPOTENT</text>
+    <rect class="label-mask" x="444" y="60" width="64" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="476" y="77" text-anchor="middle">DURABLE</text>
+    <rect class="label-mask" x="576" y="144" width="56" height="26" rx="4"/>
+<text class="edge-label" x="604" y="161" text-anchor="middle">RESPONSE</text>
+    <rect class="label-mask" x="716" y="148" width="56" height="26" rx="4"/>
+<text class="edge-label" x="744" y="165" text-anchor="middle">QUERY</text>
+    <rect class="label-mask" x="372" y="332" width="100" height="26" rx="4"/>
+<text class="edge-label" x="422" y="349" text-anchor="middle">CONFIRMED EVENT</text>
+    <rect class="label-mask" x="168" y="220" width="64" height="26" rx="4"/>
+<text class="edge-label" x="200" y="237" text-anchor="middle">RECOVER</text>
+    <rect class="label-mask" x="636" y="272" width="56" height="26" rx="4"/>
+<text class="edge-label" x="664" y="289" text-anchor="middle">MERGE</text>
     <rect class="label-mask" x="684" y="464" width="64" height="26" rx="4"/>
 <text class="edge-label" x="716" y="481" text-anchor="middle">DELIVER</text>
     <rect class="node" x="32" y="48" width="168" height="88" rx="8"/>
