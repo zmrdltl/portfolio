@@ -39,10 +39,10 @@
       .arrow { fill: var(--muted); }
       .arrow-accent { fill: var(--accent); }
     ]]></style>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow" points="0 0, 8 3, 0 6"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
     </marker>
   </defs>
@@ -53,10 +53,10 @@
     <path class="connector connector-accent" d="M 520 180 H 552" marker-end="url(#arrow-accent)"/>
     <path class="connector" d="M 712 164 H 716 Q 724 164 724 156 V 112 Q 724 104 732 104" marker-end="url(#arrow)"/>
     <path class="connector" d="M 712 196 H 716 Q 724 196 724 204 V 272 Q 724 280 732 280" marker-end="url(#arrow)"/>
-<rect class="label-mask" x="632" y="116" width="92" height="26" rx="4"/>
-<text class="edge-label" x="678" y="133" text-anchor="middle">CHECK · RESERVE</text>
-<rect class="label-mask" x="668" y="228" width="60" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="698" y="245" text-anchor="middle">CALL</text>
+<rect class="label-mask" x="608" y="116" width="108" height="26" rx="4"/>
+<text class="edge-label" x="662" y="133" text-anchor="middle">CHECK · RESERVE</text>
+<rect class="label-mask" x="656" y="228" width="60" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="686" y="245" text-anchor="middle">CALL</text>
     <rect class="node" x="32" y="140" width="136" height="80" rx="8"/>
 <text class="node-title" x="100" y="176" text-anchor="middle">Security</text>
 <text class="node-title" x="100" y="194" text-anchor="middle">Analysis UI</text>
