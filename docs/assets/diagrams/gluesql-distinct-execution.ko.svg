@@ -39,10 +39,10 @@
       .arrow { fill: var(--muted); }
       .arrow-accent { fill: var(--accent); }
     ]]></style>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow" points="0 0, 8 3, 0 6"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
     </marker>
   </defs>
@@ -54,10 +54,10 @@
     <path class="connector connector-accent" d="M 500 276 V 352 Q 500 360 508 360 H 608" marker-end="url(#arrow-accent)"/>
     <path class="connector" d="M 768 112 H 776 Q 784 112 784 120 V 196 Q 784 204 792 204" marker-end="url(#arrow)"/>
     <path class="connector" d="M 768 360 H 776 Q 784 360 784 352 V 244 Q 784 236 792 236" marker-end="url(#arrow)"/>
-<rect class="label-mask" x="516" y="84" width="108" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="570" y="101" text-anchor="middle">SELECT DISTINCT</text>
-<rect class="label-mask" x="500" y="320" width="132" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="566" y="337" text-anchor="middle">AGG DISTINCT</text>
+<rect class="label-mask" x="504" y="76" width="108" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="558" y="93" text-anchor="middle">SELECT DISTINCT</text>
+<rect class="label-mask" x="508" y="320" width="132" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="574" y="337" text-anchor="middle">AGG DISTINCT</text>
     <rect class="node" x="24" y="176" width="144" height="88" rx="8"/>
 <text class="node-title" x="96" y="206" text-anchor="middle">SQL 입력</text>
 <text class="node-meta" x="96" y="230" text-anchor="middle">DISTINCT</text>
