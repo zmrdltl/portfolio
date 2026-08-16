@@ -55,9 +55,9 @@ For `AGENTS.md`-only changes, Markdown lint is enough unless the change affects 
 - `main` is the reviewed source branch and the default delivery path. Commit and push directly to `main` unless the user explicitly requests another workflow.
 - Do not create a topic branch or pull request unless the user explicitly asks for one.
 - Keep `main` history linear; do not introduce merge commits.
-- GitHub Pages deployment is manual.
+- A successful push to `main` builds and deploys GitHub Pages automatically. Treat pushing `main` as the publish action.
 - Use `pnpm` as declared by `packageManager`.
-- Deploy only when the user explicitly asks to publish the current reviewed public content.
+- `workflow_dispatch` is a manual recovery path that rebuilds and deploys `main`. To retry the same failed SHA, use Re-run on the existing workflow run.
 - Configure hooks with `pnpm run setup:githooks` in local clones that publish this repository.
 - Before pushing `main`, run `pnpm run ci:local`; the repository pre-push hook runs the same command when hooks are configured.
-- After pushing `main`, run `pnpm run check:actions` and verify the GitHub Actions build status. Do not manually dispatch the deploy workflow unless the user asks for deployment. If GitHub cancels before job steps start because a hosted runner was not acquired, rerun the workflow rather than treating that as a content failure.
+- After pushing `main`, run `pnpm run check:actions` and verify the GitHub Actions build and deploy status. If GitHub cancels before job steps start because a hosted runner was not acquired, rerun the existing workflow run rather than treating that as a content failure.
