@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="856" height="280" viewBox="0 0 856 280" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="928" height="280" viewBox="0 0 928 280" role="img" aria-labelledby="title desc">
   <title id="title">TmaxCloud 배포 전 API 테스트 경로</title>
   <desc id="desc">UI 정의에서 생성된 Java·SQL·DDL 산출물을 배포 전 테스트 화면에서 실제 JSON과 WebSocket으로 호출하고 API 응답과 DB 쓰기·읽기를 확인하는 흐름입니다.</desc>
   <defs>
@@ -39,37 +39,37 @@
       .arrow { fill: var(--muted); }
       .arrow-accent { fill: var(--accent); }
     ]]></style>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow" points="0 0, 8 3, 0 6"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
       <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
     </marker>
   </defs>
-  <rect width="856" height="280" fill="var(--paper)"/>
+  <rect width="928" height="280" fill="var(--paper)"/>
   <g aria-hidden="true">
-    <path class="connector" d="M 200 140 H 232" marker-end="url(#arrow)"/>
-    <path class="connector connector-accent" d="M 408 140 H 440" marker-end="url(#arrow-accent)"/>
-    <path class="connector" d="M 616 140 H 648" marker-end="url(#arrow)"/>
-<rect class="label-mask" x="184" y="104" width="72" height="26" rx="4"/>
-<text class="edge-label" x="220" y="121" text-anchor="middle">생성</text>
-<rect class="label-mask" x="404" y="104" width="48" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="428" y="121" text-anchor="middle">호출</text>
-<rect class="label-mask" x="604" y="104" width="64" height="26" rx="4"/>
-<text class="edge-label" x="636" y="121" text-anchor="middle">검증</text>
+    <path class="connector" d="M 200 140 H 256" marker-end="url(#arrow)"/>
+    <path class="connector connector-accent" d="M 432 140 H 488" marker-end="url(#arrow-accent)"/>
+    <path class="connector" d="M 664 140 H 720" marker-end="url(#arrow)"/>
+<rect class="label-mask" x="196" y="108" width="72" height="26" rx="4"/>
+<text class="edge-label" x="232" y="125" text-anchor="middle">생성</text>
+<rect class="label-mask" x="440" y="108" width="48" height="26" rx="4"/>
+<text class="edge-label edge-label-accent" x="464" y="125" text-anchor="middle">호출</text>
+<rect class="label-mask" x="664" y="108" width="64" height="26" rx="4"/>
+<text class="edge-label" x="696" y="125" text-anchor="middle">검증</text>
 <rect class="node" x="32" y="92" width="168" height="96" rx="8"/>
 <text class="node-title" x="116" y="122" text-anchor="middle">UI 정의</text>
 <text class="node-meta" x="116" y="146" text-anchor="middle">앱 · 엔티티 · 서비스</text>
-<rect class="node" x="240" y="92" width="168" height="96" rx="8"/>
-<text class="node-title" x="324" y="122" text-anchor="middle">생성 산출물</text>
-<text class="node-meta" x="324" y="146" text-anchor="middle">JAVA · SQL · DDL</text>
-<rect class="node node-accent" x="448" y="92" width="168" height="96" rx="8"/>
-<text class="node-title" x="532" y="122" text-anchor="middle">배포 전</text>
-<text class="node-title" x="532" y="140" text-anchor="middle">테스트 화면</text>
-<text class="node-meta" x="532" y="164" text-anchor="middle">JSON · WEBSOCKET</text>
-<rect class="node" x="656" y="92" width="168" height="96" rx="8"/>
-<text class="node-title" x="740" y="122" text-anchor="middle">결과 확인</text>
-<text class="node-meta" x="740" y="146" text-anchor="middle">API 응답 · DB 쓰기/읽기</text>
+<rect class="node" x="264" y="92" width="168" height="96" rx="8"/>
+<text class="node-title" x="348" y="122" text-anchor="middle">생성 산출물</text>
+<text class="node-meta" x="348" y="146" text-anchor="middle">JAVA · SQL · DDL</text>
+<rect class="node node-accent" x="496" y="92" width="168" height="96" rx="8"/>
+<text class="node-title" x="580" y="122" text-anchor="middle">배포 전</text>
+<text class="node-title" x="580" y="140" text-anchor="middle">테스트 화면</text>
+<text class="node-meta" x="580" y="164" text-anchor="middle">JSON · WEBSOCKET</text>
+<rect class="node" x="728" y="92" width="168" height="96" rx="8"/>
+<text class="node-title" x="812" y="122" text-anchor="middle">결과 확인</text>
+<text class="node-meta" x="812" y="146" text-anchor="middle">API 응답 · DB 쓰기/읽기</text>
 
   </g>
 </svg>
