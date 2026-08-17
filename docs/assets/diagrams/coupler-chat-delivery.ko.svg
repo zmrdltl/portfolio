@@ -51,13 +51,13 @@
     <path class="connector connector-accent" d="M 200 92 H 264" marker-end="url(#arrow-accent)"/>
     <path class="connector connector-accent" d="M 440 92 H 504" marker-end="url(#arrow-accent)"/>
     <path class="connector" d="M 568 136 V 176" marker-end="url(#arrow)"/>
-    <path class="connector" d="M 680 112 H 700 Q 708 112 708 120 V 296 Q 708 304 700 304 H 620 V 312" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 680 112 H 700 Q 708 112 708 120 V 288 Q 708 296 700 296 H 628 Q 620 296 620 304 V 312" marker-end="url(#arrow)"/>
     <path class="connector" d="M 536 136 H 488 Q 480 136 480 144 V 440 Q 480 448 488 448 H 536" marker-end="url(#arrow)"/>
     <path class="connector" d="M 680 228 H 720 Q 728 228 728 236 V 280 Q 728 288 736 288 H 752" marker-end="url(#arrow)"/>
     <path class="connector" d="M 680 364 H 720 Q 728 364 728 356 V 320 Q 728 312 736 312 H 752" marker-end="url(#arrow)"/>
     <path class="connector" d="M 620 456 V 432 Q 620 424 628 424 H 696 Q 704 424 704 416 V 344 Q 704 336 712 336 H 752" marker-end="url(#arrow)"/>
     <path class="connector" d="M 680 500 H 752" marker-end="url(#arrow)"/>
-    <path class="connector" d="M 200 364 H 232 Q 240 364 240 356 V 160 Q 240 152 248 152 H 352 V 144" marker-end="url(#arrow)"/>
+    <path class="connector" d="M 200 364 H 232 Q 240 364 240 356 V 172 Q 240 164 248 164 H 348 Q 356 164 356 156 V 144" marker-end="url(#arrow)"/>
 <rect class="label-mask" x="204" y="60" width="64" height="26" rx="4"/>
 <text class="edge-label edge-label-accent" x="236" y="77" text-anchor="middle">멱등 저장</text>
     <rect class="label-mask" x="444" y="60" width="64" height="26" rx="4"/>
@@ -70,8 +70,8 @@
 <text class="edge-label" x="422" y="349" text-anchor="middle">확정 이벤트</text>
     <rect class="label-mask" x="168" y="220" width="64" height="26" rx="4"/>
 <text class="edge-label" x="200" y="237" text-anchor="middle">복구</text>
-    <rect class="label-mask" x="636" y="272" width="56" height="26" rx="4"/>
-<text class="edge-label" x="664" y="289" text-anchor="middle">병합</text>
+    <rect class="label-mask" x="636" y="272" width="56" height="16" rx="4"/>
+<text class="edge-label" x="664" y="284" text-anchor="middle">병합</text>
     <rect class="label-mask" x="684" y="464" width="64" height="26" rx="4"/>
 <text class="edge-label" x="716" y="481" text-anchor="middle">전달</text>
     <rect class="node" x="32" y="48" width="168" height="88" rx="8"/>
