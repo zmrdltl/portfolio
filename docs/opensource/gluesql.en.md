@@ -31,11 +31,11 @@ I connected Parquet storage to GlueSQL's storage traits and SQL execution, addin
 
 ## Review, Mentoring, and Awards
 
-I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged). I now participate in code review and maintenance as a GlueSQL reviewer and OSSCA mentor, reviewing contributor pull requests for error handling, edge cases, test coverage, and code organization. I also guided contributors through Rust project workflows, GlueSQL internals, storage, AST Builder, and function implementation.
+I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged). I now participate in code review and maintenance as a GlueSQL reviewer, reviewing contributor pull requests for error handling, edge cases, test coverage, and code organization. As an OSSCA mentor in 2023, I guided contributors through Rust project workflows, GlueSQL internals, storage, AST Builder, and function implementation.
 
 | Year | Program | Award |
 | --- | --- | --- |
-| 2023 | Open Source Contribution Academy | NIPA President Award (Encouragement) |
+| 2023 | Open Source Contribution Academy | GlueSQL team award while I participated as a mentor: NIPA President Award (Encouragement) |
 | 2022 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
 | 2021 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
 

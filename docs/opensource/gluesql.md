@@ -31,11 +31,11 @@ Parquet storage를 GlueSQL storage trait와 SQL 실행 경로에 연결하고 fi
 
 ## 리뷰·멘토링·수상
 
-[`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했습니다. 현재 GlueSQL 리뷰어와 OSSCA 멘토로 코드 리뷰와 유지보수에 참여하며, 기여자 PR의 오류 처리, edge case, 테스트 커버리지, 코드 구조를 검토했습니다. Rust 프로젝트 기본 흐름, GlueSQL 구조, storage와 AST Builder, 함수 구현 방향을 안내했습니다.
+[`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했습니다. 현재 GlueSQL 리뷰어로 코드 리뷰와 유지보수에 참여하며, 기여자 PR의 오류 처리, edge case, 테스트 커버리지, 코드 구조를 검토합니다. 2023년에는 OSSCA 멘토로 Rust 프로젝트 기본 흐름, GlueSQL 구조, storage와 AST Builder, 함수 구현 방향을 안내했습니다.
 
 | 연도 | 대회/프로그램 | 수상 |
 | --- | --- | --- |
-| 2023 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(장려상) |
+| 2023 | 오픈소스 컨트리뷰션 아카데미 | 멘토로 참여한 GlueSQL 팀 수상: 정보통신산업진흥원장상(장려상) |
 | 2022 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
 | 2021 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
 

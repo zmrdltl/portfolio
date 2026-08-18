@@ -16,7 +16,7 @@ I now lead development and operations across the React Native mobile app, Expres
 
 **Problem and diagnosis:** The previous signup application asked for about 30 fields at once, creating a large burden before the first review request. The larger consistency risk was that app screens, API result codes, and the admin review queue could independently infer submission, resubmission, approval, rejection, and the next screen, producing different flows.
 
-**Constraints and decision:** The change had to span the existing React Native app, Express API, React admin web, MySQL data, and migrations. Instead of matching client-specific conditionals, I made the API the single source that returns access state and the next action, while the app and admin web interpret only valid server states. Missing or invalid state does not open a screen by inference.
+**Constraints and decision:** The change had to span the existing React Native app, Express API, React admin web, MySQL data, and migrations. The initial submission needed to reduce input burden while retaining the basic information and required profile materials for the first review; after approval, associate and full-member reviews needed to proceed independently. Instead of matching client-specific conditionals, I made the API the single source that returns access state and the next action, while the app and admin web interpret only valid server states. Missing or invalid state does not open a screen by inference.
 
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
@@ -56,7 +56,7 @@ Scroll horizontally to inspect the full lifecycle.
 
 **Implementation:** I implemented meeting, application, participant, chat, and review state in the API and database, then connected admin workflows for creation, publication, approval and cancellation, participants, reviews, and reports. A teammate built parts of the initial mobile list, detail, and chat UI; I connected application state, real-time message merging, read state, notification markers, reapplication, reporting, and reviews to that collaborative mobile flow. Group messages are persisted through REST and received as server-confirmed events over WebSocket.
 
-**Validation and result:** Event publication, confirmation, reopening, and completion, along with application, approval, leaving, reapplication, and review transitions, are release criteria together with API, admin-web, and mobile regressions. Chat opens at 1:00 p.m. on the calendar day before the currently scheduled event start and becomes read-only 24 hours after that start time. I documented the lifecycle in the [group meeting system documentation](https://coupler-developer.github.io/docs/architecture/group-meeting-system/) and released it in the v2.3.0 scope.
+**Validation and result:** Event publication, confirmation, reopening, and completion, along with application, approval, leaving, reapplication, and review transitions, are release criteria together with API, admin-web, and mobile regressions. Chat opens at 1:00 p.m. on the calendar day before the currently scheduled event start and becomes read-only 24 hours after that start time. I documented the lifecycle in the [group meeting system documentation](https://coupler-developer.github.io/docs/architecture/group-meeting-system/) and released it in the v2.3.0 scope. An API-contract cutover violation was identified after release, and controlled operational smoke coverage across FCM, real-time connections, and the scheduler remains an additional validation item.
 
 ## Additional Work
 

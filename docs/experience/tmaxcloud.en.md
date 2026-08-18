@@ -4,7 +4,7 @@
 
 ## Pre-Deployment API Testing for a Code-Generation Platform
 
-**Problem and diagnosis:** Users defined entities and service logic in the UI, and the platform generated Java APIs, SQL, and a JAR. The generated APIs could only be checked against real responses and database writes and reads after a separate deployment and container startup. With roughly 200–300 services and APIs to verify, one build, deploy, and verification cycle took about 20 minutes, and each invalid definition or request/response shape restarted the same delayed feedback loop.
+**Problem and diagnosis:** Users defined entities and service logic in the UI, and the platform generated Java APIs, SQL, and a JAR. The generated APIs could only be checked against real responses and database writes and reads after a separate deployment and container startup. With roughly 200-300 services and APIs to verify, one build, deploy, and verification cycle took about 20 minutes, and each invalid definition or request/response shape restarted the same delayed feedback loop.
 
 **Constraints and decision:** Verification had to cover real JSON requests, responses, and database state rather than mocks. I placed those checks in a React, TypeScript, and WebSocket test UI that runs before deployment.
 
@@ -14,7 +14,7 @@ Scroll horizontally to inspect the full flow.
 ![App, entity, and service definitions generate Java, SQL, and DDL artifacts, which the pre-deployment test UI exercises with JSON and WebSocket calls before checking API responses and database writes and reads.](../assets/diagrams/tmaxcloud-predeploy-api-test.en.svg)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud generated-API pre-deployment test flow diagram" }
 
-**Implementation:** I built a React and TypeScript test UI where users selected a service, edited its JSON request in Monaco Editor, and called the generated API. The UI sent calls over WebSocket, while a supporting Java REST API and database schema connected the response to real database writes and reads.
+**Implementation:** I built a React and TypeScript test UI where users selected a service, edited its JSON request in Monaco Editor, and called the generated API. I also built the supporting Java REST API and database schema, connecting WebSocket calls and response checks to real database writes and reads.
 
 **Validation and result:** I found invalid request/response shapes and missing definition-to-code links without a separate deployment, while still checking actual database writes and reads. Each such check no longer required repeating the roughly 20-minute build, deployment, and verification cycle.
 
