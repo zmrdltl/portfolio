@@ -231,6 +231,157 @@ class PublicCopyCheckTests(unittest.TestCase):
             )
         )
 
+    def test_undated_ossca_mentor_wording_is_rejected(self) -> None:
+        opensource_dir = self.docs_dir / "opensource"
+        opensource_dir.mkdir()
+        pages = (
+            (
+                opensource_dir / "gluesql.md",
+                "# GlueSQL\n\n현재 GlueSQL 리뷰어와 OSSCA 멘토로 활동합니다.\n",
+            ),
+            (
+                opensource_dir / "gluesql.en.md",
+                "# GlueSQL\n\nI now contribute as a GlueSQL reviewer and OSSCA mentor.\n",
+            ),
+            (
+                opensource_dir / "gluesql.md",
+                "# GlueSQL\n\nOSSCA 멘토로 활동하고 있습니다.\n",
+            ),
+            (
+                opensource_dir / "gluesql.en.md",
+                "# GlueSQL\n\nI serve as an OSSCA mentor.\n",
+            ),
+            (
+                opensource_dir / "gluesql.md",
+                "# GlueSQL\n\n2023년부터 OSSCA 멘토로 활동하고 있습니다.\n",
+            ),
+            (
+                opensource_dir / "gluesql.en.md",
+                "# GlueSQL\n\nSince 2023, I serve as an OSSCA mentor.\n",
+            ),
+            (
+                opensource_dir / "gluesql.md",
+                "# GlueSQL\n\n2023년에는 OSSCA 멘토로 참여했습니다. "
+                "현재 OSSCA 멘토로 활동합니다.\n",
+            ),
+            (
+                opensource_dir / "gluesql.en.md",
+                "# GlueSQL\n\nI participated as an OSSCA mentor in 2023. "
+                "I now serve as an OSSCA mentor.\n",
+            ),
+        )
+
+        for path, text in pages:
+            with self.subTest(path=path.name):
+                for existing_path, _ in pages:
+                    existing_path.unlink(missing_ok=True)
+                path.write_text(text, encoding="utf-8")
+                self.assertTrue(
+                    any(
+                        "undated OSSCA mentor role" in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_dated_ossca_mentor_wording_passes(self) -> None:
+        opensource_dir = self.docs_dir / "opensource"
+        opensource_dir.mkdir()
+        pages = (
+            (
+                opensource_dir / "gluesql.md",
+                "# GlueSQL\n\n현재 GlueSQL 리뷰어로 활동하며, 2023년에는 "
+                "OSSCA 멘토로 기여자를 안내했습니다.\n",
+            ),
+            (
+                opensource_dir / "gluesql.en.md",
+                "# GlueSQL\n\nI now serve as a reviewer and, as an OSSCA mentor "
+                "in 2023, guided contributors.\n",
+            ),
+        )
+
+        for path, text in pages:
+            with self.subTest(path=path.name):
+                for existing_path, _ in pages:
+                    existing_path.unlink(missing_ok=True)
+                path.write_text(text, encoding="utf-8")
+                self.assertEqual(self.validate(), [])
+
+    def test_unqualified_2023_gluesql_team_award_is_rejected(self) -> None:
+        opensource_dir = self.docs_dir / "opensource"
+        opensource_dir.mkdir()
+        pages = (
+            (
+                opensource_dir / "gluesql.md",
+                "# GlueSQL\n\n| 연도 | 프로그램 | 수상 |\n| --- | --- | --- |\n"
+                "| 2023 | 오픈소스 컨트리뷰션 아카데미 | "
+                "멘토로 참여해 정보통신산업진흥원장상(장려상) 수상 |\n",
+            ),
+            (
+                opensource_dir / "gluesql.md",
+                "# GlueSQL\n\n| 연도 | 프로그램 | 수상 |\n| --- | --- | --- |\n"
+                "| 2023 | 오픈소스 컨트리뷰션 아카데미 | "
+                "GlueSQL 팀 수상: 정보통신산업진흥원장상(장려상) |\n",
+            ),
+            (
+                opensource_dir / "gluesql.en.md",
+                "# GlueSQL\n\n| Year | Program | Award |\n| --- | --- | --- |\n"
+                "| 2023 | Open Source Contribution Academy | I received the "
+                "NIPA President Award (Encouragement) as a mentor |\n",
+            ),
+            (
+                opensource_dir / "gluesql.en.md",
+                "# GlueSQL\n\n| Year | Program | Award |\n| --- | --- | --- |\n"
+                "| 2023 | Open Source Contribution Academy | GlueSQL team award: "
+                "NIPA President Award (Encouragement) |\n",
+            ),
+        )
+
+        for path, text in pages:
+            with self.subTest(path=path.name, text=text):
+                for existing_path, _ in pages:
+                    existing_path.unlink(missing_ok=True)
+                path.write_text(text, encoding="utf-8")
+                self.assertTrue(
+                    any(
+                        "unqualified 2023 GlueSQL team award" in finding
+                        for finding in self.validate()
+                    )
+                )
+
+    def test_qualified_2023_gluesql_team_award_passes(self) -> None:
+        opensource_dir = self.docs_dir / "opensource"
+        opensource_dir.mkdir()
+        (opensource_dir / "gluesql.en.md").write_text(
+            "# GlueSQL\n\n"
+            "| Year | Program | Award |\n"
+            "| --- | --- | --- |\n"
+            "| 2023 | Open Source Contribution Academy | GlueSQL team award "
+            "while I participated as a mentor: NIPA President Award "
+            "(Encouragement) |\n",
+            encoding="utf-8",
+        )
+
+        self.assertEqual(self.validate(), [])
+
+    def test_non_ascii_dash_is_rejected_in_markdown_and_svg(self) -> None:
+        (self.docs_dir / "index.en.md").write_text(
+            "# Portfolio\n\n200–300 services\n",
+            encoding="utf-8",
+        )
+        diagrams_dir = self.docs_dir / "assets" / "diagrams"
+        diagrams_dir.mkdir(parents=True)
+        (diagrams_dir / "sample.en.svg").write_text(
+            '<svg xmlns="http://www.w3.org/2000/svg">'
+            "<text>request—response</text></svg>\n",
+            encoding="utf-8",
+        )
+
+        findings = self.validate()
+        self.assertEqual(
+            sum("non-ASCII dash punctuation" in finding for finding in findings),
+            2,
+        )
+
     def test_coupler_typescript_section_without_measured_outcomes_passes(self) -> None:
         pages = (
             (

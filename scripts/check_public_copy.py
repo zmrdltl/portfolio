@@ -77,6 +77,18 @@ PUBLIC_HEADING_EXEMPTIONS = (
     re.compile(r"Review,\s+Mentoring,\s+and\s+Awards", re.IGNORECASE),
 )
 
+NON_ASCII_DASH_PATTERN = re.compile(r"[\u2010\u2011\u2012\u2013\u2014\u2015\u2212]")
+OSSCA_MENTOR_PATHS = {"opensource/gluesql.md", "opensource/gluesql.en.md"}
+OSSCA_MENTOR_PATTERN = re.compile(r"OSSCA\s*(?:멘토|mentor)", re.IGNORECASE)
+OSSCA_HISTORICAL_MENTOR_PATTERN = re.compile(
+    r"2023년(?:에는|에)[^.\n]{0,80}OSSCA\s*멘토|"
+    r"OSSCA\s*멘토[^.\n]{0,80}2023년(?:에는|에)|"
+    r"\b(?:in|during)\s+2023\b[^.\n]{0,80}OSSCA\s+mentor|"
+    r"OSSCA\s+mentor[^.\n]{0,80}\b(?:in|during)\s+2023\b",
+    re.IGNORECASE,
+)
+SENTENCE_BOUNDARY_PATTERN = re.compile(r"(?<=[.!?])(?:\s+|$)")
+
 PUBLIC_HEADING_COMPOSITE_ARTIFACTS = (
     re.compile(
         r"\b(?:Data\s+Contract|Design\s+System|"
@@ -1501,6 +1513,18 @@ PUBLIC_ABBREVIATION_REQUIREMENTS: list[PublicAbbreviationRequirement] = []
 
 PUBLIC_LINE_REQUIREMENTS = [
     PublicLineRequirement(
+        "unqualified 2023 GlueSQL team award",
+        re.compile(
+            r"^\|\s*2023\s*\|[^\n]*(?:장려상|Encouragement)",
+            re.IGNORECASE,
+        ),
+        re.compile(
+            r"(?=.*(?:멘토|mentor))(?=.*(?:팀\s+수상|team\s+award))",
+            re.IGNORECASE,
+        ),
+        paths=("opensource/gluesql.md", "opensource/gluesql.en.md"),
+    ),
+    PublicLineRequirement(
         "unqualified percentage comparison",
         re.compile(r"\d+%\s*(?:이상\s*)?(?:줄|감소|단축|개선|reduc|decreas|improv)", re.IGNORECASE),
         re.compile(
@@ -1990,6 +2014,17 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
         relative_path = path.relative_to(docs_dir).as_posix()
         text = path.read_text(encoding="utf-8")
         for line_number, line in enumerate(text.splitlines(), start=1):
+            if relative_path in OSSCA_MENTOR_PATHS:
+                for sentence in SENTENCE_BOUNDARY_PATTERN.split(line):
+                    if not OSSCA_MENTOR_PATTERN.search(sentence):
+                        continue
+                    if OSSCA_HISTORICAL_MENTOR_PATTERN.search(sentence):
+                        continue
+                    findings.append(
+                        f"{relative_path}:{line_number}: "
+                        f"undated OSSCA mentor role: {sentence.strip()}"
+                    )
+
             for copy_pattern in PUBLIC_COPY_PATTERNS:
                 if copy_pattern.applies_to(relative_path) and copy_pattern.pattern.search(line):
                     findings.append(
@@ -2025,12 +2060,37 @@ def collect_public_copy_findings(docs_dir: Path) -> list[str]:
     return findings
 
 
+def collect_non_ascii_dash_findings(docs_dir: Path) -> list[str]:
+    findings: list[str] = []
+    visible_text_files = sorted(
+        path
+        for path in docs_dir.rglob("*")
+        if path.suffix in {".md", ".svg"}
+    )
+    for path in visible_text_files:
+        relative_path = path.relative_to(docs_dir).as_posix()
+        text = path.read_text(encoding="utf-8")
+        for line_number, line in enumerate(text.splitlines(), start=1):
+            if NON_ASCII_DASH_PATTERN.search(line):
+                findings.append(
+                    f"{relative_path}:{line_number}: "
+                    f"non-ASCII dash punctuation: {line.strip()}"
+                )
+
+    return findings
+
+
 def validate_public_copy(
     docs_dir: Path,
 ) -> tuple[list[str], PublicCopySummary]:
-    markdown_files = list(docs_dir.rglob("*.md"))
+    visible_text_files = [
+        path
+        for path in docs_dir.rglob("*")
+        if path.suffix in {".md", ".svg"}
+    ]
     findings = collect_public_copy_findings(docs_dir)
-    return findings, PublicCopySummary(len(markdown_files), len(findings))
+    findings.extend(collect_non_ascii_dash_findings(docs_dir))
+    return findings, PublicCopySummary(len(visible_text_files), len(findings))
 
 
 def parse_args() -> argparse.Namespace:
