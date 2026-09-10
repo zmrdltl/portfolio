@@ -4,7 +4,7 @@ PLATFORM SOFTWARE ENGINEER
 
 ## Summary
 
-I have worked on data, state, and concurrency problems across code-generation platforms, Rust services, a SQL engine, and a mobile product. I separate symptoms from causes, implement the selected solution, and verify the result through APIs, database state, regression tests, and release checks.
+I find and fix concurrency and data-correctness problems in platform backends, then verify the result with reproducible tests and real API and database behavior. I have applied this approach across full-time work on a code-generation platform and Rust services, an open-source SQL engine, and a mobile product that I operate directly.
 
 ## Representative Work
 
@@ -14,9 +14,9 @@ I have worked on data, state, and concurrency problems across code-generation pl
 
 **Role:** Rust backend problem analysis, implementation, and regression verification
 
-**Core change:** Fixed a check-and-reserve race in which concurrent LLM API calls read the same pre-reservation state.
+**Core change:** I fixed a concurrency defect in which LLM API calls read the same pre-reservation state and passed together, pushing the in-flight call count and token reservations beyond their limits.
 
-**Validation:** Under the same concurrency load, reproduced LLM API calls passing at more than ten times the effective concurrency limit, then confirmed the fixed path stayed at or below the limit.
+**Validation:** Under the same concurrency load, I reproduced over-reservation in which the in-flight call count and pending token reservations each reached at least ten times their respective limits, then confirmed that both stayed within their respective limits after the fix.
 
 **Technologies:** `Rust` · `concurrency control` · `regression testing`
 
@@ -24,7 +24,7 @@ I have worked on data, state, and concurrency problems across code-generation pl
 
 **Type and period:** Full-time role · Oct 2021 - Nov 2024
 
-**Role:** Feature design, implementation, and verification for a Java and TypeScript code-generation platform
+**Role:** Design, implementation, and verification of the React and TypeScript test UI, Java REST API, and database schema
 
 **Core change:** I built a test UI for a platform that generates Java APIs, SQL, and a JAR from UI-defined services, so users can check API responses and database state before deployment.
 
@@ -38,9 +38,9 @@ I have worked on data, state, and concurrency problems across code-generation pl
 
 **Role:** Direct implementation in a Rust SQL engine and contributor code review
 
-**Core change:** Separated projection-row deduplication from unique-value tracking in aggregate state and carried `DISTINCT` semantics into execution.
+**Core change:** I fixed `SELECT DISTINCT` returning duplicate results like a regular `SELECT`, implementing the appropriate deduplication for regular queries and aggregate functions.
 
-**Validation:** Covered single and multiple columns, maps, schemaless rows, and aggregate `DISTINCT` with regression tests.
+**Validation:** Regression tests covered `DISTINCT` over single and multiple columns and aggregate functions including `COUNT`.
 
 **Technologies:** `Rust` · `parser/AST` · `SQL executor`
 
@@ -52,7 +52,7 @@ I have worked on data, state, and concurrency problems across code-generation pl
 
 **Core change:** Made the app and admin web follow access state returned by the API instead of inferring review state independently.
 
-**Validation:** Kept API response, mobile routing, and admin review-queue regression tests in the release checklist.
+**Validation:** I regression-tested the API response contract, mobile routing, and admin review queue to verify that server-side review state was reflected consistently in the app and admin queue.
 
 **Technologies:** `React Native` · `TypeScript` · `MySQL`
 

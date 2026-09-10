@@ -70,8 +70,8 @@
   <rect class="label-mask" x="152" y="208" width="48" height="16" rx="4"/>
   <text class="transition-label" x="176" y="220">삭제</text>
   <rect class="label-mask" x="260" y="204" width="104" height="28" rx="4"/>
-  <text class="transition-label" x="312" y="216">채팅</text>
-  <text class="transition-label" x="312" y="228">초기화됨</text>
+  <text class="transition-label" x="312" y="216">채팅 초기화됨</text>
+  <text class="transition-label" x="312" y="228">그리고 시작 + 24H</text>
   <rect class="label-mask" x="664" y="208" width="64" height="16" rx="4"/>
   <text class="transition-label" x="696" y="220">행사 취소</text>
   <rect class="label-mask" x="476" y="220" width="88" height="16" rx="4"/>

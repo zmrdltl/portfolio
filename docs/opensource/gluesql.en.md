@@ -7,7 +7,7 @@
 
 **Problem and diagnosis:** `SELECT DISTINCT` syntax information did not reach GlueSQL's Rust SQL engine executor, so the query produced the same result as a regular `SELECT`. Projection and aggregate execution identify duplicates at different state boundaries.
 
-**Constraints and decision:** I had to leave non-`DISTINCT` results unchanged and remove duplicates only at the two state boundaries where final values are produced. Unsupported `DISTINCT ON` returns an explicit error.
+**Constraints and decision:** I preserved non-`DISTINCT` behavior and split deduplication by execution path: `SELECT DISTINCT` deduplicates projected result rows, while aggregate `DISTINCT` deduplicates the values supplied to each aggregate function. Unsupported `DISTINCT ON` returns an explicit error.
 
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
@@ -15,7 +15,7 @@ Scroll horizontally to inspect the full flow.
 ![DISTINCT syntax moves through the parser and AST into the query model, then the execution path deduplicates projected rows or aggregate inputs before regression tests verify the behavior.](../assets/diagrams/gluesql-distinct-execution.en.svg)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="GlueSQL DISTINCT execution-semantics flow diagram" }
 
-**Implementation:** I propagated parser/AST output into the query model, then connected row deduplication and aggregate handling in the SQL executor with AST Builder APIs. I also strengthened value equality, hashing, and map-key ordering so duplicate detection remained deterministic.
+**Implementation:** I propagated parser/AST output into the query model, then connected row deduplication and aggregate handling in the SQL executor with AST Builder APIs. Consistent deduplication required equal values to produce the same hash and equivalent maps to compare equally regardless of key insertion order. I updated value comparison, hashing, and map-key ordering together to preserve those invariants.
 
 **Validation and result:** Regression tests covered single and multiple columns, maps, schemaless rows, and aggregate `DISTINCT`, including `COUNT`. The feature and tests preserve the same meaning across SQL input, internal representation, and execution output.
 
@@ -38,8 +38,6 @@ I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/glu
 | 2023 | Open Source Contribution Academy | GlueSQL team award while I participated as a mentor: NIPA President Award (Encouragement) |
 | 2022 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
 | 2021 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
-
-- Public award announcement: [2023 Encouragement Award](https://drive.google.com/file/d/1oK3BYXVzaAQec83pAjl00_FUHt9ZZN0b/view?usp=sharing)
 
 ## Related Links
 

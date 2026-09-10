@@ -343,7 +343,7 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_REQUIREMENTS = {
     "experience/tmaxcloud.md": PublicParagraphRequirement(
         "overview loses entity export/import flow or contribution boundaries",
         (
-            re.compile(r"(?:Studio|제품\s+UI)", re.IGNORECASE),
+            re.compile(r"(?:Studio|제품\s+UI|플랫폼\s+UI)", re.IGNORECASE),
             re.compile(
                 r"엔티티\s+내보내기(?:·|\s*(?:와|및)\s*)가져오기",
                 re.IGNORECASE,
@@ -406,7 +406,7 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_OVERVIEW_REQUIREMENTS = {
     "experience/tmaxcloud.en.md": PublicParagraphRequirement(
         "overview loses entity export/import flow or contribution boundaries",
         (
-            re.compile(r"(?:Studio|product\s+UI)", re.IGNORECASE),
+            re.compile(r"(?:Studio|product\s+UI|platform\s+UI)", re.IGNORECASE),
             re.compile(
                 r"entity\s+export(?:/|\s+and\s+)import",
                 re.IGNORECASE,
@@ -464,7 +464,7 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS = {
         PublicParagraphRequirement(
             "missing entity export/import service-definition and synchronization flow",
             (
-                re.compile(r"(?:Studio|제품\s+UI)", re.IGNORECASE),
+                re.compile(r"(?:Studio|제품\s+UI|플랫폼\s+UI)", re.IGNORECASE),
                 re.compile(r"엔티티를\s+내보내", re.IGNORECASE),
                 re.compile(
                     r"(?:다른|두\s+번째)\s+(?:생성\s+)?앱으로\s+가져오",
@@ -538,7 +538,7 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS = {
         PublicParagraphRequirement(
             "missing entity export/import service-definition and synchronization flow",
             (
-                re.compile(r"(?:Studio|product\s+UI)", re.IGNORECASE),
+                re.compile(r"(?:Studio|product\s+UI|platform\s+UI)", re.IGNORECASE),
                 re.compile(r"export\s+an?\s+entit", re.IGNORECASE),
                 re.compile(
                     r"import\s+it\s+into\s+(?:another|a\s+second)"

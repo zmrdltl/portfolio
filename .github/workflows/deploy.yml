@@ -57,6 +57,9 @@ jobs:
       - name: Test public copy checker
         run: pnpm run test:public-copy
 
+      - name: Test built site checker
+        run: pnpm run test:built-site
+
       - name: Check portfolio structure
         run: pnpm run check:structure
 
@@ -68,6 +71,9 @@ jobs:
 
       - name: Build site
         run: .venv/bin/mkdocs build --strict
+
+      - name: Check built site
+        run: pnpm run check:built-site
 
       - name: Upload artifact
         if: >-

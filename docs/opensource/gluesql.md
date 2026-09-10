@@ -7,7 +7,7 @@
 
 **문제와 진단:** `SELECT DISTINCT` 구문 정보가 GlueSQL의 Rust SQL 엔진 실행기(executor)까지 전달되지 않아 일반 `SELECT`와 같은 결과를 만들었습니다. 중복의 의미는 projection과 aggregate에서 서로 다른 상태를 기준으로 했습니다.
 
-**제약과 선택:** `DISTINCT`가 아닌 기존 실행 결과는 바꾸지 않으면서, 최종 값이 만들어지는 두 상태 경계에서만 중복을 제거해야 했습니다. 지원하지 않는 `DISTINCT ON`은 명시적 오류로 처리했습니다.
+**제약과 선택:** `DISTINCT`가 아닌 기존 실행 결과는 유지하면서, `SELECT DISTINCT`는 projection 결과 행을, aggregate `DISTINCT`는 집계 함수의 입력 값을 중복 제거하도록 나눴습니다. 지원하지 않는 `DISTINCT ON`은 명시적 오류로 처리했습니다.
 
 도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
 { .diagram-scroll-hint }
@@ -15,7 +15,7 @@
 ![DISTINCT SQL 정보가 parser와 AST를 거쳐 query model에 전달되고, 실행 경로에 따라 projection 결과 행 또는 aggregate 입력 값을 중복 제거한 뒤 회귀 테스트로 확인합니다.](../assets/diagrams/gluesql-distinct-execution.ko.svg)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="GlueSQL DISTINCT 실행 의미 흐름 도식" }
 
-**구현:** parser/AST 결과를 query model에 전달하고, SQL executor의 row 중복 제거와 aggregate 처리, AST Builder API까지 연결했습니다. 값의 equality/hash와 map key order도 중복 판정이 흔들리지 않도록 보강했습니다.
+**구현:** parser/AST 결과를 query model에 전달하고, SQL executor의 row 중복 제거와 aggregate 처리, AST Builder API까지 연결했습니다. 중복 제거가 일관되려면 동등한 값은 같은 hash를 가져야 하고, map은 key 입력 순서가 달라도 같은 값으로 판정돼야 했습니다. 이 불변조건을 지키도록 값 비교·hash와 map key 정렬을 함께 보강했습니다.
 
 **검증과 결과:** 단일·복수 column, map과 schemaless row, `COUNT`를 포함한 aggregate `DISTINCT`를 회귀 테스트로 확인했습니다. SQL 입력, 내부 표현, 실행 결과가 같은 의미를 유지하도록 기능과 테스트를 함께 반영했습니다.
 
@@ -38,8 +38,6 @@ Parquet storage를 GlueSQL storage trait와 SQL 실행 경로에 연결하고 fi
 | 2023 | 오픈소스 컨트리뷰션 아카데미 | 멘토로 참여한 GlueSQL 팀 수상: 정보통신산업진흥원장상(장려상) |
 | 2022 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
 | 2021 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
-
-- 공개 수상 발표 자료: [2023 장려상](https://drive.google.com/file/d/1oK3BYXVzaAQec83pAjl00_FUHt9ZZN0b/view?usp=sharing)
 
 ## 관련 링크
 

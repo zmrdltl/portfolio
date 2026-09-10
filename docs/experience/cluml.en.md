@@ -4,7 +4,7 @@
 
 ## Fixing a Concurrency Bug in Outbound LLM API Rate Limiting
 
-**Problem and diagnosis:** I analyzed outbound LLM API calls from an AI security analysis engine that remained pending for an extended time on a customer demo server. I isolated a check-and-reserve race in which concurrent calls read the same pre-reservation state, causing both the in-flight call count and pending token reservations to exceed their limits. I treated the maximum wait imposed by the fixed window as a separate cause.
+**Problem and diagnosis:** While investigating long waits on a customer demo server, I found a race in the AI Security Analysis Engine’s outbound LLM API limiter: concurrent calls could read the same pre-reservation state and push both in-flight calls and pending token reservations past their limits. I distinguished it from waiting at fixed-window boundaries and limited the fix to the over-reservation race.
 
 **Constraints and decision:** The in-flight call count and estimated token reservation had to be checked against one current state, but holding the lock while waiting would block other calls. I kept only the check and reservation in the same lock section and released the lock before waiting.
 
@@ -51,4 +51,4 @@ Scroll horizontally to inspect the full flow.
 
 ### Report Query Scope and DHCP Option Display Validation
 
-I separated the report's first-event-time query from customer-list loading, then reviewed a lightweight, report-specific query and incremental rendering for the customer list. For DHCP options, I compared the GraphQL API's `options` field, formatting logic, raw event, detection list, and detail view to confirm that the API change reached the rendered output.
+I implemented dedicated queries for the report’s first-event time and customer list that fetch only the fields needed on screen, and updated the customer list to render incrementally. For DHCP options, I implemented the path from the GraphQL query through formatting to the list and detail views, then verified both displays against the raw event.

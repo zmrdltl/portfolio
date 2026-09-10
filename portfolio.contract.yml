@@ -37,14 +37,14 @@ homepage:
         opensource/gluesql.md:
           type_period: [오픈소스 기여, "2021.06", 현재]
           role: [Rust SQL 엔진, 직접 구현, 코드 리뷰]
-          change: [projection, aggregate state, DISTINCT]
-          proof: [복수 column, map, schemaless row, 회귀 테스트]
+          change: [SELECT DISTINCT, 중복 결과, 일반 조회, 집계 함수]
+          proof: [단일·복수 열, COUNT, 집계 함수, 회귀 테스트]
           technologies: [Rust, parser/AST, SQL executor]
         projects/coupler.md:
           type_period: [개인 제품, "2024.07", 현재]
           role: [React Native, Express API, React 관리자 웹, MySQL DB, 총괄]
           change: [API, 접근 상태, 추론]
-          proof: [API 응답, 모바일 화면 분기, 관리자 심사 큐, 회귀 테스트]
+          proof: [API 응답 계약, 모바일 화면 분기, 관리자 심사 큐, 서버의 심사 상태, 앱 화면, 회귀 테스트]
           technologies: [React Native, TypeScript, MySQL]
     - path: docs/index.en.md
       representative_heading: Representative Work
@@ -62,8 +62,8 @@ homepage:
         experience/cluml.md:
           type_period: [Full-time role, Mar 2025, Jul 2026]
           role: [Rust backend, analysis, implementation, regression verification]
-          change: [LLM API calls, pre-reservation state, race]
-          proof: [same concurrency load, ten times, at or below the limit]
+          change: [LLM API calls, pre-reservation state, concurrency defect]
+          proof: [same concurrency load, at least ten times, respective limits]
           technologies: [Rust, concurrency control, regression testing]
         experience/tmaxcloud.md:
           type_period: [Full-time role, Oct 2021, Nov 2024]
@@ -74,14 +74,14 @@ homepage:
         opensource/gluesql.md:
           type_period: [Open-source contribution, Jun 2021, Present]
           role: [Rust SQL engine, Direct implementation, code review]
-          change: [projection-row, aggregate state, DISTINCT]
-          proof: [multiple columns, maps, schemaless rows, regression tests]
+          change: [SELECT DISTINCT, duplicate results, regular queries, aggregate functions]
+          proof: [single and multiple columns, COUNT, aggregate functions, regression tests]
           technologies: [Rust, parser/AST, SQL executor]
         projects/coupler.md:
           type_period: [Independent product, Jul 2024, Present]
           role: [React Native app, Express API, React admin web, MySQL database, lead]
           change: [API, access state, inferring]
-          proof: [API response, mobile routing, admin review-queue, regression tests]
+          proof: [API response contract, mobile routing, admin review queue, server-side review state, app, regression-tested]
           technologies: [React Native, TypeScript, MySQL]
 
 content_coverage:
@@ -214,7 +214,6 @@ content_coverage:
       - DB 메시지 ID로 병합
       - 단일 API 프로세스
       - outbox
-      - API 계약 전환 위반
       - 운영 smoke
       - FCM
       - 실시간 연결
@@ -248,7 +247,6 @@ content_coverage:
       - database message ID
       - single API process
       - outbox
-      - API-contract cutover violation
       - operational smoke
       - FCM
       - real-time connections

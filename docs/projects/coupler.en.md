@@ -12,11 +12,11 @@ I now lead development and operations across the React Native mobile app, Expres
 - Own QA, code review, merges, releases, deployment, and rollback.
 - Keep policy, flows, architecture, database-change verification procedures, and deployment and rollback rules in the [public engineering documentation](https://coupler-developer.github.io/docs/) and tie them to release criteria.
 
-## Using One Server Response for Signup and Review State
+## Centralizing Signup and Review State During a Signup-Flow Redesign
 
-**Problem and diagnosis:** The previous signup application asked for about 30 fields at once, creating a large burden before the first review request. The larger consistency risk was that app screens, API result codes, and the admin review queue could independently infer submission, resubmission, approval, rejection, and the next screen, producing different flows.
+**Problem and diagnosis:** Redesigning the previous signup application's roughly 30 input fields into stages also changed which screen should follow submission, resubmission, approval, or rejection. The app, API result codes, and admin review queue each inferred those states independently, so changing the signup flow alone risked making the three paths diverge. I therefore unified the signup and review state before adding more screen-specific conditions.
 
-**Constraints and decision:** The change had to span the existing React Native app, Express API, React admin web, MySQL data, and migrations. The initial submission needed to reduce input burden while retaining the basic information and required profile materials for the first review; after approval, associate and full-member reviews needed to proceed independently. Instead of matching client-specific conditionals, I made the API the single source that returns access state and the next action, while the app and admin web interpret only valid server states. Missing or invalid state does not open a screen by inference.
+**Constraints and decision:** The change had to span the existing React Native app, Express API, React admin web, MySQL data, and migrations. The initial submission needed to reduce input burden while retaining the basic information and required profile materials for the first review; after approval, associate and full-member reviews needed to proceed independently. Instead of matching client-specific conditionals, I made the API the single source for access state and screen-routing state, while the app and admin web interpret only valid server states. Missing or invalid state does not open a screen by inference.
 
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
@@ -26,11 +26,7 @@ Scroll horizontally to inspect the full flow.
 
 **Implementation:** While moving the existing codebase to version 2.0.0, I reduced the initial application to basic information and the required profile, implemented state transitions that allow associate- and full-member reviews to proceed independently after approval, and reworked the database structure. The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful responses from screen-routing state, while the [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) aligns submission and resubmission, signup versus settings-change reviews, and admin queue classification.
 
-**Validation and result:** I kept API response-contract, mobile-routing, and admin review-queue regression tests in the same release checklist. Changes go through the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), QA, and deployment and rollback procedures.
-
-Observed Meta SDK event count upon reaching the initial signup review stage: about 10 before the redesign and about 100 after.
-
-This value counts events recorded when the initial signup review stage was reached.
+**Validation and result:** I regression-tested the API response contract, mobile routing, and admin review queue to verify that server-side review state was reflected consistently in the app and admin queue. Missing or invalid state does not open a screen by inference. The change also went through the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), QA, and deployment and rollback procedures.
 
 ## Connecting N-to-N Group Meetings as One Operational Lifecycle
 
@@ -56,7 +52,7 @@ Scroll horizontally to inspect the full lifecycle.
 
 **Implementation:** I implemented meeting, application, participant, chat, and review state in the API and database, then connected admin workflows for creation, publication, approval and cancellation, participants, reviews, and reports. A teammate built parts of the initial mobile list, detail, and chat UI; I connected application state, real-time message merging, read state, notification markers, reapplication, reporting, and reviews to that collaborative mobile flow. Group messages are persisted through REST and received as server-confirmed events over WebSocket.
 
-**Validation and result:** Event publication, confirmation, reopening, and completion, along with application, approval, leaving, reapplication, and review transitions, are release criteria together with API, admin-web, and mobile regressions. Chat opens at 1:00 p.m. on the calendar day before the currently scheduled event start and becomes read-only 24 hours after that start time. I documented the lifecycle in the [group meeting system documentation](https://coupler-developer.github.io/docs/architecture/group-meeting-system/) and released it in the v2.3.0 scope. An API-contract cutover violation was identified after release, and controlled operational smoke coverage across FCM, real-time connections, and the scheduler remains an additional validation item.
+**Validation and result:** Event publication, confirmation, reopening, and completion, along with application, approval, leaving, reapplication, and review transitions, are release criteria together with API, admin-web, and mobile regressions. I have not yet run an operational smoke test spanning FCM, real-time connections, and the scheduler. I documented the regression-tested chat opening, read-only transition, and full lifecycle in the [group meeting system documentation](https://coupler-developer.github.io/docs/architecture/group-meeting-system/) and released them as v2.3.0.
 
 ## Additional Work
 
@@ -80,9 +76,9 @@ Scroll horizontally to inspect the full flow.
 
 ### An Interruptible Database Migration Runner and Recovery Criteria
 
-**Problem and decision:** An operational database change must prevent several unsafe states together: schema changes without a migration record, partially applied steps, and an older API continuing to write against the new schema. I fixed the target migrations and order in an immutable plan with checksums, then required writer and external-effect fencing, drain, backup, and preconditions before mutation.
+**Problem and decision:** An operational database change had to prevent three unsafe states together: a schema change without an execution record, a partially applied sequence, and an older API continuing to write against the new schema. I fixed the changes and their order before execution, then blocked existing writes and checked in-flight work, backup, and preconditions before mutation.
 
-**Implementation and validation:** I implemented an interruptible runner that records each migration, its postcondition, and a durable ledger. If interrupted, it keeps the fence in place and resumes or recovers only after confirming the same plan. In development, I confirmed that the related schema change had been applied and its postcondition had succeeded, but the postcheck ledger record was missing; the runner repaired only that ledger gap. The v2.3.0 production migrations predated this runner, so I did not retroactively claim that the new runner executed them; instead, I closed that state by revalidating the live catalog, ledger gaps, postconditions, and schema fingerprint. These rules are maintained in the [database migration policy](https://coupler-developer.github.io/docs/policy/db-migration-gate-policy/).
+**Implementation and validation:** I implemented an interruptible tool that records each change step, its completion condition, and its execution history. If interrupted, it keeps writes blocked and resumes or recovers only after confirming the original plan. In development, I found a state where the schema change and completion condition had succeeded but one execution record was missing; the tool repaired only that record. The v2.3.0 production changes predated this tool; I closed that state by rechecking the live schema, existing execution records, and completion conditions. These rules are maintained in the [database migration policy](https://coupler-developer.github.io/docs/policy/db-migration-gate-policy/).
 
 ### Migrating the Admin Web to TypeScript and Preventing JavaScript Reintroduction in CI
 
