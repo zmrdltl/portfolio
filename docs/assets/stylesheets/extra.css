@@ -6,15 +6,22 @@
 
 /* Preserve diagram label readability without widening the page itself. */
 .md-typeset .diagram-scroll-hint {
-  display: none;
+  color: var(--md-default-fg-color--light);
+  display: block;
+  font-size: 0.75rem;
+  margin: 0.5rem 0 0.25rem;
 }
 
 .md-typeset .editorial-diagram-scroll {
+  -webkit-overflow-scrolling: touch;
   background: #fafafa;
   border: 0.05rem solid var(--md-default-fg-color--lightest);
   border-radius: 0.4rem;
   margin: 0.5rem 0 2rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
   padding: 0.5rem;
+  scrollbar-gutter: stable;
 }
 
 .md-typeset .editorial-diagram-scroll:focus-visible {
@@ -26,28 +33,29 @@
   display: block;
   height: auto;
   margin: 0;
+  max-width: none;
+  min-width: 48rem;
   width: 100%;
 }
 
 @media screen and (max-width: 44.984375em) {
+  .md-typeset .editorial-diagram-scroll {
+    margin-inline: -0.4rem;
+    padding: 0.4rem 0.4rem 0.65rem;
+  }
+}
+
+@media print {
   .md-typeset .diagram-scroll-hint {
-    color: var(--md-default-fg-color--light);
-    display: block;
-    font-size: 0.75rem;
-    margin: 0.5rem 0 0.25rem;
+    display: none;
   }
 
   .md-typeset .editorial-diagram-scroll {
-    -webkit-overflow-scrolling: touch;
-    margin-inline: -0.4rem;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    padding: 0.4rem 0.4rem 0.65rem;
-    scrollbar-gutter: stable;
+    overflow: visible;
   }
 
   .md-typeset .editorial-diagram-scroll img {
-    max-width: none;
-    min-width: 48rem;
+    max-width: 100%;
+    min-width: 0;
   }
 }

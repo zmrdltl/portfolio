@@ -6,6 +6,7 @@ repo_name: zmrdltl/portfolio
 
 theme:
   name: material
+  custom_dir: overrides
   language: ko
   features:
     - navigation.sections
