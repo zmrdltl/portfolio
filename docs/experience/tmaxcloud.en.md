@@ -4,35 +4,39 @@
 
 ## Pre-Deployment API Testing for a Code-Generation Platform
 
-**Problem and diagnosis:** Users defined entities and service logic in the UI, and the platform generated Java APIs, SQL, and a JAR. The generated APIs could only be checked against real responses and database writes and reads after a separate deployment and container startup. With roughly 200-300 services and APIs to verify, one build, deploy, and verification cycle took about 20 minutes, and each invalid definition or request/response shape restarted the same delayed feedback loop.
+I built a test UI, Java REST API, and database schema to run generated APIs and check their responses and actual database writes and reads before deployment.
 
-**Constraints and decision:** Verification had to cover real JSON requests, responses, and database state rather than mocks. I placed those checks in a React, TypeScript, and WebSocket test UI that runs before deployment.
-
-Scroll horizontally to inspect the full flow.
+Scroll horizontally to inspect the full diagram.
 { .diagram-scroll-hint }
 
-![App, entity, and service definitions generate Java, SQL, and DDL artifacts, which the pre-deployment test UI exercises with JSON and WebSocket calls before checking API responses and database writes and reads.](../assets/diagrams/tmaxcloud-predeploy-api-test.en.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud generated-API pre-deployment test flow diagram" }
+![Conceptual pre-deployment API test UI with service selection, JSON request editing, API responses, and database checks.](../assets/diagrams/tmaxcloud-predeploy-api-test.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud pre-deployment API test UI concept" }
 
-**Implementation:** I built a React and TypeScript test UI where users selected a service, edited its JSON request in Monaco Editor, and called the generated API. I also built the supporting Java REST API and database schema, connecting WebSocket calls and response checks to real database writes and reads.
+**Problem and diagnosis:** The platform generated Java APIs, SQL, and a JAR from UI-defined entities and services, but real API behavior could only be checked after deployment and container startup. With roughly 200-300 services and APIs to verify, each build, deployment, and verification cycle took about 20 minutes, delaying feedback on invalid definitions and request/response shapes.
 
-**Validation and result:** I found invalid request/response shapes and missing definition-to-code links without a separate deployment, while still checking actual database writes and reads. Each such check no longer required repeating the roughly 20-minute build, deployment, and verification cycle.
+**Constraints and decision:** Mock responses could not reveal actual database write/read errors, so I placed a test step before deployment that called APIs through the existing generation and execution path.
 
-## Data-Change History and Historical Table Reconstruction
+**Implementation:** I implemented JSON request editing with Monaco Editor in a React and TypeScript UI, plus WebSocket request/response handling. I also designed and implemented the Java REST API and database schema for listing test targets and storing and reading actual test data.
 
-**Problem and diagnosis:** Generated CRUD applications kept only current values. Showing earlier values and the last editor after an update or deletion required storing the prior row, editor, and valid period under one consistent definition.
+**Validation and result:** I found request/response errors and missing links between service definitions and generated code before deployment, while checking actual database writes and reads. Each check avoided another roughly 20-minute build, deployment, and verification cycle.
 
-**Constraints and decision:** A Tibero database trigger or procedure could see the changed row but did not naturally receive the requesting user's identity. I chose to generate the history write in CRUD code, which already carried that identity, and made the history-table DDL and point-in-time read use the same entity columns and primary key.
+## Storing Data-Change History and Querying Historical Data
 
-Scroll horizontally to inspect the full flow.
+I implemented SQL to store rows before changes and to query row values and the last editor for a requested date.
+
+Scroll horizontally to inspect the full diagram.
 { .diagram-scroll-hint }
 
-![One entity definition drives source and history table DDL plus CRUD history writes, and the resulting history reconstructs row values and the last editor for a requested date.](../assets/diagrams/tmaxcloud-table-history.en.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud data-change history and requested-date reconstruction diagram" }
+![Conceptual data example combining the current table and change history to query row values and the last editor for a requested past date.](../assets/diagrams/tmaxcloud-table-history.en.svg)
+{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud data-change history and past-date query example" }
 
-**Implementation:** I encoded the source/history-table DDL and the SQL that stores a row before an update or deletion in FreeMarker templates. I also wrote a query that combines current and historical data to reconstruct each row as of a requested date and return its last editor.
+**Problem and diagnosis:** Generated CRUD applications kept only current values. Showing values and the last editor from before an update or deletion required saving the prior row, editor, and valid period together.
 
-**Validation and result:** Using example data, I confirmed that the history table captured values before updates and deletions together with the editor and deletion state. I also confirmed that, for a requested date, the query selected the valid history row for each primary key and returned the table state and last editor as of that date.
+**Constraints and decision:** Tibero triggers or procedures needed an extra convention to receive the requesting user's identity. I instead generated history writes in CRUD code that already had that identity, using the same entity columns and primary key for storage and queries.
+
+**Implementation:** I implemented FreeMarker templates that generate source/history-table DDL and SQL to store rows before updates and deletions. I also wrote SQL that combines current and historical data to return the valid row for each primary key and its last editor as of a requested date.
+
+**Validation and result:** With example data, I checked that values before updates and deletions, the editor, and deletion state were stored. I also confirmed that the query selected the valid row for each primary key and returned the table state and last editor for the requested date.
 
 ## Additional Work
 

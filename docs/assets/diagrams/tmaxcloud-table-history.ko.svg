@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="992" height="400" viewBox="0 0 992 400" role="img" aria-labelledby="title desc">
-  <title id="title">TmaxCloud 데이터 변경 이력 구조</title>
-  <desc id="desc">하나의 엔티티 정의에서 원본·이력 테이블 DDL과 CRUD 저장 코드를 생성하고, 기본 키·수정자·유효 기간·행 데이터를 모아 지정 날짜의 상태와 마지막 변경자를 복원하는 구조입니다.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="928" height="640" viewBox="0 0 928 640" role="img" aria-labelledby="title desc">
+  <title id="title">TmaxCloud 데이터 변경 이력과 과거 날짜 조회 예시</title>
+  <desc id="desc">기능을 설명하기 위한 데이터 예시입니다. 같은 행의 값이 1월 1일 A, 1월 8일 B, 1월 15일 C로 바뀝니다. 1월 10일을 조회하면 이력의 유효 기간에 해당하는 값 B와 마지막 변경자 B를 확인하며 원본의 현재 값 C는 유지됩니다. 하나의 엔티티 정의에서 원본·이력 테이블 DDL과 변경 전 행 저장 코드를 생성하고, 기본 키·수정자·유효 기간·행 데이터를 사용해 지정 날짜를 조회합니다.</desc>
   <defs>
     <style><![CDATA[
       @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap');
@@ -10,72 +10,79 @@
         --paper-2: #fafafa;
         --ink: #2d3142;
         --muted: #4f5d75;
-        --soft: #667085;
         --rule: rgba(45, 49, 66, 0.12);
         --rule-solid: #bfc0c0;
         --accent: #4051b5;
         --accent-tint: rgba(64, 81, 181, 0.08);
         --link: #2e5aa8;
       }
-      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; }
-      .connector { fill: none; stroke: var(--muted); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
+      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; fill: var(--ink); }
+      .heading { font-size: 32px; font-weight: 600; }
+      .label { font-size: 20px; font-weight: 600; }
+      .body { font-size: 16px; font-weight: 400; }
+      .meta { font-size: 16px; font-weight: 500; fill: var(--muted); }
+      .mono { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .code { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 20px; }
+      .value { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 32px; font-weight: 600; }
+      .muted { fill: var(--muted); }
+      .accent { fill: var(--accent); }
+      .on-accent { fill: var(--paper-2); }
+      .surface { fill: var(--paper-2); stroke: var(--rule-solid); stroke-width: 1; }
+      .rule { fill: none; stroke: var(--rule-solid); stroke-width: 1; }
+      .connector { fill: none; stroke: var(--muted); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
       .connector-accent { stroke: var(--accent); stroke-width: 1.6; }
-      .connector-secondary { stroke-dasharray: 5 5; stroke-width: 1.1; }
-      .node { fill: var(--paper-2); stroke: var(--rule-solid); stroke-width: 1; }
-      .node-accent { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
-      .node-terminal { fill: rgba(45, 49, 66, 0.05); }
-      .node-title { fill: var(--ink); font-size: 13px; font-weight: 600; }
-      .node-meta, .edge-label, .callout-kicker { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-      .node-meta { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.035em; }
-      .edge-label { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.025em; }
-      .edge-label-accent { fill: var(--accent); }
-      .label-mask { fill: var(--paper); }
-      .lifeline { stroke: var(--rule-solid); stroke-dasharray: 4 6; stroke-width: 1; }
-      .decision { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
-      .start { fill: var(--ink); }
-      .callout { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1; }
-      .callout-kicker { fill: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; }
-      .callout-text { fill: var(--ink); font-size: 11px; font-weight: 500; }
-      .arrow { fill: var(--muted); }
-      .arrow-accent { fill: var(--accent); }
+      .guide { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 4 4; }
     ]]></style>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
-      <polygon class="arrow" points="0 0, 8 3, 0 6"/>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--muted)"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
-      <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
+    <marker id="arrow-accent" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--accent)"/>
+    </marker>
+    <marker id="arrow-link" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--link)"/>
     </marker>
   </defs>
-  <rect width="992" height="400" fill="var(--paper)"/>
+  <rect width="928" height="640" fill="var(--paper)"/>
   <g aria-hidden="true">
-    <path class="connector" d="M 200 188 H 216 Q 224 188 224 180 V 108 Q 224 100 232 100 H 248" marker-end="url(#arrow)"/>
-    <path class="connector" d="M 200 212 H 216 Q 224 212 224 220 V 292 Q 224 300 232 300 H 248" marker-end="url(#arrow)"/>
-    <path class="connector" d="M 424 100 H 456 Q 464 100 464 108 V 180 Q 464 188 472 188 H 504" marker-end="url(#arrow)"/>
-    <path class="connector" d="M 424 300 H 456 Q 464 300 464 292 V 220 Q 464 212 472 212 H 504" marker-end="url(#arrow)"/>
-    <path class="connector connector-accent" d="M 696 200 H 784" marker-end="url(#arrow-accent)"/>
-<rect class="label-mask" x="112" y="124" width="104" height="26" rx="4"/>
-<text class="edge-label" x="164" y="141" text-anchor="middle">같은 스키마</text>
-<rect class="label-mask" x="472" y="252" width="104" height="26" rx="4"/>
-<text class="edge-label" x="524" y="269" text-anchor="middle">변경 전</text>
-<rect class="label-mask" x="700" y="168" width="88" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="744" y="185" text-anchor="middle">시점 조회</text>
-    <rect class="node" x="32" y="152" width="168" height="96" rx="8"/>
-<text class="node-title" x="116" y="182" text-anchor="middle">엔티티 정의</text>
-<text class="node-meta" x="116" y="206" text-anchor="middle">열 · 기본 키 · 이력 사용</text>
-    <rect class="node" x="256" y="52" width="168" height="96" rx="8"/>
-<text class="node-title" x="340" y="82" text-anchor="middle">DDL 생성</text>
-<text class="node-meta" x="340" y="106" text-anchor="middle">원본 + 이력 테이블</text>
-    <rect class="node" x="256" y="252" width="168" height="96" rx="8"/>
-<text class="node-title" x="340" y="282" text-anchor="middle">CRUD 코드 생성</text>
-<text class="node-meta" x="340" y="306" text-anchor="middle">변경 전 행 저장</text>
-    <rect class="node node-accent" x="512" y="148" width="184" height="104" rx="8"/>
-<text class="node-title" x="604" y="178" text-anchor="middle">변경 이력</text>
-<text class="node-meta" x="604" y="202" text-anchor="middle">PK · 수정자 · 유효 기간</text>
-<text class="node-meta" x="604" y="217" text-anchor="middle">행 데이터</text>
-    <rect class="node" x="792" y="152" width="168" height="96" rx="8"/>
-<text class="node-title" x="876" y="182" text-anchor="middle">지정 날짜</text>
-<text class="node-title" x="876" y="200" text-anchor="middle">상태 복원</text>
-<text class="node-meta" x="876" y="224" text-anchor="middle">행 값 · 마지막 변경자</text>
-
+    <text class="meta" x="32" y="36">DATA HISTORY / 기능 설명용 데이터 예시</text>
+    <text class="heading" x="32" y="84">특정 날짜의 데이터 조회</text>
+    <text class="body muted" x="32" y="120">같은 행의 값이 바뀌어도, 과거 값과 마지막 변경자를 확인</text>
+<path class="connector" d="M 96 204 H 848" marker-end="url(#arrow)"/>
+<path class="guide" d="M 528 240 V 372"/>
+    <text class="meta mono" x="96" y="172">01 / 01</text>
+    <text class="meta mono" x="432" y="172">01 / 08</text>
+    <text class="meta mono" x="768" y="172">01 / 15</text>
+<circle cx="96" cy="204" r="4" fill="var(--muted)"/>
+<circle cx="432" cy="204" r="4" fill="var(--muted)"/>
+<circle cx="768" cy="204" r="4" fill="var(--muted)"/>
+    <rect x="524" y="200" width="8" height="8" fill="var(--accent)"/>
+    <text class="meta mono accent" x="528" y="232" text-anchor="middle">01 / 10</text>
+    <text class="label" x="96" y="256">값 A</text>
+    <text class="label" x="432" y="256">값 B</text>
+    <text class="label" x="768" y="256">값 C</text>
+    <text class="meta" x="96" y="284">변경자 A</text>
+    <text class="meta" x="432" y="284">변경자 B</text>
+    <text class="meta" x="768" y="284">변경자 C</text>
+    <rect x="96" y="308" width="332" height="32" rx="4" fill="rgba(45, 49, 66, 0.05)"/>
+    <rect x="432" y="308" width="332" height="32" rx="4" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1"/>
+    <rect x="768" y="308" width="96" height="32" rx="4" fill="rgba(45, 49, 66, 0.05)"/>
+    <text class="meta" x="112" y="332">이력 · A</text>
+    <text class="meta accent" x="448" y="332">이력 · B</text>
+    <text class="meta" x="816" y="332" text-anchor="middle">원본 · C</text>
+    <rect x="32" y="372" width="864" height="180" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/>
+    <text class="label" x="56" y="408">조회 날짜</text>
+    <text class="code accent" x="240" y="408">01 / 10</text>
+    <text class="meta mono" x="872" y="408" text-anchor="end">01 / 08 ≤ 날짜 &lt; 01 / 15</text>
+<path d="M 56 428 H 872" stroke="var(--accent)" stroke-opacity="0.24" stroke-width="1"/>
+    <text class="meta" x="56" y="464">그날의 값</text>
+    <text class="value accent" x="56" y="516">B</text>
+    <text class="meta" x="336" y="464">마지막 변경자</text>
+    <text class="label" x="336" y="516">변경자 B</text>
+<path class="rule" d="M 624 448 V 528"/>
+    <text class="meta" x="656" y="464">현재 원본 값</text>
+    <text class="value" x="656" y="516">C</text>
+    <text class="body muted" x="32" y="588">엔티티 정의 → 원본·이력 DDL + 변경 전 행 저장 코드</text>
+    <text class="body muted" x="32" y="616">조회에 사용: 기본 키 · 수정자 · 유효 기간 · 행 데이터</text>
   </g>
 </svg>

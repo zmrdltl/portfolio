@@ -26,7 +26,7 @@ I have worked on data, state, and concurrency problems across code-generation pl
 
 **Role:** Feature design, implementation, and verification for a Java and TypeScript code-generation platform
 
-**Core change:** Added a feature to a platform that turns UI-defined services into Java APIs, SQL, and a JAR, allowing those APIs to be called and checked against database state before deployment.
+**Core change:** I built a test UI for a platform that generates Java APIs, SQL, and a JAR from UI-defined services, so users can check API responses and database state before deployment.
 
 **Validation:** Invalid service definitions, request/response shapes, and database-write errors could be found without repeating the roughly 20-minute build, deployment, and verification cycle.
 

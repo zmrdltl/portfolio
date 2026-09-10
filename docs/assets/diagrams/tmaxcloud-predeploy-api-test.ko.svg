@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="928" height="280" viewBox="0 0 928 280" role="img" aria-labelledby="title desc">
-  <title id="title">TmaxCloud 배포 전 API 테스트 경로</title>
-  <desc id="desc">UI 정의에서 생성된 Java·SQL·DDL 산출물을 배포 전 테스트 화면에서 실제 JSON과 WebSocket으로 호출하고 API 응답과 DB 쓰기·읽기를 확인하는 흐름입니다.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="928" height="608" viewBox="0 0 928 608" role="img" aria-labelledby="title desc">
+  <title id="title">TmaxCloud 배포 전 API 테스트 화면 예시</title>
+  <desc id="desc">기능을 설명하기 위한 예시 화면입니다. UI 정의에서 생성한 Java·SQL·DDL을 배포 전 테스트 화면에서 JSON과 WebSocket으로 호출하고 API 응답과 DB 쓰기·읽기를 확인합니다. label 값 sample은 예시 데이터이며 실제 제품 화면을 재현한 것이 아닙니다.</desc>
   <defs>
     <style><![CDATA[
       @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap');
@@ -10,66 +10,74 @@
         --paper-2: #fafafa;
         --ink: #2d3142;
         --muted: #4f5d75;
-        --soft: #667085;
         --rule: rgba(45, 49, 66, 0.12);
         --rule-solid: #bfc0c0;
         --accent: #4051b5;
         --accent-tint: rgba(64, 81, 181, 0.08);
         --link: #2e5aa8;
       }
-      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; }
-      .connector { fill: none; stroke: var(--muted); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
+      text { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; fill: var(--ink); }
+      .heading { font-size: 32px; font-weight: 600; }
+      .label { font-size: 20px; font-weight: 600; }
+      .body { font-size: 16px; font-weight: 400; }
+      .meta { font-size: 16px; font-weight: 500; fill: var(--muted); }
+      .mono { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .code { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 20px; }
+      .value { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 32px; font-weight: 600; }
+      .muted { fill: var(--muted); }
+      .accent { fill: var(--accent); }
+      .on-accent { fill: var(--paper-2); }
+      .surface { fill: var(--paper-2); stroke: var(--rule-solid); stroke-width: 1; }
+      .rule { fill: none; stroke: var(--rule-solid); stroke-width: 1; }
+      .connector { fill: none; stroke: var(--muted); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
       .connector-accent { stroke: var(--accent); stroke-width: 1.6; }
-      .connector-secondary { stroke-dasharray: 5 5; stroke-width: 1.1; }
-      .node { fill: var(--paper-2); stroke: var(--rule-solid); stroke-width: 1; }
-      .node-accent { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
-      .node-terminal { fill: rgba(45, 49, 66, 0.05); }
-      .node-title { fill: var(--ink); font-size: 13px; font-weight: 600; }
-      .node-meta, .edge-label, .callout-kicker { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-      .node-meta { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.035em; }
-      .edge-label { fill: var(--muted); font-size: 10px; font-weight: 500; letter-spacing: 0.025em; }
-      .edge-label-accent { fill: var(--accent); }
-      .label-mask { fill: var(--paper); }
-      .lifeline { stroke: var(--rule-solid); stroke-dasharray: 4 6; stroke-width: 1; }
-      .decision { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.4; }
-      .start { fill: var(--ink); }
-      .callout { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1; }
-      .callout-kicker { fill: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; }
-      .callout-text { fill: var(--ink); font-size: 11px; font-weight: 500; }
-      .arrow { fill: var(--muted); }
-      .arrow-accent { fill: var(--accent); }
+      .guide { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 4 4; }
     ]]></style>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
-      <polygon class="arrow" points="0 0, 8 3, 0 6"/>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--muted)"/>
     </marker>
-    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" overflow="visible">
-      <polygon class="arrow-accent" points="0 0, 8 3, 0 6"/>
+    <marker id="arrow-accent" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--accent)"/>
+    </marker>
+    <marker id="arrow-link" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="var(--link)"/>
     </marker>
   </defs>
-  <rect width="928" height="280" fill="var(--paper)"/>
+  <rect width="928" height="608" fill="var(--paper)"/>
   <g aria-hidden="true">
-    <path class="connector" d="M 200 140 H 256" marker-end="url(#arrow)"/>
-    <path class="connector connector-accent" d="M 432 140 H 488" marker-end="url(#arrow-accent)"/>
-    <path class="connector" d="M 664 140 H 720" marker-end="url(#arrow)"/>
-<rect class="label-mask" x="196" y="108" width="72" height="26" rx="4"/>
-<text class="edge-label" x="232" y="125" text-anchor="middle">생성</text>
-<rect class="label-mask" x="440" y="108" width="48" height="26" rx="4"/>
-<text class="edge-label edge-label-accent" x="464" y="125" text-anchor="middle">호출</text>
-<rect class="label-mask" x="664" y="108" width="64" height="26" rx="4"/>
-<text class="edge-label" x="696" y="125" text-anchor="middle">검증</text>
-<rect class="node" x="32" y="92" width="168" height="96" rx="8"/>
-<text class="node-title" x="116" y="122" text-anchor="middle">UI 정의</text>
-<text class="node-meta" x="116" y="146" text-anchor="middle">앱 · 엔티티 · 서비스</text>
-<rect class="node" x="264" y="92" width="168" height="96" rx="8"/>
-<text class="node-title" x="348" y="122" text-anchor="middle">생성 산출물</text>
-<text class="node-meta" x="348" y="146" text-anchor="middle">JAVA · SQL · DDL</text>
-<rect class="node node-accent" x="496" y="92" width="168" height="96" rx="8"/>
-<text class="node-title" x="580" y="122" text-anchor="middle">배포 전</text>
-<text class="node-title" x="580" y="140" text-anchor="middle">테스트 화면</text>
-<text class="node-meta" x="580" y="164" text-anchor="middle">JSON · WEBSOCKET</text>
-<rect class="node" x="728" y="92" width="168" height="96" rx="8"/>
-<text class="node-title" x="812" y="122" text-anchor="middle">결과 확인</text>
-<text class="node-meta" x="812" y="146" text-anchor="middle">API 응답 · DB 쓰기/읽기</text>
-
+    <text class="meta" x="32" y="36">API TEST / 기능 설명용 화면 예시</text>
+    <text class="heading" x="32" y="84">배포 전에 API 호출·결과 확인</text>
+    <text class="body muted" x="32" y="120">UI 정의 → Java · SQL · DDL 생성 → 테스트 화면</text>
+    <rect x="32" y="152" width="864" height="392" rx="8" class="surface"/>
+<path class="rule" d="M 32 216 H 896 M 448 216 V 544"/>
+    <text class="label" x="56" y="192">선택한 생성 API</text>
+    <text class="meta mono" x="576" y="192">WebSocket</text>
+    <rect x="736" y="168" width="136" height="32" rx="4" fill="var(--accent)"/>
+<path d="M 752 176 L 764 184 L 752 192 Z" fill="var(--paper-2)"/>
+    <text class="label on-accent" x="800" y="192" text-anchor="middle">실행</text>
+    <text class="label" x="56" y="256">JSON 요청</text>
+    <text class="meta" x="424" y="256" text-anchor="end">편집</text>
+    <rect x="48" y="272" width="384" height="248" rx="4" fill="var(--paper)"/>
+<path class="rule" d="M 96 288 V 504"/>
+    <text class="meta mono" x="80" y="312" text-anchor="end">1</text>
+    <text class="code" x="112" y="312">{</text>
+    <text class="meta mono" x="80" y="348" text-anchor="end">2</text>
+    <text class="code" x="128" y="348">"label": "sample"</text>
+    <text class="meta mono" x="80" y="384" text-anchor="end">3</text>
+    <text class="code" x="112" y="384">}</text>
+    <text class="body muted" x="112" y="480">JSON 값 입력 후 실행</text>
+    <text class="label" x="472" y="256">API 응답</text>
+    <text class="code" x="488" y="292">{</text>
+    <text class="code" x="504" y="328">"label": "sample"</text>
+    <text class="code" x="488" y="364">}</text>
+<path class="rule" d="M 448 384 H 896"/>
+    <text class="label" x="472" y="416">DB 결과</text>
+    <text class="meta" x="872" y="416" text-anchor="end">쓰기·읽기 확인</text>
+    <rect x="472" y="436" width="400" height="28" fill="var(--paper)"/>
+    <text class="meta" x="488" y="456">필드</text>
+    <text class="meta" x="656" y="456">저장·조회 값</text>
+    <text class="code" x="488" y="500">label</text>
+    <text class="code" x="656" y="500">sample</text>
+    <text class="body muted" x="32" y="580">화면 구성과 JSON 값은 테스트 기능을 설명하기 위한 예시입니다.</text>
   </g>
 </svg>
