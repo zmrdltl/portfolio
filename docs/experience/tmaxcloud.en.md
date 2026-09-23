@@ -4,7 +4,7 @@
 
 ## Pre-Deployment API Testing for a Code-Generation Platform
 
-I built a test UI, Java REST API, and database schema to run generated APIs and check their responses and actual database writes and reads before deployment.
+I designed and built a feature for calling generated APIs before deployment and checking their responses and actual database writes and reads. I implemented the React and TypeScript test UI, Java REST API, and database schema.
 
 Scroll horizontally to inspect the full diagram.
 { .diagram-scroll-hint }
