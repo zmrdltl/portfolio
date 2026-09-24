@@ -1,10 +1,14 @@
+.md-grid {
+  max-width: 90rem;
+}
+
 /* Prefer natural word boundaries in headings, with a fallback for long tokens. */
 .md-typeset :is(h1, h2, h3) {
   overflow-wrap: break-word;
   word-break: keep-all;
 }
 
-/* Preserve diagram label readability without widening the page itself. */
+/* Preserve diagram label readability when the viewport is narrower than the diagram. */
 .md-typeset .diagram-scroll-hint {
   color: var(--md-default-fg-color--light);
   display: block;
