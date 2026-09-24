@@ -67,7 +67,7 @@ I connected real-time messages and unread-count updates across curator chat, one
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
 
-![The sender app issues an idempotent HTTP command that the API persists to MySQL first. The confirmed message then travels through the HTTP response, cursor pages, and WebSocket; mobile merges by database message ID and recovers gaps through HTTP after reconnecting.](../assets/diagrams/coupler-chat-delivery.en.svg)
+![The sender app issues an idempotent HTTP command that the API persists to MySQL first. The confirmed message then travels through the HTTP response, cursor pages, and WebSocket; mobile merges by database message ID and recovers gaps through HTTP after reconnecting.](../assets/diagrams/coupler-chat-delivery.en.svg?v=2)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="Coupler one-to-one chat persistence, real-time delivery, and reconnect recovery diagram" }
 
 **Implementation and validation:** When the same sender retries the same payload with the same `client_message_id`, the API returns the original message without publishing another WebSocket event or notification. Reusing the key with a different payload is rejected as a conflict. The mobile app merges the HTTP response and sender/peer WebSocket events by the database message ID. After reconnect or screen focus, it walks backward from the latest HTTP page with a `before_id` cursor until it reaches the previous synchronization boundary, merging any missing messages. Regression tests cover persistence, duplicate requests, payload conflicts, cursor pages, and mobile reconnect merging.

@@ -67,7 +67,7 @@ curator, 1:1 매칭, N:N 그룹 채팅에 실시간 메시지와 읽지 않은 �
 도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
 { .diagram-scroll-hint }
 
-![송신자 앱의 멱등 HTTP 명령을 API가 MySQL에 먼저 저장하고, 확정된 메시지를 HTTP 응답·cursor page·WebSocket으로 전달합니다. 모바일은 DB 메시지 ID로 병합하고 재연결 시 HTTP cursor로 누락분을 복구합니다.](../assets/diagrams/coupler-chat-delivery.ko.svg)
+![송신자 앱의 멱등 HTTP 명령을 API가 MySQL에 먼저 저장하고, 확정된 메시지를 HTTP 응답·cursor page·WebSocket으로 전달합니다. 모바일은 DB 메시지 ID로 병합하고 재연결 시 HTTP cursor로 누락분을 복구합니다.](../assets/diagrams/coupler-chat-delivery.ko.svg?v=2)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="Coupler 1대1 채팅 저장·실시간 전달·재연결 복구 도식" }
 
 **구현과 검증:** 동일한 송신자와 `client_message_id`의 같은 payload가 다시 오면 최초 메시지를 반환하고 WebSocket과 알림을 다시 발행하지 않으며, 다른 payload로 키를 재사용하면 충돌로 거부합니다. 모바일은 HTTP 응답과 송·수신 WebSocket 이벤트를 DB 메시지 ID로 병합하고, 재연결이나 화면 복귀 때 최신 HTTP 페이지부터 이전 동기화 경계를 만날 때까지 `before_id` cursor를 따라가며 누락분을 합칩니다. 메시지 저장·중복 요청·payload 충돌·cursor 페이지와 모바일 재연결 병합을 회귀 테스트로 확인했습니다.
