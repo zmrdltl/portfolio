@@ -2,6 +2,12 @@
   max-width: 90rem;
 }
 
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary {
+    width: 8rem;
+  }
+}
+
 /* Prefer natural word boundaries in headings, with a fallback for long tokens. */
 .md-typeset :is(h1, h2, h3) {
   overflow-wrap: break-word;
