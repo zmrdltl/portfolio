@@ -4,7 +4,11 @@
 
 @media screen and (min-width: 76.25em) {
   .md-sidebar--primary {
-    width: 8rem;
+    width: 9rem;
+  }
+
+  .md-sidebar--secondary {
+    width: 11rem;
   }
 }
 
