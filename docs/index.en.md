@@ -24,7 +24,7 @@ I find and fix concurrency and data-correctness problems in platform backends, t
 
 **Type and period:** Full-time role · Oct 2021 - Nov 2024
 
-**Role:** Design, implementation, and verification of the React and TypeScript test UI, Java REST API, and database schema
+**Role:** Design, implementation, and verification of the React test UI, Java REST API, and database schema
 
 **Core change:** I built a test UI for a platform that generates Java APIs, SQL, and a JAR from UI-defined services, so users can check API responses and database state before deployment.
 

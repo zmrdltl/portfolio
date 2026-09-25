@@ -24,7 +24,7 @@ PLATFORM SOFTWARE ENGINEER
 
 **유형·기간:** 정규 경력 · 2021.10 - 2024.11
 
-**역할:** React·TypeScript 테스트 화면, Java REST API, DB 스키마 설계·구현 및 검증
+**역할:** React 테스트 화면, Java REST API, DB 스키마 설계·구현 및 검증
 
 **핵심 변화:** UI에서 정의한 서비스를 Java API·SQL과 JAR로 만드는 플랫폼에, API를 배포하지 않고 호출해 응답과 DB 반영을 확인하는 테스트 화면을 구현했습니다.
 

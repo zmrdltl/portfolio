@@ -4,7 +4,7 @@
 
 ## Pre-Deployment API Testing for a Code-Generation Platform
 
-I designed and built a feature for calling generated APIs before deployment and checking their responses and actual database writes and reads. I implemented the React and TypeScript test UI, Java REST API, and database schema.
+I designed and built a feature for calling generated APIs before deployment and checking their responses and actual database writes and reads. I implemented the React test UI, Java REST API, and database schema.
 
 Scroll horizontally to inspect the full diagram.
 { .diagram-scroll-hint }
@@ -16,9 +16,9 @@ Scroll horizontally to inspect the full diagram.
 
 **Constraints and decision:** Mock responses could not reveal actual database write/read errors, so I placed a test step before deployment that called APIs through the existing generation and execution path.
 
-**Implementation:** I implemented JSON request editing with Monaco Editor in a React and TypeScript UI, plus WebSocket request/response handling. I also designed and implemented the Java REST API and database schema for listing test targets and storing and reading actual test data.
+**Implementation:** I implemented JSON request editing with Monaco Editor in a React UI, plus WebSocket request/response handling. I also designed and implemented the Java REST API and database schema for listing test targets and storing and reading actual test data.
 
-**Validation and result:** I found request/response errors and missing links between service definitions and generated code before deployment, while checking actual database writes and reads. Each check avoided another roughly 20-minute build, deployment, and verification cycle.
+**Validation and result:** The test flow made generated API responses and actual database writes and reads checkable before deployment. It also made service-definition, mapping, and request/response problems visible before the separate build and deployment cycle.
 
 ## Storing Data-Change History and Querying Historical Data
 
@@ -48,7 +48,7 @@ I contributed to the DB schema and API for storing exported and imported entity 
 
 ### SQL Generation Library
 
-I helped separate SQL generation into a library imported directly by the backend. I wrote JUnit tests for JSON-input SQL generation and added JaCoCo coverage configuration so the generation logic could be verified independently.
+I implemented parts of the SQL Generator's core functionality and its DDL generation logic. I also helped separate SQL generation into a library imported directly by the backend. I wrote JUnit tests for JSON-input SQL generation and added JaCoCo coverage configuration so the generation logic could be verified independently.
 
 ### Standardizing Exception Log Output
 
