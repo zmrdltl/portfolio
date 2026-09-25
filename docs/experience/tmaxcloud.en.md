@@ -34,9 +34,9 @@ Scroll horizontally to inspect the full diagram.
 
 **Constraints and decision:** Tibero triggers or procedures needed an extra convention to receive the requesting user's identity. I instead generated history writes in CRUD code that already had that identity, using the same entity columns and primary key for storage and queries.
 
-**Implementation:** I implemented FreeMarker templates that generate source/history-table DDL and SQL to store history data for the affected rows when generated Create, Update, and Delete services run. I also wrote SQL that combines current and historical data to return the valid row for each primary key and its last editor as of a requested date.
+**Implementation:** I implemented FreeMarker templates that generate source/history-table DDL and SQL to store history data for the affected rows when generated Create, Update, and Delete services run. The generated history writes include pre-update and pre-delete values, editor IDs, and deletion state. I also wrote SQL that combines current and historical data to return the valid row for each primary key and its last editor as of a requested date.
 
-**Result:** The illustrative history rows include pre-update and pre-delete values, editor IDs, and deletion state. I wrote SQL that combines current and historical data to select the valid row for each primary key as of a requested date and return its last editor.
+**Illustrative example:** The diagram shows a row changing from A to B to C; a January 10 lookup selects historical value B and last editor B while the current source value remains C.
 
 ## Additional Work
 
