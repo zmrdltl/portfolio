@@ -47,8 +47,8 @@ Scroll horizontally to inspect the full flow.
 
 **Constraints and decision:** I first captured the existing Chrono behavior in tests for the timestamp helpers used by the MITRE and clustering views, then separated the Jiff migration from old-dependency cleanup.
 
-**Implementation and validation:** I migrated those timestamp helpers to Jiff and removed their Chrono dependency. I compared stage-level tests, affected screens, feature behavior, server compatibility, and before-and-after screenshots.
+**Implementation and validation:** I migrated those timestamp helpers to Jiff and removed the Chrono development dependency and migration-only comparison tests. I completed the migration for those helpers after staged tests, feature and server compatibility checks, and before-and-after comparisons of the affected screens.
 
-### Report Query Scope and DHCP Option Display Validation
+### Implementing Report Queries and DHCP Option Views
 
 I implemented dedicated queries for the report’s first-event time and customer list that fetch only the fields needed on screen, and updated the customer list to render incrementally. For DHCP options, I implemented the path from the GraphQL query through formatting to the list and detail views, then verified both displays against the raw event.

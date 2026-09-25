@@ -22,7 +22,7 @@ Scroll horizontally to inspect the full diagram.
 
 ## Storing Data-Change History and Querying Historical Data
 
-I implemented SQL to store rows before changes and to query row values and the last editor for a requested date.
+I implemented generated history writes for Create, Update, and Delete services, plus SQL to query row values and the last editor for a requested date.
 
 Scroll horizontally to inspect the full diagram.
 { .diagram-scroll-hint }
@@ -34,25 +34,25 @@ Scroll horizontally to inspect the full diagram.
 
 **Constraints and decision:** Tibero triggers or procedures needed an extra convention to receive the requesting user's identity. I instead generated history writes in CRUD code that already had that identity, using the same entity columns and primary key for storage and queries.
 
-**Implementation:** I implemented FreeMarker templates that generate source/history-table DDL and SQL to store rows before updates and deletions. I also wrote SQL that combines current and historical data to return the valid row for each primary key and its last editor as of a requested date.
+**Implementation:** I implemented FreeMarker templates that generate source/history-table DDL and SQL to store history data for the affected rows when generated Create, Update, and Delete services run. I also wrote SQL that combines current and historical data to return the valid row for each primary key and its last editor as of a requested date.
 
-**Validation and result:** With example data, I checked that values before updates and deletions, the editor, and deletion state were stored. I also confirmed that the query selected the valid row for each primary key and returned the table state and last editor for the requested date.
+**Result:** The illustrative history rows include pre-update and pre-delete values, editor IDs, and deletion state. I wrote SQL that combines current and historical data to select the valid row for each primary key as of a requested date and return its last editor.
 
 ## Additional Work
 
 ### Service Code Generation
 
-I worked on generating Java code from service definitions with input/output data and execution steps. I wrote the template-input logic and FreeMarker templates for Update and Delete services, and implemented mapping that passes results into the next step. I also implemented a shared macro for mapping SQL result types to Java types and the structure for mapping different entities to individual steps in multi-table updates.
+For Java service-code generation, I wrote the template-input logic and FreeMarker templates for Update and Delete services. I also implemented mapping that passes results into the next step, a shared macro that maps SQL result types to Java types, and the structure that maps different entities to individual steps in multi-table updates.
 
 ### Entity Export/Import and Selected-Attribute Synchronization
 
 Platform UI users can export an entity, import it into another generated application, and use the imported entity in service definitions. At import time, the feature copies data for selected attributes; when a connected service later changes data, it synchronizes changes to those attributes through a message broker.
 
-I handled most of this feature's MVP work, except the import-cancellation detail list page and implementation of the message-synchronization service. I contributed to the DB schema and API, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. The message-synchronization service and the redeployment migration strategy for later schema changes were separate areas of work.
+I handled most of this MVP; I did not implement the import-cancellation detail list page or the message-synchronization service, and I did not own the later redeployment migration strategy. I designed selected-attribute metadata and broker-mediated linkage between exported and imported entities. I implemented the export UI. I contributed to the DB schema and API for storing exported and imported entity information.
 
-### SQL Generation Library
+### SQL Generator Logic and Tests
 
-I implemented parts of the SQL Generator's core functionality and its DDL generation logic. I also helped separate SQL generation into a library imported directly by the backend. I wrote JUnit tests for JSON-input SQL generation and added JaCoCo coverage configuration so the generation logic could be verified independently.
+I directly implemented SQL Generator logic that produces DDL from JSON input. I participated in the work to make SQL generation a library imported directly by the backend. I wrote JUnit tests for JSON-input SQL generation and added JaCoCo coverage configuration so the generation logic could be verified independently.
 
 ### Standardizing Exception Log Output
 
