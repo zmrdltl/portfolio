@@ -40,11 +40,15 @@ Scroll horizontally to inspect the full diagram.
 
 ## Additional Work
 
+### Service Code Generation
+
+I worked on generating Java code from service definitions with input/output data and execution steps. I wrote the template-input logic and FreeMarker templates for Update and Delete services, and implemented mapping that passes results into the next step. I also implemented a shared macro for mapping SQL result types to Java types and the structure for mapping different entities to individual steps in multi-table updates.
+
 ### Entity Export/Import and Selected-Attribute Synchronization
 
 Platform UI users can export an entity, import it into another generated application, and use the imported entity in service definitions. At import time, the feature copies data for selected attributes; when a connected service later changes data, it synchronizes changes to those attributes through a message broker.
 
-I contributed to the DB schema and API for storing exported and imported entity information. I designed selected-attribute metadata and broker-mediated linkage between exported and imported entities. I implemented the export UI. The message-synchronization service and the redeployment migration strategy for later schema changes were separate areas of work.
+I handled most of this feature's MVP work, except the import-cancellation detail list page and implementation of the message-synchronization service. I contributed to the DB schema and API, designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, and implemented the export UI. The message-synchronization service and the redeployment migration strategy for later schema changes were separate areas of work.
 
 ### SQL Generation Library
 
