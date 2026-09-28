@@ -19,25 +19,17 @@
 
 **검증과 결과:** 단일·복수 column, map과 schemaless row, `COUNT`를 포함한 aggregate `DISTINCT`를 회귀 테스트로 확인했습니다. SQL 입력, 내부 표현, 실행 결과가 같은 의미를 유지하도록 기능과 테스트를 함께 반영했습니다.
 
-## AST Query Interface·Parquet Storage·CLI 구현
+## 추가 작업
 
-### AST Query Interface
+- **파서 의존성 비교 평가:** 자체 파서 교체안을 공개 AST와 Query Builder의 호환성 비용까지 검토했습니다. 같은 core 복사본에서 `sqlparser/serde`만 끄고 다시 켜 비교한 `sqlparser` 검사 시간은 2.6초와 8.0초였고, 기존 구성과 기능 제거 구성에서 core 테스트는 각각 593개 통과했습니다. AST 변환에 필요한 `bigdecimal`은 유지하고 내부에서 사용하지 않는 `serde`만 제거하는 [PR #2042](https://github.com/gluesql/gluesql/pull/2042)를 선택했습니다. 공개 AST 직렬화 소비자는 해당 기능을 직접 켜야 할 수 있습니다.
+- **AST Query Interface:** AST Builder의 aggregate helper와 `COUNT` argument를 구현하고, aggregate 함수가 expression argument를 평가하도록 executor와 테스트를 수정했습니다.
+- **Parquet Storage·CLI:** storage trait와 SQL 실행 경로에 Parquet을 연결하고 file read/write, schema·value 변환, 문서, 테스트, CLI 사용 흐름을 추가했습니다. 이후 `clippy::pedantic` 기준에 맞춰 코드를 정리했습니다.
 
-AST Builder aggregate helper와 `COUNT` argument 처리를 구현하고, aggregate 함수가 단순 column뿐 아니라 expression argument를 평가하도록 executor와 테스트를 수정했습니다.
+## 리뷰와 멘토링
 
-### Parquet Storage와 CLI
+2026년 7월 10일 기준 [`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했습니다. 현재 GlueSQL 리뷰어로 코드 리뷰와 유지보수에 참여하며, 기여자 PR의 오류 처리, edge case, 테스트 커버리지, 코드 구조를 검토합니다. 2023년에는 OSSCA 멘토로 Rust 프로젝트 기본 흐름, GlueSQL 구조, storage와 AST Builder, 함수 구현 방향을 안내했습니다.
 
-Parquet storage를 GlueSQL storage trait와 SQL 실행 경로에 연결하고 file read/write, schema·value 변환, 문서, 테스트, CLI 사용 흐름을 추가했습니다. 이후 `clippy::pedantic` 기준에 맞춰 관련 코드를 정리했습니다.
-
-## 리뷰·멘토링·수상
-
-[`gluesql/gluesql` 병합 PR 50건](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged)을 작성했습니다. 현재 GlueSQL 리뷰어로 코드 리뷰와 유지보수에 참여하며, 기여자 PR의 오류 처리, edge case, 테스트 커버리지, 코드 구조를 검토합니다. 2023년에는 OSSCA 멘토로 Rust 프로젝트 기본 흐름, GlueSQL 구조, storage와 AST Builder, 함수 구현 방향을 안내했습니다.
-
-| 연도 | 대회/프로그램 | 수상 |
-| --- | --- | --- |
-| 2023 | 오픈소스 컨트리뷰션 아카데미 | 멘토로 참여한 GlueSQL 팀 수상: 정보통신산업진흥원장상(장려상) |
-| 2022 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
-| 2021 | 오픈소스 컨트리뷰션 아카데미 | 정보통신산업진흥원장상(최우수상) |
+제가 참여한 GlueSQL 팀은 2021·2022년 오픈소스 컨트리뷰션 아카데미 최우수상(정보통신산업진흥원장상)을 받았습니다. 2023년에는 제가 멘토로 참여한 GlueSQL 팀이 정보통신산업진흥원 장려상을 받았습니다.
 
 ## 관련 링크
 

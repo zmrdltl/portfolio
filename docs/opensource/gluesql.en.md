@@ -19,25 +19,17 @@ Scroll horizontally to inspect the full flow.
 
 **Validation and result:** Regression tests covered single and multiple columns, maps, schemaless rows, and aggregate `DISTINCT`, including `COUNT`. The feature and tests preserve the same meaning across SQL input, internal representation, and execution output.
 
-## Implementing the AST Query Interface, Parquet Storage, and CLI
+## Additional Work
 
-### AST Query Interface
+- **Parser dependency evaluation:** I assessed an in-house parser against the compatibility cost of the public AST and Query Builder. In the same copy of core, the `sqlparser` check took 2.6 seconds with only `sqlparser/serde` disabled and 8.0 seconds after re-enabling it; the baseline and feature-disabled configurations each passed 593 core tests. I kept `bigdecimal` because the AST conversion depends on it and chose [PR #2042](https://github.com/gluesql/gluesql/pull/2042) to remove only unused `serde`. Consumers serializing the public AST may need to enable the feature directly.
+- **AST Query Interface:** I implemented AST Builder aggregate helpers and `COUNT` argument handling, then updated the executor and tests to evaluate expression arguments.
+- **Parquet Storage and CLI:** I connected Parquet to the storage traits and SQL execution, adding file read/write, schema and value conversion, documentation, tests, and a CLI usage path. I later updated the code to meet `clippy::pedantic` checks.
 
-I implemented AST Builder aggregate helpers and `COUNT` argument handling, then updated executor and test paths so aggregate functions could evaluate expression arguments rather than only simple columns.
+## Review and Mentoring
 
-### Parquet Storage and CLI
+As of July 10, 2026, I had authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged). I now participate in code review and maintenance as a GlueSQL reviewer, reviewing contributor pull requests for error handling, edge cases, test coverage, and code organization. As an OSSCA mentor in 2023, I guided contributors through Rust project workflows, GlueSQL internals, storage, AST Builder, and function implementation.
 
-I connected Parquet storage to GlueSQL's storage traits and SQL execution, adding file read/write, schema and value conversion, documentation, tests, and a CLI usage path. I later updated the related code to meet `clippy::pedantic` checks.
-
-## Review, Mentoring, and Awards
-
-I authored [50 merged pull requests in `gluesql/gluesql`](https://github.com/gluesql/gluesql/pulls?q=is%3Apr+author%3Azmrdltl+is%3Amerged). I now participate in code review and maintenance as a GlueSQL reviewer, reviewing contributor pull requests for error handling, edge cases, test coverage, and code organization. As an OSSCA mentor in 2023, I guided contributors through Rust project workflows, GlueSQL internals, storage, AST Builder, and function implementation.
-
-| Year | Program | Award |
-| --- | --- | --- |
-| 2023 | Open Source Contribution Academy | GlueSQL team award while I participated as a mentor: NIPA President Award (Encouragement) |
-| 2022 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
-| 2021 | Open Source Contribution Academy | NIPA President Award (Top Excellence) |
+The GlueSQL team I joined received the Open Source Contribution Academy's NIPA President Award (Top Excellence) in 2021 and 2022. The GlueSQL team I mentored received a NIPA Encouragement Award in 2023.
 
 ## Related Links
 
