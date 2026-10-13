@@ -46,9 +46,11 @@ For Java service-code generation, I wrote the template-input logic and FreeMarke
 
 ### Entity Export/Import and Selected-Attribute Synchronization
 
-Platform UI users can export an entity, import it into another generated application, and use the imported entity in service definitions. At import time, the feature copies data for selected attributes; when a connected service later changes data, it synchronizes changes to those attributes through a message broker.
+Platform UI users can export an entity, import it into another application, and use the imported entity in service definitions. The feature copies data for selected attributes, then synchronizes subsequent changes from connected services through a message broker.
 
-I handled most of this MVP; I did not implement the import-cancellation detail list page or the message-synchronization service, and I did not own the later redeployment migration strategy. I designed selected-attribute metadata and broker-mediated linkage between exported and imported entities. I implemented the export UI. I contributed to the DB schema and API for storing exported and imported entity information.
+I implemented the export UI so users could select multiple entities at once. I designed selected-attribute metadata and broker-mediated linkage between exported and imported entities, using the existing CQRS middleware. The design stores selected-attribute lists alongside entity information and gives each entity its own publish/subscribe connections. I contributed to the DB schema and APIs for storing exported and imported entity information.
+
+The work spanned the UI, APIs, code generation, and application deployment. When the initial schedule was set at two weeks, I showed the deployment and development screens side by side to explain the progress and why the work would not fit that time frame. The schedule was adjusted to four weeks.
 
 ### SQL Generator Logic and Tests
 

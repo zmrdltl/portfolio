@@ -515,24 +515,6 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS = {
                 re.compile(r"(?:참여|설계|구현)하지\s+않", re.IGNORECASE),
             ),
         ),
-        PublicParagraphRequirement(
-            "missing synchronization and migration exclusions",
-            (
-                re.compile(r"메시지\s+동기화\s+서비스", re.IGNORECASE),
-                re.compile(
-                    r"메시지\s+동기화\s+서비스(?:\s+자체)?\s+구현"
-                    r"[^.]{0,100}"
-                    r"(?:맡지|담당하지|제외|별도|포함되지)",
-                    re.IGNORECASE,
-                ),
-                re.compile(r"재배포\s+마이그레이션\s+전략", re.IGNORECASE),
-                re.compile(
-                    r"마이그레이션\s+전략[^.]{0,100}"
-                    r"(?:맡지|담당하지|제외|별도|포함되지)",
-                    re.IGNORECASE,
-                ),
-            ),
-        ),
     ),
     "experience/tmaxcloud.en.md": (
         PublicParagraphRequirement(
@@ -571,29 +553,6 @@ TMAXCLOUD_ENTITY_EXPORT_IMPORT_REQUIREMENTS = {
                     r"[^.]{0,160}(?:message-broker|broker)-mediated\s+linkage"
                     r"[^.]{0,120}exported\s+and\s+imported\s+entities)"
                     r"(?=.*I\s+implemented\s+the\s+export\s+UI).+"
-                    r")",
-                    re.IGNORECASE,
-                ),
-            ),
-        ),
-        PublicParagraphRequirement(
-            "missing synchronization and migration exclusions",
-            (
-                re.compile(
-                    r"(?:"
-                    r"I\s+did\s+not\s+(?:implement|build|develop|own)"
-                    r"[^.]{0,100}message-synchronization\s+service|"
-                    r"message-synchronization\s+service[^.]{0,180}"
-                    r"separate\s+(?:areas?|work)"
-                    r")",
-                    re.IGNORECASE,
-                ),
-                re.compile(
-                    r"(?:"
-                    r"I\s+did\s+not[^.]{0,220}"
-                    r"redeployment\s+migration\s+strategy|"
-                    r"redeployment\s+migration\s+strategy[^.]{0,180}"
-                    r"separate\s+(?:areas?|work)"
                     r")",
                     re.IGNORECASE,
                 ),

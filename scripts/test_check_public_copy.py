@@ -2048,6 +2048,25 @@ class PublicCopyCheckTests(unittest.TestCase):
         self.write_tmaxcloud_page(english_page, english=True)
         self.assertEqual(self.validate(), [])
 
+    def test_entity_export_import_direct_contribution_without_disclaimer_passes(
+        self,
+    ) -> None:
+        korean_page = self.korean_entity_export_import_section().replace(
+            "메시지 동기화 서비스 자체 구현과 스키마 변경 후 재배포 "
+            "마이그레이션 전략은 맡지 않았습니다.",
+            "",
+        )
+        self.write_tmaxcloud_page(korean_page)
+        self.assertEqual(self.validate(), [])
+
+        english_page = self.english_entity_export_import_section().replace(
+            "I did not implement the message-synchronization service "
+            "itself or the redeployment migration strategy.",
+            "",
+        )
+        self.write_tmaxcloud_page(english_page, english=True)
+        self.assertEqual(self.validate(), [])
+
     def test_entity_export_import_initial_copy_only_is_rejected(self) -> None:
         page = self.korean_entity_export_import_section().replace(
             "Studio에서 엔티티를 내보내 다른 생성 앱으로 가져오고, "
