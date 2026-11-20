@@ -30,6 +30,8 @@ I designed and built a test screen that could call generated APIs and check the 
 
 **Validation and result:** I called generated APIs in the temporary deployment environment and checked response formats and actual database writes and reads. Users could find invalid service definitions, missing service mappings, and request and response format errors before formal deployment.
 
+**Post-change feedback:** I separately asked internal users how long it took to build and deploy an app after the changes. The median reported time from the start of entity definition to JAR deployment was about two weeks.
+
 ## Storing Data-Change History and Querying Historical Data
 
 I implemented generated history writes for Create, Update, and Delete services, plus SQL to query row values and the last editor for a requested date.
@@ -50,13 +52,15 @@ I implemented generated history writes for Create, Update, and Delete services, 
 
 </figure>
 
-**Problem and diagnosis:** Generated CRUD applications kept only current values. Showing values and the last editor from before an update or deletion required saving the prior row, editor, and valid period together.
+**Problem and diagnosis:** Generated CRUD applications kept only current values. To look up a row’s value and last editor as of a past date, I needed to record the previous value, the time of the change, and who made it.
 
 **Constraints and decision:** Tibero triggers or procedures needed an extra convention to receive the requesting user's identity. I instead generated history writes in CRUD code that already had that identity, using the same entity columns and primary key for storage and queries.
 
-**Implementation:** I implemented FreeMarker templates that generate source/history-table DDL and SQL to store history data for the affected rows when generated Create, Update, and Delete services run. The generated history writes include pre-update and pre-delete values, editor IDs, and deletion state. I also wrote SQL that combines current and historical data to return the valid row for each primary key and its last editor as of a requested date.
+**Implementation:** I implemented FreeMarker templates that generate source and history table DDL, plus SQL to store history for rows affected by Create, Update, and Delete services. The history includes pre-update and pre-delete values, change timestamps, editor IDs, and deletion state. I wrote SQL that uses change timestamps to combine current and historical data and return the valid row and its last editor for each primary key as of a requested date.
 
-**Illustrative example:** The diagram shows a row changing from A to B to C; a January 10 lookup selects historical value B and last editor B while the current source value remains C.
+**Illustrative example:** On January 8, editor B changed the row to value B. The value changed to C on January 15. A January 10 lookup returns B and the editor who set it, while the current row still holds C.
+
+**Follow-up verification:** In a reproduction of the generated Update service, concurrent requests repeatedly targeted a small set of rows. The history showed a continuous chain of before-and-after values and consecutive revision numbers. The last recorded value for each row matched its current value. When a failure was injected before commit, the row update and its history entry rolled back together.
 
 ## Additional Work
 
