@@ -44,7 +44,7 @@
 
 **Implementation:** I updated the limiter to reserve an in-flight slot and the estimated tokens immediately after confirming capacity, under the same lock.
 
-**Validation and result:** Before the fix, I reproduced over-reservation in which the in-flight call count and pending token reservations each reached at least ten times their respective limits. After the fix, regression tests confirmed that both values stayed within their respective limits under the same concurrency load.
+**Validation and result:** I counted requests that passed the limiter before outbound LLM API calls. In the concurrent-call test, the configured call limit was the baseline. In the token reservation budget test, I calculated how many requests fit within the budget based on their token reservations. Before the fix, at least ten times the allowed request count passed the limiter in each test. After the fix, both limits held when I reran the regression tests under the same concurrency load.
 
 ## Moving a Network-Event Detection Threshold to External Configuration
 

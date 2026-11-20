@@ -21,6 +21,17 @@ except ModuleNotFoundError as error:
 HEADING_PATTERN = re.compile(r"^(#{1,6})[ \t]+(.+?)[ \t]*$")
 MARKDOWN_LINK_PATTERN = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 INLINE_CODE_PATTERN = re.compile(r"`([^`]+)`")
+LABELED_FIELD_PATTERN = re.compile(r"^ {0,3}\*\*([^*]+):\*\*[ \t]*(.*)$")
+BLOCK_START_PATTERN = re.compile(r"^(?:#{1,6}\s|[-*+]\s|\d+[.)]\s|>|<|\|)")
+NON_PROSE_PATTERN = re.compile(
+    r"""
+    <!-- .*? (?: --> | \Z )
+    |
+    ^[ ]{0,3}(?P<opening>(?P<marker>`|~)(?P=marker){2,})[^\n]*(?:\n|\Z)
+    .*? (?: ^[ ]{0,3}(?P=opening)(?P=marker)*[ \t]*$ | \Z )
+    """,
+    re.VERBOSE | re.MULTILINE | re.DOTALL,
+)
 
 
 @dataclass(frozen=True)
@@ -48,10 +59,16 @@ def normalize_link(link: str) -> str:
     return link.split("#", 1)[0]
 
 
-def extract_section_lines(path: Path, heading: str) -> tuple[list[str], str | None]:
-    lines = path.read_text(encoding="utf-8").splitlines()
+def prose_lines(text: str) -> list[str]:
+    # Keep line boundaries so removing a block cannot join separate fields.
+    return NON_PROSE_PATTERN.sub(lambda block: "\n" * block[0].count("\n"), text).splitlines()
+
+
+def extract_section_lines(
+    path: Path, heading: str, *, include_subsections: bool = True
+) -> tuple[list[str], str | None]:
+    lines = prose_lines(path.read_text(encoding="utf-8"))
     section_lines: list[str] = []
-    in_section = False
     section_level: int | None = None
 
     for line in lines:
@@ -59,18 +76,19 @@ def extract_section_lines(path: Path, heading: str) -> tuple[list[str], str | No
         if heading_match:
             level = len(heading_match.group(1))
             title = heading_match.group(2).strip()
-            if in_section and section_level is not None and level <= section_level:
+            if section_level is not None and (
+                level <= section_level or not include_subsections
+            ):
                 break
             if title == heading:
-                in_section = True
                 section_level = level
                 continue
 
-        if in_section:
+        if section_level is not None:
             section_lines.append(line)
 
-    if not in_section:
-        return [], f"Missing homepage representative heading: {path}:{heading}"
+    if section_level is None:
+        return [], f"{path}: Missing heading `{heading}`."
 
     return section_lines, None
 
@@ -114,12 +132,22 @@ def extract_representative_records(
     return records, errors
 
 
-def extract_field_values(lines: tuple[str, ...], label: str) -> list[str]:
-    pattern = re.compile(
-        rf"^\s*\*\*{re.escape(label)}:\*\*\s*(.+?)\s*$",
-        re.IGNORECASE,
-    )
-    return [match.group(1) for line in lines if (match := pattern.match(line))]
+def extract_field_values(lines: list[str] | tuple[str, ...], label: str) -> list[str]:
+    values: list[list[str]] = []
+    current: list[str] | None = None
+    for line in lines:
+        text = line.strip()
+        field = LABELED_FIELD_PATTERN.match(line)
+        if field:
+            current = None
+            if field.group(1).casefold() == label.casefold():
+                current = [field.group(2)]
+                values.append(current)
+        elif not text or BLOCK_START_PATTERN.match(text):
+            current = None
+        elif current is not None:
+            current.append(text)
+    return [" ".join(parts).strip() for parts in values]
 
 
 def missing_terms(value: str, required_terms: list[str]) -> list[str]:
@@ -232,7 +260,7 @@ def validate_page_records(
     else:
         page_headings = {
             match.group(2).strip().casefold()
-            for line in page_path.read_text(encoding="utf-8").splitlines()
+            for line in prose_lines(page_path.read_text(encoding="utf-8"))
             if (match := HEADING_PATTERN.match(line))
         }
         for forbidden in forbidden_headings:
@@ -242,6 +270,50 @@ def validate_page_records(
                 )
 
     return errors, len(records)
+
+
+def validate_section_fields(path: Path, sections: Any) -> list[str]:
+    if not isinstance(sections, dict):
+        return [f"{path}: section_fields must map headings to fields."]
+
+    errors: list[str] = []
+    for heading, fields in sections.items():
+        if (
+            not isinstance(heading, str)
+            or not heading.strip()
+            or not isinstance(fields, dict)
+            or not fields
+        ):
+            errors.append(f"{path}: Each section_fields heading must define fields.")
+            continue
+        lines, error = extract_section_lines(path, heading, include_subsections=False)
+        if error:
+            errors.append(error)
+            continue
+        for label, terms in fields.items():
+            location = f"{path}: `{heading}` / `{label}`"
+            if (
+                not isinstance(label, str)
+                or not label.strip()
+                or not isinstance(terms, list)
+                or not terms
+                or not all(isinstance(term, str) and term.strip() for term in terms)
+            ):
+                errors.append(f"{location} must define a non-empty list of terms.")
+                continue
+            values = extract_field_values(lines, label)
+            if len(values) != 1:
+                errors.append(f"{location} must appear exactly once; found {len(values)}.")
+                continue
+
+            remaining = values[0].casefold()
+            for term in terms:
+                _, found, remaining = remaining.partition(term.casefold())
+                if not found:
+                    errors.append(f"{location} is missing `{term}` in the required order.")
+                    break
+
+    return errors
 
 
 def validate_content_coverage(entries: Any) -> tuple[list[str], int]:
@@ -279,10 +351,11 @@ def validate_content_coverage(entries: Any) -> tuple[list[str], int]:
         missing = missing_terms(text, required_terms)
         if missing:
             errors.append(f"{path}: Required content coverage is missing {missing}.")
+        errors.extend(validate_section_fields(path, entry.get("section_fields", {})))
 
         headings = {
             match.group(2).strip().casefold()
-            for line in text.splitlines()
+            for line in prose_lines(text)
             if (match := HEADING_PATTERN.match(line))
         }
         for forbidden in forbidden_headings:

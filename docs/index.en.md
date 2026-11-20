@@ -16,7 +16,7 @@ I find and fix concurrency and data-correctness problems in platform backends, t
 
 **Core change:** I fixed a concurrency defect in which LLM API calls read the same pre-reservation state and passed together, pushing the in-flight call count and token reservations beyond their limits.
 
-**Validation:** Under the same concurrency load, I reproduced over-reservation in which the in-flight call count and pending token reservations each reached at least ten times their respective limits, then confirmed that both stayed within their respective limits after the fix.
+**Validation:** I tested the concurrent-call limit and the token reservation budget separately before outbound LLM API calls. For the budget test, I used the requests’ token reservations to calculate how many fit within the budget. Before the fix, at least ten times the allowed request count passed the limiter in each test. After the fix, both limits held under the same concurrency load.
 
 **Technologies:** `Rust` · `concurrency control` · `regression testing`
 

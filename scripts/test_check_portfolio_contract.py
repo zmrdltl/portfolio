@@ -54,12 +54,22 @@ homepage:
 content_coverage:
   - path: detail.md
     required_terms: [문제와 진단, 제약과 선택]
+    section_fields:
+      주요 사례:
+        검증과 결과: [허용 요청 수, 제한 검사, 같은 동시성 조건, 한도를 지켰습니다]
     forbidden_headings: [기술]
 """,
             encoding="utf-8",
         )
+        self.write_detail(
+            "**검증과 결과:** 허용 요청\n수보다 많은 요청이 제한 검사를 통과했습니다.\n"
+            "수정 후 같은 동시성 조건에서 한도를 지켰습니다."
+        )
+
+    def write_detail(self, case: str) -> None:
         (self.root / "detail.md").write_text(
-            "# 상세\n\n**문제와 진단:** 원인\n\n**제약과 선택:** 결정\n",
+            "# 상세\n\n## 주요 사례\n\n**문제와 진단:** 원인\n\n"
+            f"**제약과 선택:** 결정\n\n{case}\n",
             encoding="utf-8",
         )
 
@@ -150,6 +160,58 @@ content_coverage:
         )
         self.write_home()
         self.assertTrue(any("Required content coverage" in item for item in self.validate()))
+
+    def test_detail_evidence_must_be_in_the_named_case_field(self) -> None:
+        self.write_home()
+        proof = "허용 요청 수를 기준으로 제한 검사를 같은 동시성 조건에서 확인했습니다."
+        for misplaced in (
+            f"**구현:** {proof}",
+            f"\n{proof}",
+            f"\n### 하위 사례\n\n**검증과 결과:** {proof}",
+            f"\n## 추가 작업\n\n**검증과 결과:** {proof}",
+        ):
+            with self.subTest(misplaced=misplaced):
+                self.write_detail(f"**검증과 결과:** 토큰 예산을 확인했습니다.\n{misplaced}")
+                findings = self.validate()
+                self.assertEqual(len(findings), 1)
+                self.assertIn("`주요 사례` / `검증과 결과` is missing `허용 요청 수`", findings[0])
+
+    def test_detail_evidence_must_follow_the_configured_order(self) -> None:
+        self.write_home()
+        self.write_detail("**검증과 결과:** 같은 동시성 조건에서 허용 요청 수와 제한 검사를 확인했습니다.")
+        findings = self.validate()
+        self.assertEqual(len(findings), 1)
+        self.assertIn("missing `같은 동시성 조건` in the required order", findings[0])
+
+    def test_detail_evidence_must_keep_the_result(self) -> None:
+        self.write_home()
+        self.write_detail(
+            "**검증과 결과:** 허용 요청 수보다 많은 요청이 제한 검사를 통과했습니다. "
+            "수정 후에도 같은 동시성 조건에서 한도를 계속 넘었습니다."
+        )
+        findings = self.validate()
+        self.assertEqual(len(findings), 1)
+        self.assertIn("missing `한도를 지켰습니다`", findings[0])
+
+    def test_comments_and_code_cannot_supply_visible_fields_or_headings(self) -> None:
+        self.write_home()
+        proof = (
+            "**검증과 결과:** 허용 요청 수를 기준으로 제한 검사를 "
+            "같은 동시성 조건에서 확인해 한도를 지켰습니다."
+        )
+        self.write_detail(f"    {proof}")
+        findings = self.validate()
+        self.assertEqual(len(findings), 1)
+        self.assertIn("`주요 사례` / `검증과 결과` must appear exactly once", findings[0])
+
+        for start, end in (("<!--", "-->"), ("````markdown", "````"), ("~~~", "~~~")):
+            with self.subTest(start=start):
+                self.write_detail(f"{start}\n{proof}\n{end}")
+                findings = self.validate()
+                self.assertEqual(len(findings), 1)
+                self.assertIn("`주요 사례` / `검증과 결과` must appear exactly once", findings[0])
+                self.write_detail(f"{start}\n## 추가 작업\n{end}\n\n{proof}")
+                self.assertEqual(self.validate(), [])
 
 
 if __name__ == "__main__":

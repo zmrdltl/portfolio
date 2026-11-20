@@ -26,7 +26,7 @@ homepage:
           type_period: [정규 경력, "2025.03", "2026.07"]
           role: [Rust, 문제 분석, 구현, 회귀 검증]
           change: [LLM API 호출, 예약 전 상태, 경합]
-          proof: [같은 동시성 조건, 10배 이상, 허용치 이하]
+          proof: [외부 LLM API 호출 전, 동시 호출 수 한도, 토큰 예약 예산, 허용 요청 수로 환산, 수정 전, 두 테스트에서, 허용 요청 수의 10배 이상, 제한 검사를 통과, 수정 후, 같은 동시성 조건, 각 한도를 지켰]
           technologies: [Rust, 동시성 제어, 회귀 테스트]
         experience/tmaxcloud.md:
           type_period: [정규 경력, "2021.10", "2024.11"]
@@ -63,7 +63,7 @@ homepage:
           type_period: [Full-time role, Mar 2025, Jul 2026]
           role: [Rust backend, analysis, implementation, regression verification]
           change: [LLM API calls, pre-reservation state, concurrency defect]
-          proof: [same concurrency load, at least ten times, respective limits]
+          proof: [concurrent-call limit, token reservation budget, before outbound LLM API calls, calculate how many fit within the budget, before the fix, at least ten times the allowed request count, passed the limiter, in each test, after the fix, both limits held, same concurrency load]
           technologies: [Rust, concurrency control, regression testing]
         experience/tmaxcloud.md:
           type_period: [Full-time role, Oct 2021, Nov 2024]
@@ -86,6 +86,11 @@ homepage:
 
 content_coverage:
   - path: docs/experience/cluml.md
+    section_fields:
+      AI 보안 분석 엔진의 외부 LLM API 호출량 제어 로직에서 발생한 동시성 문제:
+        문제와 진단: [분석 작업이 오래 대기, 예약을 기록하기 전에 잠금이 풀려, 같은 여유 용량]
+        제약과 선택: [한 잠금 안에서, 다른 호출까지 막히므로, 잠금을 먼저 풀도록]
+        검증과 결과: [외부 LLM API 호출 전, 통과한 요청 수, 설정한 호출 수 한도, 토큰 예약 예산, 허용할 수 있는 요청 수를 계산, 수정 전, 두 테스트에서, 허용 요청 수의 10배 이상, 제한 검사를 통과, 수정 후, 같은 동시성 조건, 각 한도를 지켰]
     search_terms: [ClumL, Rust, 외부 LLM API, 호출량 제어, 토큰 예약, 동시성, 외부 설정, GraphQL, 회귀 테스트, Chrono, Jiff]
     required_terms:
       - 문제와 진단
@@ -105,6 +110,11 @@ content_coverage:
       - Jiff
     forbidden_headings: [기술]
   - path: docs/experience/cluml.en.md
+    section_fields:
+      Fixing a Concurrency Bug in Outbound LLM API Rate Limiting:
+        Problem and diagnosis: [analysis jobs waited, released its lock, recording a reservation, same available capacity]
+        Constraints and decision: [check and reservation under one lock, holding the lock while waiting, releases it before waiting]
+        Validation and result: [requests that passed the limiter, before outbound LLM API calls, configured call limit, token reservation budget, how many requests fit within the budget, before the fix, at least ten times the allowed request count, passed the limiter, in each test, after the fix, both limits held, same concurrency load]
     search_terms: [ClumL, Rust, Outbound LLM API, Rate Limiting, token reservation, concurrency, external configuration, GraphQL, regression tests, Chrono, Jiff]
     required_terms:
       - Problem and diagnosis
@@ -124,6 +134,11 @@ content_coverage:
       - Jiff
     forbidden_headings: [Technologies]
   - path: docs/experience/tmaxcloud.md
+    section_fields:
+      코드 생성 플랫폼의 배포 전 API 테스트 기능:
+        문제와 진단: [팀은, 약 4주, 예상 기간으로 안내, 의문을 가졌습니다, 어느 단계에서 시간이 드는지 알 수 없어, 앱을 직접 만들었습니다]
+        제약과 선택: [정식 배포, 모의 응답으로는 실제 DB 쓰기·읽기를 확인할 수 없었습니다, 기존 임시 배포 환경]
+        개선 후 소요 기간: [기능 검증과 별도로, 사내 사용자, 중앙값, 약 2주]
     search_terms: [티맥스클라우드, Java, React, WebSocket, Monaco Editor, FreeMarker, Tibero, JUnit, JaCoCo, SQL, DDL]
     required_terms:
       - 문제와 진단
@@ -141,6 +156,11 @@ content_coverage:
       - DDL
     forbidden_headings: [기술]
   - path: docs/experience/tmaxcloud.en.md
+    section_fields:
+      Pre-Deployment API Testing for a Code-Generation Platform:
+        Problem and diagnosis: [the team routinely told customers, about four weeks, I questioned, the estimate did not tell me which steps took time, built an app myself]
+        Constraints and decision: [avoid a formal deployment, mock responses could not verify actual database writes and reads, existing temporary deployment environment]
+        Post-change feedback: [internal users, separately from the API and database checks, median, about two weeks]
     search_terms: [TmaxCloud, Java, React, WebSocket, Monaco Editor, FreeMarker, Tibero, JUnit, JaCoCo, SQL, DDL]
     required_terms:
       - Problem and diagnosis
@@ -158,6 +178,11 @@ content_coverage:
       - DDL
     forbidden_headings: [Technologies]
   - path: docs/opensource/gluesql.md
+    section_fields:
+      DISTINCT 실행 의미 구현:
+        문제와 진단: [중복 행을 반환, 내부 쿼리 표현, Rust 실행기로 전달되지 않아]
+        제약과 선택: [조회 결과, 집계 함수, 중복을 판단할 대상이 달라, 처리 지점을 나눴습니다]
+        검증과 결과: [중복이 제거되는지, 회귀 테스트, 같은 입력값, 한 번만 반영]
     search_terms: [GlueSQL, Rust, DISTINCT, parser/AST, aggregate, Parquet storage, 코드 리뷰]
     required_terms:
       - 문제와 진단
@@ -172,6 +197,11 @@ content_coverage:
       - 회귀 테스트
     forbidden_headings: [기술]
   - path: docs/opensource/gluesql.en.md
+    section_fields:
+      Implementing DISTINCT Execution Semantics:
+        Problem and diagnosis: [return duplicate rows, parser recognized, did not reach the Rust executor]
+        Constraints and decision: [distinct result row, distinct input value, deduplicate different things, different points in execution]
+        Validation and result: [regression tests checked deduplication, repeated input value, once]
     search_terms: [GlueSQL, Rust, DISTINCT, parser/AST, aggregate, Parquet storage, code review]
     required_terms:
       - Problem and diagnosis
@@ -186,6 +216,11 @@ content_coverage:
       - regression tests
     forbidden_headings: [Technologies]
   - path: docs/projects/coupler.md
+    section_fields:
+      가입 절차를 개편하며 가입·심사 상태 기준을 서버로 통일:
+        문제와 진단: [약 30개 항목, 첫 심사에 필요한 정보만, 서버에서 같은 상태여도, 서로 다르게 판단]
+        제약과 선택: [기존 가입·심사 데이터를 유지, 양쪽 조건을 다시 맞춰야, 서버가 심사 상태와 접근 권한을 판정]
+        검증과 결과: [재제출하면 차단, 재심사 대상, 서버 상태에 맞는 화면, 각각의 심사 큐]
     search_terms: [Coupler, React Native, React 관리자 웹, TypeScript, Express API, MySQL, API 응답, 심사 상태, GitHub Actions, 실시간 채팅, WebSocket, client_message_id, before_id]
     required_terms:
       - 문제와 진단
@@ -218,6 +253,11 @@ content_coverage:
       - scheduler
     forbidden_headings: [기술]
   - path: docs/projects/coupler.en.md
+    section_fields:
+      Centralizing Signup and Review State During a Signup-Flow Redesign:
+        Problem and diagnosis: [about 30 inputs, what the first review needed, could disagree, same server-side state]
+        Constraints and decision: [keep existing signup and review data, keeping both in sync, review-state and permission decisions on the server]
+        Validation and result: [could not be resubmitted without changes, went back to review, corresponding to the server state, respective admin review queues]
     search_terms: [Coupler, React Native, React admin web, TypeScript, Express API, MySQL, API response, review state, GitHub Actions, real-time chat, WebSocket, client_message_id, before_id]
     required_terms:
       - Problem and diagnosis
