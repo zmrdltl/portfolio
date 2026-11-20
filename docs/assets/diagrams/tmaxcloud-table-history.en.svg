@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="928" height="640" viewBox="0 0 928 640" role="img" aria-labelledby="title desc">
   <title id="title">TmaxCloud Data History and Past-Date Query Example</title>
-  <desc id="desc">Illustrative data: the same row changes from value A on January 1 to B on January 8 and C on January 15. A January 10 query returns B and last editor B from the matching history period; the source row retains its current value C. One entity definition generates source/history DDL and code that stores the previous row. Primary key, editor, valid period, and row data support requested-date queries.</desc>
+  <desc id="desc">Illustrative data: users A, B, and C call write APIs to set the same row to A on January 1, B on January 8, and C on January 15. A January 10 query returns value B and API caller B, who requested the last change as of that date. The current row still holds C. One entity definition generates the source and history table DDL and the code that stores the previous row. The query uses the primary key, API caller ID, valid period, and row data.</desc>
   <defs>
     <style><![CDATA[
       @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap');
@@ -47,7 +47,7 @@
   <g aria-hidden="true">
     <text class="meta" x="32" y="36">DATA HISTORY / ILLUSTRATIVE DATA</text>
     <text class="heading" x="32" y="84">Read the data as of a chosen date</text>
-    <text class="body muted" x="32" y="120">Follow one row over time to find its past value and last editor.</text>
+    <text class="body muted" x="32" y="120">Find a past value and the API caller who requested the last change as of that date.</text>
 <path class="connector" d="M 96 204 H 848" marker-end="url(#arrow)"/>
 <path class="guide" d="M 528 240 V 372"/>
     <text class="meta mono" x="96" y="172">01 / 01</text>
@@ -61,9 +61,9 @@
     <text class="label" x="96" y="256">Value A</text>
     <text class="label" x="432" y="256">Value B</text>
     <text class="label" x="768" y="256">Value C</text>
-    <text class="meta" x="96" y="284">Editor A</text>
-    <text class="meta" x="432" y="284">Editor B</text>
-    <text class="meta" x="768" y="284">Editor C</text>
+    <text class="meta" x="96" y="284">API caller A</text>
+    <text class="meta" x="432" y="284">API caller B</text>
+    <text class="meta" x="768" y="284">API caller C</text>
     <rect x="96" y="308" width="332" height="32" rx="4" fill="rgba(45, 49, 66, 0.05)"/>
     <rect x="432" y="308" width="332" height="32" rx="4" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1"/>
     <rect x="768" y="308" width="96" height="32" rx="4" fill="rgba(45, 49, 66, 0.05)"/>
@@ -77,12 +77,12 @@
 <path d="M 56 428 H 872" stroke="var(--accent)" stroke-opacity="0.24" stroke-width="1"/>
     <text class="meta" x="56" y="464">Value on that date</text>
     <text class="value accent" x="56" y="516">B</text>
-    <text class="meta" x="336" y="464">Last editor</text>
-    <text class="label" x="336" y="516">Editor B</text>
+    <text class="meta" x="336" y="464">Last caller of a write API</text>
+    <text class="label" x="336" y="516">API caller B</text>
 <path class="rule" d="M 624 448 V 528"/>
     <text class="meta" x="656" y="464">Current source value</text>
     <text class="value" x="656" y="516">C</text>
     <text class="body muted" x="32" y="588">Entity definition → source/history DDL + previous-row storage code</text>
-    <text class="body muted" x="32" y="616">Query uses: primary key · editor · valid period · row data</text>
+    <text class="body muted" x="32" y="616">Query uses: primary key · API caller ID · valid period · row data</text>
   </g>
 </svg>

@@ -34,31 +34,31 @@ I designed and built a test screen that could call generated APIs and check the 
 
 ## Storing Data-Change History and Querying Historical Data
 
-I implemented generated history writes for Create, Update, and Delete services, plus SQL to query row values and the last editor for a requested date.
+I implemented SQL to record changes and the ID of the user who called the write API. I also wrote SQL to look up each row’s value on a given date and the API caller who requested its most recent change as of that date.
 
 <figure class="portfolio-diagram" aria-label="TmaxCloud data-change history and past-date query example" markdown="block">
 
 <div class="portfolio-diagram-flow" markdown="block">
 
-1. The current table stores the latest value `C`. The history stores prior values and their editors.
+1. The current table stores the latest value `C`. The history records previous values and API caller IDs.
 2. A query for January 10 selects the row that was valid on that date.
-3. It returns the historical value `B` and the last editor while preserving the current value `C`.
+3. The query returns the historical value `B` and the API caller who requested the last change. The current value remains `C`.
 
 </div>
 
-![Conceptual data example combining the current table and change history to query row values and the last editor for a requested past date.](../assets/diagrams/tmaxcloud-table-history.en.svg)
+![Example of querying a past row value and the API caller who requested its last change using the current table and the change history.](../assets/diagrams/tmaxcloud-table-history.en.svg?v=2)
 
-<figcaption class="portfolio-diagram-link" markdown="span">[Open full-size diagram](../assets/diagrams/tmaxcloud-table-history.en.svg){ aria-label="Open full-size diagram (TmaxCloud data-change history and past-date query example)" }</figcaption>
+<figcaption class="portfolio-diagram-link" markdown="span">[Open full-size diagram](../assets/diagrams/tmaxcloud-table-history.en.svg?v=2){ aria-label="Open full-size diagram (TmaxCloud data-change history and past-date query example)" }</figcaption>
 
 </figure>
 
-**Problem and diagnosis:** Generated CRUD applications kept only current values. To look up a row’s value and last editor as of a past date, I needed to record the previous value, the time of the change, and who made it.
+**Problem and diagnosis:** Generated CRUD applications kept only current values. Looking up a row’s past value and who requested its last change required recording the previous value, change timestamp, and API caller ID.
 
-**Constraints and decision:** Tibero triggers or procedures needed an extra convention to receive the requesting user's identity. I instead generated history writes in CRUD code that already had that identity, using the same entity columns and primary key for storage and queries.
+**Constraints and decision:** Tibero triggers or procedures would need a convention for passing the API caller ID from the request to the database. The generated Create, Update, and Delete API code already had that ID, so I put the history writes in that code and used the same entity columns and primary key for storage and queries.
 
-**Implementation:** I implemented FreeMarker templates that generate source and history table DDL, plus SQL to store history for rows affected by Create, Update, and Delete services. The history includes pre-update and pre-delete values, change timestamps, editor IDs, and deletion state. I wrote SQL that uses change timestamps to combine current and historical data and return the valid row and its last editor for each primary key as of a requested date.
+**Implementation:** I wrote FreeMarker templates for source and history table DDL and for the SQL that records changes when a Create, Update, or Delete API runs. The history records pre-update and pre-delete row values, change timestamps, the user ID from the API request, and deletion status. My query combines current and historical data using those timestamps. For each primary key, it returns the row as of the given date and the API caller who requested its latest change by then.
 
-**Illustrative example:** On January 8, editor B changed the row to value B. The value changed to C on January 15. A January 10 lookup returns B and the editor who set it, while the current row still holds C.
+**Illustrative example:** On January 8, user B called the update API to set the row’s value to B. The value changed to C on January 15. A January 10 lookup returns value B and user B, who requested the last change as of that date. The current row still holds C.
 
 **Follow-up verification:** In a reproduction of the generated Update service, concurrent requests repeatedly targeted a small set of rows. The history showed a continuous chain of before-and-after values and consecutive revision numbers. The last recorded value for each row matched its current value. When a failure was injected before commit, the row update and its history entry rolled back together.
 
