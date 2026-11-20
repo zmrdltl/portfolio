@@ -31,20 +31,20 @@ homepage:
         experience/tmaxcloud.md:
           type_period: [정규 경력, "2021.10", "2024.11"]
           role: [Java, React, 설계, 구현, 검증]
-          change: [UI에서 정의한 서비스, Java API·SQL, JAR, 배포하지 않고, 응답, DB 반영, 구현]
-          proof: [서비스 정의, 요청·응답 형식, DB 반영 오류, 약 20분, 빌드·배포·확인 절차 없이]
+          change: [코드 생성 플랫폼, 임시 배포 환경, 정식 배포 전, 생성 API, 실제 DB 반영]
+          proof: [서비스 정의, 요청·응답 형식, DB 반영 문제, 약 20분, 빌드·정식 배포·확인]
           technologies: [Java, WebSocket, Tibero]
         opensource/gluesql.md:
           type_period: [오픈소스 기여, "2021.06", 현재]
           role: [Rust SQL 엔진, 직접 구현, 코드 리뷰]
-          change: [SELECT DISTINCT, 중복 결과, 일반 조회, 집계 함수]
+          change: [SELECT DISTINCT, 중복 결과, 조회 결과의 행, 집계 함수, 입력값]
           proof: [단일·복수 열, COUNT, 집계 함수, 회귀 테스트]
           technologies: [Rust, parser/AST, SQL executor]
         projects/coupler.md:
-          type_period: [개인 제품, "2024.07", 현재]
+          type_period: [개인 제품, "2024.07", "2026.09"]
           role: [React Native, Express API, React 관리자 웹, MySQL DB, 총괄]
-          change: [API, 접근 상태, 추론]
-          proof: [API 응답 계약, 모바일 화면 분기, 관리자 심사 큐, 서버의 심사 상태, 앱 화면, 회귀 테스트]
+          change: [30개 항목, 필수 프로필, 서버, 앱 화면, 관리자 심사 큐]
+          proof: [서버의 심사 상태, 관리자 심사 큐, 가입 심사, 프로필 수정, 회귀 테스트]
           technologies: [React Native, TypeScript, MySQL]
     - path: docs/index.en.md
       representative_heading: Representative Work
@@ -68,20 +68,20 @@ homepage:
         experience/tmaxcloud.md:
           type_period: [Full-time role, Oct 2021, Nov 2024]
           role: [Java, React, design, implementation, verification]
-          change: [UI-defined services, Java APIs, SQL, JAR, before deployment]
-          proof: [service definitions, request/response shapes, database-write errors, 20-minute, build, deployment, verification cycle]
+          change: [temporary deployment environment, generated API responses, real database changes, before formal deployment]
+          proof: [service definitions, request and response format errors, database issues, build, formal deployment, verification cycle, about 20 minutes]
           technologies: [Java, WebSocket, Tibero]
         opensource/gluesql.md:
           type_period: [Open-source contribution, Jun 2021, Present]
           role: [Rust SQL engine, Direct implementation, code review]
-          change: [SELECT DISTINCT, duplicate results, regular queries, aggregate functions]
+          change: [SELECT DISTINCT, duplicate results, result rows, input values, aggregate functions]
           proof: [single and multiple columns, COUNT, aggregate functions, regression tests]
           technologies: [Rust, parser/AST, SQL executor]
         projects/coupler.md:
-          type_period: [Independent product, Jul 2024, Present]
+          type_period: [Independent product, Jul 2024, Sep 2026]
           role: [React Native app, Express API, React admin web, MySQL database, lead]
-          change: [API, access state, inferring]
-          proof: [API response contract, mobile routing, admin review queue, server-side review state, app, regression-tested]
+          change: [30-field, required profile, app routing, admin review queue, server]
+          proof: [review state, admin review queue, signup reviews, profile edits, regression-tested]
           technologies: [React Native, TypeScript, MySQL]
 
 content_coverage:

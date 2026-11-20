@@ -4,7 +4,13 @@
 
 ## Pre-Deployment API Testing for a Code-Generation Platform
 
-I designed and built a feature for calling generated APIs before deployment and checking their responses and actual database writes and reads. I implemented the React test UI, Java REST API, and database schema.
+I designed and built a test screen that could call generated APIs and check the data they wrote to the real database before formal deployment.
+
+**Problem and diagnosis:** A customer raised a concern that building and deploying a business application took about four weeks. To find where the time went, I built an app myself on the platform. It generated Java APIs and SQL from entities and services defined in the UI, then packaged them in a JAR. Checking whether service definitions and request and response formats worked required building the JAR, configuring a formal deployment, and starting a container. Each cycle took about 20 minutes, and every correction meant repeating it.
+
+**Constraints and decision:** Mock responses could not show whether the generated code wrote to and read from the actual database correctly. The existing temporary deployment feature could run the generated JAR against that database. I chose to call APIs in that environment from a test screen so users could verify real behavior without repeating the formal deployment cycle.
+
+**Implementation:** I built a React test screen that let users select a service, automatically filled in sample values based on each request field’s type, and let users edit the JSON in Monaco Editor. I implemented WebSocket request and response handling and designed and built the Java REST API and database schema for storing and retrieving actual test data.
 
 Scroll horizontally to inspect the full diagram.
 { .diagram-scroll-hint }
@@ -12,13 +18,7 @@ Scroll horizontally to inspect the full diagram.
 ![Conceptual pre-deployment API test UI with service selection, JSON request editing, API responses, and database checks.](../assets/diagrams/tmaxcloud-predeploy-api-test.en.svg)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud pre-deployment API test UI concept" }
 
-**Problem and diagnosis:** The platform generated Java APIs, SQL, and a JAR from UI-defined entities and services, but real API behavior could only be checked after deployment and container startup. With roughly 200-300 services and APIs to verify, each build, deployment, and verification cycle took about 20 minutes, delaying feedback on invalid definitions and request/response shapes.
-
-**Constraints and decision:** Mock responses could not reveal actual database write/read errors, so I placed a test step before deployment that called APIs through the existing generation and execution path.
-
-**Implementation:** I implemented JSON request editing with Monaco Editor in a React UI, plus WebSocket request/response handling. I also designed and implemented the Java REST API and database schema for listing test targets and storing and reading actual test data.
-
-**Validation and result:** The test flow made generated API responses and actual database writes and reads checkable before deployment. It also made service-definition, mapping, and request/response problems visible before the separate build and deployment cycle.
+**Validation and result:** I called generated APIs in the temporary deployment environment and checked response formats and actual database writes and reads. Users could find invalid service definitions, missing service mappings, and request and response format errors before formal deployment.
 
 ## Storing Data-Change History and Querying Historical Data
 

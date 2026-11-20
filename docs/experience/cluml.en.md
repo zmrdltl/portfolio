@@ -4,9 +4,9 @@
 
 ## Fixing a Concurrency Bug in Outbound LLM API Rate Limiting
 
-**Problem and diagnosis:** While investigating long waits on a customer demo server, I found a race in the AI Security Analysis Engine’s outbound LLM API limiter: concurrent calls could read the same pre-reservation state and push both in-flight calls and pending token reservations past their limits. I distinguished it from waiting at fixed-window boundaries and limited the fix to the over-reservation race.
+**Problem and diagnosis:** When analysis jobs waited a long time on a customer demo server, I examined the logs and the Rust rate limiter. The limiter released its lock between checking capacity and recording a reservation. Concurrent calls could therefore see the same available capacity and all pass the check. Once the in-flight call count and pending token reservations exceeded their limits, subsequent calls calculated their waits against inflated reservations. I treated calls that stayed asleep across a fixed-window boundary as a separate problem with a different cause.
 
-**Constraints and decision:** The in-flight call count and estimated token reservation had to be checked against one current state, but holding the lock while waiting would block other calls. I kept only the check and reservation in the same lock section and released the lock before waiting.
+**Constraints and decision:** I put the capacity check and reservation under one lock so another call could not reserve between those steps. Holding the lock while waiting would also block calls that needed to check capacity, so the limiter releases it before waiting.
 
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
@@ -14,7 +14,7 @@ Scroll horizontally to inspect the full flow.
 ![A request moves from the security analysis UI through the API and analysis job to the rate limiter, which checks reservation and capacity state before calling the external LLM API.](../assets/diagrams/cluml-rate-limit-components.en.svg)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL outbound LLM API rate-limiting component diagram" }
 
-**Failure flow before the fix:** Capacity checks and reservation updates ran in separate lock sections, allowing concurrent calls to read the same pre-reservation state.
+**Failure flow before the fix:** Both calls counted the same available capacity toward their own reservations.
 
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
@@ -22,7 +22,7 @@ Scroll horizontally to inspect the full flow.
 ![Concurrent calls A and B read the same pre-reservation state, both pass the capacity check, and then record reservations that can exceed the limit.](../assets/diagrams/cluml-rate-limit-race.en.svg)
 { .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL pre-fix rate-limiter race sequence diagram" }
 
-**Implementation:** I changed the outbound LLM API rate limiter to check one shared state and immediately reserve an in-flight slot and estimated tokens.
+**Implementation:** I updated the limiter to reserve an in-flight slot and the estimated tokens immediately after confirming capacity, under the same lock.
 
 **Validation and result:** Before the fix, I reproduced over-reservation in which the in-flight call count and pending token reservations each reached at least ten times their respective limits. After the fix, regression tests confirmed that both values stayed within their respective limits under the same concurrency load.
 

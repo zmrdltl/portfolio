@@ -5,9 +5,11 @@
 
 ## Implementing DISTINCT Execution Semantics
 
-**Problem and diagnosis:** `SELECT DISTINCT` syntax information did not reach GlueSQL's Rust SQL engine executor, so the query produced the same result as a regular `SELECT`. Projection and aggregate execution identify duplicates at different state boundaries.
+**Problem and diagnosis:** GlueSQL's Rust SQL engine could accept `SELECT DISTINCT` without an error and still return duplicate rows like a regular `SELECT`. The parser recognized `DISTINCT`, but the flag did not reach the Rust executor through the internal query model, leaving the executor to run a regular query.
 
-**Constraints and decision:** I preserved non-`DISTINCT` behavior and split deduplication by execution path: `SELECT DISTINCT` deduplicates projected result rows, while aggregate `DISTINCT` deduplicates the values supplied to each aggregate function. Unsupported `DISTINCT ON` returns an explicit error.
+**Constraints and decision:** `SELECT DISTINCT` has to return each distinct result row once, whereas `COUNT(DISTINCT col)` has to pass each distinct input value to the aggregate once. Because the two operations deduplicate different things, I handled them at different points in execution. Unsupported `DISTINCT ON` returns an explicit error.
+
+For `SELECT DISTINCT`, I applied `LIMIT` after deduplication. For example, applying `LIMIT 2` to the sorted results `A, A, B` first would leave `A, A` and lose the unique row `B`. Deduplicating first produces `A, B`. This implementation collects all result rows in memory before deduplicating, even when the limit is small.
 
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
@@ -17,7 +19,7 @@ Scroll horizontally to inspect the full flow.
 
 **Implementation:** I propagated parser/AST output into the query model, then connected row deduplication and aggregate handling in the SQL executor with AST Builder APIs. Consistent deduplication required equal values to produce the same hash and equivalent maps to compare equally regardless of key insertion order. I updated value comparison, hashing, and map-key ordering together to preserve those invariants.
 
-**Validation and result:** Regression tests covered single and multiple columns, maps, schemaless rows, and aggregate `DISTINCT`, including `COUNT`. The feature and tests preserve the same meaning across SQL input, internal representation, and execution output.
+**Validation and result:** Regression tests checked deduplication across single and multiple columns, map values, and schemaless rows. I also checked that aggregates such as `COUNT(DISTINCT col)` use a repeated input value only once.
 
 ## Additional Work
 

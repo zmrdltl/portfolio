@@ -1,22 +1,22 @@
 # Coupler
 
-- Contribution period: Jul 2024 - Present
+- Contribution period: Jul 2024 - Sep 2026
 - Type: Mobile dating app
 - Classification: Independent project, started as contracted maintenance
 
 ## Role and Responsibilities
 
-I now lead development and operations across the React Native mobile app, Express API, React admin web, and MySQL database.
+I led development and operations across the React Native mobile app, Express API, React admin web, and MySQL database.
 
-- Translate product decisions into the app, API, admin web, database schema, and migrations.
-- Own QA, code review, merges, releases, deployment, and rollback.
-- Keep policy, flows, architecture, database-change verification procedures, and deployment and rollback rules in the [public engineering documentation](https://coupler-developer.github.io/docs/) and tie them to release criteria.
+- Translated product decisions into the app, API, admin web, database schema, and migrations.
+- Owned QA, code review, merges, releases, deployment, and rollback.
+- Documented policies, user flows, architecture, database-change verification, and deployment and rollback procedures in the [public engineering documentation](https://coupler-developer.github.io/docs/) and tied them to release criteria.
 
 ## Centralizing Signup and Review State During a Signup-Flow Redesign
 
-**Problem and diagnosis:** Redesigning the previous signup application's roughly 30 input fields into stages also changed which screen should follow submission, resubmission, approval, or rejection. The app, API result codes, and admin review queue each inferred those states independently, so changing the signup flow alone risked making the three paths diverge. I therefore unified the signup and review state before adding more screen-specific conditions.
+**Problem and diagnosis:** The first signup application previously required about 30 inputs at once. Collecting only what the first review needed also meant coordinating which screen opened and which queue staff used after submission, rejection, resubmission, or approval. If the app and admin web interpreted multiple API response fields independently, they could disagree about the same server-side state.
 
-**Constraints and decision:** The change had to span the existing React Native app, Express API, React admin web, MySQL data, and migrations. The initial submission needed to reduce input burden while retaining the basic information and required profile materials for the first review; after approval, associate and full-member reviews needed to proceed independently. Instead of matching client-specific conditionals, I made the API the single source for access state and screen-routing state, while the app and admin web interpret only valid server states. Missing or invalid state does not open a screen by inference.
+**Constraints and decision:** I needed to keep existing signup and review data, retain the basic information and required profile materials for the first review, and let associate and full-member reviews proceed independently after approval. Duplicating state rules in the app and admin web would require keeping both in sync every time the review policy changed. I put review-state and permission decisions on the server. The app chose its screen from the state returned by the API, and the server used each request’s origin to decide which admin review queue it belonged in.
 
 Scroll horizontally to inspect the full flow.
 { .diagram-scroll-hint }
@@ -26,7 +26,7 @@ Scroll horizontally to inspect the full flow.
 
 **Implementation:** While moving the existing codebase to version 2.0.0, I reduced the initial application to basic information and the required profile, implemented state transitions that allow associate- and full-member reviews to proceed independently after approval, and reworked the database structure. The [signup response contract](https://coupler-developer.github.io/docs/policy/signup-response-contract/) separates successful responses from screen-routing state, while the [member review policy](https://coupler-developer.github.io/docs/policy/member-review-policy/) aligns submission and resubmission, signup versus settings-change reviews, and admin queue classification.
 
-**Validation and result:** I regression-tested the API response contract, mobile routing, and admin review queue to verify that server-side review state was reflected consistently in the app and admin queue. Missing or invalid state does not open a screen by inference. The change also went through the [code review policy](https://coupler-developer.github.io/docs/policy/code-review-policy/), QA, and deployment and rollback procedures.
+**Validation and result:** Regression tests verified that a returned item could not be resubmitted without changes and went back to review once edited. I also checked that the app opened the screen corresponding to the server state and that signup reviews and profile edits went to their respective admin review queues. I also checked that the app did not guess which screen to open when the server state was missing or invalid.
 
 ## Connecting N-to-N Group Meetings as One Operational Lifecycle
 
