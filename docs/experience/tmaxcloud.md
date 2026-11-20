@@ -12,11 +12,21 @@
 
 **구현:** React 테스트 화면에서 테스트할 서비스를 선택하고, 요청 데이터 타입에 맞는 예시 값을 자동으로 채운 뒤 Monaco Editor에서 JSON을 수정할 수 있게 했습니다. WebSocket으로 요청을 보내고 응답을 표시하는 흐름을 구현했습니다. 실제 테스트 데이터를 저장하고 조회하는 Java REST API와 DB 스키마도 설계·구현했습니다.
 
-도식을 좌우로 스크롤해 전체 구성을 확인할 수 있습니다.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="TmaxCloud 배포 전 API 테스트 화면 개념도" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. 임시 배포 환경에서 테스트할 생성 API를 선택합니다.
+2. JSON 요청을 준비하고 WebSocket으로 호출합니다.
+3. API 응답과 실제 DB에 쓰이거나 읽힌 값을 확인합니다.
+
+</div>
 
 ![서비스 선택, JSON 요청 편집, API 응답과 DB 반영 확인 영역을 보여주는 배포 전 API 테스트 화면 개념도.](../assets/diagrams/tmaxcloud-predeploy-api-test.ko.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud 배포 전 API 테스트 화면 개념도" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[도식 원본 크게 보기](../assets/diagrams/tmaxcloud-predeploy-api-test.ko.svg){ aria-label="도식 원본 크게 보기 (TmaxCloud 배포 전 API 테스트 화면 개념도)" }</figcaption>
+
+</figure>
 
 **검증과 결과:** 임시 배포에서 생성 API를 호출해 응답 형식과 실제 DB 쓰기·읽기를 확인했습니다. 서비스 정의 오류, 서비스 연결 누락, 요청·응답 형식 오류를 정식 배포에 들어가기 전에 찾을 수 있게 됐습니다.
 
@@ -24,11 +34,21 @@
 
 생성된 등록·수정·삭제 서비스의 이력 저장 SQL과, 지정한 날짜의 행 값·마지막 변경자를 조회하는 SQL을 구현했습니다.
 
-도식을 좌우로 스크롤해 전체 구성을 확인할 수 있습니다.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="TmaxCloud 데이터 변경 이력과 과거 날짜 조회 예시" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. 현재 테이블에는 최신 값 `C`가 있고, 변경 이력에는 이전 값과 변경자가 남습니다.
+2. 예를 들어 1월 10일을 조회하면 그날 유효했던 행을 고릅니다.
+3. 당시 값 `B`와 마지막 변경자를 반환합니다. 현재 값 `C`는 유지됩니다.
+
+</div>
 
 ![현재 테이블과 변경 이력을 조합해 지정한 과거 날짜의 행 값과 마지막 변경자를 조회하는 개념 데이터 예시.](../assets/diagrams/tmaxcloud-table-history.ko.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud 데이터 변경 이력과 과거 날짜 조회 예시" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[도식 원본 크게 보기](../assets/diagrams/tmaxcloud-table-history.ko.svg){ aria-label="도식 원본 크게 보기 (TmaxCloud 데이터 변경 이력과 과거 날짜 조회 예시)" }</figcaption>
+
+</figure>
 
 **문제와 진단:** 생성된 CRUD 앱에는 현재값만 남아, 수정·삭제 전 값과 당시 수정자를 보려면 변경 전 행·수정자·유효 기간을 함께 저장해야 했습니다.
 

@@ -12,11 +12,21 @@ I designed and built a test screen that could call generated APIs and check the 
 
 **Implementation:** I built a React test screen that let users select a service, automatically filled in sample values based on each request field’s type, and let users edit the JSON in Monaco Editor. I implemented WebSocket request and response handling and designed and built the Java REST API and database schema for storing and retrieving actual test data.
 
-Scroll horizontally to inspect the full diagram.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="TmaxCloud pre-deployment API test UI concept" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. Select a generated API in the temporary deployment environment.
+2. Prepare a JSON request and call the API over WebSocket.
+3. Check the API response and the actual database writes and reads.
+
+</div>
 
 ![Conceptual pre-deployment API test UI with service selection, JSON request editing, API responses, and database checks.](../assets/diagrams/tmaxcloud-predeploy-api-test.en.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud pre-deployment API test UI concept" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[Open full-size diagram](../assets/diagrams/tmaxcloud-predeploy-api-test.en.svg){ aria-label="Open full-size diagram (TmaxCloud pre-deployment API test UI concept)" }</figcaption>
+
+</figure>
 
 **Validation and result:** I called generated APIs in the temporary deployment environment and checked response formats and actual database writes and reads. Users could find invalid service definitions, missing service mappings, and request and response format errors before formal deployment.
 
@@ -24,11 +34,21 @@ Scroll horizontally to inspect the full diagram.
 
 I implemented generated history writes for Create, Update, and Delete services, plus SQL to query row values and the last editor for a requested date.
 
-Scroll horizontally to inspect the full diagram.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="TmaxCloud data-change history and past-date query example" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. The current table stores the latest value `C`. The history stores prior values and their editors.
+2. A query for January 10 selects the row that was valid on that date.
+3. It returns the historical value `B` and the last editor while preserving the current value `C`.
+
+</div>
 
 ![Conceptual data example combining the current table and change history to query row values and the last editor for a requested past date.](../assets/diagrams/tmaxcloud-table-history.en.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="TmaxCloud data-change history and past-date query example" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[Open full-size diagram](../assets/diagrams/tmaxcloud-table-history.en.svg){ aria-label="Open full-size diagram (TmaxCloud data-change history and past-date query example)" }</figcaption>
+
+</figure>
 
 **Problem and diagnosis:** Generated CRUD applications kept only current values. Showing values and the last editor from before an update or deletion required saving the prior row, editor, and valid period together.
 

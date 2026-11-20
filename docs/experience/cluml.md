@@ -8,19 +8,39 @@
 
 **제약과 선택:** 다른 호출이 확인과 예약 사이에 끼어들지 못하도록 두 작업을 한 잠금 안에서 처리하기로 했습니다. 잠금을 잡은 채 기다리면 여유 용량을 확인할 다른 호출까지 막히므로, 대기가 필요할 때는 잠금을 먼저 풀도록 했습니다.
 
-도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="ClumL 외부 LLM API 호출량 제어 구성 도식" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. 보안 분석 UI의 요청이 API를 거쳐 분석 작업으로 들어갑니다.
+2. 요청 제한기가 처리 중 호출 수와 토큰 예약량을 확인합니다.
+3. 여유 용량이 있으면 예약한 뒤 외부 LLM API를 호출합니다.
+
+</div>
 
 ![보안 분석 UI 요청이 API와 분석 작업을 거쳐 호출량 제어기로 전달되고, 제어기가 예약·용량 상태를 확인한 뒤 외부 LLM API를 호출합니다.](../assets/diagrams/cluml-rate-limit-components.ko.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL 외부 LLM API 호출량 제어 구성 도식" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[도식 원본 크게 보기](../assets/diagrams/cluml-rate-limit-components.ko.svg){ aria-label="도식 원본 크게 보기 (ClumL 외부 LLM API 호출량 제어 구성 도식)" }</figcaption>
+
+</figure>
 
 **수정 전 실패 흐름:** 두 호출이 같은 여유 용량을 각각 자기 몫으로 계산하는 과정입니다.
 
-도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="ClumL 호출량 제어 수정 전 경합 시퀀스 도식" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. 동시 호출 A와 B가 같은 예약 전 상태를 읽습니다.
+2. A와 B 모두 여유 용량이 있다고 판단해 통과합니다.
+3. 각자 예약을 기록하면서 호출 수와 토큰 예약량이 허용치를 넘을 수 있습니다.
+
+</div>
 
 ![동시 호출 A와 B가 같은 예약 전 상태를 읽고 모두 통과한 뒤 각각 예약을 기록해 허용치를 넘길 수 있는 수정 전 경합 흐름입니다.](../assets/diagrams/cluml-rate-limit-race.ko.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL 호출량 제어 수정 전 경합 시퀀스 도식" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[도식 원본 크게 보기](../assets/diagrams/cluml-rate-limit-race.ko.svg){ aria-label="도식 원본 크게 보기 (ClumL 호출량 제어 수정 전 경합 시퀀스 도식)" }</figcaption>
+
+</figure>
 
 **구현:** 여유 용량이 확인되는 즉시 같은 잠금 안에서 호출 슬롯과 예상 토큰을 예약하도록 요청 제한 로직을 수정했습니다.
 

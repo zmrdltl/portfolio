@@ -11,11 +11,21 @@
 
 `SELECT DISTINCT`에서는 중복 제거 후 `LIMIT`를 적용했습니다. 예를 들어 정렬된 결과가 `A, A, B`라면 `LIMIT 2`를 먼저 적용할 때 `A, A`만 남아 고유 행 `B`가 빠집니다. 중복 제거가 먼저라면 `A, B`가 남습니다. 이 구현은 `LIMIT`가 작아도 중복 제거 전에 조회 결과 전체를 메모리에 모읍니다.
 
-도식을 좌우로 스크롤해 전체 흐름을 확인할 수 있습니다.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="GlueSQL DISTINCT 실행 의미 흐름 도식" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. 파서가 읽은 `DISTINCT` 표시를 내부 쿼리 표현을 통해 실행기로 전달합니다.
+2. `SELECT DISTINCT`는 결과 행을, 집계 `DISTINCT`는 집계에 들어가는 값을 중복 제거합니다.
+3. 회귀 테스트에서 두 실행 경로의 결과를 확인합니다.
+
+</div>
 
 ![DISTINCT SQL 정보가 parser와 AST를 거쳐 query model에 전달되고, 실행 경로에 따라 projection 결과 행 또는 aggregate 입력 값을 중복 제거한 뒤 회귀 테스트로 확인합니다.](../assets/diagrams/gluesql-distinct-execution.ko.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="GlueSQL DISTINCT 실행 의미 흐름 도식" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[도식 원본 크게 보기](../assets/diagrams/gluesql-distinct-execution.ko.svg){ aria-label="도식 원본 크게 보기 (GlueSQL DISTINCT 실행 의미 흐름 도식)" }</figcaption>
+
+</figure>
 
 **구현:** parser/AST 결과를 query model에 전달하고, SQL executor의 row 중복 제거와 aggregate 처리, AST Builder API까지 연결했습니다. 중복 제거가 일관되려면 동등한 값은 같은 hash를 가져야 하고, map은 key 입력 순서가 달라도 같은 값으로 판정돼야 했습니다. 이 불변조건을 지키도록 값 비교·hash와 map key 정렬을 함께 보강했습니다.
 

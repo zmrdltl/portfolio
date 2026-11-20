@@ -27,7 +27,7 @@ markdown_extensions:
       permalink: true
 
 extra_css:
-  - assets/stylesheets/extra.css?v=3
+  - assets/stylesheets/extra.css?v=4
 
 plugins:
   - search
@@ -51,11 +51,15 @@ plugins:
             소개: Overview
             경력: Work
             티맥스클라우드: TmaxCloud
+            오픈소스: Open Source
+            프로젝트: Projects
 
 nav:
   - 소개: index.md
   - 경력:
       - ClumL: experience/cluml.md
       - 티맥스클라우드: experience/tmaxcloud.md
-  - GlueSQL: opensource/gluesql.md
-  - Coupler: projects/coupler.md
+  - 오픈소스:
+      - GlueSQL: opensource/gluesql.md
+  - 프로젝트:
+      - Coupler: projects/coupler.md

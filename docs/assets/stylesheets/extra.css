@@ -18,58 +18,66 @@
   word-break: keep-all;
 }
 
-/* Preserve diagram label readability when the viewport is narrower than the diagram. */
-.md-typeset .diagram-scroll-hint {
-  color: var(--md-default-fg-color--light);
-  display: block;
-  font-size: 0.75rem;
-  margin: 0.5rem 0 0.25rem;
-}
-
-.md-typeset .editorial-diagram-scroll {
-  -webkit-overflow-scrolling: touch;
-  background: #fafafa;
-  border: 0.05rem solid var(--md-default-fg-color--lightest);
-  border-radius: 0.4rem;
-  margin: 0.5rem 0 2rem;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  padding: 0.5rem;
-  scrollbar-gutter: stable;
-}
-
-.md-typeset .editorial-diagram-scroll:focus-visible {
-  outline: 0.15rem solid var(--md-accent-fg-color);
-  outline-offset: 0.1rem;
-}
-
-.md-typeset .editorial-diagram-scroll img {
-  display: block;
-  height: auto;
-  margin: 0;
-  max-width: none;
-  min-width: 48rem;
+.md-typeset .portfolio-diagram {
+  container: portfolio-diagram / inline-size;
+  margin: 1rem 0 1.8rem;
+  max-width: 100%;
+  text-align: start;
   width: 100%;
 }
 
-@media screen and (max-width: 44.984375em) {
-  .md-typeset .editorial-diagram-scroll {
-    margin-inline: -0.4rem;
-    padding: 0.4rem 0.4rem 0.65rem;
-  }
+.md-typeset .portfolio-diagram > p {
+  margin: 0;
 }
 
-@media print {
-  .md-typeset .diagram-scroll-hint {
-    display: none;
-  }
+.md-typeset .portfolio-diagram img {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.35rem;
+  box-sizing: border-box;
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+}
 
-  .md-typeset .editorial-diagram-scroll {
-    overflow: visible;
-  }
+.md-typeset .portfolio-diagram figcaption {
+  font-style: normal;
+  margin: 0.4rem 0 0;
+  max-width: none;
+  text-align: end;
+}
 
-  .md-typeset .editorial-diagram-scroll img {
-    max-width: 100%;
-    min-width: 0;
+.md-typeset .portfolio-diagram-link a {
+  display: inline-block;
+  padding-block: 0.2rem;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.md-typeset .portfolio-diagram-flow {
+  display: none;
+}
+
+@media screen {
+  @container portfolio-diagram (max-width: 37rem) {
+    .md-typeset .portfolio-diagram-flow {
+      border-inline-start: 2px solid var(--md-accent-fg-color);
+      display: block;
+      font-size: 0.8rem;
+      margin-block-end: 0.65rem;
+    }
+
+    .md-typeset .portfolio-diagram-flow :is(ol, ul) {
+      margin: 0;
+      padding-inline-start: 0.45rem;
+    }
+
+    .md-typeset .portfolio-diagram-flow li {
+      margin-block-end: 0.3rem;
+    }
+
+    .md-typeset .portfolio-diagram-flow li:last-child {
+      margin-block-end: 0;
+    }
   }
 }

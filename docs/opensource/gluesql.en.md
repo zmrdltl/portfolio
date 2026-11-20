@@ -11,11 +11,21 @@
 
 For `SELECT DISTINCT`, I applied `LIMIT` after deduplication. For example, applying `LIMIT 2` to the sorted results `A, A, B` first would leave `A, A` and lose the unique row `B`. Deduplicating first produces `A, B`. This implementation collects all result rows in memory before deduplicating, even when the limit is small.
 
-Scroll horizontally to inspect the full flow.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="GlueSQL DISTINCT execution-semantics flow diagram" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. Pass the parsed `DISTINCT` flag through the query model to the executor.
+2. Deduplicate result rows for `SELECT DISTINCT` and input values for aggregate `DISTINCT`.
+3. Verify the outputs for both execution paths with regression tests.
+
+</div>
 
 ![DISTINCT syntax moves through the parser and AST into the query model, then the execution path deduplicates projected rows or aggregate inputs before regression tests verify the behavior.](../assets/diagrams/gluesql-distinct-execution.en.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="GlueSQL DISTINCT execution-semantics flow diagram" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[Open full-size diagram](../assets/diagrams/gluesql-distinct-execution.en.svg){ aria-label="Open full-size diagram (GlueSQL DISTINCT execution-semantics flow diagram)" }</figcaption>
+
+</figure>
 
 **Implementation:** I propagated parser/AST output into the query model, then connected row deduplication and aggregate handling in the SQL executor with AST Builder APIs. Consistent deduplication required equal values to produce the same hash and equivalent maps to compare equally regardless of key insertion order. I updated value comparison, hashing, and map-key ordering together to preserve those invariants.
 

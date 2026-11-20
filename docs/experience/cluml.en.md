@@ -8,19 +8,39 @@
 
 **Constraints and decision:** I put the capacity check and reservation under one lock so another call could not reserve between those steps. Holding the lock while waiting would also block calls that needed to check capacity, so the limiter releases it before waiting.
 
-Scroll horizontally to inspect the full flow.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="ClumL outbound LLM API rate-limiting component diagram" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. A request from the security analysis UI reaches the analysis job through the API.
+2. The limiter checks in-flight calls and pending token reservations.
+3. When capacity is available, it reserves capacity and calls the external LLM API.
+
+</div>
 
 ![A request moves from the security analysis UI through the API and analysis job to the rate limiter, which checks reservation and capacity state before calling the external LLM API.](../assets/diagrams/cluml-rate-limit-components.en.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL outbound LLM API rate-limiting component diagram" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[Open full-size diagram](../assets/diagrams/cluml-rate-limit-components.en.svg){ aria-label="Open full-size diagram (ClumL outbound LLM API rate-limiting component diagram)" }</figcaption>
+
+</figure>
 
 **Failure flow before the fix:** Both calls counted the same available capacity toward their own reservations.
 
-Scroll horizontally to inspect the full flow.
-{ .diagram-scroll-hint }
+<figure class="portfolio-diagram" aria-label="ClumL pre-fix rate-limiter race sequence diagram" markdown="block">
+
+<div class="portfolio-diagram-flow" markdown="block">
+
+1. Concurrent calls A and B read the same state before either reserves capacity.
+2. Both see available capacity and pass the check.
+3. Both then record reservations, which can push calls and pending tokens past their limits.
+
+</div>
 
 ![Concurrent calls A and B read the same pre-reservation state, both pass the capacity check, and then record reservations that can exceed the limit.](../assets/diagrams/cluml-rate-limit-race.en.svg)
-{ .editorial-diagram-scroll role="group" tabindex="0" aria-label="ClumL pre-fix rate-limiter race sequence diagram" }
+
+<figcaption class="portfolio-diagram-link" markdown="span">[Open full-size diagram](../assets/diagrams/cluml-rate-limit-race.en.svg){ aria-label="Open full-size diagram (ClumL pre-fix rate-limiter race sequence diagram)" }</figcaption>
+
+</figure>
 
 **Implementation:** I updated the limiter to reserve an in-flight slot and the estimated tokens immediately after confirming capacity, under the same lock.
 
