@@ -6,13 +6,13 @@
 
 I designed and built a test screen that could call generated APIs and check the data they wrote to the real database before formal deployment.
 
-**Problem and diagnosis:** The team routinely told customers to allow about four weeks to build and deploy a business app, based on similar projects. I questioned whether the full four weeks were necessary. To find where the time went and which steps we could shorten, I built an app myself on the platform, following the same steps as a customer administrator.
+**Problem and diagnosis:** Based on similar projects, the team routinely told customers to allow about four weeks to build and deploy a business app. I questioned whether another app needed that long. The estimate did not tell me which steps took time, so I followed the same process as a customer administrator and built an app myself.
 
 The platform generated Java APIs and SQL from entities and services defined in the UI and packaged them in a JAR. While building the app, I found that checking a service definition or its request and response formats required building the JAR, configuring a formal deployment, and starting a container. Each cycle took about 20 minutes. When I found an error, I had to fix the definition and repeat the cycle.
 
-**Constraints and decision:** Mock responses could not show whether the generated code wrote to and read from the actual database correctly. The existing temporary deployment feature could run the generated JAR against that database. I chose to call APIs in that environment from a test screen so users could verify real behavior without repeating the formal deployment cycle.
+**Constraints and decision:** To avoid a formal deployment for every check, I needed an earlier way to verify the generated API’s response and its effect on the database. Mock responses could not verify actual database writes and reads. The existing temporary deployment environment could run the generated JAR against the actual database, so I chose to call its APIs from a test screen.
 
-**Implementation:** I built a React test screen that let users select a service, automatically filled in sample values based on each request field’s type, and let users edit the JSON in Monaco Editor. I implemented WebSocket request and response handling and designed and built the Java REST API and database schema for storing and retrieving actual test data.
+**Implementation:** To save users from typing every field for each check, I made the React test screen fill in sample values based on each request field’s type when they selected a service. Users could edit the resulting JSON in Monaco Editor. I implemented WebSocket request and response handling and designed and built the Java REST API and database schema for storing and retrieving test data.
 
 <figure class="portfolio-diagram" aria-label="TmaxCloud pre-deployment API test UI concept" markdown="block">
 
@@ -32,7 +32,7 @@ The platform generated Java APIs and SQL from entities and services defined in t
 
 **Validation and result:** I called generated APIs in the temporary deployment environment and checked response formats and actual database writes and reads. Users could find invalid service definitions, missing service mappings, and request and response format errors before formal deployment.
 
-**Post-change feedback:** I separately asked internal users how long it took to build and deploy an app after the changes. The median reported time from the start of entity definition to JAR deployment was about two weeks.
+**Post-change feedback:** To find out how long the full app build and deployment process took after the changes, I asked internal users for feedback separately from the API and database checks. The median reported time from the start of entity definition to JAR deployment was about two weeks.
 
 ## Storing Data-Change History and Querying Historical Data
 
