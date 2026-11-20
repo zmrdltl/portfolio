@@ -6,7 +6,9 @@
 
 I designed and built a test screen that could call generated APIs and check the data they wrote to the real database before formal deployment.
 
-**Problem and diagnosis:** A customer raised a concern that building and deploying a business application took about four weeks. To find where the time went, I built an app myself on the platform. It generated Java APIs and SQL from entities and services defined in the UI, then packaged them in a JAR. Checking whether service definitions and request and response formats worked required building the JAR, configuring a formal deployment, and starting a container. Each cycle took about 20 minutes, and every correction meant repeating it.
+**Problem and diagnosis:** The team routinely told customers to allow about four weeks to build and deploy a business app, based on similar projects. I questioned whether the full four weeks were necessary. To find where the time went and which steps we could shorten, I built an app myself on the platform, following the same steps as a customer administrator.
+
+The platform generated Java APIs and SQL from entities and services defined in the UI and packaged them in a JAR. While building the app, I found that checking a service definition or its request and response formats required building the JAR, configuring a formal deployment, and starting a container. Each cycle took about 20 minutes. When I found an error, I had to fix the definition and repeat the cycle.
 
 **Constraints and decision:** Mock responses could not show whether the generated code wrote to and read from the actual database correctly. The existing temporary deployment feature could run the generated JAR against that database. I chose to call APIs in that environment from a test screen so users could verify real behavior without repeating the formal deployment cycle.
 
